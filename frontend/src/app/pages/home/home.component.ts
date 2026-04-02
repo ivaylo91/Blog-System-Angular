@@ -140,8 +140,9 @@ export class HomeComponent implements OnInit {
   searchQuery = '';
 
   ngOnInit(): void {
-    this.recipeService.getFeaturedRecipes().subscribe(recipes => {
-      this.featured = recipes;
+    this.recipeService.getFeaturedRecipes().subscribe({
+      next: (recipes) => this.featured = recipes,
+      error: (err) => console.error('Failed to load featured recipes:', err),
     });
   }
 

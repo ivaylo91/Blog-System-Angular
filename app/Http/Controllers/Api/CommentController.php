@@ -13,6 +13,12 @@ class CommentController extends Controller
 {
     public function storeOrUpdate(Request $request, string $slug): JsonResponse
     {
+        $key = 'comment:' . $request->user()->id;
+        if (RateLimiter::tooManyAttempts($key, 15)) {
+            return response()->json(['message' => 'Твърде много опити.'], 429);
+        }
+        RateLimiter::hit($key, 60);
+
         $recipe = Recipe::where('slug', $slug)->firstOrFail();
         $user = $request->user();
 
@@ -68,6 +74,10 @@ class CommentController extends Controller
 
     public function adminIndex(Request $request): JsonResponse
     {
+        if (! $request->user()->isAdmin()) {
+            return response()->json(['message' => 'Нямаш права.'], 403);
+        }
+
         $comments = Comment::with(['author', 'recipe'])
             ->orderByDesc('created_at')
             ->limit(100)

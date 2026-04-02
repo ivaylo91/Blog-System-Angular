@@ -45,7 +45,7 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/dashboard-recipe-edit/dashboard-recipe-edit.component').then(m => m.DashboardRecipeEditComponent),
   },
   {
-    path: 'dashboard/recipes/:id/edit',
+    path: 'dashboard/recipes/:slug/edit',
     canActivate: [authGuard],
     loadComponent: () => import('./pages/dashboard-recipe-edit/dashboard-recipe-edit.component').then(m => m.DashboardRecipeEditComponent),
   },

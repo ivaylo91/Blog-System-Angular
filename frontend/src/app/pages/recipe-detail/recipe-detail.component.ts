@@ -447,27 +447,36 @@ export class RecipeDetailComponent implements OnInit {
   }
 
   loadRecipe(slug: string): void {
-    this.recipeService.getRecipe(slug).subscribe(res => {
-      this.recipe = res.recipe;
-      this.averageRating = res.averageRating;
-      this.ratingsCount = res.ratingsCount;
-      this.comments = res.recipe.comments || [];
+    this.recipeService.getRecipe(slug).subscribe({
+      next: (res) => {
+        this.recipe = res.recipe;
+        this.averageRating = res.averageRating;
+        this.ratingsCount = res.ratingsCount;
+        this.comments = res.recipe.comments || [];
 
-      // Find user's existing rating
-      if (this.auth.isAuthenticated() && this.auth.user()) {
-        const userId = this.auth.user()!.id;
-        const userComment = this.comments.find(c => c.user_id === userId);
-        if (userComment?.rating) {
-          this.userRating = userComment.rating;
+        // Find user's existing rating
+        if (this.auth.isAuthenticated() && this.auth.user()) {
+          const userId = this.auth.user()!.id;
+          const userComment = this.comments.find(c => c.user_id === userId);
+          if (userComment?.rating) {
+            this.userRating = userComment.rating;
+          }
+          if (userComment?.body) {
+            this.commentBody = userComment.body;
+          }
         }
-        if (userComment?.body) {
-          this.commentBody = userComment.body;
-        }
-      }
+      },
+      error: (err) => console.error('Failed to load recipe:', err),
     });
 
-    this.recipeService.getRelatedRecipes(slug).subscribe(r => this.relatedRecipes = r);
-    this.recipeService.getFavoriteStatus(slug).subscribe(s => this.favoriteStatus = s);
+    this.recipeService.getRelatedRecipes(slug).subscribe({
+      next: (r) => this.relatedRecipes = r,
+      error: (err) => console.error('Failed to load related recipes:', err),
+    });
+    this.recipeService.getFavoriteStatus(slug).subscribe({
+      next: (s) => this.favoriteStatus = s,
+      error: (err) => console.error('Failed to load favorite status:', err),
+    });
   }
 
   toggleFavorite(): void {
@@ -494,6 +503,7 @@ export class RecipeDetailComponent implements OnInit {
       } else {
         this.comments.unshift(comment);
       }
+      this.commentBody = '';
     });
   }
 

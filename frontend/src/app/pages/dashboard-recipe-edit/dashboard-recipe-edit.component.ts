@@ -259,14 +259,13 @@ export class DashboardRecipeEditComponent implements OnInit {
   ngOnInit(): void {
     this.recipeService.getCategories().subscribe(c => this.categories.set(c));
 
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id && id !== 'new') {
+    const slug = this.route.snapshot.paramMap.get('slug');
+    if (slug) {
       this.isNew.set(false);
-      this.recipeId = +id;
+      this.recipeSlug = slug;
       this.recipeService.getDashboardRecipes().subscribe(recipes => {
-        const recipe = recipes.find(r => r.id === this.recipeId);
+        const recipe = recipes.find(r => r.slug === this.recipeSlug);
         if (recipe) {
-          this.recipeSlug = recipe.slug;
           this.title = recipe.title;
           this.description = recipe.description || '';
           this.categoryId = recipe.category_id || 0;
@@ -312,18 +311,18 @@ export class DashboardRecipeEditComponent implements OnInit {
     formData.append('prep_minutes', String(this.prepTime));
     formData.append('cook_minutes', String(this.cookTime));
     formData.append('servings', String(this.servings));
-    if (this.imageFile) formData.append('image', this.imageFile);
+    if (this.imageFile) formData.append('hero_image', this.imageFile);
     const tags = this.tagsInput.split(',').map(t => t.trim()).filter(Boolean);
     tags.forEach((t, i) => formData.append(`tags[${i}]`, t));
     const validIngredients = this.ingredients.filter(i => i.name.trim());
     validIngredients.forEach((ing, i) => {
       formData.append(`ingredients[${i}][name]`, ing.name);
-      formData.append(`ingredients[${i}][quantity]`, ing.quantity);
+      formData.append(`ingredients[${i}][amount]`, ing.quantity);
     });
     const validSteps = this.steps.filter(s => s.description.trim());
     validSteps.forEach((s, i) => {
+      formData.append(`steps[${i}][title]`, `Стъпка ${i + 1}`);
       formData.append(`steps[${i}][description]`, s.description);
-      formData.append(`steps[${i}][position]`, String(i + 1));
     });
 
     const req$ = this.isNew()

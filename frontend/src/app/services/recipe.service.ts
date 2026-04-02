@@ -87,7 +87,8 @@ export class RecipeService {
   }
 
   updateRecipe(slug: string, data: FormData): Observable<Recipe> {
-    return this.http.put<Recipe>(`${environment.apiUrl}/dashboard/recipes/${slug}`, data);
+    data.append('_method', 'PUT');
+    return this.http.post<Recipe>(`${environment.apiUrl}/dashboard/recipes/${slug}`, data);
   }
 
   deleteRecipe(slug: string): Observable<{ message: string }> {

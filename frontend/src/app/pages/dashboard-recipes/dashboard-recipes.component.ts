@@ -38,7 +38,7 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
                 </td>
                 <td>—</td>
                 <td class="actions">
-                  <a [routerLink]="['/dashboard/recipes', recipe.id, 'edit']" class="btn-small">Редактирай</a>
+                  <a [routerLink]="['/dashboard/recipes', recipe.slug, 'edit']" class="btn-small">Редактирай</a>
                   <button class="btn-small btn-danger" (click)="confirmDelete(recipe)">Изтрий</button>
                 </td>
               </tr>

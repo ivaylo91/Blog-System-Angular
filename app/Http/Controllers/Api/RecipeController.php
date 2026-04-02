@@ -7,6 +7,8 @@ use App\Models\Category;
 use App\Models\Recipe;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class RecipeController extends Controller
@@ -62,8 +64,12 @@ class RecipeController extends Controller
         $ratings = $recipe->comments()->whereNotNull('rating')->pluck('rating');
         $averageRating = $ratings->isNotEmpty() ? round($ratings->avg(), 1) : null;
 
+        $recipeData = $recipe->toArray();
+        $recipeData['comments'] = $recipeData['top_level_comments'] ?? [];
+        unset($recipeData['top_level_comments']);
+
         return response()->json([
-            'recipe' => $recipe,
+            'recipe' => $recipeData,
             'averageRating' => $averageRating,
             'ratingsCount' => $ratings->count(),
             'favoriteCount' => $recipe->favoritedBy()->count(),
@@ -113,6 +119,7 @@ class RecipeController extends Controller
     public function dashboardIndex(Request $request): JsonResponse
     {
         $recipes = Recipe::with(['category'])
+            ->where('user_id', $request->user()->id)
             ->orderByDesc('updated_at')
             ->get();
 
@@ -121,6 +128,12 @@ class RecipeController extends Controller
 
     public function store(Request $request): JsonResponse
     {
+        $key = 'create-recipe:' . $request->user()->id;
+        if (RateLimiter::tooManyAttempts($key, 10)) {
+            return response()->json(['message' => 'Твърде много опити.'], 429);
+        }
+        RateLimiter::hit($key, 60);
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'excerpt' => 'nullable|string',
@@ -139,7 +152,7 @@ class RecipeController extends Controller
             'steps.*.description' => 'required|string',
             'tags' => 'array',
             'tags.*' => 'string',
-            'hero_image' => 'nullable|image|mimes:jpeg,png,webp,svg|max:5120',
+            'hero_image' => 'nullable|image|mimes:jpeg,png,webp|max:5120',
         ]);
 
         $slug = Str::slug($validated['title']);
@@ -204,6 +217,10 @@ class RecipeController extends Controller
     {
         $recipe = Recipe::where('slug', $slug)->firstOrFail();
 
+        if (! $request->user()->isAdmin() && $recipe->user_id !== $request->user()->id) {
+            return response()->json(['message' => 'Нямаш права.'], 403);
+        }
+
         $validated = $request->validate([
             'title' => 'sometimes|string|max:255',
             'excerpt' => 'nullable|string',
@@ -222,10 +239,15 @@ class RecipeController extends Controller
             'steps.*.description' => 'required|string',
             'tags' => 'array',
             'tags.*' => 'string',
-            'hero_image' => 'nullable|image|mimes:jpeg,png,webp,svg|max:5120',
+            'hero_image' => 'nullable|image|mimes:jpeg,png,webp|max:5120',
         ]);
 
         if ($request->hasFile('hero_image')) {
+            // Delete old image if exists
+            if ($recipe->hero_image) {
+                $oldPath = str_replace('/storage/', '', $recipe->hero_image);
+                Storage::disk('public')->delete($oldPath);
+            }
             $validated['hero_image'] = '/storage/' . $request->file('hero_image')->store('recipes', 'public');
         }
 
@@ -266,9 +288,14 @@ class RecipeController extends Controller
         );
     }
 
-    public function destroy(string $slug): JsonResponse
+    public function destroy(Request $request, string $slug): JsonResponse
     {
         $recipe = Recipe::where('slug', $slug)->firstOrFail();
+
+        if (! $request->user()->isAdmin() && $recipe->user_id !== $request->user()->id) {
+            return response()->json(['message' => 'Нямаш права.'], 403);
+        }
+
         $recipe->delete();
 
         return response()->json(['message' => 'Рецептата е изтрита.']);

@@ -12,10 +12,14 @@ class DashboardController extends Controller
 {
     public function stats(Request $request): JsonResponse
     {
-        $totalRecipes = Recipe::count();
-        $publishedRecipes = Recipe::where('published', true)->count();
-        $totalComments = Comment::count();
-        $totalFavorites = \DB::table('favorites')->count();
+        $user = $request->user();
+
+        $totalRecipes = Recipe::where('user_id', $user->id)->count();
+        $publishedRecipes = Recipe::where('user_id', $user->id)->where('published', true)->count();
+        $totalComments = Comment::whereHas('recipe', fn ($q) => $q->where('user_id', $user->id))->count();
+        $totalFavorites = \DB::table('favorites')
+            ->whereIn('recipe_id', Recipe::where('user_id', $user->id)->pluck('id'))
+            ->count();
 
         return response()->json([
             'totalRecipes' => $totalRecipes,
