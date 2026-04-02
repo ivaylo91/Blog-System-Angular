@@ -3,18 +3,12 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "vite build",
-        "dev": "vite",
-        "gen-cert": "node scripts/generate-cert.js",
-        "dev:https": "node scripts/generate-cert.js && vite"
+        "build": "echo \"Vite removed: build no-op\"",
+        "start": "echo \"Vite removed: use Laravel/PHP server or configure alternative\""
     },
     "devDependencies": {
-        "@tailwindcss/vite": "^4.0.0",
         "axios": "^1.11.0",
         "concurrently": "^9.0.1",
-        "laravel-vite-plugin": "^2.0.0",
-        "tailwindcss": "^4.0.0",
-        "vite": "^7.0.7",
-        "selfsigned": "^1.10.11"
+        "tailwindcss": "^4.0.0"
     }
 }
