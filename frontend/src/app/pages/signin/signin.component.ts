@@ -19,10 +19,20 @@ import { AuthService } from '../../services/auth.service';
 
         <form (submit)="onSubmit($event)">
           <label>Имейл</label>
-          <input type="email" [(ngModel)]="email" name="email" required placeholder="твоят&#64;имейл.бг" />
+          <div class="input-wrap">
+            <input type="email" [(ngModel)]="email" name="email" required placeholder="твоят&#64;имейл.бг" #emailInput="ngModel" />
+            @if (emailInput.valid && email) {
+              <span class="check-icon">✓</span>
+            }
+          </div>
 
           <label>Парола</label>
-          <input type="password" [(ngModel)]="password" name="password" required minlength="8" placeholder="Минимум 8 символа" />
+          <div class="input-wrap">
+            <input type="password" [(ngModel)]="password" name="password" required minlength="8" placeholder="Минимум 8 символа" #passInput="ngModel" />
+            @if (passInput.valid && password) {
+              <span class="check-icon">✓</span>
+            }
+          </div>
 
           <button type="submit" [disabled]="loading" class="submit-btn">
             {{ loading ? 'Влизане...' : 'Вход' }}
@@ -79,7 +89,25 @@ import { AuthService } from '../../services/auth.service';
       font-size: 0.95rem;
       outline: none;
     }
-    input:focus { border-color: #d97706; }
+    .input-wrap {
+      position: relative;
+    }
+    .input-wrap input {
+      width: 100%;
+      box-sizing: border-box;
+      padding-right: 2.5rem;
+    }
+    .check-icon {
+      position: absolute;
+      right: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #059669;
+      font-size: 1.1rem;
+      font-weight: 700;
+      pointer-events: none;
+    }
+    input:focus { border-color: #059669; box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15); }
     .submit-btn {
       margin-top: 1rem;
       padding: 0.75rem;
