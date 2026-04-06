@@ -1,10 +1,9 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { RecipeService } from '../../services/recipe.service';
 import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.component';
 import { Recipe } from '../../models/models';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
 import { SeoService } from '../../services/seo.service';
 
 @Component({
@@ -39,14 +38,15 @@ import { SeoService } from '../../services/seo.service';
         </div>
         <div class="hero-visual">
           @if (featured.length > 0 && featured[0].hero_image) {
-            <div class="hero-image-wrap">
+            <a class="hero-image-wrap" [routerLink]="['/recipes', featured[0].slug]">
               <img [src]="featured[0].hero_image" [alt]="featured[0].title"
                    fetchpriority="high" loading="eager" class="hero-img" />
               <div class="hero-img-badge">
                 <span class="badge-label">Избрана рецепта</span>
                 <span class="badge-title">{{ featured[0].title }}</span>
+                <span class="badge-arrow">Виж рецептата →</span>
               </div>
-            </div>
+            </a>
           } @else if (loading) {
             <div class="hero-skeleton"></div>
           } @else {
@@ -208,11 +208,23 @@ import { SeoService } from '../../services/seo.service';
       overflow: hidden;
       box-shadow: 0 32px 80px rgba(0,0,0,0.18);
       aspect-ratio: 4/3;
+      display: block;
+      text-decoration: none;
+      cursor: pointer;
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+    }
+    .hero-image-wrap:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 40px 100px rgba(0,0,0,0.24);
     }
     .hero-img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    .hero-image-wrap:hover .hero-img {
+      transform: scale(1.04);
     }
     .hero-img-badge {
       position: absolute;
@@ -223,6 +235,13 @@ import { SeoService } from '../../services/seo.service';
       backdrop-filter: blur(10px);
       border-radius: 0.875rem;
       padding: 0.75rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+      transition: background 0.2s;
+    }
+    .hero-image-wrap:hover .hero-img-badge {
+      background: rgba(255,255,255,0.98);
     }
     .badge-label {
       display: block;
@@ -231,7 +250,6 @@ import { SeoService } from '../../services/seo.service';
       text-transform: uppercase;
       letter-spacing: 0.1em;
       color: #78350f;
-      margin-bottom: 0.2rem;
     }
     .badge-title {
       display: block;
@@ -242,6 +260,20 @@ import { SeoService } from '../../services/seo.service';
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+    .badge-arrow {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #78350f;
+      margin-top: 0.1rem;
+      opacity: 0;
+      transform: translateX(-6px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+    .hero-image-wrap:hover .badge-arrow {
+      opacity: 1;
+      transform: translateX(0);
     }
     .hero-skeleton {
       border-radius: 1.5rem;
