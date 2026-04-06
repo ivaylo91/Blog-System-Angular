@@ -308,12 +308,14 @@ import { SeoService } from '../../services/seo.service';
       font-size: 0.82rem;
       font-weight: 600;
       margin-bottom: 1rem;
+      margin-right: 0.5rem;
       transition: color 0.2s;
     }
     .back-link svg { width: 1rem; height: 1rem; }
     .back-link:hover { color: #fff; }
     .hero-badge {
       display: inline-block;
+      margin-left: 0.75rem;
       font-size: 0.68rem;
       font-weight: 700;
       text-transform: uppercase;
