@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, OnDestroy, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
@@ -7,7 +7,7 @@ import { AuthService } from '../../services/auth.service';
   standalone: true,
   imports: [RouterLink, RouterLinkActive],
   template: `
-    <header class="site-header">
+    <header class="site-header" [class.scrolled]="scrolled()">
       <div class="header-inner">
         <a routerLink="/" class="brand">
           <span class="brand-icon">🍳</span>
@@ -39,10 +39,15 @@ import { AuthService } from '../../services/auth.service';
       position: sticky;
       top: 0;
       z-index: 50;
-      background: rgba(255, 255, 255, 0.97);
-      backdrop-filter: blur(12px);
-      border-bottom: 2px solid rgba(0, 0, 0, 0.12);
-      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+      transition: box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+    .site-header.scrolled {
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      border-bottom-color: rgba(0, 0, 0, 0.12);
     }
     .header-inner {
       max-width: 1200px;
@@ -52,43 +57,49 @@ import { AuthService } from '../../services/auth.service';
       display: flex;
       align-items: center;
       justify-content: space-between;
+      transition: height 0.3s ease;
+    }
+    .site-header.scrolled .header-inner {
+      height: 3.25rem;
     }
     .brand {
       display: flex;
       align-items: center;
       gap: 0.5rem;
       text-decoration: none;
-      font-family: 'Georgia', serif;
-      font-size: 1.2rem;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.15rem;
       font-weight: 700;
       color: #1c1917;
+      letter-spacing: -0.01em;
     }
-    .brand-icon { font-size: 1.5rem; }
+    .brand-icon { font-size: 1.4rem; }
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 0.25rem;
+      gap: 0.2rem;
     }
     .nav-links a, .logout-btn {
-      padding: 0.5rem 1rem;
+      padding: 0.45rem 0.9rem;
       border-radius: 9999px;
       text-decoration: none;
       font-size: 0.875rem;
-      font-weight: 600;
-      color: #292524;
+      font-weight: 500;
+      color: #44403c;
       transition: all 0.2s;
       border: none;
       background: none;
       cursor: pointer;
+      letter-spacing: 0.01em;
     }
     .nav-links a:hover, .logout-btn:hover {
-      background: #e8e3dc;
+      background: #f0ede8;
       color: #1c1917;
     }
     .nav-links a.active {
-      background: #fef3c7;
-      color: #78350f;
-      border: 1px solid rgba(120, 53, 15, 0.2);
+      background: #1c1917;
+      color: #fff;
+      font-weight: 600;
     }
     .logout-btn {
       color: #dc2626;
@@ -138,15 +149,29 @@ import { AuthService } from '../../services/auth.service';
         background: white;
         flex-direction: column;
         padding: 1rem;
-        border-bottom: 2px solid rgba(0,0,0,0.12);
-        box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        border-bottom: 1px solid rgba(0,0,0,0.08);
+        box-shadow: 0 12px 32px rgba(0,0,0,0.12);
       }
       .nav-links.open { display: flex; }
+      .site-header.scrolled .header-inner { height: 3.5rem; }
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit, OnDestroy {
   auth = inject(AuthService);
   menuOpen = false;
+  scrolled = signal(false);
+
+  private scrollHandler = () => {
+    this.scrolled.set(window.scrollY > 30);
+  };
+
+  ngOnInit(): void {
+    window.addEventListener('scroll', this.scrollHandler, { passive: true });
+  }
+
+  ngOnDestroy(): void {
+    window.removeEventListener('scroll', this.scrollHandler);
+  }
 }
