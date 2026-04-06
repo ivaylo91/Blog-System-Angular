@@ -106,7 +106,7 @@ import { AuthService } from '../../services/auth.service';
     }
     .copyright, .made-with {
       font-size: 0.75rem;
-      color: #57534e;
+      color: #ffffff;
       margin: 0;
     }
     .footer-dot { color: #3a3330; font-size: 1rem; }
