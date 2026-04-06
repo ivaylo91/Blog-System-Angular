@@ -547,6 +547,7 @@ export class RecipeDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
+      window.scrollTo({ top: 0, behavior: 'instant' });
       this.loadRecipe(params['slug']);
     });
   }
