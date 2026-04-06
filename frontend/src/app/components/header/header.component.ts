@@ -80,7 +80,7 @@ import { AuthService } from '../../services/auth.service';
       text-decoration: none;
       flex-shrink: 0;
     }
-    .brand-icon { font-size: 1.4rem; }
+    .brand-icon { font-size: 1.8rem; }
     .brand-text {
       font-family: 'Georgia', serif;
       font-size: 1.05rem;
