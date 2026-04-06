@@ -7,7 +7,8 @@ import { Recipe } from '../../models/models';
   standalone: true,
   imports: [RouterLink],
   template: `
-    <a [routerLink]="['/recipes', recipe.slug]" class="card" [class.featured]="featured"
+    <a [routerLink]="['/recipes', recipe.slug]" class="card"
+       [class.featured]="featured" [class.compact]="compact"
        [style.animation-delay]="index * 70 + 'ms'">
       <div class="card-image" [style.background]="gradient">
         @if (recipe.hero_image) {
@@ -15,19 +16,25 @@ import { Recipe } from '../../models/models';
                [loading]="priority ? 'eager' : 'lazy'"
                [attr.fetchpriority]="priority ? 'high' : null" />
         }
-        <div class="card-overlay">
-          <span class="overlay-btn">Виж рецептата →</span>
-        </div>
+        @if (!compact) {
+          <div class="card-overlay">
+            <span class="overlay-btn">Виж рецептата →</span>
+          </div>
+        }
       </div>
       <div class="card-body">
         @if (recipe.category) {
           <span class="category">{{ recipe.category.name }}</span>
         }
         <h3 class="title">{{ recipe.title }}</h3>
-        <p class="excerpt">{{ recipe.excerpt }}</p>
+        @if (!compact) {
+          <p class="excerpt">{{ recipe.excerpt }}</p>
+        }
         <div class="meta">
           <span>⏱ {{ recipe.prep_minutes + recipe.cook_minutes }} мин</span>
-          <span>👥 {{ recipe.servings }} порции</span>
+          @if (!compact) {
+            <span>👥 {{ recipe.servings }} порции</span>
+          }
           <span class="difficulty">{{ recipe.difficulty }}</span>
         </div>
       </div>
@@ -152,6 +159,35 @@ import { Recipe } from '../../models/models';
       color: #44403c;
     }
 
+    /* --- Compact (horizontal) variant --- */
+    .card.compact {
+      display: flex;
+      flex-direction: row;
+      border-radius: 1rem;
+    }
+    .card.compact .card-image {
+      aspect-ratio: unset;
+      width: 120px;
+      min-height: 100%;
+      flex-shrink: 0;
+      border-radius: 1rem 0 0 1rem;
+    }
+    .card.compact .card-body {
+      padding: 0.9rem 1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.3rem;
+    }
+    .card.compact .category { margin-bottom: 0; }
+    .card.compact .title { font-size: 0.95rem; margin: 0; }
+    .card.compact .meta {
+      margin-top: 0.5rem;
+      padding-top: 0.5rem;
+      font-size: 0.75rem;
+      gap: 0.75rem;
+    }
+
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(22px); }
       to   { opacity: 1; transform: translateY(0); }
@@ -164,6 +200,7 @@ export class RecipeCardComponent {
   @Input() priority = false;
   @Input() index = 0;
   @Input() featured = false;
+  @Input() compact = false;
 
   get gradient(): string {
     const from = this.recipe.hero_palette_from || '#d6c5a5';

@@ -67,9 +67,32 @@ import { SeoService } from '../../services/seo.service';
         </div>
 
         @if (loading) {
-          <div class="bento-grid">
-            @for (s of skeletons; track s) {
-              <div class="skeleton-card" [class.skeleton-large]="s === 0">
+          <div class="mag-layout">
+            <div class="mag-hero">
+              <div class="skeleton-card">
+                <div class="sk-img sk-img-hero"></div>
+                <div class="sk-body">
+                  <div class="sk-line sk-short"></div>
+                  <div class="sk-line sk-long"></div>
+                  <div class="sk-line sk-medium"></div>
+                </div>
+              </div>
+            </div>
+            <div class="mag-side">
+              @for (s of [0,1,2]; track s) {
+                <div class="skeleton-card skeleton-side">
+                  <div class="sk-img sk-img-side"></div>
+                  <div class="sk-body sk-body-sm">
+                    <div class="sk-line sk-short"></div>
+                    <div class="sk-line sk-long"></div>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+          <div class="mag-bottom-grid">
+            @for (s of [0,1,2,3]; track s) {
+              <div class="skeleton-card">
                 <div class="sk-img"></div>
                 <div class="sk-body">
                   <div class="sk-line sk-short"></div>
@@ -80,22 +103,24 @@ import { SeoService } from '../../services/seo.service';
             }
           </div>
         } @else {
-          <!-- First row: 1 large (col-span 2) + 1 normal -->
-          <div class="bento-grid">
-            @for (recipe of featured.slice(0, 3); track recipe.id; let i = $index) {
-              <div class="bento-cell" [class.bento-large]="i === 0">
-                <app-recipe-card [recipe]="recipe" [priority]="i === 0"
-                                 [index]="i" [featured]="i === 0" />
+          <!-- Magazine top: hero left (2/3) + 3 stacked right (1/3) -->
+          <div class="mag-layout">
+            @if (featured.length > 0) {
+              <div class="mag-hero">
+                <app-recipe-card [recipe]="featured[0]" [priority]="true" [index]="0" [featured]="true" />
               </div>
             }
+            <div class="mag-side">
+              @for (recipe of featured.slice(1, 4); track recipe.id; let i = $index) {
+                <app-recipe-card [recipe]="recipe" [index]="i + 1" [compact]="true" />
+              }
+            </div>
           </div>
-          <!-- Second row: up to 4 equal cards -->
-          @if (featured.length > 3) {
-            <div class="bento-grid bento-grid-equal bento-mt">
-              @for (recipe of featured.slice(3); track recipe.id; let i = $index) {
-                <div class="bento-cell">
-                  <app-recipe-card [recipe]="recipe" [index]="i + 3" />
-                </div>
+          <!-- Bottom row: remaining cards in 4-col grid -->
+          @if (featured.length > 4) {
+            <div class="mag-bottom-grid">
+              @for (recipe of featured.slice(4); track recipe.id; let i = $index) {
+                <app-recipe-card [recipe]="recipe" [index]="i + 4" />
               }
             </div>
           }
@@ -327,19 +352,26 @@ import { SeoService } from '../../services/seo.service';
     }
     .section-link:hover { text-decoration: underline; }
 
-    .bento-grid {
+    /* Magazine top row */
+    .mag-layout {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 1.25rem;
+      align-items: start;
+    }
+    .mag-hero { min-width: 0; }
+    .mag-side {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      min-width: 0;
+    }
+    /* Bottom row */
+    .mag-bottom-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: auto;
       gap: 1.25rem;
-    }
-    .bento-grid-equal {
-      grid-template-columns: repeat(4, 1fr);
-    }
-    .bento-mt { margin-top: 1.25rem; }
-    .bento-cell { min-width: 0; }
-    .bento-large {
-      grid-column: 1 / 3;
+      margin-top: 1.25rem;
     }
 
     /* Skeleton cards */
@@ -349,15 +381,18 @@ import { SeoService } from '../../services/seo.service';
       background: #fff;
       box-shadow: 0 2px 12px rgba(0,0,0,0.05);
     }
-    .skeleton-card.skeleton-large { grid-column: 1 / 3; }
+    .skeleton-side { display: flex; flex-direction: row; border-radius: 1rem; }
     .sk-img {
       aspect-ratio: 4/3;
       background: linear-gradient(90deg, #f0ede8 25%, #e8e3dc 50%, #f0ede8 75%);
       background-size: 200% 100%;
       animation: shimmer 1.5s infinite;
+      flex-shrink: 0;
     }
-    .skeleton-card.skeleton-large .sk-img { aspect-ratio: 16/9; }
-    .sk-body { padding: 1.2rem; display: flex; flex-direction: column; gap: 0.6rem; }
+    .sk-img-hero { aspect-ratio: 3/2; }
+    .sk-img-side { width: 110px; aspect-ratio: unset; min-height: 90px; }
+    .sk-body { padding: 1.2rem; display: flex; flex-direction: column; gap: 0.6rem; flex: 1; }
+    .sk-body-sm { padding: 0.85rem; gap: 0.45rem; }
     .sk-line {
       height: 0.85rem;
       border-radius: 9999px;
@@ -392,23 +427,20 @@ import { SeoService } from '../../services/seo.service';
       box-shadow: 0 8px 28px rgba(28,25,23,0.3);
     }
 
-    @media (max-width: 1100px) {
-      .bento-grid-equal { grid-template-columns: repeat(2, 1fr); }
-    }
     @media (max-width: 900px) {
       .hero-inner { grid-template-columns: 1fr; gap: 2.5rem; }
       h1 { font-size: 2.6rem; }
       .hero-visual { order: -1; }
-      .bento-grid { grid-template-columns: 1fr 1fr; }
-      .bento-large { grid-column: 1 / 3; }
-      .bento-grid-equal { grid-template-columns: repeat(2, 1fr); }
+      .mag-layout { grid-template-columns: 1fr; }
+      .mag-side { flex-direction: row; flex-wrap: wrap; }
+      .mag-side > * { flex: 1 1 280px; }
+      .mag-bottom-grid { grid-template-columns: repeat(2, 1fr); }
     }
     @media (max-width: 640px) {
       h1 { font-size: 2rem; }
-      .bento-grid { grid-template-columns: 1fr; }
-      .bento-grid-equal { grid-template-columns: 1fr; }
-      .bento-large { grid-column: 1; }
-      .skeleton-card.skeleton-large { grid-column: 1; }
+      .mag-layout { grid-template-columns: 1fr; }
+      .mag-side { flex-direction: column; }
+      .mag-bottom-grid { grid-template-columns: 1fr; }
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
