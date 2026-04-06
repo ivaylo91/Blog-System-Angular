@@ -97,7 +97,7 @@ import { AuthService } from '../../services/auth.service';
       color: #1c1917;
     }
     .nav-links a.active {
-      background: #1c1917;
+      background: #4a7c59;
       color: #fff;
       font-weight: 600;
     }
