@@ -26,7 +26,10 @@ import { SeoService } from '../../services/seo.service';
               placeholder="Търси рецепта..."
               class="search-input"
             />
-            <button type="submit" class="search-btn">Търси</button>
+            <button type="submit" class="search-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            Търси
+          </button>
           </form>
           <div class="hero-stats">
             <div class="stat"><strong>100+</strong><span>Рецепти</span></div>
@@ -197,8 +200,11 @@ import { SeoService } from '../../services/seo.service';
       color: #1c1917;
     }
     .search-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
       padding: 0.85rem 1.5rem;
-      background: #1c1917;
+      background: #4a7c59;
       color: white;
       border: none;
       font-weight: 600;
@@ -207,7 +213,8 @@ import { SeoService } from '../../services/seo.service';
       transition: background 0.2s;
       white-space: nowrap;
     }
-    .search-btn:hover { background: #44403c; }
+    .search-btn svg { width: 1rem; height: 1rem; flex-shrink: 0; }
+    .search-btn:hover { background: #3a6347; }
     .hero-stats {
       display: flex;
       align-items: center;
