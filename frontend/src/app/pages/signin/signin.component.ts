@@ -13,9 +13,7 @@ import { SeoService } from '../../services/seo.service';
       <div class="auth-card">
 
         <div class="brand">
-          <div class="brand-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C8 2 4 6 4 10c0 4.5 3.5 7.5 7 9 3.5-1.5 7-4.5 7-9 0-4-4-8-8-8z"/><path d="M12 6v6M9 9h6"/></svg>
-          </div>
+          <span class="brand-icon">🍳</span>
           <span class="brand-name">Кулинарен блог</span>
         </div>
 
@@ -102,17 +100,7 @@ import { SeoService } from '../../services/seo.service';
       gap: 0.6rem;
       margin-bottom: 1.75rem;
     }
-    .brand-icon {
-      width: 2.2rem;
-      height: 2.2rem;
-      background: linear-gradient(135deg, #78350f, #a16207);
-      border-radius: 0.6rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-    }
-    .brand-icon svg { width: 1.1rem; height: 1.1rem; }
+    .brand-icon { font-size: 1.6rem; }
     .brand-name {
       font-size: 0.82rem;
       font-weight: 700;
