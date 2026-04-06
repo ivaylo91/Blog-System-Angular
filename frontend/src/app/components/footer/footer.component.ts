@@ -159,11 +159,14 @@ import { AuthService } from '../../services/auth.service';
     }
 
     @media (max-width: 600px) {
-      .footer-top { flex-direction: column; gap: 2rem; }
+      .footer-inner { padding: 2.5rem 1.25rem 1.5rem; }
+      .footer-top { flex-direction: column; gap: 2rem; padding-bottom: 2rem; }
       .footer-brand { max-width: 100%; }
       .footer-cols { gap: 2rem; }
       .footer-col { flex-direction: row; flex-wrap: wrap; gap: 0.5rem 1.25rem; }
       .col-title { width: 100%; }
+      .footer-bottom { gap: 0.5rem; flex-direction: column; }
+      .footer-sep { display: none; }
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,

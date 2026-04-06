@@ -197,7 +197,7 @@ import { AuthService } from '../../services/auth.service';
     @media (max-width: 768px) {
       .mobile-toggle { display: block; }
       .nav-links {
-        display: none;
+        display: flex;
         position: absolute;
         top: 100%;
         left: 0;
@@ -205,12 +205,22 @@ import { AuthService } from '../../services/auth.service';
         flex-direction: column;
         align-items: stretch;
         background: #fff;
-        padding: 0.75rem 1rem 1rem;
+        padding: 0 1rem;
         border-bottom: 1px solid rgba(0,0,0,0.07);
         box-shadow: 0 16px 40px rgba(0,0,0,0.1);
         gap: 0.25rem;
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        pointer-events: none;
+        transition: max-height 0.3s ease, opacity 0.25s ease, padding 0.3s ease;
       }
-      .nav-links.open { display: flex; }
+      .nav-links.open {
+        max-height: 400px;
+        opacity: 1;
+        pointer-events: auto;
+        padding: 0.75rem 1rem 1rem;
+      }
       .nav-main { flex-direction: column; align-items: stretch; width: 100%; gap: 0.25rem; }
       .nav-auth {
         flex-direction: column;
@@ -225,13 +235,18 @@ import { AuthService } from '../../services/auth.service';
       }
       .nav-links a, .logout-btn {
         border-radius: 0.75rem;
-        padding: 0.6rem 1rem;
+        padding: 0.65rem 1rem;
         width: 100%;
         box-sizing: border-box;
         text-align: left;
+        font-size: 0.925rem;
       }
       .register-btn { text-align: center !important; }
       .site-header.scrolled .header-inner { height: 3.5rem; }
+    }
+    @media (max-width: 400px) {
+      .brand-text { font-size: 0.92rem; }
+      .header-inner { padding: 0 1rem; }
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,

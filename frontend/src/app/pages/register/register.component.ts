@@ -284,6 +284,12 @@ import { SeoService } from '../../services/seo.service';
       transition: border-color 0.2s;
     }
     .alt-link a:hover { border-bottom-color: #78350f; }
+
+    @media (max-width: 480px) {
+      .auth-page { padding: 1.25rem 1rem; align-items: flex-start; padding-top: 2rem; }
+      .auth-card { padding: 2rem 1.5rem; border-radius: 1.25rem; }
+      h1 { font-size: 1.75rem; }
+    }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

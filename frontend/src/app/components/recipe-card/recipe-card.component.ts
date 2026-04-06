@@ -192,6 +192,21 @@ import { Recipe } from '../../models/models';
       from { opacity: 0; transform: translateY(22px); }
       to   { opacity: 1; transform: translateY(0); }
     }
+
+    @media (max-width: 500px) {
+      .card.compact {
+        flex-direction: column;
+        border-radius: 1.25rem;
+      }
+      .card.compact .card-image {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        min-height: unset;
+        border-radius: 1.25rem 1.25rem 0 0;
+      }
+      .card.compact .card-body { padding: 1rem 1.1rem 1.1rem; }
+      .card.compact .title { font-size: 1rem; }
+    }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
