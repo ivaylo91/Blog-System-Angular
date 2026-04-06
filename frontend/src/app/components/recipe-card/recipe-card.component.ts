@@ -10,7 +10,9 @@ import { Recipe } from '../../models/models';
     <a [routerLink]="['/recipes', recipe.slug]" class="card">
       <div class="card-image" [style.background]="gradient">
         @if (recipe.hero_image) {
-          <img [src]="recipe.hero_image" [alt]="recipe.title" loading="lazy" />
+          <img [src]="recipe.hero_image" [alt]="recipe.title"
+               [loading]="priority ? 'eager' : 'lazy'"
+               [attr.fetchpriority]="priority ? 'high' : null" />
         }
       </div>
       <div class="card-body">
@@ -32,16 +34,16 @@ import { Recipe } from '../../models/models';
       display: block;
       border-radius: 1.5rem;
       overflow: hidden;
-      background: rgba(255, 255, 255, 0.85);
-      border: 1px solid rgba(0, 0, 0, 0.06);
-      box-shadow: 0 12px 40px rgba(56, 44, 24, 0.06);
+      background: #ffffff;
+      border: 1px solid rgba(0, 0, 0, 0.14);
+      box-shadow: 0 4px 16px rgba(56, 44, 24, 0.1);
       text-decoration: none;
       color: inherit;
       transition: transform 0.3s, box-shadow 0.3s;
     }
     .card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 20px 60px rgba(56, 44, 24, 0.12);
+      box-shadow: 0 16px 48px rgba(56, 44, 24, 0.18);
     }
     .card-image {
       height: 200px;
@@ -59,11 +61,11 @@ import { Recipe } from '../../models/models';
     .category {
       display: inline-block;
       font-size: 0.7rem;
-      font-weight: 600;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.15em;
-      color: #92400e;
-      background: #fffbeb;
+      color: #78350f;
+      background: #fde68a;
       padding: 0.25rem 0.75rem;
       border-radius: 9999px;
       margin-bottom: 0.5rem;
@@ -76,7 +78,7 @@ import { Recipe } from '../../models/models';
     }
     .excerpt {
       font-size: 0.875rem;
-      color: #57534e;
+      color: #44403c;
       line-height: 1.6;
       margin: 0;
       display: -webkit-box;
@@ -89,7 +91,7 @@ import { Recipe } from '../../models/models';
       gap: 1rem;
       margin-top: 1rem;
       font-size: 0.8rem;
-      color: #78716c;
+      color: #57534e;
     }
     .difficulty {
       margin-left: auto;
@@ -99,6 +101,7 @@ import { Recipe } from '../../models/models';
 })
 export class RecipeCardComponent {
   @Input({ required: true }) recipe!: Recipe;
+  @Input() priority = false;
 
   get gradient(): string {
     const from = this.recipe.hero_palette_from || '#d6c5a5';

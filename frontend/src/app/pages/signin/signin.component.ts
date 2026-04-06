@@ -1,7 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
+import { SeoService } from '../../services/seo.service';
 
 @Component({
   selector: 'app-signin',
@@ -55,10 +56,10 @@ import { AuthService } from '../../services/auth.service';
       max-width: 420px;
       width: 100%;
       padding: 2.5rem;
-      background: rgba(255,255,255,0.9);
+      background: #ffffff;
       border-radius: 2rem;
-      border: 1px solid rgba(0,0,0,0.06);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.06);
+      border: 1px solid rgba(0,0,0,0.14);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.12);
     }
     h1 {
       font-family: 'Georgia', serif;
@@ -66,28 +67,31 @@ import { AuthService } from '../../services/auth.service';
       color: #1c1917;
       margin: 0 0 0.5rem;
     }
-    .subtitle { color: #78716c; font-size: 0.9rem; margin: 0 0 1.5rem; }
+    .subtitle { color: #44403c; font-size: 0.9rem; margin: 0 0 1.5rem; }
     .error-msg {
       background: #fef2f2;
-      color: #dc2626;
+      color: #b91c1c;
+      border: 1px solid #fecaca;
       padding: 0.75rem 1rem;
       border-radius: 0.75rem;
       font-size: 0.875rem;
+      font-weight: 500;
       margin-bottom: 1rem;
     }
     form { display: flex; flex-direction: column; gap: 0.5rem; }
     label {
       font-size: 0.85rem;
-      font-weight: 600;
-      color: #44403c;
+      font-weight: 700;
+      color: #1c1917;
       margin-top: 0.5rem;
     }
     input {
       padding: 0.7rem 1rem;
-      border: 1px solid #e7e5e4;
+      border: 1.5px solid #c9c5c2;
       border-radius: 0.75rem;
       font-size: 0.95rem;
       outline: none;
+      color: #1c1917;
     }
     .input-wrap {
       position: relative;
@@ -111,33 +115,41 @@ import { AuthService } from '../../services/auth.service';
     .submit-btn {
       margin-top: 1rem;
       padding: 0.75rem;
-      background: #92400e;
+      background: #78350f;
       color: white;
       border: none;
       border-radius: 9999px;
-      font-weight: 600;
+      font-weight: 700;
       font-size: 1rem;
       cursor: pointer;
     }
-    .submit-btn:hover { background: #78350f; }
+    .submit-btn:hover { background: #5c2a0b; }
     .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
     .alt-link {
       text-align: center;
       font-size: 0.875rem;
-      color: #78716c;
+      color: #44403c;
       margin-top: 1.25rem;
     }
-    .alt-link a { color: #92400e; font-weight: 600; text-decoration: none; }
+    .alt-link a { color: #78350f; font-weight: 700; text-decoration: none; }
   `],
 })
-export class SigninComponent {
+export class SigninComponent implements OnInit {
   private authService = inject(AuthService);
   private router = inject(Router);
+  private seo = inject(SeoService);
 
   email = '';
   password = '';
   error = '';
   loading = false;
+
+  ngOnInit(): void {
+    this.seo.set({
+      title: 'Вход',
+      description: 'Влез в профила си в кулинарния блог на Иво, за да оставяш коментари, оценки и да запазваш любими рецепти.',
+    });
+  }
 
   onSubmit(e: Event): void {
     e.preventDefault();

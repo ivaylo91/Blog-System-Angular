@@ -16,6 +16,9 @@ return Application::configure(basePath: dirname(__DIR__))
             \Illuminate\Http\Middleware\HandleCors::class,
         ]);
         $middleware->statefulApi();
+        $middleware->web(append: [
+            \App\Http\Middleware\AddCacheHeaders::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

@@ -8,6 +8,7 @@ import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.co
 import { StarRatingComponent } from '../../components/star-rating/star-rating.component';
 import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-modal.component';
 import { Recipe, Comment, FavoriteStatusResponse } from '../../models/models';
+import { SeoService } from '../../services/seo.service';
 
 @Component({
   selector: 'app-recipe-detail',
@@ -169,13 +170,14 @@ import { Recipe, Comment, FavoriteStatusResponse } from '../../models/models';
     }
     .hero-inner { max-width: 700px; margin: 0 auto; }
     .back-link {
-      color: rgba(0,0,0,0.5);
+      color: #44403c;
       text-decoration: none;
       font-size: 0.875rem;
+      font-weight: 600;
       display: inline-block;
       margin-bottom: 1rem;
     }
-    .back-link:hover { color: rgba(0,0,0,0.7); }
+    .back-link:hover { color: #1c1917; }
     h1 {
       font-family: 'Georgia', serif;
       font-size: 2.5rem;
@@ -183,7 +185,7 @@ import { Recipe, Comment, FavoriteStatusResponse } from '../../models/models';
       margin: 0 0 0.75rem;
     }
     .hero-excerpt {
-      color: #57534e;
+      color: #44403c;
       font-size: 1.05rem;
       line-height: 1.7;
     }
@@ -194,14 +196,16 @@ import { Recipe, Comment, FavoriteStatusResponse } from '../../models/models';
       gap: 1.25rem;
       margin-top: 1.5rem;
       font-size: 0.9rem;
-      color: #78716c;
+      color: #44403c;
+      font-weight: 500;
     }
     .hero-category {
-      background: rgba(255,255,255,0.6);
+      background: rgba(255,255,255,0.85);
       padding: 0.25rem 0.75rem;
       border-radius: 9999px;
-      font-weight: 600;
-      color: #92400e;
+      font-weight: 700;
+      color: #78350f;
+      border: 1px solid rgba(120, 53, 15, 0.2);
     }
     .content-grid {
       max-width: 1200px;
@@ -220,22 +224,24 @@ import { Recipe, Comment, FavoriteStatusResponse } from '../../models/models';
     }
     .description-section {
       padding: 1.5rem;
-      background: rgba(255,255,255,0.85);
+      background: #ffffff;
       border-radius: 1.5rem;
-      border: 1px solid rgba(0,0,0,0.06);
+      border: 1px solid rgba(0,0,0,0.14);
       margin-bottom: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     }
     .description-section p {
-      color: #57534e;
+      color: #292524;
       line-height: 1.8;
       margin: 0;
     }
     .ingredients-section, .steps-section {
       padding: 1.5rem;
-      background: rgba(255,255,255,0.85);
+      background: #ffffff;
       border-radius: 1.5rem;
-      border: 1px solid rgba(0,0,0,0.06);
+      border: 1px solid rgba(0,0,0,0.14);
       margin-bottom: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     }
     .ingredients-list {
       list-style: none;
@@ -244,8 +250,8 @@ import { Recipe, Comment, FavoriteStatusResponse } from '../../models/models';
     }
     .ingredients-list li {
       padding: 0.6rem 0;
-      border-bottom: 1px solid #f5f5f4;
-      color: #44403c;
+      border-bottom: 1px solid #e7e5e4;
+      color: #292524;
       font-size: 0.95rem;
     }
     .ingredients-list li:last-child { border-bottom: none; }
@@ -259,8 +265,8 @@ import { Recipe, Comment, FavoriteStatusResponse } from '../../models/models';
       width: 2.5rem;
       height: 2.5rem;
       border-radius: 50%;
-      background: #fffbeb;
-      color: #92400e;
+      background: #78350f;
+      color: #ffffff;
       font-weight: 700;
       display: flex;
       align-items: center;
@@ -273,7 +279,7 @@ import { Recipe, Comment, FavoriteStatusResponse } from '../../models/models';
     }
     .step p {
       margin: 0;
-      color: #57534e;
+      color: #44403c;
       line-height: 1.7;
       font-size: 0.9rem;
     }
@@ -285,10 +291,11 @@ import { Recipe, Comment, FavoriteStatusResponse } from '../../models/models';
     }
     .tag {
       padding: 0.35rem 0.9rem;
-      background: #f5f5f4;
+      background: #e8e3dc;
       border-radius: 9999px;
       font-size: 0.8rem;
-      color: #57534e;
+      color: #292524;
+      font-weight: 500;
     }
     .sidebar { display: flex; flex-direction: column; gap: 1.25rem; }
     .favorite-btn {
@@ -308,10 +315,10 @@ import { Recipe, Comment, FavoriteStatusResponse } from '../../models/models';
     .favorite-btn:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
     .rating-card, .comment-form-card, .comments-card, .login-prompt {
       padding: 1.25rem;
-      background: rgba(255,255,255,0.85);
+      background: #ffffff;
       border-radius: 1.5rem;
-      border: 1px solid rgba(0,0,0,0.06);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+      border: 1px solid rgba(0,0,0,0.14);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
     }
     .rating-card h3, .comment-form-card h3, .comments-card h3 {
       font-family: 'Georgia', serif;
@@ -330,44 +337,45 @@ import { Recipe, Comment, FavoriteStatusResponse } from '../../models/models';
       font-size: 2.5rem;
       color: #1c1917;
     }
-    .avg-suffix { color: #78716c; font-size: 0.9rem; }
-    .rating-info { color: #78716c; font-size: 0.85rem; margin: 0.5rem 0 0; }
+    .avg-suffix { color: #57534e; font-size: 0.9rem; }
+    .rating-info { color: #57534e; font-size: 0.85rem; margin: 0.5rem 0 0; }
     .user-rating {
       margin-top: 1rem;
       padding-top: 1rem;
-      border-top: 1px solid #f5f5f4;
+      border-top: 1px solid #e7e5e4;
     }
     .user-rating p {
       font-size: 0.85rem;
-      color: #57534e;
+      color: #44403c;
       margin: 0 0 0.25rem;
     }
     .comment-textarea {
       width: 100%;
       padding: 0.75rem;
-      border: 1px solid #e7e5e4;
+      border: 1.5px solid #c9c5c2;
       border-radius: 0.75rem;
       font-size: 0.9rem;
       resize: vertical;
       outline: none;
       box-sizing: border-box;
+      color: #1c1917;
     }
-    .comment-textarea:focus { border-color: #d97706; }
+    .comment-textarea:focus { border-color: #92400e; box-shadow: 0 0 0 3px rgba(146,64,14,0.12); }
     .submit-btn {
       margin-top: 0.75rem;
       padding: 0.6rem 1.5rem;
-      background: #92400e;
+      background: #78350f;
       color: white;
       border: none;
       border-radius: 9999px;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       font-size: 0.875rem;
     }
-    .submit-btn:hover { background: #78350f; }
+    .submit-btn:hover { background: #5c2a0b; }
     .comment {
       padding: 1rem 0;
-      border-bottom: 1px solid #f5f5f4;
+      border-bottom: 1px solid #e7e5e4;
     }
     .comment:last-child { border-bottom: none; }
     .comment-header {
@@ -376,10 +384,10 @@ import { Recipe, Comment, FavoriteStatusResponse } from '../../models/models';
       align-items: center;
       font-size: 0.85rem;
     }
-    .comment-date { color: #a8a29e; font-size: 0.8rem; }
+    .comment-date { color: #78716c; font-size: 0.8rem; }
     .comment-rating { margin: 0.25rem 0; }
     .comment-body {
-      color: #44403c;
+      color: #292524;
       font-size: 0.9rem;
       line-height: 1.6;
       margin: 0.5rem 0 0;
@@ -391,13 +399,14 @@ import { Recipe, Comment, FavoriteStatusResponse } from '../../models/models';
       border: none;
       cursor: pointer;
       margin-top: 0.25rem;
+      font-weight: 600;
     }
-    .no-comments { color: #78716c; font-size: 0.9rem; }
+    .no-comments { color: #57534e; font-size: 0.9rem; }
     .login-prompt {
       font-size: 0.9rem;
-      color: #92400e;
+      color: #44403c;
     }
-    .login-prompt a { color: #92400e; font-weight: 600; }
+    .login-prompt a { color: #78350f; font-weight: 700; }
     .related-section {
       max-width: 1200px;
       margin: 0 auto;
@@ -420,6 +429,7 @@ import { Recipe, Comment, FavoriteStatusResponse } from '../../models/models';
 export class RecipeDetailComponent implements OnInit {
   private recipeService = inject(RecipeService);
   private route = inject(ActivatedRoute);
+  private seo = inject(SeoService);
   auth = inject(AuthService);
 
   Math = Math;
@@ -453,6 +463,12 @@ export class RecipeDetailComponent implements OnInit {
         this.averageRating = res.averageRating;
         this.ratingsCount = res.ratingsCount;
         this.comments = res.recipe.comments || [];
+
+        this.seo.set({
+          title: res.recipe.title,
+          description: res.recipe.excerpt || res.recipe.description?.slice(0, 155) || '',
+          image: res.recipe.hero_image || undefined,
+        });
 
         // Find user's existing rating
         if (this.auth.isAuthenticated() && this.auth.user()) {

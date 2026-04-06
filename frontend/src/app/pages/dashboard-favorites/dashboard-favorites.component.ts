@@ -36,26 +36,27 @@ import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.co
       padding: 2rem 1.5rem;
     }
     h1 { font-family: 'Georgia', serif; font-size: 1.75rem; color: #1c1917; margin: 0 0 0.25rem; }
-    .subtitle { color: #78716c; margin: 0 0 1.5rem; }
-    .loading { color: #78716c; }
+    .subtitle { color: #44403c; margin: 0 0 1.5rem; }
+    .loading { color: #57534e; font-weight: 500; }
     .empty-state {
       text-align: center;
       padding: 3rem;
-      background: rgba(255,255,255,0.9);
+      background: #ffffff;
       border-radius: 1.5rem;
-      border: 1px solid rgba(0,0,0,0.06);
+      border: 1px solid rgba(0,0,0,0.14);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
     }
-    .empty-state p { color: #78716c; margin: 0 0 1rem; }
+    .empty-state p { color: #44403c; margin: 0 0 1rem; }
     .btn-browse {
       display: inline-block;
       padding: 0.6rem 1.25rem;
-      background: #1c1917;
+      background: #78350f;
       color: #fff;
       border-radius: 0.75rem;
       text-decoration: none;
-      font-weight: 600;
+      font-weight: 700;
     }
-    .btn-browse:hover { background: #44403c; }
+    .btn-browse:hover { background: #5c2a0b; }
     .favorites-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));

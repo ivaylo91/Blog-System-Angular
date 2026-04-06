@@ -28,8 +28,8 @@ import { AuthService } from '../../services/auth.service';
   styles: [`
     .site-footer {
       margin-top: auto;
-      background: #1c1917;
-      color: #a8a29e;
+      background: #0f0e0d;
+      color: #c4bdb6;
       padding: 3rem 1.5rem 2rem;
     }
     .footer-inner {
@@ -56,15 +56,15 @@ import { AuthService } from '../../services/auth.service';
       margin-bottom: 1.5rem;
     }
     .footer-links a {
-      color: #a8a29e;
+      color: #c4bdb6;
       text-decoration: none;
       font-size: 0.875rem;
       transition: color 0.2s;
     }
-    .footer-links a:hover { color: #fafaf9; }
+    .footer-links a:hover { color: #ffffff; }
     .copyright {
       font-size: 0.75rem;
-      color: #78716c;
+      color: #a8a29e;
     }
   `],
 })

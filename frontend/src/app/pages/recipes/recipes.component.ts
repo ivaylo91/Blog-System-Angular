@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RecipeService } from '../../services/recipe.service';
 import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.component';
 import { Recipe, Category } from '../../models/models';
+import { SeoService } from '../../services/seo.service';
 
 @Component({
   selector: 'app-recipes',
@@ -46,8 +47,8 @@ import { Recipe, Category } from '../../models/models';
         </form>
 
         <div class="recipe-grid">
-          @for (recipe of recipes; track recipe.id) {
-            <app-recipe-card [recipe]="recipe" />
+          @for (recipe of recipes; track recipe.id; let i = $index) {
+            <app-recipe-card [recipe]="recipe" [priority]="i === 0" />
           } @empty {
             <p class="no-results">Няма намерени рецепти.</p>
           }
@@ -81,7 +82,7 @@ import { Recipe, Category } from '../../models/models';
       margin: 0 0 0.5rem;
     }
     .page-header p {
-      color: #57534e;
+      color: #44403c;
       font-size: 1rem;
     }
     .filters {
@@ -90,38 +91,40 @@ import { Recipe, Category } from '../../models/models';
       gap: 0.75rem;
       margin-bottom: 2rem;
       padding: 1.25rem;
-      background: rgba(255, 255, 255, 0.85);
+      background: #ffffff;
       border-radius: 1.5rem;
-      border: 1px solid rgba(0,0,0,0.06);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+      border: 1px solid rgba(0,0,0,0.14);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
     }
     .filter-input {
       flex: 1 1 250px;
       padding: 0.65rem 1rem;
-      border: 1px solid #e7e5e4;
+      border: 1.5px solid #c9c5c2;
       border-radius: 0.75rem;
       font-size: 0.9rem;
       outline: none;
+      color: #1c1917;
     }
-    .filter-input:focus { border-color: #d97706; }
+    .filter-input:focus { border-color: #92400e; box-shadow: 0 0 0 3px rgba(146,64,14,0.12); }
     .filter-select {
       padding: 0.65rem 1rem;
-      border: 1px solid #e7e5e4;
+      border: 1.5px solid #c9c5c2;
       border-radius: 0.75rem;
       font-size: 0.875rem;
       background: white;
       outline: none;
+      color: #1c1917;
     }
     .filter-btn {
       padding: 0.65rem 1.5rem;
-      background: #92400e;
+      background: #78350f;
       color: white;
       border: none;
       border-radius: 0.75rem;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
     }
-    .filter-btn:hover { background: #78350f; }
+    .filter-btn:hover { background: #5c2a0b; }
     .recipe-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -130,7 +133,7 @@ import { Recipe, Category } from '../../models/models';
     .no-results {
       grid-column: 1 / -1;
       text-align: center;
-      color: #78716c;
+      color: #57534e;
       padding: 3rem;
     }
     .pagination {
@@ -143,18 +146,19 @@ import { Recipe, Category } from '../../models/models';
       width: 2.5rem;
       height: 2.5rem;
       border-radius: 0.75rem;
-      border: 1px solid #e7e5e4;
+      border: 1.5px solid #c9c5c2;
       background: white;
       cursor: pointer;
-      font-weight: 500;
+      font-weight: 600;
       transition: all 0.2s;
+      color: #1c1917;
     }
     .page-btn.active {
-      background: #92400e;
+      background: #78350f;
       color: white;
-      border-color: #92400e;
+      border-color: #78350f;
     }
-    .page-btn:hover:not(.active) { background: #f5f5f4; }
+    .page-btn:hover:not(.active) { background: #e8e3dc; }
     @media (max-width: 640px) {
       .recipe-grid { grid-template-columns: 1fr; }
     }
@@ -164,6 +168,7 @@ export class RecipesComponent implements OnInit {
   private recipeService = inject(RecipeService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private seo = inject(SeoService);
 
   recipes: Recipe[] = [];
   categories: Category[] = [];
@@ -179,6 +184,10 @@ export class RecipesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.seo.set({
+      title: 'Рецепти',
+      description: 'Разгледай всички традиционни български рецепти. Филтрирай по категория, трудност и време за приготвяне.',
+    });
     this.recipeService.getCategories().subscribe(cats => this.categories = cats);
     this.route.queryParams.subscribe(params => {
       this.q = params['q'] || '';

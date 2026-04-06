@@ -5,6 +5,7 @@ import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.co
 import { Recipe } from '../../models/models';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { SeoService } from '../../services/seo.service';
 
 @Component({
   selector: 'app-home',
@@ -32,8 +33,8 @@ import { Router } from '@angular/router';
       <div class="section-inner">
         <h2 class="section-title">Избрани рецепти</h2>
         <div class="recipe-grid">
-          @for (recipe of featured; track recipe.id) {
-            <app-recipe-card [recipe]="recipe" />
+          @for (recipe of featured; track recipe.id; let i = $index) {
+            <app-recipe-card [recipe]="recipe" [priority]="i === 0" />
           }
         </div>
         <div class="cta">
@@ -44,7 +45,8 @@ import { Router } from '@angular/router';
   `,
   styles: [`
     .hero {
-      background: linear-gradient(135deg, #fef3c7, #fffbeb, #fff7ed);
+      background: linear-gradient(135deg, #f59e0b22, #fef3c7, #fff7ed);
+      border-bottom: 2px solid rgba(146, 64, 14, 0.15);
       padding: 5rem 1.5rem;
       text-align: center;
     }
@@ -56,9 +58,9 @@ import { Router } from '@angular/router';
       line-height: 1.2;
       margin: 0 0 1rem;
     }
-    .accent { color: #92400e; }
+    .accent { color: #78350f; }
     .hero-subtitle {
-      color: #57534e;
+      color: #44403c;
       font-size: 1.1rem;
       line-height: 1.7;
       margin: 0 0 2rem;
@@ -69,29 +71,32 @@ import { Router } from '@angular/router';
       margin: 0 auto;
       border-radius: 9999px;
       overflow: hidden;
-      box-shadow: 0 8px 32px rgba(146, 64, 14, 0.1);
+      box-shadow: 0 8px 32px rgba(146, 64, 14, 0.2);
+      border: 2px solid rgba(146, 64, 14, 0.2);
     }
     .search-input {
       flex: 1;
       padding: 0.9rem 1.5rem;
-      border: 1px solid #e7e5e4;
-      border-right: none;
+      border: none;
+      border-right: 2px solid rgba(146, 64, 14, 0.2);
       border-radius: 9999px 0 0 9999px;
       font-size: 1rem;
       outline: none;
+      background: #ffffff;
+      color: #1c1917;
     }
-    .search-input:focus { border-color: #d97706; }
+    .search-input:focus { border-color: #92400e; }
     .search-btn {
       padding: 0.9rem 1.75rem;
-      background: #92400e;
+      background: #78350f;
       color: white;
       border: none;
       border-radius: 0 9999px 9999px 0;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       transition: background 0.2s;
     }
-    .search-btn:hover { background: #78350f; }
+    .search-btn:hover { background: #5c2a0b; }
     .featured { padding: 4rem 1.5rem; }
     .section-inner { max-width: 1200px; margin: 0 auto; }
     .section-title {
@@ -113,18 +118,18 @@ import { Router } from '@angular/router';
     .cta-btn {
       display: inline-block;
       padding: 0.75rem 2rem;
-      background: #fffbeb;
-      color: #92400e;
-      border: 1px solid rgba(146, 64, 14, 0.15);
+      background: #78350f;
+      color: #ffffff;
+      border: 1px solid #5c2a0b;
       border-radius: 9999px;
-      font-weight: 600;
+      font-weight: 700;
       text-decoration: none;
       transition: all 0.2s;
-      box-shadow: 0 4px 16px rgba(146, 64, 14, 0.08);
+      box-shadow: 0 4px 16px rgba(120, 53, 15, 0.3);
     }
     .cta-btn:hover {
-      background: #fef3c7;
-      box-shadow: 0 8px 24px rgba(146, 64, 14, 0.12);
+      background: #5c2a0b;
+      box-shadow: 0 8px 24px rgba(120, 53, 15, 0.4);
     }
     @media (max-width: 640px) {
       h1 { font-size: 2rem; }
@@ -135,11 +140,16 @@ import { Router } from '@angular/router';
 export class HomeComponent implements OnInit {
   private recipeService = inject(RecipeService);
   private router = inject(Router);
+  private seo = inject(SeoService);
 
   featured: Recipe[] = [];
   searchQuery = '';
 
   ngOnInit(): void {
+    this.seo.set({
+      title: 'Начало',
+      description: 'Традиционни български рецепти, споделени с любов. Открий лесни и вкусни ястия за всеки повод в кулинарния блог на Иво.',
+    });
     this.recipeService.getFeaturedRecipes().subscribe({
       next: (recipes) => this.featured = recipes,
       error: (err) => console.error('Failed to load featured recipes:', err),

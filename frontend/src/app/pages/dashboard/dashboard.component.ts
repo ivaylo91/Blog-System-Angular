@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { RecipeService } from '../../services/recipe.service';
 import { DashboardStats } from '../../models/models';
+import { SeoService } from '../../services/seo.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -50,7 +51,7 @@ import { DashboardStats } from '../../models/models';
       color: #1c1917;
       margin: 0 0 0.25rem;
     }
-    .subtitle { color: #78716c; margin: 0 0 2rem; }
+    .subtitle { color: #44403c; margin: 0 0 2rem; }
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -59,22 +60,23 @@ import { DashboardStats } from '../../models/models';
     }
     .stat-card {
       padding: 1.5rem;
-      background: rgba(255,255,255,0.9);
+      background: #ffffff;
       border-radius: 1.5rem;
-      border: 1px solid rgba(0,0,0,0.06);
+      border: 1px solid rgba(0,0,0,0.14);
       text-align: center;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
     }
     .stat-number {
       display: block;
       font-family: 'Georgia', serif;
       font-size: 2.5rem;
-      color: #1c1917;
+      color: #78350f;
     }
     .stat-label {
       display: block;
       font-size: 0.85rem;
-      color: #78716c;
+      color: #44403c;
+      font-weight: 600;
       margin-top: 0.25rem;
     }
     .quick-links {
@@ -84,26 +86,32 @@ import { DashboardStats } from '../../models/models';
     }
     .quick-link {
       padding: 1rem 1.5rem;
-      background: rgba(255,255,255,0.9);
+      background: #ffffff;
       border-radius: 1rem;
-      border: 1px solid rgba(0,0,0,0.06);
+      border: 1px solid rgba(0,0,0,0.14);
       text-decoration: none;
       color: #1c1917;
-      font-weight: 600;
+      font-weight: 700;
       transition: all 0.2s;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
     }
     .quick-link:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.14);
+      background: #f5f0e8;
     }
   `],
 })
 export class DashboardComponent implements OnInit {
   private recipeService = inject(RecipeService);
+  private seo = inject(SeoService);
   stats: DashboardStats | null = null;
 
   ngOnInit(): void {
+    this.seo.set({
+      title: 'Табло',
+      description: 'Управлявай рецептите, коментарите и любимите си в таблото на кулинарния блог.',
+    });
     this.recipeService.getDashboardStats().subscribe(s => this.stats = s);
   }
 }

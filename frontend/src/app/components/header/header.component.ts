@@ -39,10 +39,10 @@ import { AuthService } from '../../services/auth.service';
       position: sticky;
       top: 0;
       z-index: 50;
-      background: rgba(255, 255, 255, 0.92);
+      background: rgba(255, 255, 255, 0.97);
       backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+      border-bottom: 2px solid rgba(0, 0, 0, 0.12);
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
     }
     .header-inner {
       max-width: 1200px;
@@ -74,20 +74,21 @@ import { AuthService } from '../../services/auth.service';
       border-radius: 9999px;
       text-decoration: none;
       font-size: 0.875rem;
-      font-weight: 500;
-      color: #57534e;
+      font-weight: 600;
+      color: #292524;
       transition: all 0.2s;
       border: none;
       background: none;
       cursor: pointer;
     }
     .nav-links a:hover, .logout-btn:hover {
-      background: #f5f5f4;
+      background: #e8e3dc;
       color: #1c1917;
     }
     .nav-links a.active {
-      background: #fffbeb;
-      color: #92400e;
+      background: #fef3c7;
+      color: #78350f;
+      border: 1px solid rgba(120, 53, 15, 0.2);
     }
     .logout-btn {
       color: #dc2626;
@@ -137,8 +138,8 @@ import { AuthService } from '../../services/auth.service';
         background: white;
         flex-direction: column;
         padding: 1rem;
-        border-bottom: 1px solid rgba(0,0,0,0.06);
-        box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        border-bottom: 2px solid rgba(0,0,0,0.12);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.15);
       }
       .nav-links.open { display: flex; }
     }

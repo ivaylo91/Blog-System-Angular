@@ -85,11 +85,11 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
     }
     .btn-danger:hover { background: #b91c1c; }
     .table-wrap {
-      background: rgba(255,255,255,0.9);
+      background: #ffffff;
       border-radius: 1.5rem;
-      border: 1px solid rgba(0,0,0,0.06);
+      border: 1px solid rgba(0,0,0,0.14);
       overflow-x: auto;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
     }
     table { width: 100%; border-collapse: collapse; }
     th {
@@ -98,34 +98,38 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
       font-size: 0.8rem;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      color: #78716c;
-      border-bottom: 1px solid rgba(0,0,0,0.06);
+      color: #44403c;
+      font-weight: 700;
+      border-bottom: 2px solid rgba(0,0,0,0.1);
+      background: #f5f0e8;
     }
     td {
       padding: 0.75rem 1rem;
-      border-bottom: 1px solid rgba(0,0,0,0.04);
+      border-bottom: 1px solid rgba(0,0,0,0.08);
       font-size: 0.95rem;
+      color: #1c1917;
     }
-    .author { font-weight: 600; white-space: nowrap; }
+    .author { font-weight: 700; white-space: nowrap; }
     .content-cell {
       max-width: 300px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      color: #44403c;
     }
-    .date { white-space: nowrap; color: #78716c; font-size: 0.85rem; }
+    .date { white-space: nowrap; color: #57534e; font-size: 0.85rem; font-weight: 500; }
     .btn-small {
       padding: 0.35rem 0.75rem;
       border-radius: 0.5rem;
       font-size: 0.8rem;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
-      border: 1px solid #fecaca;
+      border: 1.5px solid #fca5a5;
       background: #fff;
-      color: #dc2626;
+      color: #b91c1c;
     }
-    .btn-small:hover { background: #fef2f2; }
-    .empty { text-align: center; color: #78716c; padding: 2rem; }
+    .btn-small:hover { background: #fef2f2; color: #991b1b; }
+    .empty { text-align: center; color: #57534e; padding: 2rem; font-weight: 500; }
     input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; }
   `],
 })
