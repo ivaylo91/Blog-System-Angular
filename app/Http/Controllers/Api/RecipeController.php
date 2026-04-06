@@ -81,7 +81,7 @@ class RecipeController extends Controller
         $recipes = Recipe::with(['category'])
             ->where('published', true)
             ->orderByDesc('published_at')
-            ->limit(3)
+            ->limit(7)
             ->get();
 
         return response()->json($recipes);

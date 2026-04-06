@@ -80,14 +80,25 @@ import { SeoService } from '../../services/seo.service';
             }
           </div>
         } @else {
+          <!-- First row: 1 large (col-span 2) + 1 normal -->
           <div class="bento-grid">
-            @for (recipe of featured; track recipe.id; let i = $index) {
+            @for (recipe of featured.slice(0, 3); track recipe.id; let i = $index) {
               <div class="bento-cell" [class.bento-large]="i === 0">
                 <app-recipe-card [recipe]="recipe" [priority]="i === 0"
                                  [index]="i" [featured]="i === 0" />
               </div>
             }
           </div>
+          <!-- Second row: up to 4 equal cards -->
+          @if (featured.length > 3) {
+            <div class="bento-grid bento-grid-equal bento-mt">
+              @for (recipe of featured.slice(3); track recipe.id; let i = $index) {
+                <div class="bento-cell">
+                  <app-recipe-card [recipe]="recipe" [index]="i + 3" />
+                </div>
+              }
+            </div>
+          }
         }
 
         <div class="cta">
@@ -322,6 +333,10 @@ import { SeoService } from '../../services/seo.service';
       grid-template-rows: auto;
       gap: 1.25rem;
     }
+    .bento-grid-equal {
+      grid-template-columns: repeat(4, 1fr);
+    }
+    .bento-mt { margin-top: 1.25rem; }
     .bento-cell { min-width: 0; }
     .bento-large {
       grid-column: 1 / 3;
@@ -377,16 +392,21 @@ import { SeoService } from '../../services/seo.service';
       box-shadow: 0 8px 28px rgba(28,25,23,0.3);
     }
 
+    @media (max-width: 1100px) {
+      .bento-grid-equal { grid-template-columns: repeat(2, 1fr); }
+    }
     @media (max-width: 900px) {
       .hero-inner { grid-template-columns: 1fr; gap: 2.5rem; }
       h1 { font-size: 2.6rem; }
       .hero-visual { order: -1; }
       .bento-grid { grid-template-columns: 1fr 1fr; }
       .bento-large { grid-column: 1 / 3; }
+      .bento-grid-equal { grid-template-columns: repeat(2, 1fr); }
     }
     @media (max-width: 640px) {
       h1 { font-size: 2rem; }
       .bento-grid { grid-template-columns: 1fr; }
+      .bento-grid-equal { grid-template-columns: 1fr; }
       .bento-large { grid-column: 1; }
       .skeleton-card.skeleton-large { grid-column: 1; }
     }
@@ -402,7 +422,7 @@ export class HomeComponent implements OnInit {
   featured: Recipe[] = [];
   searchQuery = '';
   loading = true;
-  skeletons = [0, 1, 2];
+  skeletons = [0, 1, 2, 3, 4, 5, 6];
 
   ngOnInit(): void {
     this.seo.set({
