@@ -130,7 +130,10 @@ import { SeoService } from '../../services/seo.service';
         }
 
         <div class="cta">
-          <a routerLink="/recipes" class="cta-btn">Разгледай всички рецепти</a>
+          <a routerLink="/recipes" class="cta-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h7"/></svg>
+            Разгледай всички рецепти
+          </a>
         </div>
       </div>
     </section>
@@ -417,9 +420,11 @@ import { SeoService } from '../../services/seo.service';
 
     .cta { text-align: center; margin-top: 3rem; }
     .cta-btn {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
       padding: 0.85rem 2.25rem;
-      background: #1c1917;
+      background: #4a7c59;
       color: #ffffff;
       border-radius: 9999px;
       font-weight: 600;
@@ -427,11 +432,12 @@ import { SeoService } from '../../services/seo.service';
       text-decoration: none;
       letter-spacing: 0.01em;
       transition: background 0.2s, box-shadow 0.2s;
-      box-shadow: 0 4px 20px rgba(28,25,23,0.2);
+      box-shadow: 0 4px 20px rgba(74,124,89,0.3);
     }
+    .cta-btn svg { width: 1.1rem; height: 1.1rem; flex-shrink: 0; }
     .cta-btn:hover {
-      background: #44403c;
-      box-shadow: 0 8px 28px rgba(28,25,23,0.3);
+      background: #3a6347;
+      box-shadow: 0 8px 28px rgba(74,124,89,0.4);
     }
 
     @media (max-width: 900px) {
