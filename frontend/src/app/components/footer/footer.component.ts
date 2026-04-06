@@ -109,7 +109,7 @@ import { AuthService } from '../../services/auth.service';
       color: #ffffff;
       margin: 0;
     }
-    .footer-dot { color: #3a3330; font-size: 1rem; }
+    .footer-dot { color: #ffffff; font-size: 1rem; }
     @media (max-width: 600px) {
       .footer-top { flex-direction: column; gap: 2rem; }
       .footer-links { flex-direction: row; flex-wrap: wrap; gap: 0.75rem 1.5rem; }
