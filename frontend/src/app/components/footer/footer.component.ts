@@ -39,7 +39,7 @@ import { AuthService } from '../../services/auth.service';
   styles: [`
     .site-footer {
       margin-top: auto;
-      background: #18120e;
+      background: #1a2e22;
       color: #a8a29e;
       padding: 3.5rem 1.5rem 2rem;
     }
