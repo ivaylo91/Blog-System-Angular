@@ -53,7 +53,7 @@ import { AuthService } from '../../services/auth.service';
       align-items: flex-start;
       gap: 3rem;
       padding-bottom: 2.5rem;
-      border-bottom: 1px solid rgba(255,255,255,0.07);
+      border-bottom: 1px solid rgba(255,255,255,1);
       margin-bottom: 1.75rem;
     }
     .footer-brand {
