@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { SeoService } from '../../services/seo.service';
@@ -120,10 +120,12 @@ import { SeoService } from '../../services/seo.service';
     .submit-btn:hover { background: #5c2a0b; }
     .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
   `],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProfileComponent implements OnInit {
   auth = inject(AuthService);
   private seo = inject(SeoService);
+  private cdr = inject(ChangeDetectorRef);
 
   name = '';
   imageFile: File | null = null;
@@ -146,6 +148,7 @@ export class ProfileComponent implements OnInit {
     if (file) {
       this.imageFile = file;
       this.previewUrl = URL.createObjectURL(file);
+      this.cdr.markForCheck();
     }
   }
 
@@ -165,10 +168,12 @@ export class ProfileComponent implements OnInit {
       next: () => {
         this.loading = false;
         this.success = 'Профилът е обновен успешно.';
+        this.cdr.markForCheck();
       },
       error: (err) => {
         this.loading = false;
         this.error = err.error?.message || 'Грешка при обновяване.';
+        this.cdr.markForCheck();
       },
     });
   }

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { RecipeService } from '../../services/recipe.service';
 import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.component';
@@ -136,11 +136,13 @@ import { SeoService } from '../../services/seo.service';
       .recipe-grid { grid-template-columns: 1fr; }
     }
   `],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent implements OnInit {
   private recipeService = inject(RecipeService);
   private router = inject(Router);
   private seo = inject(SeoService);
+  private cdr = inject(ChangeDetectorRef);
 
   featured: Recipe[] = [];
   searchQuery = '';
@@ -151,7 +153,7 @@ export class HomeComponent implements OnInit {
       description: 'Традиционни български рецепти, споделени с любов. Открий лесни и вкусни ястия за всеки повод в кулинарния блог на Иво.',
     });
     this.recipeService.getFeaturedRecipes().subscribe({
-      next: (recipes) => this.featured = recipes,
+      next: (recipes) => { this.featured = recipes; this.cdr.markForCheck(); },
       error: (err) => console.error('Failed to load featured recipes:', err),
     });
   }

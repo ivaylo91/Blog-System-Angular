@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Recipe } from '../../models/models';
 
@@ -98,6 +98,7 @@ import { Recipe } from '../../models/models';
       font-weight: 600;
     }
   `],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RecipeCardComponent {
   @Input({ required: true }) recipe!: Recipe;

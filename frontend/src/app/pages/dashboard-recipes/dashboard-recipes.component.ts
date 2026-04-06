@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { RecipeService } from '../../services/recipe.service';
 import { Recipe } from '../../models/models';
@@ -151,6 +151,7 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
     .btn-danger:hover { background: #fef2f2; color: #991b1b; }
     .empty { text-align: center; color: #57534e; padding: 2rem; font-weight: 500; }
   `],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardRecipesComponent implements OnInit {
   private recipeService = inject(RecipeService);

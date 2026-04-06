@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -425,11 +425,13 @@ import { SeoService } from '../../services/seo.service';
       .related-grid { grid-template-columns: 1fr; }
     }
   `],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RecipeDetailComponent implements OnInit {
   private recipeService = inject(RecipeService);
   private route = inject(ActivatedRoute);
   private seo = inject(SeoService);
+  private cdr = inject(ChangeDetectorRef);
   auth = inject(AuthService);
 
   Math = Math;
@@ -481,23 +483,24 @@ export class RecipeDetailComponent implements OnInit {
             this.commentBody = userComment.body;
           }
         }
+        this.cdr.markForCheck();
       },
       error: (err) => console.error('Failed to load recipe:', err),
     });
 
     this.recipeService.getRelatedRecipes(slug).subscribe({
-      next: (r) => this.relatedRecipes = r,
+      next: (r) => { this.relatedRecipes = r; this.cdr.markForCheck(); },
       error: (err) => console.error('Failed to load related recipes:', err),
     });
     this.recipeService.getFavoriteStatus(slug).subscribe({
-      next: (s) => this.favoriteStatus = s,
+      next: (s) => { this.favoriteStatus = s; this.cdr.markForCheck(); },
       error: (err) => console.error('Failed to load favorite status:', err),
     });
   }
 
   toggleFavorite(): void {
     if (!this.recipe) return;
-    this.recipeService.toggleFavorite(this.recipe.slug).subscribe(s => this.favoriteStatus = s);
+    this.recipeService.toggleFavorite(this.recipe.slug).subscribe(s => { this.favoriteStatus = s; this.cdr.markForCheck(); });
   }
 
   onRate(rating: number): void {
@@ -506,6 +509,7 @@ export class RecipeDetailComponent implements OnInit {
       this.userRating = res.rating;
       this.averageRating = res.averageRating;
       this.ratingsCount = res.ratingsCount;
+      this.cdr.markForCheck();
     });
   }
 
@@ -520,6 +524,7 @@ export class RecipeDetailComponent implements OnInit {
         this.comments.unshift(comment);
       }
       this.commentBody = '';
+      this.cdr.markForCheck();
     });
   }
 
@@ -533,6 +538,7 @@ export class RecipeDetailComponent implements OnInit {
   deleteComment(id: number): void {
     this.recipeService.deleteComment(id).subscribe(() => {
       this.comments = this.comments.filter(c => c.id !== id);
+      this.cdr.markForCheck();
     });
   }
 }

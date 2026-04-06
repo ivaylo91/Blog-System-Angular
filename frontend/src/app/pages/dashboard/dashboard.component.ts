@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { RecipeService } from '../../services/recipe.service';
 import { DashboardStats } from '../../models/models';
@@ -101,10 +101,12 @@ import { SeoService } from '../../services/seo.service';
       background: #f5f0e8;
     }
   `],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardComponent implements OnInit {
   private recipeService = inject(RecipeService);
   private seo = inject(SeoService);
+  private cdr = inject(ChangeDetectorRef);
   stats: DashboardStats | null = null;
 
   ngOnInit(): void {
@@ -112,6 +114,6 @@ export class DashboardComponent implements OnInit {
       title: 'Табло',
       description: 'Управлявай рецептите, коментарите и любимите си в таблото на кулинарния блог.',
     });
-    this.recipeService.getDashboardStats().subscribe(s => this.stats = s);
+    this.recipeService.getDashboardStats().subscribe(s => { this.stats = s; this.cdr.markForCheck(); });
   }
 }

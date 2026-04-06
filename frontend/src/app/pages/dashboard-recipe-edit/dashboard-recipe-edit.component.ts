@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { RecipeService } from '../../services/recipe.service';
@@ -231,9 +231,11 @@ interface StepInput { description: string; }
       .form-row { flex-direction: column; gap: 0; }
     }
   `],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardRecipeEditComponent implements OnInit {
   private recipeService = inject(RecipeService);
+  private cdr = inject(ChangeDetectorRef);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 
@@ -278,6 +280,7 @@ export class DashboardRecipeEditComponent implements OnInit {
           this.steps = recipe.steps?.map(s => ({ description: s.description })) || [];
           if (this.ingredients.length === 0) this.ingredients = [{ name: '', quantity: '' }];
           if (this.steps.length === 0) this.steps = [{ description: '' }];
+          this.cdr.markForCheck();
         }
       });
     }

@@ -1,5 +1,5 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { RecipeService } from '../../services/recipe.service';
 import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.component';
@@ -9,7 +9,7 @@ import { SeoService } from '../../services/seo.service';
 @Component({
   selector: 'app-recipes',
   standalone: true,
-  imports: [RouterLink, RecipeCardComponent, FormsModule],
+  imports: [RecipeCardComponent, FormsModule],
   template: `
     <div class="page">
       <div class="page-inner">
@@ -163,12 +163,14 @@ import { SeoService } from '../../services/seo.service';
       .recipe-grid { grid-template-columns: 1fr; }
     }
   `],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RecipesComponent implements OnInit {
   private recipeService = inject(RecipeService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private seo = inject(SeoService);
+  private cdr = inject(ChangeDetectorRef);
 
   recipes: Recipe[] = [];
   categories: Category[] = [];
@@ -188,7 +190,7 @@ export class RecipesComponent implements OnInit {
       title: 'Рецепти',
       description: 'Разгледай всички традиционни български рецепти. Филтрирай по категория, трудност и време за приготвяне.',
     });
-    this.recipeService.getCategories().subscribe(cats => this.categories = cats);
+    this.recipeService.getCategories().subscribe(cats => { this.categories = cats; this.cdr.markForCheck(); });
     this.route.queryParams.subscribe(params => {
       this.q = params['q'] || '';
       this.category = params['category'] || '';
@@ -211,6 +213,7 @@ export class RecipesComponent implements OnInit {
       this.recipes = res.data;
       this.currentPage = res.current_page;
       this.lastPage = res.last_page;
+      this.cdr.markForCheck();
     });
   }
 

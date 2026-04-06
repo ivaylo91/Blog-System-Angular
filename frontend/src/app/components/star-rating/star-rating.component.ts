@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-star-rating',
@@ -32,6 +32,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
     .star:disabled { cursor: default; }
     .star.filled { color: #f59e0b; }
   `],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StarRatingComponent {
   @Input() value = 0;

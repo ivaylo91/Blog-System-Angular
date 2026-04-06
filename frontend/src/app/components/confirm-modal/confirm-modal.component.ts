@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-confirm-modal',
@@ -77,6 +77,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
       background: #b91c1c;
     }
   `],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfirmModalComponent {
   @Input() open = false;

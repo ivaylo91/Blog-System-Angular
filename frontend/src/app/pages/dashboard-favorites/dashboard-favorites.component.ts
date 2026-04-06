@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { RecipeService } from '../../services/recipe.service';
 import { Recipe } from '../../models/models';
@@ -63,6 +63,7 @@ import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.co
       gap: 1.5rem;
     }
   `],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardFavoritesComponent implements OnInit {
   private recipeService = inject(RecipeService);

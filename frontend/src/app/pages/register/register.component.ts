@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
@@ -149,11 +149,13 @@ import { SeoService } from '../../services/seo.service';
     }
     .alt-link a { color: #78350f; font-weight: 700; text-decoration: none; }
   `],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegisterComponent implements OnInit {
   private authService = inject(AuthService);
   private router = inject(Router);
   private seo = inject(SeoService);
+  private cdr = inject(ChangeDetectorRef);
 
   name = '';
 
@@ -190,6 +192,7 @@ export class RegisterComponent implements OnInit {
         } else {
           this.error = err.error?.message || 'Грешка при регистрация.';
         }
+        this.cdr.markForCheck();
       },
     });
   }

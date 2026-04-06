@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
@@ -67,6 +67,7 @@ import { AuthService } from '../../services/auth.service';
       color: #a8a29e;
     }
   `],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FooterComponent {
   auth = inject(AuthService);

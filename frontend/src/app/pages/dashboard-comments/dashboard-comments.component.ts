@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { RecipeService } from '../../services/recipe.service';
 import { Comment } from '../../models/models';
 import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-modal.component';
@@ -132,6 +132,7 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
     .empty { text-align: center; color: #57534e; padding: 2rem; font-weight: 500; }
     input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; }
   `],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardCommentsComponent implements OnInit {
   private recipeService = inject(RecipeService);
