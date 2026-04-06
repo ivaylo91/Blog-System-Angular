@@ -81,7 +81,7 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
     }
     .btn-primary {
       padding: 0.6rem 1.25rem;
-      background: #1c1917;
+      background: #4a7c59;
       color: #fff;
       border-radius: 0.75rem;
       text-decoration: none;
@@ -89,7 +89,7 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
       font-size: 0.9rem;
       transition: background 0.2s;
     }
-    .btn-primary:hover { background: #44403c; }
+    .btn-primary:hover { background: #3a6347; }
     .table-wrap {
       background: #ffffff;
       border-radius: 1.5rem;
