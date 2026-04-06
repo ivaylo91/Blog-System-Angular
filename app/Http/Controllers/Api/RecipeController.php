@@ -80,7 +80,7 @@ class RecipeController extends Controller
     {
         $recipes = Recipe::with(['category'])
             ->where('published', true)
-            ->orderByDesc('published_at')
+            ->inRandomOrder()
             ->limit(7)
             ->get();
 
