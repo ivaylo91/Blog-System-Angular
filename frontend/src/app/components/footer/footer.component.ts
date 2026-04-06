@@ -9,111 +9,161 @@ import { AuthService } from '../../services/auth.service';
   template: `
     <footer class="site-footer">
       <div class="footer-inner">
+
         <div class="footer-top">
           <div class="footer-brand">
-            <span class="brand-icon">🍳</span>
-            <span class="brand-name">Кулинарният блог на Иво</span>
-            <p class="brand-tagline">Традиционни рецепти, споделени с любов.</p>
+            <a routerLink="/" class="brand-logo">
+              <span class="brand-icon">🍳</span>
+              <span class="brand-name">Кулинарният блог на Иво</span>
+            </a>
+            <p class="brand-tagline">Традиционни рецепти, споделени с любов и страст към доброто готвене.</p>
           </div>
-          <nav class="footer-links">
-            <span class="footer-nav-title">Навигация</span>
-            <a routerLink="/">Начало</a>
-            <a routerLink="/recipes">Рецепти</a>
-            @if (!auth.isAuthenticated()) {
-              <a routerLink="/signin">Вход</a>
-              <a routerLink="/register">Регистрация</a>
-            } @else {
-              <a routerLink="/dashboard">Табло</a>
-              <a routerLink="/profile">Профил</a>
-            }
-          </nav>
+
+          <div class="footer-cols">
+            <div class="footer-col">
+              <span class="col-title">Навигация</span>
+              <a routerLink="/">Начало</a>
+              <a routerLink="/recipes">Рецепти</a>
+              @if (auth.isAuthenticated()) {
+                <a routerLink="/dashboard">Табло</a>
+                <a routerLink="/profile">Профил</a>
+              } @else {
+                <a routerLink="/signin">Вход</a>
+                <a routerLink="/register">Регистрация</a>
+              }
+            </div>
+          </div>
         </div>
+
         <div class="footer-bottom">
-          <p class="copyright">© {{ currentYear }} Кулинарният блог на Иво. Всички права запазени.</p>
-          <span class="footer-dot">·</span>
-          <p class="made-with">Направено с ❤️ и добра храна</p>
+          <p class="copyright">© {{ currentYear }} Кулинарният блог на Иво</p>
+          <span class="footer-sep"></span>
+          <p class="made-with">
+            Направено с
+            <svg class="heart" viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            и добра храна
+          </p>
         </div>
+
       </div>
     </footer>
   `,
   styles: [`
     .site-footer {
       margin-top: auto;
-      background: #000000;
+      background: #1c1917;
       color: #a8a29e;
-      padding: 3.5rem 1.5rem 2rem;
     }
     .footer-inner {
       max-width: 1200px;
       margin: 0 auto;
+      padding: 3.5rem 1.5rem 1.75rem;
     }
+
     .footer-top {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
       gap: 3rem;
       padding-bottom: 2.5rem;
-      border-bottom: 1px solid rgba(255,255,255,1);
-      margin-bottom: 1.75rem;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      margin-bottom: 1.5rem;
     }
+
+    /* Brand */
     .footer-brand {
       display: flex;
       flex-direction: column;
-      gap: 0.4rem;
+      gap: 0.75rem;
+      max-width: 260px;
+    }
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      text-decoration: none;
     }
     .brand-icon { font-size: 1.6rem; }
     .brand-name {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 1.1rem;
+      font-family: 'Georgia', serif;
+      font-size: 1rem;
       font-weight: 700;
       color: #fafaf9;
       letter-spacing: -0.01em;
     }
     .brand-tagline {
-      font-size: 0.85rem;
+      font-size: 0.83rem;
       color: #78716c;
       margin: 0;
-      max-width: 220px;
-      line-height: 1.5;
+      line-height: 1.6;
     }
-    .footer-links {
+
+    /* Columns */
+    .footer-cols {
+      display: flex;
+      gap: 3rem;
+    }
+    .footer-col {
       display: flex;
       flex-direction: column;
-      gap: 0.6rem;
-      min-width: 120px;
+      gap: 0.55rem;
+      min-width: 110px;
     }
-    .footer-nav-title {
+    .col-title {
       font-size: 0.7rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.1em;
       color: #57534e;
       margin-bottom: 0.25rem;
     }
-    .footer-links a {
-      color: #a8a29e;
+    .footer-col a {
+      color: #78716c;
       text-decoration: none;
       font-size: 0.875rem;
       transition: color 0.2s;
     }
-    .footer-links a:hover { color: #fafaf9; }
+    .footer-col a:hover { color: #e7e5e4; }
+
+    /* Bottom */
     .footer-bottom {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 0.75rem;
+      gap: 1rem;
       flex-wrap: wrap;
     }
-    .copyright, .made-with {
-      font-size: 0.75rem;
-      color: #ffffff;
+    .copyright {
+      font-size: 0.78rem;
+      color: #57534e;
       margin: 0;
     }
-    .footer-dot { color: #ffffff; font-size: 1rem; }
+    .footer-sep {
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: #3c3836;
+    }
+    .made-with {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.78rem;
+      color: #57534e;
+      margin: 0;
+    }
+    .heart {
+      width: 0.8rem;
+      height: 0.8rem;
+      color: #dc2626;
+    }
+
     @media (max-width: 600px) {
       .footer-top { flex-direction: column; gap: 2rem; }
-      .footer-links { flex-direction: row; flex-wrap: wrap; gap: 0.75rem 1.5rem; }
-      .footer-nav-title { width: 100%; }
+      .footer-brand { max-width: 100%; }
+      .footer-cols { gap: 2rem; }
+      .footer-col { flex-direction: row; flex-wrap: wrap; gap: 0.5rem 1.25rem; }
+      .col-title { width: 100%; }
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
