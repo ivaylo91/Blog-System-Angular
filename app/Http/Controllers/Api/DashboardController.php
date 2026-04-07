@@ -21,11 +21,21 @@ class DashboardController extends Controller
             ->whereIn('recipe_id', Recipe::where('user_id', $user->id)->pluck('id'))
             ->count();
 
+        $draftRecipes = Recipe::where('user_id', $user->id)->where('published', false)->count();
+
+        $recentComments = Comment::with(['author', 'recipe'])
+            ->whereHas('recipe', fn ($q) => $q->where('user_id', $user->id))
+            ->orderByDesc('created_at')
+            ->limit(5)
+            ->get();
+
         return response()->json([
             'totalRecipes' => $totalRecipes,
             'publishedRecipes' => $publishedRecipes,
+            'draftRecipes' => $draftRecipes,
             'totalComments' => $totalComments,
             'totalFavorites' => $totalFavorites,
+            'recentComments' => $recentComments,
         ]);
     }
 }

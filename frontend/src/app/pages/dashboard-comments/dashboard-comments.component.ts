@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { RecipeService } from '../../services/recipe.service';
 import { Comment } from '../../models/models';
 import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-modal.component';
@@ -6,7 +7,7 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
 @Component({
   selector: 'app-dashboard-comments',
   standalone: true,
-  imports: [ConfirmModalComponent],
+  imports: [ConfirmModalComponent, RouterLink],
   template: `
     <div class="dashboard-comments">
       <div class="header-row">
@@ -24,6 +25,7 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
             <tr>
               <th><input type="checkbox" (change)="toggleAll($event)" [checked]="allSelected()" /></th>
               <th>Автор</th>
+              <th>Рецепта</th>
               <th>Коментар</th>
               <th>Оценка</th>
               <th>Дата</th>
@@ -35,6 +37,13 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
               <tr>
                 <td><input type="checkbox" [checked]="isSelected(comment.id)" (change)="toggleSelect(comment.id)" /></td>
                 <td class="author">{{ comment.author?.name || 'Анонимен' }}</td>
+                <td class="recipe-cell">
+                  @if (comment.recipe) {
+                    <a [routerLink]="['/recipes', comment.recipe.slug]" class="recipe-link">{{ comment.recipe.title }}</a>
+                  } @else {
+                    —
+                  }
+                </td>
                 <td class="content-cell">{{ comment.body }}</td>
                 <td>{{ comment.rating ? '★' + comment.rating : '—' }}</td>
                 <td class="date">{{ formatDate(comment.created_at) }}</td>
@@ -44,7 +53,7 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
               </tr>
             }
             @empty {
-              <tr><td colspan="6" class="empty">Няма коментари.</td></tr>
+              <tr><td colspan="7" class="empty">Няма коментари.</td></tr>
             }
           </tbody>
         </table>
@@ -110,6 +119,9 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
       color: #1c1917;
     }
     .author { font-weight: 700; white-space: nowrap; }
+    .recipe-cell { max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .recipe-link { color: #78350f; text-decoration: none; font-weight: 600; font-size: 0.85rem; }
+    .recipe-link:hover { text-decoration: underline; }
     .content-cell {
       max-width: 300px;
       overflow: hidden;

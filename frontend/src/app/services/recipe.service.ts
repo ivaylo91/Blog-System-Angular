@@ -95,6 +95,13 @@ export class RecipeService {
     return this.http.delete<{ message: string }>(`${environment.apiUrl}/dashboard/recipes/${slug}`);
   }
 
+  togglePublish(slug: string, published: boolean): Observable<Recipe> {
+    const fd = new FormData();
+    fd.append('_method', 'PUT');
+    fd.append('published', published ? '1' : '0');
+    return this.http.post<Recipe>(`${environment.apiUrl}/dashboard/recipes/${slug}`, fd);
+  }
+
   getAdminComments(): Observable<Comment[]> {
     return this.http.get<Comment[]>(`${environment.apiUrl}/admin/comments`);
   }

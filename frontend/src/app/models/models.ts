@@ -103,6 +103,8 @@ export interface FavoriteStatusResponse {
 export interface DashboardStats {
   totalRecipes: number;
   publishedRecipes: number;
+  draftRecipes: number;
   totalComments: number;
   totalFavorites: number;
+  recentComments: Comment[];
 }
