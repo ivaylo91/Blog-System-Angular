@@ -285,6 +285,9 @@ import { SeoService } from '../../services/seo.service';
     }
     .alt-link a:hover { border-bottom-color: #78350f; }
 
+    @media (max-width: 500px) {
+      .auth-page { align-items: flex-start; padding-top: 2rem; }
+    }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

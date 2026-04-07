@@ -27,9 +27,9 @@ import { SeoService } from '../../services/seo.service';
               class="search-input"
             />
             <button type="submit" class="search-btn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            Търси
-          </button>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <span>Търси</span>
+            </button>
           </form>
           <div class="hero-stats">
             <div class="stat"><strong>100+</strong><span>Рецепти</span></div>
@@ -445,34 +445,45 @@ import { SeoService } from '../../services/seo.service';
       .hero-inner { grid-template-columns: 1fr; gap: 2rem; }
       h1 { font-size: 2.6rem; }
       .hero-visual { order: -1; }
+      .hero-image-wrap { aspect-ratio: 16/9; border-radius: 1.25rem; }
+      .hero-skeleton { aspect-ratio: 16/9; border-radius: 1.25rem; }
       .search-form { max-width: 100%; }
       .mag-layout { grid-template-columns: 1fr; }
-      .mag-side { flex-direction: row; flex-wrap: wrap; }
-      .mag-side > * { flex: 1 1 260px; }
+      .mag-side { flex-direction: column; gap: 1rem; }
       .mag-bottom-grid { grid-template-columns: repeat(2, 1fr); }
       .featured { padding: 3rem 1.25rem 4rem; }
     }
     @media (max-width: 640px) {
-      .hero { padding: 2rem 1rem 2rem; }
-      h1 { font-size: 2rem; }
-      .hero-subtitle { font-size: 0.95rem; }
-      .hero-stats { gap: 1rem; margin-top: 1.5rem; }
+      .hero { padding: 1.75rem 1rem 1.75rem; }
+      .hero-inner { gap: 1.5rem; }
+      h1 { font-size: 1.9rem; }
+      .hero-subtitle { font-size: 0.9rem; margin-bottom: 1.25rem; }
+      .hero-eyebrow { font-size: 0.68rem; margin-bottom: 0.75rem; }
+      .search-form { max-width: 100%; border-radius: 0.75rem; }
+      .search-input { padding: 0.75rem 1rem; font-size: 0.9rem; }
+      .search-btn { padding: 0.75rem 1rem; font-size: 0.85rem; }
+      .hero-stats { gap: 1rem; margin-top: 1.25rem; }
       .stat strong { font-size: 0.95rem; }
+      .stat span { font-size: 0.7rem; }
       .stat-divider { height: 1.5rem; }
-      .search-form { max-width: 100%; }
-      .section-heading { flex-direction: column; gap: 0.4rem; align-items: flex-start; }
-      .section-title { font-size: 1.6rem; }
+      .hero-image-wrap { aspect-ratio: 4/3; border-radius: 1rem; box-shadow: 0 16px 40px rgba(0,0,0,0.14); }
+      .hero-img-badge { bottom: 0.75rem; left: 0.75rem; right: 0.75rem; padding: 0.6rem 0.75rem; }
+      .badge-title { font-size: 0.85rem; }
+      .section-heading { flex-direction: row; align-items: baseline; justify-content: space-between; }
+      .section-title { font-size: 1.5rem; }
       .mag-layout { grid-template-columns: 1fr; }
-      .mag-side { flex-direction: column; }
-      .mag-bottom-grid { grid-template-columns: 1fr; }
+      .mag-side { flex-direction: column; gap: 1rem; }
+      .mag-bottom-grid { grid-template-columns: 1fr; gap: 1rem; }
       .featured { padding: 2rem 1rem 3rem; }
-      .cta { margin-top: 2rem; }
+      .cta { margin-top: 1.75rem; }
+      .cta-btn { width: 100%; justify-content: center; padding: 0.85rem 1.5rem; box-sizing: border-box; }
     }
     @media (max-width: 400px) {
-      h1 { font-size: 1.75rem; }
-      .hero-eyebrow { font-size: 0.65rem; }
-      .hero-stats { gap: 0.75rem; }
+      h1 { font-size: 1.65rem; }
+      .hero-eyebrow { font-size: 0.62rem; }
+      .hero-stats { gap: 0.6rem; }
       .stat-divider { display: none; }
+      .search-btn span { display: none; }
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
