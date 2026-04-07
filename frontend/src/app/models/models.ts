@@ -65,6 +65,7 @@ export interface Comment {
   updated_at: string;
   author?: User;
   recipe?: Recipe;
+  replies?: Comment[];
 }
 
 export interface User {

@@ -65,8 +65,8 @@ export class RecipeService {
     return this.http.post<any>(`${environment.apiUrl}/recipes/${slug}/rate`, { rating });
   }
 
-  commentRecipe(slug: string, body: string, rating?: number): Observable<Comment> {
-    return this.http.post<Comment>(`${environment.apiUrl}/recipes/${slug}/comment`, { body, rating });
+  commentRecipe(slug: string, body: string, rating?: number, parentId?: number): Observable<Comment> {
+    return this.http.post<Comment>(`${environment.apiUrl}/recipes/${slug}/comment`, { body, rating, parent_id: parentId });
   }
 
   deleteComment(id: number): Observable<{ message: string }> {

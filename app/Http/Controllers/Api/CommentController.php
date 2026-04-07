@@ -25,17 +25,30 @@ class CommentController extends Controller
         $validated = $request->validate([
             'body' => 'nullable|string|max:2000',
             'rating' => 'nullable|integer|min:1|max:5',
+            'parent_id' => 'nullable|integer|exists:comments,id',
         ]);
 
-        $comment = Comment::firstOrNew([
-            'recipe_id' => $recipe->id,
-            'user_id' => $user->id,
-            'parent_id' => null,
-        ]);
+        $parentId = $validated['parent_id'] ?? null;
 
-        $comment->body = $validated['body'] ?? '';
-        $comment->rating = $validated['rating'] ?? $comment->rating;
-        $comment->save();
+        // Replies are always new; only top-level comments use firstOrNew
+        if ($parentId) {
+            $comment = new Comment([
+                'recipe_id' => $recipe->id,
+                'user_id'   => $user->id,
+                'parent_id' => $parentId,
+                'body'      => $validated['body'] ?? '',
+            ]);
+            $comment->save();
+        } else {
+            $comment = Comment::firstOrNew([
+                'recipe_id' => $recipe->id,
+                'user_id'   => $user->id,
+                'parent_id' => null,
+            ]);
+            $comment->body = $validated['body'] ?? '';
+            $comment->rating = $validated['rating'] ?? $comment->rating;
+            $comment->save();
+        }
 
         $comment->load('author');
 

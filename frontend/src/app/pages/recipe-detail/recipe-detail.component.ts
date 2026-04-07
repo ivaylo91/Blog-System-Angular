@@ -1,14 +1,16 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RecipeService } from '../../services/recipe.service';
 import { AuthService } from '../../services/auth.service';
+import { ToastService } from '../../services/toast.service';
 import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.component';
 import { StarRatingComponent } from '../../components/star-rating/star-rating.component';
 import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-modal.component';
 import { Recipe, Comment, FavoriteStatusResponse } from '../../models/models';
 import { SeoService } from '../../services/seo.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-recipe-detail',
@@ -81,6 +83,9 @@ import { SeoService } from '../../services/seo.service';
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
                 </button>
               }
+              <button class="share-btn share-print" (click)="printRecipe()" title="Принтирай">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+              </button>
             </div>
           </div>
         </div>
@@ -239,6 +244,39 @@ import { SeoService } from '../../services/seo.service';
                     }
                     @if (comment.body?.trim()) {
                       <p class="comment-body">{{ comment.body }}</p>
+                    }
+                    @if (auth.isAuthenticated()) {
+                      <button class="reply-btn" (click)="startReply(comment.id)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 17 4 12 9 7"/><path d="M20 18v-2a4 4 0 0 0-4-4H4"/></svg>
+                        {{ replyingToId === comment.id ? 'Отказ' : 'Отговори' }}
+                      </button>
+                    }
+                    @if (replyingToId === comment.id) {
+                      <form class="reply-form" (submit)="submitReply($event, comment.id)">
+                        <textarea [(ngModel)]="replyBody" [name]="'reply-' + comment.id" rows="2" placeholder="Напиши отговор..."></textarea>
+                        <button type="submit" class="submit-btn">Изпрати</button>
+                      </form>
+                    }
+                    @if (comment.replies && comment.replies.length > 0) {
+                      <div class="replies">
+                        @for (reply of comment.replies; track reply.id) {
+                          <div class="reply">
+                            <div class="comment-header">
+                              <div class="comment-avatar reply-avatar">{{ (reply.author?.name || 'Ч')[0].toUpperCase() }}</div>
+                              <div class="comment-meta">
+                                <strong>{{ reply.author?.name || 'Читател' }}</strong>
+                                <span class="comment-date">{{ reply.created_at | date:'dd MMM yyyy' }}</span>
+                              </div>
+                              @if (canDeleteComment(reply)) {
+                                <button class="delete-comment-btn" (click)="deleteComment(reply.id)" title="Изтрий">
+                                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                                </button>
+                              }
+                            </div>
+                            <p class="comment-body">{{ reply.body }}</p>
+                          </div>
+                        }
+                      </div>
                     }
                   </div>
                 } @empty {
@@ -710,6 +748,48 @@ import { SeoService } from '../../services/seo.service';
       gap: 1.5rem;
     }
 
+    .reply-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      margin-top: 0.4rem;
+      padding: 0.25rem 0.6rem;
+      background: none;
+      border: none;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #78716c;
+      cursor: pointer;
+      border-radius: 0.5rem;
+      transition: background 0.15s, color 0.15s;
+    }
+    .reply-btn svg { width: 0.75rem; height: 0.75rem; }
+    .reply-btn:hover { background: #f5f0e8; color: #78350f; }
+    .reply-form { margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.4rem; }
+    .reply-form textarea {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 0.5rem 0.75rem;
+      border: 1.5px solid rgba(0,0,0,0.1);
+      border-radius: 0.625rem;
+      font-size: 0.85rem;
+      font-family: inherit;
+      resize: vertical;
+      background: #fafaf9;
+    }
+    .reply-form textarea:focus { outline: none; border-color: #4a7c59; }
+    .replies { margin-top: 0.5rem; padding-left: 1rem; border-left: 2px solid #f0ece6; display: flex; flex-direction: column; gap: 0.6rem; }
+    .reply { padding: 0.5rem 0; }
+    .reply-avatar { width: 1.5rem !important; height: 1.5rem !important; font-size: 0.65rem !important; }
+
+    @media print {
+      app-header, app-footer, .share-bar, .sidebar, .related-section, .back-link, .hero-overlay { display: none !important; }
+      .hero-banner { min-height: auto !important; }
+      .hero-img { position: static !important; width: 100% !important; height: 300px !important; object-fit: cover; }
+      .content-grid { grid-template-columns: 1fr !important; }
+      .body-wrap { padding: 1rem !important; }
+    }
+
     @media (max-width: 900px) {
       .content-grid { grid-template-columns: 1fr; }
       h1 { font-size: 2.2rem; }
@@ -723,11 +803,12 @@ import { SeoService } from '../../services/seo.service';
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RecipeDetailComponent implements OnInit {
+export class RecipeDetailComponent implements OnInit, OnDestroy {
   private recipeService = inject(RecipeService);
   private route = inject(ActivatedRoute);
   private seo = inject(SeoService);
   private cdr = inject(ChangeDetectorRef);
+  private toast = inject(ToastService);
   auth = inject(AuthService);
 
   Math = Math;
@@ -739,8 +820,11 @@ export class RecipeDetailComponent implements OnInit {
   favoriteStatus: FavoriteStatusResponse | null = null;
   userRating = 0;
   commentBody = '';
+  replyingToId: number | null = null;
+  replyBody = '';
   copied = false;
   canNativeShare = typeof navigator !== 'undefined' && !!navigator.share;
+  private subs = new Subscription();
 
   get currentUrl(): string { return typeof window !== 'undefined' ? window.location.href : ''; }
   get encodedUrl(): string { return encodeURIComponent(this.currentUrl); }
@@ -766,10 +850,15 @@ export class RecipeDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
+    this.subs.add(this.route.params.subscribe(params => {
       window.scrollTo({ top: 0, behavior: 'instant' });
       this.loadRecipe(params['slug']);
-    });
+    }));
+  }
+
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
+    this.seo.removeJsonLd();
   }
 
   loadRecipe(slug: string): void {
@@ -784,6 +873,7 @@ export class RecipeDetailComponent implements OnInit {
           description: res.recipe.excerpt || res.recipe.description?.slice(0, 155) || '',
           image: res.recipe.hero_image || undefined,
         });
+        this.seo.setJsonLd(this.buildJsonLd(res.recipe, res.averageRating, res.ratingsCount));
         if (this.auth.isAuthenticated() && this.auth.user()) {
           const userId = this.auth.user()!.id;
           const userComment = this.comments.find(c => c.user_id === userId);
@@ -792,41 +882,119 @@ export class RecipeDetailComponent implements OnInit {
         }
         this.cdr.markForCheck();
       },
-      error: (err) => console.error('Failed to load recipe:', err),
+      error: () => this.toast.error('Рецептата не беше намерена.'),
     });
     this.recipeService.getRelatedRecipes(slug).subscribe({
       next: (r) => { this.relatedRecipes = r; this.cdr.markForCheck(); },
-      error: (err) => console.error('Failed to load related recipes:', err),
+      error: () => {},
     });
-    this.recipeService.getFavoriteStatus(slug).subscribe({
-      next: (s) => { this.favoriteStatus = s; this.cdr.markForCheck(); },
-      error: (err) => console.error('Failed to load favorite status:', err),
-    });
+    if (this.auth.isAuthenticated()) {
+      this.recipeService.getFavoriteStatus(slug).subscribe({
+        next: (s) => { this.favoriteStatus = s; this.cdr.markForCheck(); },
+        error: () => {},
+      });
+    }
+  }
+
+  private buildJsonLd(recipe: Recipe, avgRating: number | null, ratingsCount: number): object {
+    const base: Record<string, unknown> = {
+      '@context': 'https://schema.org',
+      '@type': 'Recipe',
+      name: recipe.title,
+      description: recipe.excerpt || recipe.description || '',
+      prepTime: `PT${recipe.prep_minutes}M`,
+      cookTime: `PT${recipe.cook_minutes}M`,
+      totalTime: `PT${recipe.prep_minutes + recipe.cook_minutes}M`,
+      recipeYield: `${recipe.servings} порции`,
+      recipeCategory: recipe.category?.name || '',
+      recipeIngredient: recipe.ingredients?.map(i => `${i.amount} ${i.name}`) || [],
+      recipeInstructions: recipe.steps?.map((s, i) => ({
+        '@type': 'HowToStep',
+        position: i + 1,
+        text: s.description,
+      })) || [],
+    };
+    if (recipe.hero_image) base['image'] = recipe.hero_image;
+    if (avgRating && ratingsCount > 0) {
+      base['aggregateRating'] = {
+        '@type': 'AggregateRating',
+        ratingValue: avgRating,
+        reviewCount: ratingsCount,
+        bestRating: 5,
+        worstRating: 1,
+      };
+    }
+    return base;
+  }
+
+  printRecipe(): void {
+    window.print();
   }
 
   toggleFavorite(): void {
     if (!this.recipe) return;
-    this.recipeService.toggleFavorite(this.recipe.slug).subscribe(s => { this.favoriteStatus = s; this.cdr.markForCheck(); });
+    this.recipeService.toggleFavorite(this.recipe.slug).subscribe({
+      next: (s) => {
+        this.favoriteStatus = s;
+        this.toast.success(s.isFavorite ? 'Добавено в любими.' : 'Премахнато от любими.');
+        this.cdr.markForCheck();
+      },
+      error: () => this.toast.error('Грешка при запазване.'),
+    });
   }
 
   onRate(rating: number): void {
     if (!this.recipe) return;
-    this.recipeService.rateRecipe(this.recipe.slug, rating).subscribe(res => {
-      this.userRating = res.rating;
-      this.averageRating = res.averageRating;
-      this.ratingsCount = res.ratingsCount;
-      this.cdr.markForCheck();
+    this.recipeService.rateRecipe(this.recipe.slug, rating).subscribe({
+      next: (res) => {
+        this.userRating = res.rating;
+        this.averageRating = res.averageRating;
+        this.ratingsCount = res.ratingsCount;
+        this.toast.success('Оценката е запазена.');
+        this.cdr.markForCheck();
+      },
+      error: () => this.toast.error('Грешка при оценяване.'),
     });
   }
 
   onComment(e: Event): void {
     e.preventDefault();
-    if (!this.recipe) return;
-    this.recipeService.commentRecipe(this.recipe.slug, this.commentBody, this.userRating || undefined).subscribe(comment => {
-      const idx = this.comments.findIndex(c => c.id === comment.id);
-      if (idx >= 0) { this.comments[idx] = comment; } else { this.comments.unshift(comment); }
-      this.commentBody = '';
-      this.cdr.markForCheck();
+    if (!this.recipe || !this.commentBody.trim()) return;
+    this.recipeService.commentRecipe(this.recipe.slug, this.commentBody, this.userRating || undefined).subscribe({
+      next: (comment) => {
+        const idx = this.comments.findIndex(c => c.id === comment.id);
+        if (idx >= 0) { this.comments[idx] = comment; } else { this.comments.unshift(comment); }
+        this.comments = [...this.comments];
+        this.commentBody = '';
+        this.toast.success('Коментарът е публикуван.');
+        this.cdr.markForCheck();
+      },
+      error: () => this.toast.error('Грешка при публикуване на коментар.'),
+    });
+  }
+
+  startReply(commentId: number): void {
+    this.replyingToId = this.replyingToId === commentId ? null : commentId;
+    this.replyBody = '';
+    this.cdr.markForCheck();
+  }
+
+  submitReply(e: Event, parentId: number): void {
+    e.preventDefault();
+    if (!this.recipe || !this.replyBody.trim()) return;
+    this.recipeService.commentRecipe(this.recipe.slug, this.replyBody, undefined, parentId).subscribe({
+      next: (reply) => {
+        const parent = this.comments.find(c => c.id === parentId);
+        if (parent) {
+          parent.replies = [...(parent.replies || []), reply];
+          this.comments = [...this.comments];
+        }
+        this.replyingToId = null;
+        this.replyBody = '';
+        this.toast.success('Отговорът е публикуван.');
+        this.cdr.markForCheck();
+      },
+      error: () => this.toast.error('Грешка при публикуване на отговор.'),
     });
   }
 
@@ -838,9 +1006,15 @@ export class RecipeDetailComponent implements OnInit {
   }
 
   deleteComment(id: number): void {
-    this.recipeService.deleteComment(id).subscribe(() => {
-      this.comments = this.comments.filter(c => c.id !== id);
-      this.cdr.markForCheck();
+    this.recipeService.deleteComment(id).subscribe({
+      next: () => {
+        this.comments = this.comments.filter(c => c.id !== id).map(c => ({
+          ...c, replies: c.replies?.filter(r => r.id !== id) || [],
+        }));
+        this.toast.success('Коментарът е изтрит.');
+        this.cdr.markForCheck();
+      },
+      error: () => this.toast.error('Грешка при изтриване.'),
     });
   }
 }

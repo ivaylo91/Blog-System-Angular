@@ -69,7 +69,7 @@ class Recipe extends Model
 
     public function topLevelComments(): HasMany
     {
-        return $this->hasMany(Comment::class)->whereNull('parent_id')->orderByDesc('created_at');
+        return $this->hasMany(Comment::class)->whereNull('parent_id')->with(['author', 'replies.author'])->orderByDesc('created_at');
     }
 
     public function favoritedBy(): BelongsToMany
