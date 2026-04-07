@@ -29,12 +29,12 @@ import { SeoService } from '../../services/seo.service';
 
         <form (submit)="onSubmit($event)">
           <div class="field">
-            <label>Ime</label>
+            <label>Име</label>
             <div class="input-wrap">
               <span class="input-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
               </span>
-              <input type="text" [(ngModel)]="name" name="name" required placeholder="Твоето ime" #nameInput="ngModel" />
+              <input type="text" [(ngModel)]="name" name="name" required placeholder="твоето име" #nameInput="ngModel" />
               @if (nameInput.valid && name) {
                 <span class="check-icon">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
