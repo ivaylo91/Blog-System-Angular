@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, shareReplay } from 'rxjs';
 import { environment } from '../../environments/environment';
 import {
   Recipe,
@@ -14,6 +14,8 @@ import {
 
 @Injectable({ providedIn: 'root' })
 export class RecipeService {
+  private categories$: Observable<Category[]> | null = null;
+
   constructor(private http: HttpClient) {}
 
   getRecipes(params: {
@@ -46,7 +48,10 @@ export class RecipeService {
   }
 
   getCategories(): Observable<Category[]> {
-    return this.http.get<Category[]>(`${environment.apiUrl}/recipes/categories`);
+    if (!this.categories$) {
+      this.categories$ = this.http.get<Category[]>(`${environment.apiUrl}/recipes/categories`).pipe(shareReplay(1));
+    }
+    return this.categories$;
   }
 
   getFavoriteStatus(slug: string): Observable<FavoriteStatusResponse> {

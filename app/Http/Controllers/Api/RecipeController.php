@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Recipe;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -15,7 +16,7 @@ class RecipeController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
-        $query = Recipe::with(['category', 'tags', 'ingredients', 'steps'])
+        $query = Recipe::with(['category', 'tags'])
             ->where('published', true);
 
         if ($search = $request->input('q')) {
@@ -61,8 +62,14 @@ class RecipeController extends Controller
             return response()->json(['message' => 'Рецептата не е намерена.'], 404);
         }
 
-        $ratings = $recipe->comments()->whereNotNull('rating')->pluck('rating');
-        $averageRating = $ratings->isNotEmpty() ? round($ratings->avg(), 1) : null;
+        $ratingData = $recipe->comments()
+            ->whereNotNull('rating')
+            ->selectRaw('COUNT(*) as count, AVG(rating) as avg')
+            ->first();
+
+        $averageRating = $ratingData->count > 0 ? round($ratingData->avg, 1) : null;
+        $ratingsCount  = (int) $ratingData->count;
+        $favoriteCount = $recipe->favoritedBy()->count();
 
         $recipeData = $recipe->toArray();
         $recipeData['comments'] = $recipeData['top_level_comments'] ?? [];
@@ -71,18 +78,20 @@ class RecipeController extends Controller
         return response()->json([
             'recipe' => $recipeData,
             'averageRating' => $averageRating,
-            'ratingsCount' => $ratings->count(),
-            'favoriteCount' => $recipe->favoritedBy()->count(),
+            'ratingsCount' => $ratingsCount,
+            'favoriteCount' => $favoriteCount,
         ]);
     }
 
     public function featured(): JsonResponse
     {
-        $recipes = Recipe::with(['category'])
-            ->where('published', true)
-            ->inRandomOrder()
-            ->limit(7)
-            ->get();
+        $recipes = Cache::remember('featured_recipes', 300, function () {
+            return Recipe::with(['category'])
+                ->where('published', true)
+                ->inRandomOrder()
+                ->limit(7)
+                ->get();
+        });
 
         return response()->json($recipes);
     }

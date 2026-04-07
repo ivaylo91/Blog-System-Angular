@@ -1,10 +1,12 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { RecipeService } from '../../services/recipe.service';
 import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.component';
 import { Recipe, Category } from '../../models/models';
 import { SeoService } from '../../services/seo.service';
+import { Subject, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'app-recipes',
@@ -27,6 +29,7 @@ import { SeoService } from '../../services/seo.service';
             name="q"
             placeholder="Търси по заглавие или съставка..."
             class="search-input"
+            (input)="onSearchInput()"
           />
           <button type="submit" class="search-btn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -286,7 +289,7 @@ import { SeoService } from '../../services/seo.service';
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RecipesComponent implements OnInit {
+export class RecipesComponent implements OnInit, OnDestroy {
   private recipeService = inject(RecipeService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
@@ -304,6 +307,9 @@ export class RecipesComponent implements OnInit {
   loading = true;
   skeletons = [0, 1, 2, 3, 4, 5];
 
+  private searchSubject = new Subject<string>();
+  private subs = new Subscription();
+
   get pageNumbers(): number[] {
     return Array.from({ length: this.lastPage }, (_, i) => i + 1);
   }
@@ -313,15 +319,32 @@ export class RecipesComponent implements OnInit {
       title: 'Рецепти',
       description: 'Разгледай всички традиционни български рецепти. Филтрирай по категория, трудност и време за приготвяне.',
     });
-    this.recipeService.getCategories().subscribe(cats => { this.categories = cats; this.cdr.markForCheck(); });
-    this.route.queryParams.subscribe(params => {
+
+    this.subs.add(
+      this.searchSubject.pipe(debounceTime(350), distinctUntilChanged()).subscribe(q => {
+        this.router.navigate(['/recipes'], {
+          queryParams: { q: q || undefined, category: this.category || undefined, difficulty: this.difficulty || undefined, sort: this.sort !== 'newest' ? this.sort : undefined, page: undefined },
+        });
+      })
+    );
+
+    this.subs.add(this.recipeService.getCategories().subscribe(cats => { this.categories = cats; this.cdr.markForCheck(); }));
+    this.subs.add(this.route.queryParams.subscribe(params => {
       this.q = params['q'] || '';
       this.category = params['category'] || '';
       this.difficulty = params['difficulty'] || '';
       this.sort = params['sort'] || 'newest';
       this.currentPage = +(params['page'] || 1);
       this.loadRecipes();
-    });
+    }));
+  }
+
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
+  }
+
+  onSearchInput(): void {
+    this.searchSubject.next(this.q);
   }
 
   loadRecipes(): void {
