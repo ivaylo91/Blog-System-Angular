@@ -117,7 +117,7 @@ import { SeoService } from '../../services/seo.service';
       line-height: 1.2;
     }
     .subtitle {
-      color: #78716c;
+      color: #57534e;
       font-size: 0.88rem;
       margin: 0 0 1.75rem;
       line-height: 1.5;
@@ -156,7 +156,7 @@ import { SeoService } from '../../services/seo.service';
       left: 0.9rem;
       top: 50%;
       transform: translateY(-50%);
-      color: #a8a29e;
+      color: #57534e;
       display: flex;
       pointer-events: none;
     }
@@ -174,7 +174,7 @@ import { SeoService } from '../../services/seo.service';
       background: #fafaf9;
       transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
     }
-    .input-wrap input::placeholder { color: #c2bdb9; }
+    .input-wrap input::placeholder { color: #6b6560; }
     .input-wrap input:focus {
       border-color: #a16207;
       box-shadow: 0 0 0 3px rgba(161, 98, 7, 0.12);
@@ -243,12 +243,12 @@ import { SeoService } from '../../services/seo.service';
       height: 1px;
       background: #f0ece6;
     }
-    .divider span { color: #a8a29e; font-weight: 500; }
+    .divider span { color: #57534e; font-weight: 500; }
 
     .alt-link {
       text-align: center;
       font-size: 0.875rem;
-      color: #78716c;
+      color: #57534e;
     }
     .alt-link a {
       color: #78350f;

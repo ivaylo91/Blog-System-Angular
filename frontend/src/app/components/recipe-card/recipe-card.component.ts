@@ -151,7 +151,7 @@ import { Recipe } from '../../models/models';
       padding-top: 0.75rem;
       border-top: 1px solid rgba(0, 0, 0, 0.06);
       font-size: 0.78rem;
-      color: #78716c;
+      color: #57534e;
     }
     .difficulty {
       margin-left: auto;

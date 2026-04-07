@@ -234,7 +234,7 @@ interface StepInput { description: string; }
     }
     .breadcrumb {
       font-size: 0.8rem;
-      color: #78716c;
+      color: #57534e;
       margin: 0 0 0.35rem;
       display: flex;
       align-items: center;
@@ -311,7 +311,7 @@ interface StepInput { description: string; }
       color: #44403c;
       margin-bottom: 0.4rem;
     }
-    .label-icon { width: 0.85rem; height: 0.85rem; color: #78716c; }
+    .label-icon { width: 0.85rem; height: 0.85rem; color: #57534e; }
     .req { color: #dc2626; }
     input, select, textarea {
       width: 100%;
@@ -332,7 +332,7 @@ interface StepInput { description: string; }
       background: #fff;
     }
     textarea { resize: vertical; }
-    .field-hint { font-size: 0.75rem; color: #a8a29e; margin: 0.3rem 0 0; }
+    .field-hint { font-size: 0.75rem; color: #57534e; margin: 0.3rem 0 0; }
 
     /* Ingredients */
     .ingredient-row {
@@ -344,7 +344,7 @@ interface StepInput { description: string; }
     .row-index {
       font-size: 0.75rem;
       font-weight: 700;
-      color: #a8a29e;
+      color: #57534e;
       min-width: 1.2rem;
       text-align: right;
     }
@@ -429,10 +429,10 @@ interface StepInput { description: string; }
       justify-content: center;
       gap: 0.5rem;
       padding: 2rem;
-      color: #a8a29e;
+      color: #57534e;
     }
     .file-placeholder svg { width: 2rem; height: 2rem; }
-    .file-placeholder span { font-size: 0.875rem; font-weight: 500; color: #78716c; }
+    .file-placeholder span { font-size: 0.875rem; font-weight: 500; color: #57534e; }
     .file-placeholder small { font-size: 0.75rem; }
     .img-preview {
       width: 100%;

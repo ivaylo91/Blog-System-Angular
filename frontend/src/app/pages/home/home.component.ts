@@ -236,7 +236,7 @@ import { SeoService } from '../../services/seo.service';
     }
     .stat span {
       font-size: 0.75rem;
-      color: #78716c;
+      color: #57534e;
       text-transform: uppercase;
       letter-spacing: 0.06em;
     }

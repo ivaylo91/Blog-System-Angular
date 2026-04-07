@@ -120,7 +120,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
       letter-spacing: -0.02em;
     }
     .page-header p {
-      color: #78716c;
+      color: #57534e;
       font-size: 1rem;
       font-weight: 300;
       margin: 0;
@@ -201,7 +201,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
       font-size: 0.8rem;
     }
     .sort-divider {
-      color: rgba(0,0,0,0.15);
+      color: rgba(0,0,0,0.4);
       padding: 0 0.25rem;
       font-size: 1.1rem;
       user-select: none;
@@ -216,7 +216,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
     .no-results {
       grid-column: 1 / -1;
       text-align: center;
-      color: #78716c;
+      color: #57534e;
       padding: 4rem;
       font-size: 1rem;
     }

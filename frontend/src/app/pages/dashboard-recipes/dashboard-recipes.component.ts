@@ -127,7 +127,7 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
       color: #1c1917;
       margin: 0 0 0.2rem;
     }
-    .subtitle { color: #78716c; font-size: 0.85rem; margin: 0; }
+    .subtitle { color: #57534e; font-size: 0.85rem; margin: 0; }
     .btn-primary {
       display: inline-flex;
       align-items: center;
@@ -165,7 +165,7 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
       flex: 1;
       min-width: 200px;
     }
-    .search-wrap svg { width: 1rem; height: 1rem; color: #a8a29e; flex-shrink: 0; }
+    .search-wrap svg { width: 1rem; height: 1rem; color: #57534e; flex-shrink: 0; }
     .search-wrap input {
       border: none;
       outline: none;
@@ -247,7 +247,7 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
     .status-toggle.draft:hover { background: #fef08a; }
 
     .author-cell { font-size: 0.85rem; color: #57534e; font-weight: 600; white-space: nowrap; }
-    .no-access { color: #c2bdb9; font-size: 0.8rem; }
+    .no-access { color: #57534e; font-size: 0.8rem; }
     .status-toggle:disabled { opacity: 0.5; cursor: default; }
     .date-cell { white-space: nowrap; color: #57534e; font-size: 0.85rem; }
     .actions { display: flex; gap: 0.5rem; }

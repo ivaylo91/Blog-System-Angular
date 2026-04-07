@@ -48,7 +48,7 @@ import { RouterLink } from '@angular/router';
       margin: 0.5rem 0 0.75rem;
     }
     .subtitle {
-      color: #78716c;
+      color: #57534e;
       font-size: 1rem;
       margin: 0 0 2rem;
       line-height: 1.6;

@@ -563,7 +563,7 @@ import { Subscription } from 'rxjs';
       flex-wrap: wrap;
       gap: 0.5rem;
     }
-    .tags-row svg { width: 0.9rem; height: 0.9rem; color: #78716c; flex-shrink: 0; }
+    .tags-row svg { width: 0.9rem; height: 0.9rem; color: #57534e; flex-shrink: 0; }
     .tag {
       padding: 0.3rem 0.85rem;
       background: #f0ede8;
@@ -625,7 +625,7 @@ import { Subscription } from 'rxjs';
       line-height: 1;
     }
     .avg-meta { display: flex; flex-direction: column; gap: 0.3rem; }
-    .rating-count { font-size: 0.78rem; color: #78716c; }
+    .rating-count { font-size: 0.78rem; color: #57534e; }
     .user-rating {
       margin-top: 1rem;
       padding-top: 1rem;
@@ -673,7 +673,7 @@ import { Subscription } from 'rxjs';
       align-items: center;
       gap: 0.6rem;
     }
-    .login-prompt svg { width: 1.1rem; height: 1.1rem; color: #78716c; flex-shrink: 0; }
+    .login-prompt svg { width: 1.1rem; height: 1.1rem; color: #57534e; flex-shrink: 0; }
     .login-prompt p { font-size: 0.875rem; color: #44403c; margin: 0; }
     .login-prompt a { color: #4a7c59; font-weight: 700; text-decoration: none; }
     .login-prompt a:hover { text-decoration: underline; }
@@ -705,14 +705,14 @@ import { Subscription } from 'rxjs';
     }
     .comment-meta { flex: 1; }
     .comment-meta strong { font-size: 0.85rem; color: #1c1917; display: block; }
-    .comment-date { font-size: 0.75rem; color: #a8a29e; }
+    .comment-date { font-size: 0.75rem; color: #57534e; }
     .comment-rating { margin-bottom: 0.4rem; }
     .comment-body { color: #44403c; font-size: 0.875rem; line-height: 1.65; margin: 0; }
     .delete-comment-btn {
       background: none;
       border: none;
       cursor: pointer;
-      color: #a8a29e;
+      color: #57534e;
       padding: 0.25rem;
       border-radius: 0.4rem;
       display: flex;
@@ -720,7 +720,7 @@ import { Subscription } from 'rxjs';
     }
     .delete-comment-btn svg { width: 0.9rem; height: 0.9rem; }
     .delete-comment-btn:hover { color: #dc2626; background: #fef2f2; }
-    .no-comments { font-size: 0.875rem; color: #a8a29e; text-align: center; padding: 1rem 0; margin: 0; }
+    .no-comments { font-size: 0.875rem; color: #57534e; text-align: center; padding: 1rem 0; margin: 0; }
 
     /* ===== RELATED ===== */
     .related-section {
@@ -758,7 +758,7 @@ import { Subscription } from 'rxjs';
       border: none;
       font-size: 0.78rem;
       font-weight: 600;
-      color: #78716c;
+      color: #57534e;
       cursor: pointer;
       border-radius: 0.5rem;
       transition: background 0.15s, color 0.15s;

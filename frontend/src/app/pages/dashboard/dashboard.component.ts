@@ -183,7 +183,7 @@ import { SeoService } from '../../services/seo.service';
     .stat-label {
       display: block;
       font-size: 0.82rem;
-      color: #78716c;
+      color: #57534e;
       font-weight: 600;
       margin-top: 0.3rem;
       text-transform: uppercase;
@@ -237,7 +237,7 @@ import { SeoService } from '../../services/seo.service';
     .quick-link svg { width: 1rem; height: 1rem; color: #78350f; flex-shrink: 0; }
     .quick-link:hover { background: #f5f0e8; transform: translateX(3px); }
 
-    .empty-text { color: #78716c; font-size: 0.9rem; text-align: center; padding: 1rem 0; }
+    .empty-text { color: #57534e; font-size: 0.9rem; text-align: center; padding: 1rem 0; }
     .comment-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.75rem; }
     .comment-item {
       padding: 0.75rem;
@@ -248,7 +248,7 @@ import { SeoService } from '../../services/seo.service';
     .comment-meta { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.3rem; flex-wrap: wrap; }
     .comment-author { font-weight: 700; font-size: 0.85rem; color: #1c1917; }
     .comment-rating { font-size: 0.75rem; color: #d97706; font-weight: 700; }
-    .comment-date { font-size: 0.75rem; color: #a8a29e; margin-left: auto; }
+    .comment-date { font-size: 0.75rem; color: #57534e; margin-left: auto; }
     .comment-body {
       font-size: 0.85rem;
       color: #44403c;
