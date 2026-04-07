@@ -30,7 +30,7 @@ import { SeoService } from '../../services/seo.service';
           />
           <button type="submit" class="search-btn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            Търси
+            <span class="btn-text">Търси</span>
           </button>
         </form>
 
@@ -280,6 +280,8 @@ import { SeoService } from '../../services/seo.service';
     @media (max-width: 640px) {
       .recipe-grid { grid-template-columns: 1fr; }
       .page-header h1 { font-size: 2rem; }
+      .btn-text { display: none; }
+      .search-btn { padding: 0.85rem 1rem; }
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
