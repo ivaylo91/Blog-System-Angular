@@ -118,10 +118,15 @@ class RecipeController extends Controller
 
     public function dashboardIndex(Request $request): JsonResponse
     {
-        $recipes = Recipe::with(['category'])
-            ->where('user_id', $request->user()->id)
-            ->orderByDesc('updated_at')
-            ->get();
+        $user = $request->user();
+
+        $query = Recipe::with(['category', 'user:id,name,email']);
+
+        if (! $user->isAdmin()) {
+            $query->where('user_id', $user->id);
+        }
+
+        $recipes = $query->orderByDesc('updated_at')->get();
 
         return response()->json($recipes);
     }

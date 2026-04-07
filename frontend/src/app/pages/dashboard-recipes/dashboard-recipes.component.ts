@@ -2,6 +2,8 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit, 
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { RecipeService } from '../../services/recipe.service';
+import { AuthService } from '../../services/auth.service';
+import { ToastService } from '../../services/toast.service';
 import { Recipe } from '../../models/models';
 import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-modal.component';
 
@@ -13,7 +15,7 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
     <div class="dashboard-recipes">
       <div class="header-row">
         <div>
-          <h1>Управление на рецепти</h1>
+          <h1>{{ auth.isAdmin() ? 'Всички рецепти' : 'Моите рецепти' }}</h1>
           <p class="subtitle">{{ recipes().length }} рецепти — {{ publishedCount() }} публикувани, {{ draftCount() }} чернови</p>
         </div>
         <a routerLink="/dashboard/recipes/new" class="btn-primary">
@@ -40,6 +42,7 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
           <thead>
             <tr>
               <th>Заглавие</th>
+              @if (auth.isAdmin()) { <th>Автор</th> }
               <th>Категория</th>
               <th>Трудност</th>
               <th>Статус</th>
@@ -53,6 +56,9 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
                 <td>
                   <a [routerLink]="['/recipes', recipe.slug]" class="recipe-link">{{ recipe.title }}</a>
                 </td>
+                @if (auth.isAdmin()) {
+                  <td class="author-cell">{{ recipe.user?.name || '—' }}</td>
+                }
                 <td>{{ recipe.category?.name || '—' }}</td>
                 <td>
                   <span class="badge" [class]="'badge-' + recipe.difficulty">{{ recipe.difficulty }}</span>
@@ -62,7 +68,8 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
                     [class.published]="recipe.published"
                     [class.draft]="!recipe.published"
                     (click)="togglePublish(recipe)"
-                    [title]="recipe.published ? 'Скрий' : 'Публикувай'">
+                    [title]="recipe.published ? 'Скрий' : 'Публикувай'"
+                    [disabled]="!canManage(recipe)">
                     @if (recipe.published) {
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                       Публикувана
@@ -74,13 +81,17 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
                 </td>
                 <td class="date-cell">{{ formatDate(recipe.published_at || '') }}</td>
                 <td class="actions">
-                  <a [routerLink]="['/dashboard/recipes', recipe.slug, 'edit']" class="btn-small">Редактирай</a>
-                  <button class="btn-small btn-danger" (click)="confirmDelete(recipe)">Изтрий</button>
+                  @if (canManage(recipe)) {
+                    <a [routerLink]="['/dashboard/recipes', recipe.slug, 'edit']" class="btn-small">Редактирай</a>
+                    <button class="btn-small btn-danger" (click)="confirmDelete(recipe)">Изтрий</button>
+                  } @else {
+                    <span class="no-access">—</span>
+                  }
                 </td>
               </tr>
             }
             @empty {
-              <tr><td colspan="6" class="empty">Няма рецепти.</td></tr>
+              <tr><td colspan="7" class="empty">Няма рецепти.</td></tr>
             }
           </tbody>
         </table>
@@ -235,6 +246,9 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
     .status-toggle.draft { background: #fef9c3; color: #713f12; border-color: #fde68a; }
     .status-toggle.draft:hover { background: #fef08a; }
 
+    .author-cell { font-size: 0.85rem; color: #57534e; font-weight: 600; white-space: nowrap; }
+    .no-access { color: #c2bdb9; font-size: 0.8rem; }
+    .status-toggle:disabled { opacity: 0.5; cursor: default; }
     .date-cell { white-space: nowrap; color: #57534e; font-size: 0.85rem; }
     .actions { display: flex; gap: 0.5rem; }
     .btn-small {
@@ -263,6 +277,9 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
 export class DashboardRecipesComponent implements OnInit {
   private recipeService = inject(RecipeService);
   private cdr = inject(ChangeDetectorRef);
+  private toast = inject(ToastService);
+  auth = inject(AuthService);
+
   recipes = signal<Recipe[]>([]);
   filteredRecipes = signal<Recipe[]>([]);
   showDeleteModal = signal(false);
@@ -273,14 +290,19 @@ export class DashboardRecipesComponent implements OnInit {
   publishedCount = () => this.recipes().filter(r => r.published).length;
   draftCount = () => this.recipes().filter(r => !r.published).length;
 
+  canManage(recipe: Recipe): boolean {
+    if (this.auth.isAdmin()) return true;
+    return recipe.user_id === this.auth.user()?.id;
+  }
+
   ngOnInit(): void {
     this.loadRecipes();
   }
 
   loadRecipes(): void {
-    this.recipeService.getDashboardRecipes().subscribe(r => {
-      this.recipes.set(r);
-      this.applyFilter();
+    this.recipeService.getDashboardRecipes().subscribe({
+      next: r => { this.recipes.set(r); this.applyFilter(); },
+      error: () => this.toast.error('Грешка при зареждане на рецепти.'),
     });
   }
 
@@ -290,7 +312,10 @@ export class DashboardRecipesComponent implements OnInit {
     if (this.filterStatus === 'draft') result = result.filter(r => !r.published);
     if (this.searchQuery.trim()) {
       const q = this.searchQuery.toLowerCase();
-      result = result.filter(r => r.title.toLowerCase().includes(q));
+      result = result.filter(r =>
+        r.title.toLowerCase().includes(q) ||
+        (r.user?.name?.toLowerCase().includes(q) ?? false)
+      );
     }
     this.filteredRecipes.set(result);
     this.cdr.markForCheck();
@@ -302,8 +327,10 @@ export class DashboardRecipesComponent implements OnInit {
   }
 
   togglePublish(recipe: Recipe): void {
-    this.recipeService.togglePublish(recipe.slug, !recipe.published).subscribe(() => {
-      this.loadRecipes();
+    if (!this.canManage(recipe)) return;
+    this.recipeService.togglePublish(recipe.slug, !recipe.published).subscribe({
+      next: () => { this.toast.success(recipe.published ? 'Рецептата е скрита.' : 'Рецептата е публикувана.'); this.loadRecipes(); },
+      error: () => this.toast.error('Грешка при промяна на статуса.'),
     });
   }
 
@@ -315,10 +342,14 @@ export class DashboardRecipesComponent implements OnInit {
   deleteRecipe(): void {
     const recipe = this.recipeToDelete();
     if (!recipe) return;
-    this.recipeService.deleteRecipe(recipe.slug).subscribe(() => {
-      this.showDeleteModal.set(false);
-      this.recipeToDelete.set(null);
-      this.loadRecipes();
+    this.recipeService.deleteRecipe(recipe.slug).subscribe({
+      next: () => {
+        this.showDeleteModal.set(false);
+        this.recipeToDelete.set(null);
+        this.toast.success('Рецептата е изтрита.');
+        this.loadRecipes();
+      },
+      error: () => this.toast.error('Грешка при изтриване.'),
     });
   }
 

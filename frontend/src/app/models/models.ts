@@ -18,6 +18,7 @@ export interface Recipe {
   category_id: number | null;
   user_id: number | null;
   category?: Category;
+  user?: User;
   tags?: Tag[];
   ingredients?: Ingredient[];
   steps?: RecipeStep[];
