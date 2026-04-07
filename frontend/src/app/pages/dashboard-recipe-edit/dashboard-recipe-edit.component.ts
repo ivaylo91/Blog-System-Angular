@@ -200,6 +200,19 @@ interface StepInput { description: string; }
             </div>
           </div>
 
+          <!-- Publish -->
+          <div class="card">
+            <div class="card-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              Публикуване
+            </div>
+            <label class="toggle-row">
+              <input type="checkbox" [(ngModel)]="published" name="published" />
+              <span class="toggle-label">Публикувана рецепта</span>
+            </label>
+            <p class="field-hint">Само публикувани рецепти се виждат от посетителите.</p>
+          </div>
+
         </div>
       </form>
     </div>
@@ -464,6 +477,21 @@ interface StepInput { description: string; }
     @keyframes spin { to { transform: rotate(360deg); } }
     .spin { animation: spin 1s linear infinite; }
 
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      cursor: pointer;
+      margin-bottom: 0.4rem;
+    }
+    .toggle-row input[type="checkbox"] {
+      width: 1.1rem;
+      height: 1.1rem;
+      flex-shrink: 0;
+      accent-color: #4a7c59;
+    }
+    .toggle-label { font-size: 0.9rem; font-weight: 600; color: #1c1917; }
+
     @media (max-width: 900px) {
       .form-grid { grid-template-columns: 1fr; }
       .col-side { order: -1; }
@@ -496,6 +524,7 @@ export class DashboardRecipeEditComponent implements OnInit {
   cookTime = 0;
   servings = 4;
   tagsInput = '';
+  published = false;
   imageFile: File | null = null;
   imagePreview: string | null = null;
   ingredients: IngredientInput[] = [{ name: '', quantity: '' }];
@@ -519,6 +548,7 @@ export class DashboardRecipeEditComponent implements OnInit {
           this.cookTime = recipe.cook_minutes || 0;
           this.servings = recipe.servings || 4;
           this.tagsInput = recipe.tags?.map(t => t.name).join(', ') || '';
+          this.published = recipe.published || false;
           this.ingredients = recipe.ingredients?.map(i => ({ name: i.name, quantity: i.amount || '' })) || [];
           this.steps = recipe.steps?.map(s => ({ description: s.description })) || [];
           if (this.ingredients.length === 0) this.ingredients = [{ name: '', quantity: '' }];
@@ -560,6 +590,7 @@ export class DashboardRecipeEditComponent implements OnInit {
     formData.append('prep_minutes', String(this.prepTime));
     formData.append('cook_minutes', String(this.cookTime));
     formData.append('servings', String(this.servings));
+    formData.append('published', this.published ? '1' : '0');
     if (this.imageFile) formData.append('hero_image', this.imageFile);
     const tags = this.tagsInput.split(',').map(t => t.trim()).filter(Boolean);
     tags.forEach((t, i) => formData.append(`tags[${i}]`, t));
@@ -585,7 +616,12 @@ export class DashboardRecipeEditComponent implements OnInit {
       },
       error: (err) => {
         this.saving.set(false);
-        this.error.set(err.error?.message || 'Възникна грешка.');
+        const errors = err.error?.errors;
+        if (errors) {
+          this.error.set(Object.values(errors).flat().join(' '));
+        } else {
+          this.error.set(err.error?.message || 'Възникна грешка.');
+        }
       },
     });
   }
