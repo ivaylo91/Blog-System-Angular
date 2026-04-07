@@ -5,6 +5,7 @@ import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.co
 import { Recipe } from '../../models/models';
 import { FormsModule } from '@angular/forms';
 import { SeoService } from '../../services/seo.service';
+import { PerfService } from '../../services/perf.service';
 
 @Component({
   selector: 'app-home',
@@ -493,6 +494,7 @@ export class HomeComponent implements OnInit {
   private router = inject(Router);
   private seo = inject(SeoService);
   private cdr = inject(ChangeDetectorRef);
+  private perf = inject(PerfService);
 
   featured: Recipe[] = [];
   searchQuery = '';
@@ -500,6 +502,7 @@ export class HomeComponent implements OnInit {
   skeletons = [0, 1, 2, 3, 4, 5, 6];
 
   ngOnInit(): void {
+    this.perf.mark('home_start');
     this.seo.set({
       title: 'Начало',
       description: 'Традиционни български рецепти, споделени с любов. Открий лесни и вкусни ястия за всеки повод в кулинарния блог на Иво.',
@@ -509,6 +512,8 @@ export class HomeComponent implements OnInit {
         this.featured = recipes;
         this.loading = false;
         this.cdr.markForCheck();
+        this.perf.mark('home_featured_ready');
+        this.perf.measure('home_featured_load', 'home_start', 'home_featured_ready');
       },
       error: () => {
         this.loading = false;

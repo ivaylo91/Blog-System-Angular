@@ -7,6 +7,7 @@ import { Recipe, Category } from '../../models/models';
 import { SeoService } from '../../services/seo.service';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { PerfService } from '../../services/perf.service';
 
 @Component({
   selector: 'app-recipes',
@@ -295,6 +296,7 @@ export class RecipesComponent implements OnInit, OnDestroy {
   private router = inject(Router);
   private seo = inject(SeoService);
   private cdr = inject(ChangeDetectorRef);
+  private perf = inject(PerfService);
 
   recipes: Recipe[] = [];
   categories: Category[] = [];
@@ -350,6 +352,7 @@ export class RecipesComponent implements OnInit, OnDestroy {
   loadRecipes(): void {
     this.loading = true;
     this.cdr.markForCheck();
+    this.perf.mark('recipes_fetch_start');
     this.recipeService.getRecipes({
       q: this.q,
       category: this.category,
@@ -363,6 +366,8 @@ export class RecipesComponent implements OnInit, OnDestroy {
       this.lastPage = res.last_page;
       this.loading = false;
       this.cdr.markForCheck();
+      this.perf.mark('recipes_ready');
+      this.perf.measure('recipes_list_load', 'recipes_fetch_start', 'recipes_ready');
     });
   }
 

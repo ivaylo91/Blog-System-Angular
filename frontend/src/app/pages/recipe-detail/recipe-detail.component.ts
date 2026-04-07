@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { RecipeService } from '../../services/recipe.service';
 import { AuthService } from '../../services/auth.service';
 import { ToastService } from '../../services/toast.service';
+import { PerfService } from '../../services/perf.service';
 import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.component';
 import { StarRatingComponent } from '../../components/star-rating/star-rating.component';
 import { Recipe, Comment, FavoriteStatusResponse } from '../../models/models';
@@ -808,6 +809,7 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
   private seo = inject(SeoService);
   private cdr = inject(ChangeDetectorRef);
   private toast = inject(ToastService);
+  private perf = inject(PerfService);
   auth = inject(AuthService);
 
   Math = Math;
@@ -861,6 +863,7 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
   }
 
   loadRecipe(slug: string): void {
+    this.perf.mark('recipe_detail_fetch_start');
     this.recipeService.getRecipe(slug).subscribe({
       next: (res) => {
         this.recipe = res.recipe;
@@ -880,6 +883,8 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
           if (userComment?.body)   this.commentBody = userComment.body;
         }
         this.cdr.markForCheck();
+        this.perf.mark('recipe_detail_ready');
+        this.perf.measure('recipe_detail_load', 'recipe_detail_fetch_start', 'recipe_detail_ready');
       },
       error: () => this.toast.error('Рецептата не беше намерена.'),
     });
