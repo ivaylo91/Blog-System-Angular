@@ -7,7 +7,6 @@ import { AuthService } from '../../services/auth.service';
 import { ToastService } from '../../services/toast.service';
 import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.component';
 import { StarRatingComponent } from '../../components/star-rating/star-rating.component';
-import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-modal.component';
 import { Recipe, Comment, FavoriteStatusResponse } from '../../models/models';
 import { SeoService } from '../../services/seo.service';
 import { Subscription } from 'rxjs';
@@ -15,7 +14,7 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-recipe-detail',
   standalone: true,
-  imports: [RouterLink, DatePipe, FormsModule, RecipeCardComponent, StarRatingComponent, ConfirmModalComponent],
+  imports: [RouterLink, DatePipe, FormsModule, RecipeCardComponent, StarRatingComponent],
   template: `
     @if (recipe) {
       <div class="detail-page">
