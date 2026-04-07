@@ -1,4 +1,8 @@
-/* Google Fonts loaded via <link> in index.html for better LCP */
+/* Self-hosted fonts via @fontsource — no external requests, no render-blocking */
+@import '@fontsource-variable/inter/wght.css';          /* Inter 100-900 variable, latin */
+@import '@fontsource/playfair-display/600.css';         /* Playfair Display normal 600 */
+@import '@fontsource/playfair-display/700.css';         /* Playfair Display normal 700 */
+@import '@fontsource/playfair-display/600-italic.css';  /* Playfair Display italic 600 */
 *,
 *::before,
 *::after {
