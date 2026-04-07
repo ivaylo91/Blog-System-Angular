@@ -116,7 +116,7 @@ import { AuthService } from '../../services/auth.service';
       font-size: 0.875rem;
       font-weight: 500;
       color: #57534e;
-      transition: background 0.18s, color 0.18s;
+      transition: background 0.18s;
       white-space: nowrap;
     }
     .nav-links a:hover { background: #f5f0e8; color: #1c1917; }
@@ -154,7 +154,7 @@ import { AuthService } from '../../services/auth.service';
       font-weight: 500;
       color: #dc2626;
       cursor: pointer;
-      transition: background 0.18s, color 0.18s;
+      transition: background 0.18s;
       white-space: nowrap;
     }
     .logout-btn svg { width: 0.9rem; height: 0.9rem; }

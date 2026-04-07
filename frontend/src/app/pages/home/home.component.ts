@@ -325,9 +325,17 @@ import { PerfService } from '../../services/perf.service';
     .hero-skeleton {
       border-radius: 1.5rem;
       aspect-ratio: 4/3;
-      background: linear-gradient(90deg, #f0ede8 25%, #e8e3dc 50%, #f0ede8 75%);
-      background-size: 200% 100%;
-      animation: shimmer 1.5s infinite;
+      background: #f0ede8;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-skeleton::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.55) 50%, transparent 100%);
+      transform: translateX(-100%);
+      animation: shimmer 1.5s ease-in-out infinite;
     }
     .hero-placeholder {
       border-radius: 1.5rem;
@@ -385,7 +393,7 @@ import { PerfService } from '../../services/perf.service';
       margin-top: 1.25rem;
     }
 
-    /* Skeleton cards */
+    /* Skeleton cards — shimmer uses transform:translateX (composited, no repaint) */
     .skeleton-card {
       border-radius: 1.25rem;
       overflow: hidden;
@@ -395,10 +403,18 @@ import { PerfService } from '../../services/perf.service';
     .skeleton-side { display: flex; flex-direction: row; border-radius: 1rem; }
     .sk-img {
       aspect-ratio: 4/3;
-      background: linear-gradient(90deg, #f0ede8 25%, #e8e3dc 50%, #f0ede8 75%);
-      background-size: 200% 100%;
-      animation: shimmer 1.5s infinite;
+      background: #f0ede8;
+      position: relative;
+      overflow: hidden;
       flex-shrink: 0;
+    }
+    .sk-img::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.55) 50%, transparent 100%);
+      transform: translateX(-100%);
+      animation: shimmer 1.5s ease-in-out infinite;
     }
     .sk-img-hero { aspect-ratio: 3/2; }
     .sk-img-side { width: 110px; aspect-ratio: unset; min-height: 90px; }
@@ -407,16 +423,24 @@ import { PerfService } from '../../services/perf.service';
     .sk-line {
       height: 0.85rem;
       border-radius: 9999px;
-      background: linear-gradient(90deg, #f0ede8 25%, #e8e3dc 50%, #f0ede8 75%);
-      background-size: 200% 100%;
-      animation: shimmer 1.5s infinite;
+      background: #f0ede8;
+      position: relative;
+      overflow: hidden;
+    }
+    .sk-line::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.55) 50%, transparent 100%);
+      transform: translateX(-100%);
+      animation: shimmer 1.5s ease-in-out infinite;
     }
     .sk-short  { width: 35%; }
     .sk-long   { width: 80%; }
     .sk-medium { width: 55%; }
     @keyframes shimmer {
-      from { background-position: 200% 0; }
-      to   { background-position: -200% 0; }
+      from { transform: translateX(-100%); }
+      to   { transform: translateX(100%); }
     }
 
     .cta { text-align: center; margin-top: 3rem; }
