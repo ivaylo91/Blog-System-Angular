@@ -1,6 +1,6 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
-import { provideRouter, withInMemoryScrolling, withPreloading } from '@angular/router';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideRouter, withInMemoryScrolling, withPreloading, withViewTransitions } from '@angular/router';
+import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 
 import { routes } from './app.routes';
 import { authInterceptor } from './interceptors/auth.interceptor';
@@ -14,7 +14,8 @@ export const appConfig: ApplicationConfig = {
       routes,
       withPreloading(IdlePreloadStrategy),
       withInMemoryScrolling({ scrollPositionRestoration: 'top' }),
+      withViewTransitions({ skipInitialTransition: true }),
     ),
-    provideHttpClient(withInterceptors([authInterceptor])),
+    provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
   ]
 };

@@ -5,9 +5,9 @@ import { ToastService } from '../../services/toast.service';
   selector: 'app-toast',
   standalone: true,
   template: `
-    <div class="toast-container">
+    <div class="toast-container" aria-live="polite" aria-atomic="false">
       @for (toast of toastService.toasts(); track toast.id) {
-        <div class="toast" [class]="'toast-' + toast.type">
+        <div class="toast" [class]="'toast-' + toast.type" role="status">
           <svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             @if (toast.type === 'success') {
               <polyline points="20 6 9 17 4 12"/>
