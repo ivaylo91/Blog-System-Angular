@@ -5,8 +5,7 @@ import { RecipeService } from '../../services/recipe.service';
 import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.component';
 import { Recipe, Category } from '../../models/models';
 import { SeoService } from '../../services/seo.service';
-import { Subject, Subscription } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 import { PerfService } from '../../services/perf.service';
 
 @Component({
@@ -325,7 +324,8 @@ export class RecipesComponent implements OnInit, OnDestroy {
   loading = true;
   skeletons = [0, 1, 2, 3, 4, 5];
 
-  private searchSubject = new Subject<string>();
+  private debounceTimer?: ReturnType<typeof setTimeout>;
+  private lastSearchQ = '';
   private subs = new Subscription();
 
   get pageNumbers(): number[] {
@@ -337,14 +337,6 @@ export class RecipesComponent implements OnInit, OnDestroy {
       title: 'Рецепти',
       description: 'Разгледай всички традиционни български рецепти. Филтрирай по категория, трудност и време за приготвяне.',
     });
-
-    this.subs.add(
-      this.searchSubject.pipe(debounceTime(350), distinctUntilChanged()).subscribe(q => {
-        this.router.navigate(['/recipes'], {
-          queryParams: { q: q || undefined, category: this.category || undefined, difficulty: this.difficulty || undefined, sort: this.sort !== 'newest' ? this.sort : undefined, page: undefined },
-        });
-      })
-    );
 
     this.subs.add(this.recipeService.getCategories().subscribe(cats => { this.categories = cats; this.cdr.markForCheck(); }));
     this.subs.add(this.route.queryParams.subscribe(params => {
@@ -358,11 +350,19 @@ export class RecipesComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    clearTimeout(this.debounceTimer);
     this.subs.unsubscribe();
   }
 
   onSearchInput(): void {
-    this.searchSubject.next(this.q);
+    clearTimeout(this.debounceTimer);
+    this.debounceTimer = setTimeout(() => {
+      if (this.q === this.lastSearchQ) return;
+      this.lastSearchQ = this.q;
+      this.router.navigate(['/recipes'], {
+        queryParams: { q: this.q || undefined, category: this.category || undefined, difficulty: this.difficulty || undefined, sort: this.sort !== 'newest' ? this.sort : undefined, page: undefined },
+      });
+    }, 350);
   }
 
   loadRecipes(): void {

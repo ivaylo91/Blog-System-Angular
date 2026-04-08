@@ -182,7 +182,7 @@ class RecipeController extends Controller
 
         $imagePath = null;
         if ($request->hasFile('hero_image')) {
-            $imagePath = '/storage/' . $request->file('hero_image')->store('recipes', 'public');
+            $imagePath = $this->storeOptimizedImage($request->file('hero_image'));
         }
 
         $recipe = Recipe::create([
@@ -266,7 +266,7 @@ class RecipeController extends Controller
                 $oldPath = str_replace('/storage/', '', $recipe->hero_image);
                 Storage::disk('public')->delete($oldPath);
             }
-            $validated['hero_image'] = '/storage/' . $request->file('hero_image')->store('recipes', 'public');
+            $validated['hero_image'] = $this->storeOptimizedImage($request->file('hero_image'));
         }
 
         if (isset($validated['published']) && $validated['published'] && ! $recipe->published_at) {
@@ -317,5 +317,47 @@ class RecipeController extends Controller
         $recipe->delete();
 
         return response()->json(['message' => 'Рецептата е изтрита.']);
+    }
+
+    private function storeOptimizedImage(\Illuminate\Http\UploadedFile $file): string
+    {
+        if (! function_exists('imagewebp') || ! function_exists('imagecreatefromjpeg')) {
+            return '/storage/' . $file->store('recipes', 'public');
+        }
+
+        $source = match ($file->getMimeType()) {
+            'image/jpeg' => @imagecreatefromjpeg($file->getRealPath()),
+            'image/png'  => @imagecreatefrompng($file->getRealPath()),
+            'image/webp' => @imagecreatefromwebp($file->getRealPath()),
+            default      => false,
+        };
+
+        if (! $source) {
+            return '/storage/' . $file->store('recipes', 'public');
+        }
+
+        $origW = imagesx($source);
+        $origH = imagesy($source);
+
+        $maxW  = 1200;
+        $maxH  = 900;
+        $ratio = min($maxW / $origW, $maxH / $origH, 1.0);
+        $newW  = (int) round($origW * $ratio);
+        $newH  = (int) round($origH * $ratio);
+
+        $canvas = imagecreatetruecolor($newW, $newH);
+        imagealphablending($canvas, false);
+        imagesavealpha($canvas, true);
+        imagecopyresampled($canvas, $source, 0, 0, 0, 0, $newW, $newH, $origW, $origH);
+        imagedestroy($source);
+
+        $filename = 'recipes/' . Str::random(20) . '.webp';
+        Storage::disk('public')->makeDirectory('recipes');
+        $fullPath = Storage::disk('public')->path($filename);
+
+        imagewebp($canvas, $fullPath, 82);
+        imagedestroy($canvas);
+
+        return '/storage/' . $filename;
     }
 }
