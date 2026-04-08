@@ -44,12 +44,20 @@
 
 # ── Cache headers for static assets served directly by Apache ────────────────
 <IfModule mod_headers.c>
-    # Hashed assets (JS, CSS, fonts, images with 8+ char hash) — immutable 1 year
-    <FilesMatch "\.[a-f0-9A-F]{8,}\.(js|css|woff2|woff|ttf|svg|png|jpg|webp)$">
+    # Angular hashed assets — filename ends with -XXXXXXXX (8 uppercase base32 chars)
+    # Covers: chunk-QJJGTXCS.js, main-YASK6DDW.js, styles-3M62JTIQ.css,
+    #         inter-latin-wght-normal-NRMW37G5.woff2, playfair-...-PPGHEFGC.woff2, etc.
+    <FilesMatch "-[A-Z0-9]{8}\.(js|css|woff2|woff|ttf)$">
         Header set Cache-Control "public, max-age=31536000, immutable"
     </FilesMatch>
 
-    # Source maps — cache but not immutable (nice-to-have, not critical)
+    # Uploaded recipe images — long random filenames, safe to cache 30 days
+    SetEnvIf Request_URI "^/storage/" is_upload
+    <FilesMatch "\.(jpg|jpeg|png|webp|gif)$">
+        Header set Cache-Control "public, max-age=2592000" env=is_upload
+    </FilesMatch>
+
+    # Source maps — cache but not immutable
     <FilesMatch "\.map$">
         Header set Cache-Control "public, max-age=604800"
     </FilesMatch>
