@@ -23,3 +23,49 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
+
+# ── Compression ─────────────────────────────────────────────────────────────
+# Brotli (preferred — 20-26% smaller than gzip)
+<IfModule mod_brotli.c>
+    AddOutputFilterByType BROTLI_COMPRESS text/html text/css application/javascript application/json
+    AddOutputFilterByType BROTLI_COMPRESS font/woff2 font/woff image/svg+xml
+    BrotliCompressionQuality 6
+</IfModule>
+
+# Gzip fallback
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json
+    AddOutputFilterByType DEFLATE font/woff2 font/woff image/svg+xml
+    # Remove broken encodings
+    BrowserMatch ^Mozilla/4 gzip-only-text/html
+    BrowserMatch ^Mozilla/4\.0[678] no-gzip
+    BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+</IfModule>
+
+# ── Cache headers for static assets served directly by Apache ────────────────
+<IfModule mod_headers.c>
+    # Hashed assets (JS, CSS, fonts, images with 8+ char hash) — immutable 1 year
+    <FilesMatch "\.[a-f0-9A-F]{8,}\.(js|css|woff2|woff|ttf|svg|png|jpg|webp)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+
+    # Source maps — cache but not immutable (nice-to-have, not critical)
+    <FilesMatch "\.map$">
+        Header set Cache-Control "public, max-age=604800"
+    </FilesMatch>
+
+    # Vary: Accept-Encoding so CDNs store separate compressed copies
+    <FilesMatch "\.(js|css|html|json|svg)$">
+        Header append Vary Accept-Encoding
+    </FilesMatch>
+</IfModule>
+
+# ── Mime types ───────────────────────────────────────────────────────────────
+<IfModule mod_mime.c>
+    AddType application/javascript        .js
+    AddType text/css                      .css
+    AddType font/woff2                    .woff2
+    AddType font/woff                     .woff
+    AddType image/svg+xml                 .svg
+    AddType image/webp                    .webp
+</IfModule>

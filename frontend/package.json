@@ -4,7 +4,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "clean:public": "node -e \"const fs=require('fs'),p='../public';['chunk','main','styles','polyfills'].forEach(p2=>{fs.readdirSync(p).filter(f=>f.startsWith(p2)&&(f.endsWith('.js')||f.endsWith('.css'))).forEach(f=>fs.rmSync(p+'/'+f,{force:true}))});const m=p+'/media';if(fs.existsSync(m))fs.rmSync(m,{recursive:true,force:true});\"",
+    "build": "npm run clean:public && ng build",
+    "build:prod": "npm run clean:public && ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },

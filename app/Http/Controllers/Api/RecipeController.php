@@ -45,7 +45,8 @@ class RecipeController extends Controller
         $perPage = min((int) $request->input('per_page', 6), 50);
         $recipes = $query->paginate($perPage);
 
-        return response()->json($recipes);
+        return response()->json($recipes)
+            ->header('Cache-Control', 'public, max-age=60, stale-while-revalidate=300');
     }
 
     public function show(string $slug): JsonResponse
@@ -80,7 +81,7 @@ class RecipeController extends Controller
             'averageRating' => $averageRating,
             'ratingsCount' => $ratingsCount,
             'favoriteCount' => $favoriteCount,
-        ]);
+        ])->header('Cache-Control', 'public, max-age=60, stale-while-revalidate=300');
     }
 
     public function featured(): JsonResponse
@@ -93,7 +94,8 @@ class RecipeController extends Controller
                 ->get();
         });
 
-        return response()->json($recipes);
+        return response()->json($recipes)
+            ->header('Cache-Control', 'public, max-age=300, stale-while-revalidate=600');
     }
 
     public function related(string $slug): JsonResponse
@@ -111,7 +113,8 @@ class RecipeController extends Controller
             ->limit(3)
             ->get();
 
-        return response()->json($related);
+        return response()->json($related)
+            ->header('Cache-Control', 'public, max-age=300, stale-while-revalidate=600');
     }
 
     public function categories(): JsonResponse
@@ -120,7 +123,8 @@ class RecipeController extends Controller
             ->orderBy('name')
             ->get();
 
-        return response()->json($categories);
+        return response()->json($categories)
+            ->header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
     }
 
     // ── Dashboard endpoints (auth required) ──
