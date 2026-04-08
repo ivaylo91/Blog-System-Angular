@@ -194,18 +194,10 @@ import { Recipe } from '../../models/models';
     }
 
     @media (max-width: 500px) {
-      .card.compact {
-        flex-direction: column;
-        border-radius: 1.25rem;
-      }
-      .card.compact .card-image {
-        width: 100%;
-        aspect-ratio: 16 / 9;
-        min-height: unset;
-        border-radius: 1.25rem 1.25rem 0 0;
-      }
-      .card.compact .card-body { padding: 1rem 1.1rem 1.1rem; }
-      .card.compact .title { font-size: 1rem; }
+      .card.compact .card-image { width: 90px; }
+      .card.compact .card-body { padding: 0.75rem 0.875rem; }
+      .card.compact .title { font-size: 0.875rem; }
+      .card.compact .meta { font-size: 0.7rem; gap: 0.5rem; }
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
