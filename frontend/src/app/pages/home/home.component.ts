@@ -95,7 +95,7 @@ import { PerfService } from '../../services/perf.service';
             </div>
           </div>
           <div class="mag-bottom-grid">
-            @for (s of [0,1,2,3]; track s) {
+            @for (s of [0,1,2]; track s) {
               <div class="skeleton-card">
                 <div class="sk-img"></div>
                 <div class="sk-body">
@@ -348,7 +348,7 @@ import { PerfService } from '../../services/perf.service';
     }
 
     /* ===== BENTO GRID ===== */
-    .featured { padding: 4rem 1.5rem 5rem; background: #fff; }
+    .featured { padding: 4rem 1.5rem 5rem; background: #fff; min-height: 900px; }
     .section-inner { max-width: 1200px; margin: 0 auto; }
     .section-heading {
       display: flex;
