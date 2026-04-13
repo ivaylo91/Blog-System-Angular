@@ -91,15 +91,16 @@ import { PerfService } from '../../services/perf.service';
 
         @if (lastPage > 1) {
           <div class="pagination">
-            <button class="page-btn" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">‹</button>
+            <button class="page-btn" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)" aria-label="Предишна страница">‹</button>
             @for (p of pageNumbers; track p) {
               <button
                 class="page-btn"
                 [class.active]="p === currentPage"
+                [attr.aria-current]="p === currentPage ? 'page' : null"
                 (click)="goToPage(p)"
               >{{ p }}</button>
             }
-            <button class="page-btn" [disabled]="currentPage === lastPage" (click)="goToPage(currentPage + 1)">›</button>
+            <button class="page-btn" [disabled]="currentPage === lastPage" (click)="goToPage(currentPage + 1)" aria-label="Следваща страница">›</button>
           </div>
         }
       </div>
@@ -199,6 +200,7 @@ import { PerfService } from '../../services/perf.service';
     .pill-sm {
       padding: 0.35rem 0.9rem;
       font-size: 0.8rem;
+      min-height: 2.75rem;
     }
     .sort-divider {
       color: rgba(0,0,0,0.4);
@@ -276,8 +278,8 @@ import { PerfService } from '../../services/perf.service';
       margin-top: 3rem;
     }
     .page-btn {
-      min-width: 2.5rem;
-      height: 2.5rem;
+      min-width: 2.75rem;
+      height: 2.75rem;
       padding: 0 0.75rem;
       border-radius: 0.75rem;
       border: 1.5px solid rgba(0,0,0,0.1);

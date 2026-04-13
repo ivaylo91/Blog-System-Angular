@@ -11,7 +11,7 @@ import { AuthService } from '../../services/auth.service';
       <div class="header-inner">
 
         <a routerLink="/" class="brand">
-          <span class="brand-icon">🍳</span>
+          <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l1.5-7.5A2 2 0 0 1 6.46 2h11.08a2 2 0 0 1 1.96 1.5L21 11"/><path d="M3 11h18v2a7 7 0 0 1-14 0H3z"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="17" x2="12" y2="20"/></svg>
           <span class="brand-text">Кулинарният блог на Иво</span>
         </a>
 
@@ -80,7 +80,7 @@ import { AuthService } from '../../services/auth.service';
       text-decoration: none;
       flex-shrink: 0;
     }
-    .brand-icon { font-size: 1.8rem; }
+    .brand-icon { width: 1.9rem; height: 1.9rem; flex-shrink: 0; color: #78350f; }
     .brand-text {
       font-family: 'Georgia', serif;
       font-size: 1.05rem;

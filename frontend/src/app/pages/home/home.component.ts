@@ -55,7 +55,7 @@ import { PerfService } from '../../services/perf.service';
             <div class="hero-skeleton"></div>
           } @else {
             <div class="hero-placeholder">
-              <span>🍲</span>
+              <svg viewBox="0 0 64 64" fill="none" stroke="#c4b49a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="32" cy="34" rx="20" ry="12"/><path d="M12 34c0-6.6 9-12 20-12s20 5.4 20 12"/><path d="M22 22v-4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4"/><line x1="32" y1="14" x2="32" y2="10"/><line x1="24" y1="15" x2="22" y2="11"/><line x1="40" y1="15" x2="42" y2="11"/></svg>
             </div>
           }
         </div>
@@ -344,8 +344,8 @@ import { PerfService } from '../../services/perf.service';
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 5rem;
     }
+    .hero-placeholder svg { width: 5rem; height: 5rem; }
 
     /* ===== BENTO GRID ===== */
     .featured { padding: 4rem 1.5rem 5rem; background: #fff; min-height: 900px; }
@@ -509,6 +509,14 @@ import { PerfService } from '../../services/perf.service';
       .hero-stats { gap: 0.6rem; }
       .stat-divider { display: none; }
       .search-btn span { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero-image-wrap { transition: box-shadow 0.2s; }
+      .hero-image-wrap:hover { transform: none; }
+      .hero-img { transition: none; }
+      .hero-image-wrap:hover .hero-img { transform: none; }
+      .badge-arrow { transition: opacity 0.15s; transform: none !important; }
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,

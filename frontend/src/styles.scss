@@ -109,3 +109,10 @@ input, select, textarea {
 ::view-transition-new(root) {
   animation: 180ms ease vt-fade-in;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}

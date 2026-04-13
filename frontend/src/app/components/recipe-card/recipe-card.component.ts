@@ -31,9 +31,15 @@ import { Recipe } from '../../models/models';
           <p class="excerpt">{{ recipe.excerpt }}</p>
         }
         <div class="meta">
-          <span>⏱ {{ recipe.prep_minutes + recipe.cook_minutes }} мин</span>
+          <span class="meta-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            {{ recipe.prep_minutes + recipe.cook_minutes }} мин
+          </span>
           @if (!compact) {
-            <span>👥 {{ recipe.servings }} порции</span>
+            <span class="meta-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              {{ recipe.servings }} порции
+            </span>
           }
           <span class="difficulty">{{ recipe.difficulty }}</span>
         </div>
@@ -153,6 +159,12 @@ import { Recipe } from '../../models/models';
       font-size: 0.78rem;
       color: #57534e;
     }
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .meta-item svg { width: 0.85rem; height: 0.85rem; flex-shrink: 0; }
     .difficulty {
       margin-left: auto;
       font-weight: 600;
@@ -191,6 +203,14 @@ import { Recipe } from '../../models/models';
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(22px); }
       to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .card { animation: none; transition: box-shadow 0.2s; }
+      .card:hover { transform: none; }
+      .card-image img { transition: none; }
+      .card:hover .card-image img { transform: none; }
+      .overlay-btn { transition: opacity 0.15s; transform: none !important; }
     }
 
     @media (max-width: 500px) {
