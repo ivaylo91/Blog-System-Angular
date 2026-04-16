@@ -143,7 +143,10 @@ import { PerfService } from '../../services/perf.service';
   styles: [`
     /* ===== HERO ===== */
     .hero {
-      background: #faf7f4;
+      background-color: #faf7f4;
+      background-image: url('/backgrounds/cooking-pattern.svg');
+      background-size: 500px;
+      background-repeat: repeat;
       padding: 4rem 1.5rem 3.5rem;
       border-bottom: 1px solid rgba(0,0,0,0.06);
     }

@@ -307,7 +307,7 @@ import { Subscription } from 'rxjs';
     }
   `,
   styles: [`
-    .detail-page { min-height: 100vh; background: #faf7f4; }
+    .detail-page { min-height: 100vh; background-color: #faf7f4; background-image: url('/backgrounds/cooking-pattern.svg'); background-size: 500px; background-repeat: repeat; }
 
     /* ===== HERO ===== */
     .hero-banner {
