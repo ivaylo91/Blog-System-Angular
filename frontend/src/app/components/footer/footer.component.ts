@@ -171,7 +171,7 @@ import { AuthService } from '../../services/auth.service';
       .footer-inner { padding: 2.5rem 1.25rem 1.5rem; }
       .footer-top { flex-direction: column; gap: 1.5rem; padding-bottom: 1.75rem; }
       .footer-brand { max-width: 100%; }
-      .footer-cols { flex-direction: column; gap: 1.5rem; }
+      .footer-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
       .footer-col { flex-direction: column; gap: 0; }
       .col-title { margin-bottom: 0.25rem; }
       .footer-col a {
