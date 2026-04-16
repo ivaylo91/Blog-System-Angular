@@ -4,10 +4,11 @@ import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { ToastComponent } from './components/toast/toast.component';
 import { NavProgressComponent } from './components/nav-progress/nav-progress.component';
+import { MobileBottomNavComponent } from './components/mobile-bottom-nav/mobile-bottom-nav.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, HeaderComponent, FooterComponent, ToastComponent, NavProgressComponent],
+  imports: [RouterOutlet, HeaderComponent, FooterComponent, ToastComponent, NavProgressComponent, MobileBottomNavComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
