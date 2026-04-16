@@ -13,7 +13,7 @@ import { AuthService } from '../../services/auth.service';
         <div class="footer-top">
           <div class="footer-brand">
             <a routerLink="/" class="brand-logo">
-              <span class="brand-icon">🍳</span>
+              <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l1.5-7.5A2 2 0 0 1 6.46 2h11.08a2 2 0 0 1 1.96 1.5L21 11"/><path d="M3 11h18v2a7 7 0 0 1-14 0H3z"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="17" x2="12" y2="20"/></svg>
               <span class="brand-name">Кулинарният блог на Иво</span>
             </a>
             <p class="brand-tagline">Традиционни рецепти, споделени с любов и страст към доброто готвене.</p>
@@ -23,7 +23,7 @@ import { AuthService } from '../../services/auth.service';
             <div class="footer-col">
               <span class="col-title">Навигация</span>
               <a routerLink="/">Начало</a>
-              <a routerLink="/recipes">Рецепти</a>
+              <a routerLink="/recipes">Всички рецепти</a>
               @if (auth.isAuthenticated()) {
                 <a routerLink="/dashboard">Табло</a>
                 <a routerLink="/profile">Профил</a>
@@ -31,6 +31,13 @@ import { AuthService } from '../../services/auth.service';
                 <a routerLink="/signin">Вход</a>
                 <a routerLink="/register">Регистрация</a>
               }
+            </div>
+            <div class="footer-col">
+              <span class="col-title">Категории</span>
+              <a routerLink="/recipes" [queryParams]="{category: 'supи'}">Супи</a>
+              <a routerLink="/recipes" [queryParams]="{category: 'основни'}">Основни</a>
+              <a routerLink="/recipes" [queryParams]="{category: 'десерти'}">Десерти</a>
+              <a routerLink="/recipes" [queryParams]="{category: 'салати'}">Салати</a>
             </div>
           </div>
         </div>
@@ -53,11 +60,12 @@ import { AuthService } from '../../services/auth.service';
       margin-top: auto;
       background: #1c1917;
       color: #a8a29e;
+      border-top: 3px solid #78350f;
     }
     .footer-inner {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 3.5rem 1.5rem 1.75rem;
+      padding: 3rem 1.5rem 1.75rem;
     }
 
     .footer-top {
@@ -83,7 +91,7 @@ import { AuthService } from '../../services/auth.service';
       gap: 0.55rem;
       text-decoration: none;
     }
-    .brand-icon { font-size: 1.6rem; }
+    .brand-icon { width: 1.75rem; height: 1.75rem; flex-shrink: 0; color: #78350f; }
     .brand-name {
       font-family: 'Georgia', serif;
       font-size: 1rem;
@@ -122,8 +130,9 @@ import { AuthService } from '../../services/auth.service';
       text-decoration: none;
       font-size: 0.875rem;
       transition: color 0.2s;
+      touch-action: manipulation;
     }
-    .footer-col a:hover { color: #e7e5e4; }
+    .footer-col a:hover { color: #fafaf9; }
 
     /* Bottom */
     .footer-bottom {

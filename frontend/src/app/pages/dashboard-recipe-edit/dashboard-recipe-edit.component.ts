@@ -391,6 +391,8 @@ interface StepInput { description: string; }
       justify-content: center;
       margin-top: 0.25rem;
       transition: background 0.2s, border-color 0.2s;
+      touch-action: manipulation;
+      min-height: 2.5rem;
     }
     .btn-add svg { width: 0.9rem; height: 0.9rem; }
     .btn-add:hover { background: rgba(74,124,89,0.1); border-color: #4a7c59; }
@@ -407,6 +409,7 @@ interface StepInput { description: string; }
       align-items: center;
       justify-content: center;
       transition: background 0.2s;
+      touch-action: manipulation;
     }
     .btn-remove svg { width: 0.85rem; height: 0.85rem; }
     .btn-remove:hover { background: #fee2e2; }
@@ -449,14 +452,16 @@ interface StepInput { description: string; }
       padding: 0.65rem 1.25rem;
       border-radius: 0.75rem;
       text-decoration: none;
-      color: #fff;
-      background: #dc2626;
+      color: #44403c;
+      background: #f0ede8;
+      border: 1.5px solid rgba(0,0,0,0.1);
       font-weight: 600;
-      font-size: 0.9rem;
-      transition: background 0.2s;
+      font-size: 0.875rem;
+      transition: background 0.18s, border-color 0.18s;
+      touch-action: manipulation;
     }
-    .btn-cancel svg { width: 0.9rem; height: 0.9rem; }
-    .btn-cancel:hover { background: #b91c1c; }
+    .btn-cancel svg { width: 0.875rem; height: 0.875rem; }
+    .btn-cancel:hover { background: #e4dfd8; border-color: rgba(0,0,0,0.16); }
     .btn-save {
       display: inline-flex;
       align-items: center;
@@ -467,13 +472,15 @@ interface StepInput { description: string; }
       border: none;
       border-radius: 0.75rem;
       font-weight: 600;
-      font-size: 0.9rem;
+      font-size: 0.875rem;
       cursor: pointer;
-      transition: background 0.2s;
+      transition: background 0.2s, box-shadow 0.2s;
+      box-shadow: 0 2px 8px rgba(74,124,89,0.25);
+      touch-action: manipulation;
     }
-    .btn-save svg { width: 0.9rem; height: 0.9rem; }
-    .btn-save:disabled { opacity: 0.5; cursor: not-allowed; }
-    .btn-save:hover:not(:disabled) { background: #3a6347; }
+    .btn-save svg { width: 0.875rem; height: 0.875rem; }
+    .btn-save:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
+    .btn-save:hover:not(:disabled) { background: #3a6347; box-shadow: 0 4px 14px rgba(74,124,89,0.35); }
     @keyframes spin { to { transform: rotate(360deg); } }
     .spin { animation: spin 1s linear infinite; }
 
@@ -497,7 +504,9 @@ interface StepInput { description: string; }
       .col-side { order: -1; }
     }
     @media (max-width: 640px) {
-      .page-header { flex-direction: column; }
+      .edit-page { padding: 1.5rem 1rem 3rem; }
+      .page-header { flex-direction: column; align-items: stretch; }
+      .header-actions { justify-content: flex-end; }
       .field-row { flex-direction: column; gap: 0; }
     }
   `],

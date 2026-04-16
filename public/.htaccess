@@ -26,16 +26,17 @@
 
 # ── Compression ─────────────────────────────────────────────────────────────
 # Brotli (preferred — 20-26% smaller than gzip)
+# woff2/woff are already compressed internally — skip them here
 <IfModule mod_brotli.c>
-    AddOutputFilterByType BROTLI_COMPRESS text/html text/css application/javascript application/json
-    AddOutputFilterByType BROTLI_COMPRESS font/woff2 font/woff image/svg+xml
+    AddOutputFilterByType BROTLI_COMPRESS text/html text/css text/javascript application/json
+    AddOutputFilterByType BROTLI_COMPRESS image/svg+xml
     BrotliCompressionQuality 6
 </IfModule>
 
 # Gzip fallback
 <IfModule mod_deflate.c>
-    AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json
-    AddOutputFilterByType DEFLATE font/woff2 font/woff image/svg+xml
+    AddOutputFilterByType DEFLATE text/html text/css text/javascript application/json
+    AddOutputFilterByType DEFLATE image/svg+xml
     # Remove broken encodings
     BrowserMatch ^Mozilla/4 gzip-only-text/html
     BrowserMatch ^Mozilla/4\.0[678] no-gzip
@@ -44,6 +45,11 @@
 
 # ── Cache headers for static assets served directly by Apache ────────────────
 <IfModule mod_headers.c>
+    # Angular app shell — never cache so browsers always get the latest hashed script references
+    <FilesMatch "^index\.php$">
+        Header set Cache-Control "no-store"
+    </FilesMatch>
+
     # Angular hashed assets — filename ends with -XXXXXXXX (8 uppercase base32 chars)
     # Covers: chunk-QJJGTXCS.js, main-YASK6DDW.js, styles-3M62JTIQ.css,
     #         inter-latin-wght-normal-NRMW37G5.woff2, playfair-...-PPGHEFGC.woff2, etc.
@@ -57,20 +63,25 @@
         Header set Cache-Control "public, max-age=2592000" env=is_upload
     </FilesMatch>
 
-    # Source maps — cache but not immutable
+    # Source maps — deny public access
     <FilesMatch "\.map$">
-        Header set Cache-Control "public, max-age=604800"
+        Require all denied
     </FilesMatch>
 
     # Vary: Accept-Encoding so CDNs store separate compressed copies
     <FilesMatch "\.(js|css|html|json|svg)$">
         Header append Vary Accept-Encoding
     </FilesMatch>
+
+    # ── Security headers ────────────────────────────────────────────────────
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
 </IfModule>
 
 # ── Mime types ───────────────────────────────────────────────────────────────
 <IfModule mod_mime.c>
-    AddType application/javascript        .js
+    AddType text/javascript               .js
     AddType text/css                      .css
     AddType font/woff2                    .woff2
     AddType font/woff                     .woff

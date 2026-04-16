@@ -25,6 +25,7 @@ import { PerfService } from '../../services/perf.service';
               [(ngModel)]="searchQuery"
               name="q"
               placeholder="Търси рецепта..."
+              aria-label="Търси рецепта"
               class="search-input"
             />
             <button type="submit" class="search-btn">
@@ -183,7 +184,7 @@ import { PerfService } from '../../services/perf.service';
       font-size: 1.05rem;
       line-height: 1.75;
       margin: 0 0 2rem;
-      font-weight: 300;
+      font-weight: 400;
     }
     .search-form {
       display: flex;
@@ -216,6 +217,7 @@ import { PerfService } from '../../services/perf.service';
       cursor: pointer;
       transition: background 0.2s;
       white-space: nowrap;
+      touch-action: manipulation;
     }
     .search-btn svg { width: 1rem; height: 1rem; flex-shrink: 0; }
     .search-btn:hover { background: #3a6347; }
@@ -261,8 +263,8 @@ import { PerfService } from '../../services/perf.service';
       transition: box-shadow 0.3s ease, transform 0.3s ease;
     }
     .hero-image-wrap:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 40px 100px rgba(0,0,0,0.24);
+      transform: translateY(-3px);
+      box-shadow: 0 36px 90px rgba(0,0,0,0.22);
     }
     .hero-img {
       width: 100%;
@@ -348,7 +350,7 @@ import { PerfService } from '../../services/perf.service';
     .hero-placeholder svg { width: 5rem; height: 5rem; }
 
     /* ===== BENTO GRID ===== */
-    .featured { padding: 4rem 1.5rem 5rem; background: #fff; min-height: 900px; }
+    .featured { padding: 4rem 1.5rem 5rem; background: #fff; }
     .section-inner { max-width: 1200px; margin: 0 auto; }
     .section-heading {
       display: flex;
@@ -368,8 +370,14 @@ import { PerfService } from '../../services/perf.service';
       font-weight: 600;
       color: #78350f;
       text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: gap 0.2s ease;
     }
-    .section-link:hover { text-decoration: underline; }
+    .section-link:hover {
+      gap: 0.55rem;
+    }
 
     /* Magazine top row */
     .mag-layout {
@@ -448,7 +456,7 @@ import { PerfService } from '../../services/perf.service';
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      padding: 0.85rem 2.25rem;
+      padding: 0.875rem 2.25rem;
       background: #4a7c59;
       color: #ffffff;
       border-radius: 9999px;
@@ -456,13 +464,15 @@ import { PerfService } from '../../services/perf.service';
       font-size: 0.95rem;
       text-decoration: none;
       letter-spacing: 0.01em;
-      transition: background 0.2s, box-shadow 0.2s;
+      transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
       box-shadow: 0 4px 20px rgba(74,124,89,0.3);
+      touch-action: manipulation;
     }
     .cta-btn svg { width: 1.1rem; height: 1.1rem; flex-shrink: 0; }
     .cta-btn:hover {
       background: #3a6347;
       box-shadow: 0 8px 28px rgba(74,124,89,0.4);
+      transform: translateY(-1px);
     }
 
     @media (max-width: 900px) {
@@ -482,7 +492,7 @@ import { PerfService } from '../../services/perf.service';
       .hero { padding: 1.75rem 1rem 1.75rem; }
       .hero-inner { gap: 1.5rem; }
       h1 { font-size: 1.9rem; }
-      .hero-subtitle { font-size: 0.9rem; margin-bottom: 1.25rem; }
+      .hero-subtitle { font-size: 1rem; margin-bottom: 1.25rem; }
       .hero-eyebrow { font-size: 0.68rem; margin-bottom: 0.75rem; }
       .search-form { max-width: 100%; border-radius: 0.75rem; }
       .search-input { padding: 0.75rem 1rem; font-size: 0.9rem; }

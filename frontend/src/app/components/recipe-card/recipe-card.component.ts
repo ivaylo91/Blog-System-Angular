@@ -9,7 +9,7 @@ import { Recipe } from '../../models/models';
   template: `
     <a [routerLink]="['/recipes', recipe.slug]" class="card"
        [class.featured]="featured" [class.compact]="compact"
-       [style.animation-delay]="index * 70 + 'ms'">
+       [style.animation-delay]="(index < 6 ? index : 5) * 50 + 'ms'">
       <div class="card-image" [style.background]="gradient">
         @if (recipe.hero_image) {
           <img [src]="recipe.hero_image" [alt]="recipe.title"
@@ -55,12 +55,14 @@ import { Recipe } from '../../models/models';
       box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
       text-decoration: none;
       color: inherit;
-      transition: transform 0.35s cubic-bezier(0.34, 1.4, 0.64, 1), box-shadow 0.35s ease;
-      animation: fadeInUp 0.55s both;
+      transition: transform 0.28s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.28s ease;
+      animation: fadeInUp 0.45s both;
+      touch-action: manipulation;
+      cursor: pointer;
     }
     .card:hover {
-      transform: translateY(-7px);
-      box-shadow: 0 24px 56px rgba(28, 25, 23, 0.14);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(28, 25, 23, 0.13);
     }
 
     /* --- Image --- */
@@ -76,10 +78,10 @@ import { Recipe } from '../../models/models';
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.55s ease;
+      transition: transform 0.45s ease;
     }
     .card:hover .card-image img {
-      transform: scale(1.07);
+      transform: scale(1.04);
     }
 
     /* --- Hover overlay --- */
@@ -201,7 +203,7 @@ import { Recipe } from '../../models/models';
     }
 
     @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(22px); }
+      from { opacity: 0; transform: translateY(16px); }
       to   { opacity: 1; transform: translateY(0); }
     }
 

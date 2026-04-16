@@ -59,8 +59,10 @@
 
 html {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -71,7 +73,7 @@ body {
   background-size: 400px;
   background-repeat: repeat;
   color: #1c1917;
-  line-height: 1.6;
+  line-height: 1.65;
 }
 
 a {

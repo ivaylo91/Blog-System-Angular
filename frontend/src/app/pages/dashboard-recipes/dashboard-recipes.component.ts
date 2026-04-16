@@ -122,29 +122,32 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
       gap: 1rem;
     }
     h1 {
-      font-family: 'Georgia', serif;
+      font-family: 'Playfair Display', Georgia, serif;
       font-size: 1.75rem;
       color: #1c1917;
       margin: 0 0 0.2rem;
+      letter-spacing: -0.02em;
     }
     .subtitle { color: #57534e; font-size: 0.85rem; margin: 0; }
     .btn-primary {
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
-      padding: 0.6rem 1.25rem;
+      padding: 0.65rem 1.25rem;
       background: #4a7c59;
       color: #fff;
       border-radius: 0.75rem;
       text-decoration: none;
       font-weight: 600;
-      font-size: 0.9rem;
-      transition: background 0.2s;
+      font-size: 0.875rem;
+      transition: background 0.2s, box-shadow 0.2s;
       white-space: nowrap;
       flex-shrink: 0;
+      box-shadow: 0 2px 8px rgba(74,124,89,0.25);
+      touch-action: manipulation;
     }
-    .btn-primary svg { width: 0.9rem; height: 0.9rem; }
-    .btn-primary:hover { background: #3a6347; }
+    .btn-primary svg { width: 0.875rem; height: 0.875rem; }
+    .btn-primary:hover { background: #3a6347; box-shadow: 0 4px 14px rgba(74,124,89,0.35); }
 
     /* Filter bar */
     .filter-bar {
@@ -164,19 +167,24 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
       padding: 0.5rem 0.9rem;
       flex: 1;
       min-width: 200px;
+      transition: border-color 0.18s, box-shadow 0.18s;
+    }
+    .search-wrap:focus-within {
+      border-color: #4a7c59;
+      box-shadow: 0 0 0 3px rgba(74,124,89,0.1);
     }
     .search-wrap svg { width: 1rem; height: 1rem; color: #57534e; flex-shrink: 0; }
     .search-wrap input {
       border: none;
       outline: none;
       background: transparent;
-      font-size: 0.9rem;
+      font-size: 0.875rem;
       width: 100%;
       color: #1c1917;
     }
-    .filter-pills { display: flex; gap: 0.4rem; }
+    .filter-pills { display: flex; gap: 0.4rem; flex-wrap: wrap; }
     .pill {
-      padding: 0.4rem 0.9rem;
+      padding: 0.45rem 0.9rem;
       border-radius: 999px;
       border: 1.5px solid rgba(0,0,0,0.12);
       background: #fff;
@@ -184,10 +192,12 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
       font-weight: 600;
       cursor: pointer;
       color: #44403c;
-      transition: all 0.2s;
+      transition: background 0.18s, border-color 0.18s, color 0.18s;
+      touch-action: manipulation;
+      min-height: 2.25rem;
     }
     .pill.active { background: #78350f; color: #fff; border-color: #78350f; }
-    .pill:hover:not(.active) { background: #f5f0e8; }
+    .pill:hover:not(.active) { background: #f5f0e8; border-color: rgba(0,0,0,0.18); }
 
     .table-wrap {
       background: #ffffff;
@@ -210,13 +220,17 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
     }
     td {
       padding: 0.75rem 1rem;
-      border-bottom: 1px solid rgba(0,0,0,0.08);
-      font-size: 0.95rem;
+      border-bottom: 1px solid rgba(0,0,0,0.07);
+      font-size: 0.9rem;
       color: #1c1917;
+      vertical-align: middle;
     }
-    .draft-row td { opacity: 0.75; }
+    tbody tr { transition: background 0.15s; }
+    tbody tr:hover { background: #faf7f4; }
+    tbody tr:last-child td { border-bottom: none; }
+    .draft-row td { color: #78716c; }
     .recipe-link { color: #1c1917; text-decoration: none; font-weight: 600; }
-    .recipe-link:hover { text-decoration: underline; color: #78350f; }
+    .recipe-link:hover { color: #78350f; text-decoration: underline; }
     .badge {
       padding: 0.2rem 0.6rem;
       border-radius: 999px;
@@ -232,44 +246,57 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
       display: inline-flex;
       align-items: center;
       gap: 0.3rem;
-      padding: 0.25rem 0.65rem;
+      padding: 0.3rem 0.7rem;
       border-radius: 999px;
       font-size: 0.75rem;
       font-weight: 700;
       cursor: pointer;
       border: 1.5px solid transparent;
-      transition: all 0.2s;
+      transition: background 0.18s;
+      touch-action: manipulation;
+      white-space: nowrap;
     }
-    .status-toggle svg { width: 0.75rem; height: 0.75rem; }
+    .status-toggle svg { width: 0.75rem; height: 0.75rem; flex-shrink: 0; }
     .status-toggle.published { background: #d1fae5; color: #065f46; border-color: #6ee7b7; }
-    .status-toggle.published:hover { background: #a7f3d0; }
+    .status-toggle.published:hover:not(:disabled) { background: #a7f3d0; }
     .status-toggle.draft { background: #fef9c3; color: #713f12; border-color: #fde68a; }
-    .status-toggle.draft:hover { background: #fef08a; }
+    .status-toggle.draft:hover:not(:disabled) { background: #fef08a; }
+    .status-toggle:disabled { opacity: 0.45; cursor: default; }
 
     .author-cell { font-size: 0.85rem; color: #57534e; font-weight: 600; white-space: nowrap; }
-    .no-access { color: #57534e; font-size: 0.8rem; }
-    .status-toggle:disabled { opacity: 0.5; cursor: default; }
-    .date-cell { white-space: nowrap; color: #57534e; font-size: 0.85rem; }
-    .actions { display: flex; gap: 0.5rem; }
+    .no-access { color: #a8a29e; font-size: 0.8rem; }
+    .date-cell { white-space: nowrap; color: #78716c; font-size: 0.83rem; }
+    .actions { display: flex; gap: 0.4rem; align-items: center; }
     .btn-small {
-      padding: 0.35rem 0.75rem;
+      padding: 0.375rem 0.75rem;
       border-radius: 0.5rem;
-      font-size: 0.8rem;
-      font-weight: 700;
+      font-size: 0.78rem;
+      font-weight: 600;
       cursor: pointer;
       text-decoration: none;
-      border: 1.5px solid rgba(0,0,0,0.15);
-      background: #fff;
+      border: 1.5px solid rgba(0,0,0,0.12);
+      background: #fafaf9;
       color: #1c1917;
-      transition: all 0.2s;
+      transition: background 0.18s, border-color 0.18s;
+      touch-action: manipulation;
+      white-space: nowrap;
+      min-height: 2rem;
+      display: inline-flex;
+      align-items: center;
     }
-    .btn-small:hover { background: #e8e3dc; }
-    .btn-danger { color: #b91c1c; border-color: #fca5a5; }
-    .btn-danger:hover { background: #fef2f2; color: #991b1b; }
-    .empty { text-align: center; color: #57534e; padding: 2rem; font-weight: 500; }
+    .btn-small:hover { background: #f0ede8; border-color: rgba(0,0,0,0.18); }
+    .btn-danger { color: #b91c1c; border-color: #fca5a5; background: #fff; }
+    .btn-danger:hover { background: #fef2f2; border-color: #f87171; }
+    .empty { text-align: center; color: #78716c; padding: 3rem 2rem; font-size: 0.9rem; }
 
+    @media (max-width: 768px) {
+      .dashboard-recipes { padding: 1.5rem 1rem 2.5rem; }
+      .header-row { flex-direction: column; align-items: stretch; }
+      .btn-primary { justify-content: center; }
+    }
     @media (max-width: 640px) {
       .filter-bar { flex-direction: column; align-items: stretch; }
+      .filter-pills { flex-wrap: wrap; }
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,

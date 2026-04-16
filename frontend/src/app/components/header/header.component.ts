@@ -99,7 +99,7 @@ import { AuthService } from '../../services/auth.service';
     .nav-main {
       display: flex;
       align-items: center;
-      gap: 0.1rem;
+      gap: 0.35rem;
     }
     .nav-auth {
       display: flex;
@@ -110,14 +110,17 @@ import { AuthService } from '../../services/auth.service';
       border-left: 1px solid #e7e5e4;
     }
     .nav-links a {
-      padding: 0.4rem 0.85rem;
+      padding: 0.45rem 0.9rem;
       border-radius: 9999px;
       text-decoration: none;
       font-size: 0.875rem;
       font-weight: 500;
       color: #57534e;
-      transition: background 0.18s;
+      transition: background 0.18s, color 0.18s;
       white-space: nowrap;
+      min-height: 2.25rem;
+      display: flex;
+      align-items: center;
     }
     .nav-links a:hover { background: #f5f0e8; color: #1c1917; }
     .nav-links a.active {
@@ -146,7 +149,7 @@ import { AuthService } from '../../services/auth.service';
       display: flex;
       align-items: center;
       gap: 0.35rem;
-      padding: 0.4rem 0.85rem;
+      padding: 0.45rem 0.9rem;
       border-radius: 9999px;
       border: none;
       background: none;
@@ -154,21 +157,32 @@ import { AuthService } from '../../services/auth.service';
       font-weight: 500;
       color: #dc2626;
       cursor: pointer;
-      transition: background 0.18s;
+      transition: background 0.18s, color 0.18s;
       white-space: nowrap;
+      min-height: 2.25rem;
+      touch-action: manipulation;
     }
     .logout-btn svg { width: 0.9rem; height: 0.9rem; }
     .logout-btn:hover { background: #fef2f2; color: #991b1b; }
+
+    /* Brand hover */
+    .brand:hover .brand-text { color: #78350f; }
+    .brand-text { transition: color 0.2s; }
 
     /* Mobile toggle */
     .mobile-toggle {
       display: none;
       background: none;
       border: none;
-      padding: 0.4rem;
+      padding: 0.625rem;
       cursor: pointer;
       border-radius: 0.5rem;
       transition: background 0.2s;
+      min-width: 2.75rem;
+      min-height: 2.75rem;
+      align-items: center;
+      justify-content: center;
+      touch-action: manipulation;
     }
     .mobile-toggle:hover { background: #f5f0e8; }
     .hamburger {

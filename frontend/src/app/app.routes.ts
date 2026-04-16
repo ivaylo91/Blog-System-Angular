@@ -29,16 +29,7 @@ export const routes: Routes = [
     canActivate: [authGuard],
     loadComponent: () => import('./pages/profile/profile.component').then(m => m.ProfileComponent),
   },
-  {
-    path: 'dashboard',
-    canActivate: [authGuard],
-    loadComponent: () => import('./pages/dashboard/dashboard.component').then(m => m.DashboardComponent),
-  },
-  {
-    path: 'dashboard/recipes',
-    canActivate: [authGuard],
-    loadComponent: () => import('./pages/dashboard-recipes/dashboard-recipes.component').then(m => m.DashboardRecipesComponent),
-  },
+  // Recipe editor — full-page, no sidebar
   {
     path: 'dashboard/recipes/new',
     canActivate: [authGuard],
@@ -49,15 +40,29 @@ export const routes: Routes = [
     canActivate: [authGuard],
     loadComponent: () => import('./pages/dashboard-recipe-edit/dashboard-recipe-edit.component').then(m => m.DashboardRecipeEditComponent),
   },
+  // Dashboard shell — all overview pages share the sidebar layout
   {
-    path: 'dashboard/comments',
+    path: 'dashboard',
     canActivate: [authGuard],
-    loadComponent: () => import('./pages/dashboard-comments/dashboard-comments.component').then(m => m.DashboardCommentsComponent),
-  },
-  {
-    path: 'dashboard/favorites',
-    canActivate: [authGuard],
-    loadComponent: () => import('./pages/dashboard-favorites/dashboard-favorites.component').then(m => m.DashboardFavoritesComponent),
+    loadComponent: () => import('./pages/dashboard-layout/dashboard-layout.component').then(m => m.DashboardLayoutComponent),
+    children: [
+      {
+        path: '',
+        loadComponent: () => import('./pages/dashboard/dashboard.component').then(m => m.DashboardComponent),
+      },
+      {
+        path: 'recipes',
+        loadComponent: () => import('./pages/dashboard-recipes/dashboard-recipes.component').then(m => m.DashboardRecipesComponent),
+      },
+      {
+        path: 'comments',
+        loadComponent: () => import('./pages/dashboard-comments/dashboard-comments.component').then(m => m.DashboardCommentsComponent),
+      },
+      {
+        path: 'favorites',
+        loadComponent: () => import('./pages/dashboard-favorites/dashboard-favorites.component').then(m => m.DashboardFavoritesComponent),
+      },
+    ],
   },
   {
     path: '**',

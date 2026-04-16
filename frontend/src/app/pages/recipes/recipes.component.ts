@@ -28,6 +28,7 @@ import { PerfService } from '../../services/perf.service';
             [(ngModel)]="q"
             name="q"
             placeholder="Търси по заглавие или съставка..."
+            aria-label="Търси рецепти"
             class="search-input"
             (input)="onSearchInput()"
           />
@@ -54,7 +55,7 @@ import { PerfService } from '../../services/perf.service';
           <button class="pill pill-sm" [class.active]="difficulty === 'Лесно'" (click)="selectDifficulty('Лесно')">Лесно</button>
           <button class="pill pill-sm" [class.active]="difficulty === 'Средно'" (click)="selectDifficulty('Средно')">Средно</button>
           <button class="pill pill-sm" [class.active]="difficulty === 'За напреднали'" (click)="selectDifficulty('За напреднали')">За напреднали</button>
-          <span class="sort-divider">|</span>
+          <span class="sort-divider" aria-hidden="true"></span>
           <button class="pill pill-sm" [class.active]="sort === 'newest'" (click)="selectSort('newest')">Най-нови</button>
           <button class="pill pill-sm" [class.active]="sort === 'fastest'" (click)="selectSort('fastest')">Най-бързи</button>
           <button class="pill pill-sm" [class.active]="sort === 'easiest'" (click)="selectSort('easiest')">Най-лесни</button>
@@ -84,7 +85,11 @@ import { PerfService } from '../../services/perf.service';
             @for (recipe of recipes; track recipe.id; let i = $index) {
               <app-recipe-card [recipe]="recipe" [priority]="i === 0" [index]="i" />
             } @empty {
-              <p class="no-results">Няма намерени рецепти.</p>
+              <div class="no-results">
+                <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="28" cy="28" r="18"/><line x1="41" y1="41" x2="56" y2="56"/><line x1="20" y1="28" x2="36" y2="28"/></svg>
+                <p>Няма намерени рецепти.</p>
+                <span>Опитай с друга дума или смени филтрите.</span>
+              </div>
             }
           </div>
         }
@@ -159,6 +164,7 @@ import { PerfService } from '../../services/perf.service';
       font-size: 0.9rem;
       cursor: pointer;
       transition: background 0.2s;
+      touch-action: manipulation;
     }
     .search-btn svg { width: 1rem; height: 1rem; flex-shrink: 0; }
     .search-btn:hover { background: #3a6347; }
@@ -176,7 +182,7 @@ import { PerfService } from '../../services/perf.service';
       align-items: center;
     }
     .pill {
-      padding: 0.45rem 1.1rem;
+      padding: 0.5rem 1.1rem;
       border-radius: 9999px;
       border: 1.5px solid rgba(0,0,0,0.1);
       background: #fff;
@@ -184,11 +190,14 @@ import { PerfService } from '../../services/perf.service';
       font-size: 0.875rem;
       font-weight: 500;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: background 0.18s, border-color 0.18s, color 0.18s;
       white-space: nowrap;
+      min-height: 2.75rem;
+      touch-action: manipulation;
     }
     .pill:hover {
-      border-color: #1c1917;
+      background: #f5f0e8;
+      border-color: rgba(0,0,0,0.18);
       color: #1c1917;
     }
     .pill.active {
@@ -198,15 +207,17 @@ import { PerfService } from '../../services/perf.service';
       font-weight: 600;
     }
     .pill-sm {
-      padding: 0.35rem 0.9rem;
+      padding: 0.4rem 0.9rem;
       font-size: 0.8rem;
       min-height: 2.75rem;
     }
     .sort-divider {
-      color: rgba(0,0,0,0.4);
-      padding: 0 0.25rem;
-      font-size: 1.1rem;
-      user-select: none;
+      width: 1px;
+      height: 1.25rem;
+      background: rgba(0,0,0,0.15);
+      flex-shrink: 0;
+      align-self: center;
+      margin: 0 0.25rem;
     }
 
     /* Recipe grid */
@@ -217,10 +228,29 @@ import { PerfService } from '../../services/perf.service';
     }
     .no-results {
       grid-column: 1 / -1;
-      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 4rem 2rem;
       color: #57534e;
-      padding: 4rem;
-      font-size: 1rem;
+      text-align: center;
+    }
+    .no-results svg {
+      width: 3rem;
+      height: 3rem;
+      color: #c4b49a;
+      margin-bottom: 0.5rem;
+    }
+    .no-results p {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #1c1917;
+      margin: 0;
+    }
+    .no-results span {
+      font-size: 0.875rem;
+      color: #78716c;
     }
 
     /* Skeleton — shimmer uses transform:translateX (composited, no repaint) */
@@ -287,8 +317,9 @@ import { PerfService } from '../../services/perf.service';
       cursor: pointer;
       font-weight: 600;
       font-size: 0.9rem;
-      transition: all 0.2s;
+      transition: background 0.18s, border-color 0.18s, color 0.18s;
       color: #1c1917;
+      touch-action: manipulation;
     }
     .page-btn:disabled { opacity: 0.35; cursor: not-allowed; }
     .page-btn.active {
@@ -296,13 +327,16 @@ import { PerfService } from '../../services/perf.service';
       color: white;
       border-color: #1c1917;
     }
-    .page-btn:hover:not(.active):not(:disabled) { background: #f0ede8; }
+    .page-btn:hover:not(.active):not(:disabled) { background: #f0ede8; border-color: rgba(0,0,0,0.18); }
 
     @media (max-width: 640px) {
       .recipe-grid { grid-template-columns: 1fr; }
       .page-header h1 { font-size: 2rem; }
       .btn-text { display: none; }
       .search-btn { padding: 0.85rem 1rem; }
+      .pill { min-height: 2.75rem; }
+      .pill-sm { min-height: 2.75rem; }
+      .page-btn { min-width: 2.75rem; height: 2.75rem; }
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
