@@ -32,13 +32,6 @@ import { AuthService } from '../../services/auth.service';
                 <a routerLink="/register">Регистрация</a>
               }
             </div>
-            <div class="footer-col">
-              <span class="col-title">Категории</span>
-              <a routerLink="/recipes" [queryParams]="{category: 'supи'}">Супи</a>
-              <a routerLink="/recipes" [queryParams]="{category: 'основни'}">Основни</a>
-              <a routerLink="/recipes" [queryParams]="{category: 'десерти'}">Десерти</a>
-              <a routerLink="/recipes" [queryParams]="{category: 'салати'}">Салати</a>
-            </div>
           </div>
         </div>
 
@@ -171,7 +164,7 @@ import { AuthService } from '../../services/auth.service';
       .footer-inner { padding: 2.5rem 1.25rem 1.5rem; }
       .footer-top { flex-direction: column; gap: 1.5rem; padding-bottom: 1.75rem; }
       .footer-brand { max-width: 100%; }
-      .footer-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+      .footer-cols { gap: 1.5rem; }
       .footer-col { flex-direction: column; gap: 0; }
       .col-title { margin-bottom: 0.25rem; }
       .footer-col a {
