@@ -7,10 +7,3 @@
 .main-content {
   flex: 1;
 }
-
-@media (max-width: 768px) {
-  .main-content,
-  app-footer {
-    padding-bottom: calc(3.25rem + env(safe-area-inset-bottom, 0px));
-  }
-}
