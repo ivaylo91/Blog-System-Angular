@@ -334,7 +334,7 @@ import { AuthService } from '../../services/auth.service';
 
       .mobile-topbar { display: flex; }
 
-      .page-content { min-height: calc(100vh - 4rem - 3.5rem); }
+      .page-content { min-height: calc(100vh - 4rem - 4.5rem); }
     }
 
     @media (prefers-reduced-motion: reduce) {
