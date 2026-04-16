@@ -112,7 +112,10 @@ import { SeoService } from '../../services/seo.service';
       justify-content: center;
       min-height: calc(100vh - 8rem);
       padding: 2rem;
-      background: linear-gradient(135deg, #fdf8f0 0%, #f5f0e8 100%);
+      background-color: #faf7f4;
+      background-image: url('/backgrounds/cooking-pattern.svg');
+      background-size: 500px;
+      background-repeat: repeat;
     }
     .auth-card {
       max-width: 440px;

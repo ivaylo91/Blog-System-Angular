@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python ~/.claude/skills/ui-ux-pro-max/scripts/search.py \"touch-target cursor-pointer hover-feedback\" --domain ux)",
+      "Bash(xargs ls:*)",
+      "Bash(python /c/Users/ipene/.claude/skills/ui-ux-pro-max/scripts/search.py \"food blog cooking recipe warm earthy\" --domain ux -n 8)",
+      "Bash(python /c/Users/ipene/.claude/skills/ui-ux-pro-max/scripts/search.py \"recipe food blog editorial\" --domain landing -n 5)",
+      "Bash(python /c/Users/ipene/.claude/skills/ui-ux-pro-max/scripts/search.py \"accessibility touch interaction animation\" --domain ux -n 12)"
+    ]
+  }
+}

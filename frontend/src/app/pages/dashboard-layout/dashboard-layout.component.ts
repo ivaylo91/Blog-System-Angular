@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -21,7 +21,7 @@ import { AuthService } from '../../services/auth.service';
           </button>
         </div>
 
-        <nav class="sidebar-nav" aria-label="Навигация в таблото">
+        <nav class="sidebar-nav sidebar-nav-primary" aria-label="Навигация в таблото">
           <a routerLink="/dashboard" routerLinkActive="active"
              [routerLinkActiveOptions]="{exact: true}"
              class="nav-item" (click)="sidebarOpen.set(false)">
@@ -57,6 +57,10 @@ import { AuthService } from '../../services/auth.service';
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
             <span>Виж блога</span>
           </a>
+          <button class="nav-item nav-item-logout" (click)="auth.logout()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            <span>Изход</span>
+          </button>
         </nav>
 
         <div class="sidebar-user">
@@ -81,7 +85,7 @@ import { AuthService } from '../../services/auth.service';
           <button class="menu-btn" (click)="sidebarOpen.set(true)" aria-label="Отвори навигацията">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
           </button>
-          <span class="topbar-label">Табло</span>
+          <span class="topbar-label">{{ pageTitle() }}</span>
           <a routerLink="/dashboard/recipes/new" class="topbar-new" aria-label="Нова рецепта">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           </a>
@@ -93,6 +97,32 @@ import { AuthService } from '../../services/auth.service';
       </div>
 
     </div>
+
+    <!-- ── Mobile bottom nav ─────────────────────────────────────── -->
+    <nav class="bottom-nav" aria-label="Навигация в таблото">
+      <a routerLink="/dashboard" routerLinkActive="active"
+         [routerLinkActiveOptions]="{exact: true}" class="bottom-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+        <span>Преглед</span>
+      </a>
+      <a routerLink="/dashboard/recipes" routerLinkActive="active" class="bottom-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        <span>Рецепти</span>
+      </a>
+      <div class="bottom-nav-add">
+        <a routerLink="/dashboard/recipes/new" aria-label="Нова рецепта" class="bottom-nav-add-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </a>
+      </div>
+      <a routerLink="/dashboard/comments" routerLinkActive="active" class="bottom-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span>Коментари</span>
+      </a>
+      <a routerLink="/dashboard/favorites" routerLinkActive="active" class="bottom-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        <span>Любими</span>
+      </a>
+    </nav>
   `,
   styles: [`
     /* ── Shell ──────────────────────────────────────────────────────── */
@@ -186,6 +216,16 @@ import { AuthService } from '../../services/auth.service';
     }
     .nav-item-external { opacity: 0.85; }
     .nav-item-external:hover { opacity: 1; }
+    .nav-item-logout {
+      background: none;
+      border: none;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+      color: #f87171;
+      display: none;
+    }
+    .nav-item-logout:hover { background: rgba(248,113,113,0.1); color: #ef4444; }
 
     /* Separator */
     .sidebar-sep {
@@ -311,30 +351,72 @@ import { AuthService } from '../../services/auth.service';
     }
 
     /* ── Mobile breakpoint ──────────────────────────────────────────── */
+    /* ── Bottom nav (desktop: hidden) ──────────────────────────────── */
+    .bottom-nav { display: none; }
+
     @media (max-width: 768px) {
-      .shell { display: block; }
+      .shell { display: block; min-height: calc(100vh - 4rem); }
+      .sidebar { display: none; }
+      .sidebar-overlay { display: none; }
+      .mobile-topbar { display: none; }
 
-      .sidebar {
+      .page-content {
+        min-height: calc(100vh - 4rem - 4rem);
+        padding-bottom: 4rem;
+      }
+
+      /* Bottom nav */
+      .bottom-nav {
+        display: flex;
         position: fixed;
-        top: 0;
+        bottom: 0;
         left: 0;
-        height: 100vh;
-        z-index: 40;
-        transform: translateX(-100%);
-        transition: transform 0.28s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        padding-top: 0;
-        width: 260px;
+        right: 0;
+        height: 4rem;
+        background: #fff;
+        border-top: 1px solid rgba(0,0,0,0.08);
+        z-index: 30;
+        box-shadow: 0 -2px 12px rgba(0,0,0,0.06);
       }
-      .sidebar.open {
-        transform: translateX(0);
+      .bottom-nav-item {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.2rem;
+        text-decoration: none;
+        color: #a8a29e;
+        font-size: 0.65rem;
+        font-weight: 500;
+        transition: color 0.18s, background 0.18s;
+        touch-action: manipulation;
+        min-height: 4rem;
       }
-      .sidebar-header { padding-top: 1.5rem; }
-      .sidebar-close { display: flex; }
-      .sidebar-overlay { display: block; }
-
-      .mobile-topbar { display: flex; }
-
-      .page-content { min-height: calc(100vh - 4rem - 4.5rem); }
+      .bottom-nav-item svg { width: 1.25rem; height: 1.25rem; flex-shrink: 0; }
+      .bottom-nav-item:hover { color: #78350f; background: rgba(120,53,15,0.04); }
+      .bottom-nav-item.active { color: #78350f; font-weight: 600; }
+      .bottom-nav-item.active svg { stroke-width: 2.5; }
+      .bottom-nav-add {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .bottom-nav-add-btn {
+        width: 2.75rem;
+        height: 2.75rem;
+        background: #78350f;
+        color: #fff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 10px rgba(120,53,15,0.4);
+        transition: background 0.18s, transform 0.15s;
+      }
+      .bottom-nav-add-btn svg { width: 1.1rem; height: 1.1rem; }
+      .bottom-nav-add-btn:hover { background: #6c2d0c; transform: scale(1.08); }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -345,10 +427,20 @@ import { AuthService } from '../../services/auth.service';
 })
 export class DashboardLayoutComponent {
   auth = inject(AuthService);
+  router = inject(Router);
   sidebarOpen = signal(false);
 
   userInitial(): string {
     const name = this.auth.user()?.name || '';
     return name.charAt(0).toUpperCase() || '?';
+  }
+
+  pageTitle(): string {
+    const url = this.router.url;
+    if (url.includes('/recipes/new') || url.includes('/recipes/edit')) return 'Рецепта';
+    if (url.includes('/recipes')) return 'Рецепти';
+    if (url.includes('/comments')) return 'Коментари';
+    if (url.includes('/favorites')) return 'Любими';
+    return 'Преглед';
   }
 }

@@ -10,38 +10,106 @@ import { AuthService } from '../../services/auth.service';
     <header class="site-header" [class.scrolled]="scrolled()">
       <div class="header-inner">
 
+        <button class="mobile-toggle" (click)="drawerOpen.set(true)"
+                aria-label="Отвори менюто" [attr.aria-expanded]="drawerOpen()">
+          <span class="hamburger"></span>
+        </button>
+
         <a routerLink="/" class="brand">
           <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l1.5-7.5A2 2 0 0 1 6.46 2h11.08a2 2 0 0 1 1.96 1.5L21 11"/><path d="M3 11h18v2a7 7 0 0 1-14 0H3z"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="17" x2="12" y2="20"/></svg>
           <span class="brand-text">Кулинарният блог на Иво</span>
         </a>
 
-        <button class="mobile-toggle" (click)="menuOpen = !menuOpen" [attr.aria-expanded]="menuOpen" aria-label="Меню">
-          <span class="hamburger" [class.open]="menuOpen"></span>
-        </button>
-
-        <nav class="nav-links" [class.open]="menuOpen">
+        <nav class="nav-links">
           <div class="nav-main">
-            <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="menuOpen = false">Начало</a>
-            <a routerLink="/recipes" routerLinkActive="active" (click)="menuOpen = false">Рецепти</a>
+            <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Начало</a>
+            <a routerLink="/recipes" routerLinkActive="active">Рецепти</a>
             @if (auth.isAuthenticated()) {
-              <a routerLink="/dashboard" routerLinkActive="active" (click)="menuOpen = false">Табло</a>
-              <a routerLink="/profile" routerLinkActive="active" (click)="menuOpen = false">Профил</a>
+              <a routerLink="/dashboard" routerLinkActive="active">Табло</a>
+              <a routerLink="/profile" routerLinkActive="active">Профил</a>
             }
           </div>
           <div class="nav-auth">
             @if (auth.isAuthenticated()) {
-              <button class="logout-btn" (click)="auth.logout(); menuOpen = false">
+              <button class="logout-btn" (click)="auth.logout()">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
                 Изход
               </button>
             } @else {
-              <a routerLink="/signin" routerLinkActive="active" class="signin-link" (click)="menuOpen = false">Вход</a>
-              <a routerLink="/register" routerLinkActive="active" class="register-btn" (click)="menuOpen = false">Регистрация</a>
+              <a routerLink="/signin" routerLinkActive="active" class="signin-link">Вход</a>
+              <a routerLink="/register" routerLinkActive="active" class="register-btn">Регистрация</a>
             }
           </div>
         </nav>
       </div>
     </header>
+
+    <!-- ── Mobile left drawer ──────────────────────────────────────────── -->
+    @if (drawerOpen()) {
+      <div class="drawer-overlay" (click)="drawerOpen.set(false)" aria-hidden="true"></div>
+    }
+
+    <div class="mobile-drawer" [class.open]="drawerOpen()" role="dialog" aria-label="Навигация">
+
+      <div class="drawer-header">
+        <a routerLink="/" class="drawer-brand" (click)="close()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l1.5-7.5A2 2 0 0 1 6.46 2h11.08a2 2 0 0 1 1.96 1.5L21 11"/><path d="M3 11h18v2a7 7 0 0 1-14 0H3z"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="17" x2="12" y2="20"/></svg>
+          Кулинарен блог
+        </a>
+        <button class="drawer-close" (click)="close()" aria-label="Затвори менюто">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      @if (auth.isAuthenticated()) {
+        <div class="drawer-user">
+          <div class="drawer-avatar">{{ userInitial() }}</div>
+          <div class="drawer-user-info">
+            <span class="drawer-user-name">{{ auth.user()?.name }}</span>
+            <span class="drawer-user-role">{{ auth.isAdmin() ? 'Администратор' : 'Потребител' }}</span>
+          </div>
+        </div>
+        <div class="drawer-sep"></div>
+      }
+
+      <nav class="drawer-nav">
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
+           class="drawer-item" (click)="close()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          Начало
+        </a>
+        <a routerLink="/recipes" routerLinkActive="active"
+           class="drawer-item" (click)="close()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          Рецепти
+        </a>
+        @if (auth.isAuthenticated()) {
+          <a routerLink="/dashboard" routerLinkActive="active"
+             class="drawer-item" (click)="close()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+            Табло
+          </a>
+          <a routerLink="/profile" routerLinkActive="active"
+             class="drawer-item" (click)="close()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Профил
+          </a>
+        }
+      </nav>
+
+      <div class="drawer-footer">
+        @if (auth.isAuthenticated()) {
+          <button class="drawer-logout" (click)="auth.logout(); close()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            Изход
+          </button>
+        } @else {
+          <a routerLink="/signin" class="drawer-signin" (click)="close()">Вход</a>
+          <a routerLink="/register" class="drawer-register" (click)="close()">Регистрация</a>
+        }
+      </div>
+
+    </div>
   `,
   styles: [`
     .site-header {
@@ -88,196 +156,235 @@ import { AuthService } from '../../services/auth.service';
       color: #1c1917;
       letter-spacing: -0.01em;
       white-space: nowrap;
+      transition: color 0.2s;
     }
+    .brand:hover .brand-text { color: #78350f; }
 
-    /* Nav */
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 0.25rem;
-    }
-    .nav-main {
-      display: flex;
-      align-items: center;
-      gap: 0.35rem;
-    }
+    /* Desktop nav */
+    .nav-links { display: flex; align-items: center; gap: 0.25rem; }
+    .nav-main { display: flex; align-items: center; gap: 0.35rem; }
     .nav-auth {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-left: 0.75rem;
-      padding-left: 0.75rem;
+      display: flex; align-items: center; gap: 0.5rem;
+      margin-left: 0.75rem; padding-left: 0.75rem;
       border-left: 1px solid #e7e5e4;
     }
     .nav-links a {
-      padding: 0.45rem 0.9rem;
-      border-radius: 9999px;
-      text-decoration: none;
-      font-size: 0.875rem;
-      font-weight: 500;
-      color: #57534e;
-      transition: background 0.18s, color 0.18s;
-      white-space: nowrap;
-      min-height: 2.25rem;
-      display: flex;
-      align-items: center;
+      padding: 0.45rem 0.9rem; border-radius: 9999px;
+      text-decoration: none; font-size: 0.875rem; font-weight: 500;
+      color: #57534e; transition: background 0.18s, color 0.18s;
+      white-space: nowrap; min-height: 2.25rem;
+      display: flex; align-items: center;
     }
     .nav-links a:hover { background: #f5f0e8; color: #1c1917; }
-    .nav-links a.active {
-      background: #f5f0e8;
-      color: #78350f;
-      font-weight: 600;
-    }
-
+    .nav-links a.active { background: #f5f0e8; color: #78350f; font-weight: 600; }
     .signin-link { color: #57534e; }
     .register-btn {
       background: linear-gradient(135deg, #78350f, #92400e) !important;
-      color: #fff !important;
-      font-weight: 600 !important;
+      color: #fff !important; font-weight: 600 !important;
       box-shadow: 0 1px 4px rgba(120,53,15,0.3);
       transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s !important;
     }
     .register-btn:hover {
       background: linear-gradient(135deg, #6c2d0c, #7c3a0c) !important;
-      opacity: 0.93;
-      transform: translateY(-1px);
+      opacity: 0.93; transform: translateY(-1px);
       box-shadow: 0 3px 10px rgba(120,53,15,0.35) !important;
     }
     .register-btn.active { background: linear-gradient(135deg, #78350f, #92400e) !important; }
-
     .logout-btn {
-      display: flex;
-      align-items: center;
-      gap: 0.35rem;
-      padding: 0.45rem 0.9rem;
-      border-radius: 9999px;
-      border: none;
-      background: none;
-      font-size: 0.875rem;
-      font-weight: 500;
-      color: #dc2626;
-      cursor: pointer;
+      display: flex; align-items: center; gap: 0.35rem;
+      padding: 0.45rem 0.9rem; border-radius: 9999px;
+      border: none; background: none; font-size: 0.875rem; font-weight: 500;
+      color: #dc2626; cursor: pointer;
       transition: background 0.18s, color 0.18s;
-      white-space: nowrap;
-      min-height: 2.25rem;
-      touch-action: manipulation;
+      white-space: nowrap; min-height: 2.25rem; touch-action: manipulation;
     }
     .logout-btn svg { width: 0.9rem; height: 0.9rem; }
     .logout-btn:hover { background: #fef2f2; color: #991b1b; }
 
-    /* Brand hover */
-    .brand:hover .brand-text { color: #78350f; }
-    .brand-text { transition: color 0.2s; }
-
-    /* Mobile toggle */
+    /* Mobile toggle — hidden on desktop */
     .mobile-toggle {
       display: none;
-      background: none;
-      border: none;
-      padding: 0.625rem;
-      cursor: pointer;
+      background: none; border: none;
+      padding: 0.5rem; cursor: pointer;
       border-radius: 0.5rem;
       transition: background 0.2s;
-      min-width: 2.75rem;
-      min-height: 2.75rem;
-      align-items: center;
-      justify-content: center;
+      min-width: 2.75rem; min-height: 2.75rem;
+      align-items: center; justify-content: center;
       touch-action: manipulation;
+      order: -1;
     }
     .mobile-toggle:hover { background: #f5f0e8; }
     .hamburger {
-      display: block;
-      width: 1.25rem;
-      height: 2px;
-      background: #1c1917;
-      position: relative;
-      transition: 0.25s;
+      display: block; width: 1.25rem; height: 2px;
+      background: #1c1917; position: relative;
     }
     .hamburger::before, .hamburger::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      width: 100%;
-      height: 2px;
-      background: #1c1917;
-      transition: 0.25s;
+      content: ''; position: absolute; left: 0;
+      width: 100%; height: 2px; background: #1c1917;
     }
     .hamburger::before { top: -6px; }
     .hamburger::after { top: 6px; }
-    .hamburger.open { background: transparent; }
-    .hamburger.open::before { top: 0; transform: rotate(45deg); }
-    .hamburger.open::after { top: 0; transform: rotate(-45deg); }
+
+    /* ── Drawer overlay ─────────────────────────────────────────────── */
+    .drawer-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.45);
+      z-index: 59;
+      backdrop-filter: blur(2px);
+    }
+
+    /* ── Left drawer ────────────────────────────────────────────────── */
+    .mobile-drawer {
+      display: none;
+      position: fixed; top: 0; left: 0;
+      width: 280px; max-width: 85vw;
+      height: 100vh; height: 100dvh;
+      background: #fff;
+      z-index: 60;
+      flex-direction: column;
+      transform: translateX(-100%);
+      transition: transform 0.28s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      box-shadow: 4px 0 24px rgba(0,0,0,0.12);
+      overflow-y: auto;
+    }
+    .mobile-drawer.open { transform: translateX(0); }
+
+    .drawer-header {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1rem 1rem 1.25rem;
+      border-bottom: 1px solid #f0ece6;
+      flex-shrink: 0;
+    }
+    .drawer-brand {
+      display: flex; align-items: center; gap: 0.5rem;
+      text-decoration: none;
+      font-family: 'Georgia', serif; font-size: 0.95rem;
+      font-weight: 700; color: #1c1917;
+    }
+    .drawer-brand svg { width: 1.4rem; height: 1.4rem; color: #78350f; flex-shrink: 0; }
+    .drawer-close {
+      background: none; border: none; cursor: pointer;
+      padding: 0.4rem; border-radius: 0.5rem; color: #78716c;
+      transition: background 0.2s, color 0.2s;
+      min-width: 2.5rem; min-height: 2.5rem;
+      display: flex; align-items: center; justify-content: center;
+      touch-action: manipulation;
+    }
+    .drawer-close svg { width: 1.1rem; height: 1.1rem; }
+    .drawer-close:hover { background: #f5f0e8; color: #1c1917; }
+
+    .drawer-user {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 1rem 1.25rem;
+    }
+    .drawer-avatar {
+      width: 2.5rem; height: 2.5rem; border-radius: 50%;
+      background: #78350f; color: #fff;
+      font-size: 1rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; text-transform: uppercase;
+    }
+    .drawer-user-info { display: flex; flex-direction: column; gap: 0.1rem; min-width: 0; }
+    .drawer-user-name {
+      font-size: 0.9rem; font-weight: 600; color: #1c1917;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .drawer-user-role {
+      font-size: 0.7rem; color: #a8a29e;
+      text-transform: uppercase; letter-spacing: 0.05em;
+    }
+
+    .drawer-sep { height: 1px; background: #f0ece6; margin: 0 1.25rem; }
+
+    .drawer-nav {
+      display: flex; flex-direction: column;
+      padding: 0.75rem 0.75rem;
+      flex: 1;
+      gap: 0.125rem;
+    }
+    .drawer-item {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.75rem 0.75rem;
+      border-radius: 0.75rem;
+      text-decoration: none;
+      font-size: 0.95rem; font-weight: 500;
+      color: #292524;
+      transition: background 0.18s, color 0.18s;
+      touch-action: manipulation; min-height: 3rem;
+    }
+    .drawer-item svg { width: 1.15rem; height: 1.15rem; flex-shrink: 0; color: #78716c; }
+    .drawer-item:hover { background: #f5f0e8; }
+    .drawer-item.active {
+      background: #fef3e2; color: #78350f; font-weight: 600;
+    }
+    .drawer-item.active svg { color: #78350f; }
+
+    .drawer-footer {
+      padding: 0.75rem; border-top: 1px solid #f0ece6;
+      display: flex; flex-direction: column; gap: 0.5rem;
+      flex-shrink: 0;
+    }
+    .drawer-logout {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.75rem 0.75rem; border-radius: 0.75rem;
+      border: none; background: none; width: 100%;
+      font-size: 0.95rem; font-weight: 500; color: #dc2626;
+      cursor: pointer; touch-action: manipulation; min-height: 3rem;
+      transition: background 0.18s;
+    }
+    .drawer-logout svg { width: 1.15rem; height: 1.15rem; flex-shrink: 0; }
+    .drawer-logout:hover { background: #fef2f2; }
+    .drawer-signin {
+      display: block; padding: 0.75rem 1rem; border-radius: 0.75rem;
+      text-decoration: none; text-align: center;
+      font-size: 0.95rem; font-weight: 500; color: #57534e;
+      transition: background 0.18s;
+    }
+    .drawer-signin:hover { background: #f5f0e8; }
+    .drawer-register {
+      display: block; padding: 0.75rem 1rem; border-radius: 0.75rem;
+      text-decoration: none; text-align: center;
+      font-size: 0.95rem; font-weight: 600;
+      background: linear-gradient(135deg, #78350f, #92400e);
+      color: #fff;
+    }
 
     @media (max-width: 768px) {
-      .mobile-toggle { display: block; }
-      .nav-links {
-        display: flex;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        flex-direction: column;
-        align-items: stretch;
-        background: #fff;
-        padding: 0 1rem;
-        border-bottom: 1px solid rgba(0,0,0,0.07);
-        box-shadow: 0 16px 40px rgba(0,0,0,0.1);
-        gap: 0.25rem;
-        max-height: 0;
-        overflow: hidden;
-        opacity: 0;
-        pointer-events: none;
-        transition: max-height 0.3s ease, opacity 0.25s ease, padding 0.3s ease;
-      }
-      .nav-links.open {
-        max-height: 400px;
-        opacity: 1;
-        pointer-events: auto;
-        padding: 0.75rem 1rem 1rem;
-      }
-      .nav-main { flex-direction: column; align-items: stretch; width: 100%; gap: 0.25rem; }
-      .nav-auth {
-        flex-direction: column;
-        align-items: stretch;
-        margin-left: 0;
-        padding-left: 0;
-        border-left: none;
-        border-top: 1px solid #f0ece6;
-        padding-top: 0.75rem;
-        margin-top: 0.5rem;
-        gap: 0.25rem;
-      }
-      .nav-links a, .logout-btn {
-        border-radius: 0.75rem;
-        padding: 0.65rem 1rem;
-        width: 100%;
-        box-sizing: border-box;
-        text-align: left;
-        font-size: 0.925rem;
-      }
-      .register-btn { text-align: center !important; }
+      .mobile-toggle { display: flex; }
+      .nav-links { display: none; }
+      .drawer-overlay { display: block; }
+      .mobile-drawer { display: flex; }
       .site-header.scrolled .header-inner { height: 3.5rem; }
     }
     @media (max-width: 400px) {
       .brand-text { font-size: 0.92rem; }
       .header-inner { padding: 0 1rem; }
     }
+    @media (prefers-reduced-motion: reduce) {
+      .mobile-drawer { transition: none; }
+    }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   auth = inject(AuthService);
-  menuOpen = false;
+  drawerOpen = signal(false);
   scrolled = signal(false);
 
-  private scrollHandler = () => {
-    this.scrolled.set(window.scrollY > 30);
-  };
+  close() { this.drawerOpen.set(false); }
+
+  userInitial(): string {
+    const name = this.auth.user()?.name || '';
+    return name.charAt(0).toUpperCase() || '?';
+  }
+
+  private scrollHandler = () => this.scrolled.set(window.scrollY > 30);
 
   ngOnInit(): void {
     window.addEventListener('scroll', this.scrollHandler, { passive: true });
   }
-
   ngOnDestroy(): void {
     window.removeEventListener('scroll', this.scrollHandler);
   }
