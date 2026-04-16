@@ -97,13 +97,18 @@ import { PerfService } from '../../services/perf.service';
         @if (lastPage > 1) {
           <div class="pagination">
             <button class="page-btn" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)" aria-label="Предишна страница">‹</button>
-            @for (p of pageNumbers; track p) {
-              <button
-                class="page-btn"
-                [class.active]="p === currentPage"
-                [attr.aria-current]="p === currentPage ? 'page' : null"
-                (click)="goToPage(p)"
-              >{{ p }}</button>
+            <span class="page-counter">{{ currentPage }} / {{ lastPage }}</span>
+            @for (p of pageNumbers; track $index) {
+              @if (p === null) {
+                <span class="page-ellipsis" aria-hidden="true">…</span>
+              } @else {
+                <button
+                  class="page-btn"
+                  [class.active]="p === currentPage"
+                  [attr.aria-current]="p === currentPage ? 'page' : null"
+                  (click)="goToPage(p)"
+                >{{ p }}</button>
+              }
             }
             <button class="page-btn" [disabled]="currentPage === lastPage" (click)="goToPage(currentPage + 1)" aria-label="Следваща страница">›</button>
           </div>
@@ -303,7 +308,9 @@ import { PerfService } from '../../services/perf.service';
     /* Pagination */
     .pagination {
       display: flex;
+      align-items: center;
       justify-content: center;
+      flex-wrap: wrap;
       gap: 0.4rem;
       margin-top: 3rem;
     }
@@ -328,6 +335,17 @@ import { PerfService } from '../../services/perf.service';
       border-color: #1c1917;
     }
     .page-btn:hover:not(.active):not(:disabled) { background: #f0ede8; border-color: rgba(0,0,0,0.18); }
+    .page-ellipsis {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 2rem;
+      height: 2.75rem;
+      font-size: 0.9rem;
+      color: #78716c;
+      user-select: none;
+    }
+    .page-counter { display: none; }
 
     @media (max-width: 640px) {
       .recipe-grid { grid-template-columns: 1fr; }
@@ -337,6 +355,18 @@ import { PerfService } from '../../services/perf.service';
       .pill { min-height: 2.75rem; }
       .pill-sm { min-height: 2.75rem; }
       .page-btn { min-width: 2.75rem; height: 2.75rem; }
+    }
+    @media (max-width: 420px) {
+      .page-btn:not([aria-label]) { display: none; }
+      .page-ellipsis { display: none; }
+      .page-counter {
+        display: flex;
+        align-items: center;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #1c1917;
+        padding: 0 0.75rem;
+      }
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -364,8 +394,18 @@ export class RecipesComponent implements OnInit, OnDestroy {
   private lastSearchQ = '';
   private subs = new Subscription();
 
-  get pageNumbers(): number[] {
-    return Array.from({ length: this.lastPage }, (_, i) => i + 1);
+  get pageNumbers(): (number | null)[] {
+    const total = this.lastPage;
+    const cur = this.currentPage;
+    if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+    const pages: (number | null)[] = [1];
+    if (cur > 3) pages.push(null);
+    const start = Math.max(2, cur - 1);
+    const end = Math.min(total - 1, cur + 1);
+    for (let i = start; i <= end; i++) pages.push(i);
+    if (cur < total - 2) pages.push(null);
+    pages.push(total);
+    return pages;
   }
 
   ngOnInit(): void {
