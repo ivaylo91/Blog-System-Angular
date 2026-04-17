@@ -1,56 +1,204 @@
-/* Self-hosted fonts via @fontsource — no external requests, no render-blocking */
-@import '@fontsource-variable/inter/wght.css';
+/* ── Fonts: Alegreya (display/headings) + Rubik (body/UI) ───────────────────
+   Self-hosted via @fontsource — no external requests, no render-blocking.
+   Cyrillic + Latin subsets for Bulgarian content. font-display:optional
+   prevents CLS while the font file loads. */
 
-/* Playfair Display — font-display:optional prevents font-swap CLS.
-   Only latin + cyrillic subsets loaded (covers Bulgarian + Latin content). */
+/* Rubik variable — body & UI text */
 @font-face {
-  font-family: 'Playfair Display';
+  font-family: 'Rubik';
   font-style: normal;
-  font-weight: 600;
+  font-weight: 300 900;
   font-display: optional;
-  src: url('@fontsource/playfair-display/files/playfair-display-cyrillic-600-normal.woff2') format('woff2');
+  src: url('@fontsource-variable/rubik/files/rubik-cyrillic-wght-normal.woff2') format('woff2');
   unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
 }
 @font-face {
-  font-family: 'Playfair Display';
+  font-family: 'Rubik';
   font-style: normal;
-  font-weight: 600;
+  font-weight: 300 900;
   font-display: optional;
-  src: url('@fontsource/playfair-display/files/playfair-display-latin-600-normal.woff2') format('woff2');
+  src: url('@fontsource-variable/rubik/files/rubik-latin-wght-normal.woff2') format('woff2');
   unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
 }
+
+/* Alegreya — display & headings (400, 700, 800 weights; normal + italic) */
 @font-face {
-  font-family: 'Playfair Display';
+  font-family: 'Alegreya';
   font-style: normal;
   font-weight: 700;
   font-display: optional;
-  src: url('@fontsource/playfair-display/files/playfair-display-cyrillic-700-normal.woff2') format('woff2');
+  src: url('@fontsource/alegreya/files/alegreya-cyrillic-700-normal.woff2') format('woff2');
   unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
 }
 @font-face {
-  font-family: 'Playfair Display';
+  font-family: 'Alegreya';
   font-style: normal;
   font-weight: 700;
   font-display: optional;
-  src: url('@fontsource/playfair-display/files/playfair-display-latin-700-normal.woff2') format('woff2');
+  src: url('@fontsource/alegreya/files/alegreya-latin-700-normal.woff2') format('woff2');
   unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
 }
 @font-face {
-  font-family: 'Playfair Display';
-  font-style: italic;
-  font-weight: 600;
+  font-family: 'Alegreya';
+  font-style: normal;
+  font-weight: 800;
   font-display: optional;
-  src: url('@fontsource/playfair-display/files/playfair-display-cyrillic-600-italic.woff2') format('woff2');
+  src: url('@fontsource/alegreya/files/alegreya-cyrillic-800-normal.woff2') format('woff2');
   unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
 }
 @font-face {
-  font-family: 'Playfair Display';
-  font-style: italic;
-  font-weight: 600;
+  font-family: 'Alegreya';
+  font-style: normal;
+  font-weight: 800;
   font-display: optional;
-  src: url('@fontsource/playfair-display/files/playfair-display-latin-600-italic.woff2') format('woff2');
+  src: url('@fontsource/alegreya/files/alegreya-latin-800-normal.woff2') format('woff2');
   unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
 }
+@font-face {
+  font-family: 'Alegreya';
+  font-style: italic;
+  font-weight: 700;
+  font-display: optional;
+  src: url('@fontsource/alegreya/files/alegreya-cyrillic-700-italic.woff2') format('woff2');
+  unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
+}
+@font-face {
+  font-family: 'Alegreya';
+  font-style: italic;
+  font-weight: 700;
+  font-display: optional;
+  src: url('@fontsource/alegreya/files/alegreya-latin-700-italic.woff2') format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+/* ── Easing tokens ──────────────────────────────────────────────────────────
+   Named after physics feel, not direction. Use these everywhere. */
+:root {
+  --ease-out-expo:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-expo: cubic-bezier(0.87, 0, 0.13, 1);
+  --ease-spring:      cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ── Design Tokens ──────────────────────────────────────────────────────────
+   OKLCH for perceptually uniform colour.
+   Light mode is the default; dark mode via media query + .dark class override.  */
+
+:root {
+  /* Fonts */
+  --font-display: 'Alegreya', Georgia, 'Times New Roman', serif;
+  --font-body:    'Rubik', system-ui, -apple-system, sans-serif;
+
+  /* Brand */
+  --clr-brand:       oklch(38% 0.12 50);   /* warm brown #78350f */
+  --clr-brand-dark:  oklch(32% 0.11 48);   /* darker brown #6c2d0c */
+  --clr-brand-hover: oklch(44% 0.13 51);   /* lighter brown for hover */
+
+  /* Surfaces */
+  --clr-bg:           oklch(92% 0.01 65);  /* body #ede8e1 */
+  --clr-surface:      oklch(100% 0 0);     /* card white */
+  --clr-surface-alt:  oklch(97% 0.006 65); /* hero bg #faf7f4 */
+  --clr-surface-hover:oklch(95% 0.01 65);  /* nav hover #f5f0e8 */
+  --clr-surface-active:oklch(96% 0.04 65); /* active bg #fef3e2 */
+
+  /* Text */
+  --clr-text:         oklch(16% 0.01 50);  /* primary #1c1917 */
+  --clr-text-muted:   oklch(38% 0.015 50); /* secondary #57534e */
+  --clr-text-faint:   oklch(67% 0.01 50);  /* placeholder #a8a29e */
+
+  /* Green accent */
+  --clr-green:        oklch(48% 0.09 155); /* #4a7c59 */
+  --clr-green-dark:   oklch(41% 0.08 155); /* #3a6347 */
+  --clr-green-bg:     oklch(93% 0.05 150); /* #d8f3dc */
+  --clr-green-text:   oklch(41% 0.08 158); /* #2d6a4f */
+
+  /* Semantic */
+  --clr-error:        oklch(50% 0.18 25);  /* #dc2626 */
+  --clr-error-bg:     oklch(97% 0.02 25);  /* #fef2f2 */
+  --clr-error-dark:   oklch(38% 0.15 25);  /* #991b1b */
+
+  /* Borders */
+  --clr-border:       rgba(0, 0, 0, 0.08);
+  --clr-border-faint: rgba(0, 0, 0, 0.05);
+  --clr-border-strong:rgba(0, 0, 0, 0.12);
+
+  /* Shadows */
+  --shadow-sm:  0 2px 12px rgba(0, 0, 0, 0.07);
+  --shadow-md:  0 4px 24px rgba(0, 0, 0, 0.10);
+  --shadow-lg:  0 16px 40px rgba(28, 25, 23, 0.13);
+  --shadow-xl:  0 32px 80px rgba(0, 0, 0, 0.18);
+
+  /* Skeleton */
+  --clr-skeleton:     oklch(93% 0.008 60); /* #f0ede8 */
+  --clr-skeleton-shine: rgba(255, 255, 255, 0.55);
+
+  /* Focus */
+  --clr-focus: oklch(48% 0.09 155);
+}
+
+/* ── Dark mode ──────────────────────────────────────────────────────────────
+   Triggered by OS preference OR by .dark class on <html> (user toggle).
+   .light class on <html> locks light mode regardless of OS. */
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    --clr-bg:            oklch(14% 0.008 50);   /* deep warm dark */
+    --clr-surface:       oklch(19% 0.009 50);   /* card surface */
+    --clr-surface-alt:   oklch(16% 0.008 50);   /* slightly recessed */
+    --clr-surface-hover: oklch(24% 0.01 50);    /* hover state */
+    --clr-surface-active:oklch(26% 0.04 55);    /* active nav */
+
+    --clr-text:          oklch(92% 0.006 65);   /* warm off-white */
+    --clr-text-muted:    oklch(65% 0.012 55);   /* muted warm */
+    --clr-text-faint:    oklch(42% 0.01 50);    /* very faint */
+
+    --clr-border:        rgba(255, 255, 255, 0.09);
+    --clr-border-faint:  rgba(255, 255, 255, 0.05);
+    --clr-border-strong: rgba(255, 255, 255, 0.14);
+
+    --shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.35);
+    --shadow-md: 0 4px 24px rgba(0, 0, 0, 0.45);
+    --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.55);
+    --shadow-xl: 0 32px 80px rgba(0, 0, 0, 0.65);
+
+    --clr-skeleton:      oklch(23% 0.008 50);
+    --clr-skeleton-shine:rgba(255, 255, 255, 0.06);
+
+    --clr-green-bg:      oklch(26% 0.05 155);
+    --clr-green-text:    oklch(72% 0.09 150);
+    --clr-error-bg:      oklch(22% 0.05 25);
+  }
+}
+
+/* Class-based dark mode (user toggle overrides OS) */
+html.dark {
+  --clr-bg:            oklch(14% 0.008 50);
+  --clr-surface:       oklch(19% 0.009 50);
+  --clr-surface-alt:   oklch(16% 0.008 50);
+  --clr-surface-hover: oklch(24% 0.01 50);
+  --clr-surface-active:oklch(26% 0.04 55);
+
+  --clr-text:          oklch(92% 0.006 65);
+  --clr-text-muted:    oklch(65% 0.012 55);
+  --clr-text-faint:    oklch(42% 0.01 50);
+
+  --clr-border:        rgba(255, 255, 255, 0.09);
+  --clr-border-faint:  rgba(255, 255, 255, 0.05);
+  --clr-border-strong: rgba(255, 255, 255, 0.14);
+
+  --shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 4px 24px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.55);
+  --shadow-xl: 0 32px 80px rgba(0, 0, 0, 0.65);
+
+  --clr-skeleton:      oklch(23% 0.008 50);
+  --clr-skeleton-shine:rgba(255, 255, 255, 0.06);
+
+  --clr-green-bg:      oklch(26% 0.05 155);
+  --clr-green-text:    oklch(72% 0.09 150);
+  --clr-error-bg:      oklch(22% 0.05 25);
+}
+
+/* ── Base reset ─────────────────────────────────────────────────────────── */
 *,
 *::before,
 *::after {
@@ -58,22 +206,24 @@
 }
 
 html {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: var(--font-body);
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
+  color-scheme: light dark;
 }
 
 body {
   margin: 0;
   padding: 0;
-  background-color: #ede8e1;
+  background-color: var(--clr-bg);
   background-image: url('/backgrounds/cooking-pattern.svg');
   background-size: 500px;
   background-repeat: repeat;
-  color: #1c1917;
+  color: var(--clr-text);
   line-height: 1.65;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 a {
@@ -86,35 +236,64 @@ img {
   height: auto;
 }
 
-button {
+button, input, select, textarea {
   font-family: inherit;
 }
 
-input, select, textarea {
-  font-family: inherit;
+/* ── Typographic defaults ───────────────────────────────────────────────── */
+h1, h2, h3, h4 {
+  text-wrap: balance;
+}
+p, li {
+  text-wrap: pretty;
 }
 
-/* ── Keyboard focus indicator ──────────────────────────────────────────────── */
+/* ── Focus indicator ────────────────────────────────────────────────────── */
 :focus-visible {
-  outline: 2.5px solid #4a7c59;
+  outline: 2.5px solid var(--clr-focus);
   outline-offset: 3px;
   border-radius: 4px;
 }
 
-/* ── View Transitions (page navigation cross-fade) ─────────────────────────── */
-@keyframes vt-fade-in  { from { opacity: 0; } }
-@keyframes vt-fade-out { to   { opacity: 0; } }
+/* ── View transitions ───────────────────────────────────────────────────── */
+@keyframes vt-slide-out {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-6px); }
+}
+@keyframes vt-slide-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 
 ::view-transition-old(root) {
-  animation: 120ms ease vt-fade-out;
+  animation: 150ms cubic-bezier(0.4, 0, 1, 1) vt-slide-out;
 }
 ::view-transition-new(root) {
-  animation: 180ms ease vt-fade-in;
+  animation: 280ms cubic-bezier(0.16, 1, 0.3, 1) vt-slide-in;
 }
 
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-old(root),
-  ::view-transition-new(root) {
-    animation: none;
-  }
+  ::view-transition-new(root) { animation: none; }
 }
+
+/* ── Film-grain overlay ─────────────────────────────────────────────────────
+   A fixed, pointer-events-none noise tile. Breaks digital flatness and gives
+   the page the physical paper-like texture of a well-printed cookbook.
+   Performance-safe: fixed element, no scroll repaints, GPU composited. */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.035;
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/></filter><rect width="200" height="200" filter="url(%23n)"/></svg>');
+  background-size: 200px 200px;
+  background-repeat: repeat;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) body::after { opacity: 0.055; }
+}
+html.dark body::after { opacity: 0.055; }

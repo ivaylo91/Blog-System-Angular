@@ -25,7 +25,7 @@ import { Subscription } from 'rxjs';
           @if (recipe.hero_image) {
             <img [src]="recipe.hero_image" [alt]="recipe.title" class="hero-img" fetchpriority="high" loading="eager" />
           }
-          <div class="hero-overlay"></div>
+          <div class="hero-overlay" aria-hidden="true"></div>
           <div class="hero-content">
             <a routerLink="/recipes" class="back-link">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
@@ -90,6 +90,24 @@ import { Subscription } from 'rxjs';
           </div>
         </div>
 
+        <!-- Jump-to nav -->
+        <nav class="jump-nav" aria-label="Навигация в рецептата">
+          <a href="#ingredients" class="jump-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg>
+            Съставки
+          </a>
+          <span class="jump-sep" aria-hidden="true"></span>
+          <a href="#steps" class="jump-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            Приготвяне
+          </a>
+          <span class="jump-sep" aria-hidden="true"></span>
+          <a href="#comments" class="jump-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Коментари
+          </a>
+        </nav>
+
         <!-- Main body -->
         <div class="body-wrap">
           <div class="content-grid">
@@ -104,25 +122,45 @@ import { Subscription } from 'rxjs';
               }
 
               <!-- Ingredients -->
-              <div class="section-card">
+              <div class="section-card" id="ingredients">
                 <div class="section-heading">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg>
                   <h2>Съставки</h2>
                   <span class="count-badge">{{ recipe.ingredients?.length || 0 }}</span>
                 </div>
+                @if (checkedIngredients.size > 0) {
+                  <div class="ing-progress">
+                    <div class="ing-progress-bar" [style.width.%]="(checkedIngredients.size / (recipe.ingredients?.length || 1)) * 100"></div>
+                  </div>
+                }
                 <ul class="ingredients-list">
                   @for (ing of recipe.ingredients; track ing.id) {
-                    <li>
-                      <span class="ing-dot"></span>
+                    <li [class.checked]="checkedIngredients.has(ing.id)"
+                        (click)="toggleIngredient(ing.id)"
+                        role="checkbox"
+                        [attr.aria-checked]="checkedIngredients.has(ing.id)"
+                        tabindex="0"
+                        (keydown.space)="$event.preventDefault(); toggleIngredient(ing.id)"
+                        (keydown.enter)="toggleIngredient(ing.id)">
+                      <span class="ing-check" aria-hidden="true">
+                        @if (checkedIngredients.has(ing.id)) {
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        }
+                      </span>
                       <span class="ing-amount">{{ ing.amount }}</span>
                       <span class="ing-name">{{ ing.name }}</span>
                     </li>
                   }
                 </ul>
+                @if (checkedIngredients.size > 0) {
+                  <button class="ing-reset" (click)="clearIngredients()">
+                    Изчисти всички
+                  </button>
+                }
               </div>
 
               <!-- Steps -->
-              <div class="section-card">
+              <div class="section-card" id="steps">
                 <div class="section-heading">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
                   <h2>Приготвяне</h2>
@@ -215,7 +253,7 @@ import { Subscription } from 'rxjs';
               }
 
               <!-- Comments -->
-              <div class="sidebar-card">
+              <div class="sidebar-card" id="comments">
                 <div class="card-label">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
                   Коментари
@@ -327,7 +365,7 @@ import { Subscription } from 'rxjs';
     .hero-overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.05) 100%);
+      background: linear-gradient(to top, rgba(0,0,0,0.90) 0%, rgba(0,0,0,0.5) 40%, rgba(0,0,0,0.1) 75%, rgba(0,0,0,0.0) 100%);
     }
     .hero-content {
       position: relative;
@@ -365,7 +403,7 @@ import { Subscription } from 'rxjs';
       margin-bottom: 0.75rem;
     }
     h1 {
-      font-family: 'Playfair Display', Georgia, serif;
+      font-family: var(--font-display, 'Alegreya', Georgia, serif);
       font-size: 3rem;
       color: #fff;
       margin: 0 0 0.75rem;
@@ -482,7 +520,7 @@ import { Subscription } from 'rxjs';
     }
     .section-heading svg { width: 1.1rem; height: 1.1rem; color: #4a7c59; flex-shrink: 0; }
     h2 {
-      font-family: 'Playfair Display', Georgia, serif;
+      font-family: var(--font-display, 'Alegreya', Georgia, serif);
       font-size: 1.25rem;
       color: #1c1917;
       margin: 0;
@@ -498,6 +536,21 @@ import { Subscription } from 'rxjs';
     }
     .count-badge.ml { margin-left: 0.5rem; }
 
+    /* Ingredients progress */
+    .ing-progress {
+      height: 3px;
+      background: rgba(0,0,0,0.06);
+      border-radius: 9999px;
+      margin-bottom: 1rem;
+      overflow: hidden;
+    }
+    .ing-progress-bar {
+      height: 100%;
+      background: #4a7c59;
+      border-radius: 9999px;
+      transition: width 0.4s var(--ease-out-expo, cubic-bezier(0.16,1,0.3,1));
+    }
+
     /* Ingredients */
     .ingredients-list {
       list-style: none;
@@ -508,20 +561,58 @@ import { Subscription } from 'rxjs';
       display: flex;
       align-items: center;
       gap: 0.75rem;
-      padding: 0.65rem 0;
+      padding: 0.65rem 0.4rem;
       border-bottom: 1px solid rgba(0,0,0,0.05);
       font-size: 0.925rem;
+      cursor: pointer;
+      border-radius: 0.5rem;
+      transition: background 0.15s, opacity 0.25s;
+      -webkit-user-select: none;
+      user-select: none;
     }
     .ingredients-list li:last-child { border-bottom: none; }
-    .ing-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: #4a7c59;
-      flex-shrink: 0;
+    .ingredients-list li:hover { background: rgba(0,0,0,0.025); }
+    .ingredients-list li:focus-visible { outline: 2px solid #4a7c59; outline-offset: 1px; }
+    .ingredients-list li.checked {
+      opacity: 0.45;
     }
+    .ingredients-list li.checked .ing-name,
+    .ingredients-list li.checked .ing-amount {
+      text-decoration: line-through;
+    }
+    .ing-check {
+      width: 1.1rem;
+      height: 1.1rem;
+      border-radius: 50%;
+      border: 1.5px solid rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .ing-check svg { width: 0.6rem; height: 0.6rem; display: none; }
+    li.checked .ing-check {
+      background: #4a7c59;
+      border-color: #4a7c59;
+    }
+    li.checked .ing-check svg { display: block; stroke: #fff; }
     .ing-amount { font-weight: 700; color: #1c1917; min-width: 70px; }
     .ing-name { color: #44403c; }
+    .ing-reset {
+      margin-top: 0.75rem;
+      background: none;
+      border: none;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #57534e;
+      cursor: pointer;
+      padding: 0.25rem 0;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      transition: color 0.15s;
+    }
+    .ing-reset:hover { color: #1c1917; }
 
     /* Steps */
     .steps-list { display: flex; flex-direction: column; gap: 1.25rem; }
@@ -573,8 +664,71 @@ import { Subscription } from 'rxjs';
       font-weight: 500;
     }
 
+    /* ===== JUMP-TO NAV ===== */
+    .jump-nav {
+      background: var(--clr-surface, #fff);
+      border-bottom: 1px solid var(--clr-border-faint, rgba(0,0,0,0.06));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      padding: 0;
+      box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+    }
+    .jump-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.85rem 1.5rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #57534e;
+      text-decoration: none;
+      transition: color 0.2s, background 0.2s;
+      position: relative;
+      white-space: nowrap;
+    }
+    .jump-link svg { width: 0.85rem; height: 0.85rem; flex-shrink: 0; }
+    .jump-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 1rem;
+      right: 1rem;
+      height: 2px;
+      background: #4a7c59;
+      border-radius: 2px;
+      transform: scaleX(0);
+      transition: transform 0.2s var(--ease-out-expo, cubic-bezier(0.16,1,0.3,1));
+    }
+    .jump-link:hover { color: #1c1917; background: rgba(0,0,0,0.02); }
+    .jump-link:hover::after { transform: scaleX(1); }
+    .jump-sep {
+      width: 1px;
+      height: 1.2rem;
+      background: rgba(0,0,0,0.1);
+      flex-shrink: 0;
+    }
+
     /* ===== SIDEBAR ===== */
-    .sidebar { display: flex; flex-direction: column; gap: 1.25rem; }
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      position: sticky;
+      top: 4.5rem;
+      max-height: calc(100vh - 5rem);
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(0,0,0,0.12) transparent;
+      padding-right: 2px;
+    }
+    .sidebar::-webkit-scrollbar { width: 4px; }
+    .sidebar::-webkit-scrollbar-track { background: transparent; }
+    .sidebar::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 4px; }
     .favorite-btn {
       width: 100%;
       display: flex;
@@ -618,7 +772,7 @@ import { Subscription } from 'rxjs';
     /* Rating */
     .avg-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem; }
     .avg-num {
-      font-family: 'Playfair Display', Georgia, serif;
+      font-family: var(--font-display, 'Alegreya', Georgia, serif);
       font-size: 3rem;
       font-weight: 700;
       color: #1c1917;
@@ -735,7 +889,7 @@ import { Subscription } from 'rxjs';
       margin-bottom: 1.5rem;
     }
     .related-header h2 {
-      font-family: 'Playfair Display', Georgia, serif;
+      font-family: var(--font-display, 'Alegreya', Georgia, serif);
       font-size: 1.5rem;
       color: #1c1917;
       margin: 0;
@@ -794,11 +948,20 @@ import { Subscription } from 'rxjs';
       .content-grid { grid-template-columns: 1fr; }
       h1 { font-size: 2.2rem; }
       .hero-banner { min-height: 420px; }
+      .sidebar {
+        position: static;
+        max-height: none;
+        overflow-y: visible;
+      }
+      .jump-link { padding: 0.75rem 1rem; font-size: 0.78rem; }
     }
     @media (max-width: 640px) {
       h1 { font-size: 1.8rem; }
       .related-grid { grid-template-columns: 1fr; }
       .hero-banner { min-height: 360px; }
+      .jump-nav { gap: 0; justify-content: stretch; }
+      .jump-link { flex: 1; justify-content: center; padding: 0.75rem 0.5rem; font-size: 0.72rem; gap: 0.3rem; }
+      .jump-sep { display: none; }
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -807,12 +970,13 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
   private recipeService = inject(RecipeService);
   private route = inject(ActivatedRoute);
   private seo = inject(SeoService);
-  private cdr = inject(ChangeDetectorRef);
+  cdr = inject(ChangeDetectorRef);
   private toast = inject(ToastService);
   private perf = inject(PerfService);
   auth = inject(AuthService);
 
   Math = Math;
+  checkedIngredients = new Set<number>();
   recipe: Recipe | null = null;
   relatedRecipes: Recipe[] = [];
   comments: Comment[] = [];
@@ -830,6 +994,18 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
   get currentUrl(): string { return typeof window !== 'undefined' ? window.location.href : ''; }
   get encodedUrl(): string { return encodeURIComponent(this.currentUrl); }
   get encodedTitle(): string { return encodeURIComponent(this.recipe?.title || ''); }
+
+  toggleIngredient(id: number): void {
+    const next = new Set(this.checkedIngredients);
+    if (next.has(id)) { next.delete(id); } else { next.add(id); }
+    this.checkedIngredients = next;
+    this.cdr.markForCheck();
+  }
+
+  clearIngredients(): void {
+    this.checkedIngredients = new Set();
+    this.cdr.markForCheck();
+  }
 
   copyLink(): void {
     navigator.clipboard.writeText(this.currentUrl).then(() => {
@@ -853,6 +1029,7 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subs.add(this.route.params.subscribe(params => {
       window.scrollTo({ top: 0, behavior: 'instant' });
+      this.checkedIngredients = new Set();
       this.loadRecipe(params['slug']);
     }));
   }

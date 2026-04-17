@@ -61,6 +61,39 @@ import { PerfService } from '../../services/perf.service';
           <button class="pill pill-sm" [class.active]="sort === 'easiest'" (click)="selectSort('easiest')">Най-лесни</button>
         </div>
 
+        <!-- Active filter chips -->
+        @if (category || difficulty || (sort && sort !== 'newest') || q) {
+          <div class="active-filters" aria-label="Активни филтри">
+            <span class="filters-label">Филтри:</span>
+            @if (q) {
+              <button class="active-chip" (click)="clearSearch()" aria-label="Премахни търсенето">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                "{{ q }}"
+                <svg class="chip-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+            }
+            @if (category) {
+              <button class="active-chip" (click)="selectCategory('')" aria-label="Премахни категория">
+                {{ getCategoryName(category) }}
+                <svg class="chip-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+            }
+            @if (difficulty) {
+              <button class="active-chip" (click)="selectDifficulty('')" aria-label="Премахни трудност">
+                {{ difficulty }}
+                <svg class="chip-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+            }
+            @if (sort && sort !== 'newest') {
+              <button class="active-chip" (click)="selectSort('newest')" aria-label="Премахни сортиране">
+                {{ sort === 'fastest' ? 'Най-бързи' : 'Най-лесни' }}
+                <svg class="chip-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+            }
+            <button class="clear-all" (click)="clearAll()">Изчисти всички</button>
+          </div>
+        }
+
         <!-- Recipe grid / skeleton -->
         @if (loading) {
           <div class="recipe-grid">
@@ -124,7 +157,7 @@ import { PerfService } from '../../services/perf.service';
       margin-bottom: 2.5rem;
     }
     .page-header h1 {
-      font-family: 'Playfair Display', Georgia, serif;
+      font-family: var(--font-display, 'Alegreya', Georgia, serif);
       font-size: 2.6rem;
       color: #1c1917;
       margin: 0 0 0.5rem;
@@ -224,6 +257,67 @@ import { PerfService } from '../../services/perf.service';
       align-self: center;
       margin: 0 0.25rem;
     }
+
+    /* Active filter chips */
+    .active-filters {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      padding: 0.75rem 1rem;
+      background: var(--clr-surface-alt, #faf7f4);
+      border-radius: 0.875rem;
+      border: 1px solid rgba(0,0,0,0.07);
+    }
+    .filters-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #78716c;
+      margin-right: 0.25rem;
+      flex-shrink: 0;
+    }
+    .active-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.35rem 0.6rem 0.35rem 0.7rem;
+      background: #1c1917;
+      color: #fff;
+      border: none;
+      border-radius: 9999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.15s;
+      touch-action: manipulation;
+    }
+    .active-chip:hover { background: #44403c; }
+    .active-chip:active { transform: scale(0.97); }
+    .active-chip > svg:first-child { width: 0.7rem; height: 0.7rem; opacity: 0.7; }
+    .chip-x {
+      width: 0.7rem;
+      height: 0.7rem;
+      opacity: 0.6;
+      flex-shrink: 0;
+    }
+    .clear-all {
+      margin-left: auto;
+      background: none;
+      border: none;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #57534e;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      padding: 0.25rem;
+      transition: color 0.15s;
+      touch-action: manipulation;
+    }
+    .clear-all:hover { color: #1c1917; }
 
     /* Recipe grid */
     .recipe-grid {
@@ -510,6 +604,22 @@ export class RecipesComponent implements OnInit, OnDestroy {
         page: undefined,
       },
     });
+  }
+
+  getCategoryName(slug: string): string {
+    return this.categories.find(c => c.slug === slug)?.name || slug;
+  }
+
+  clearSearch(): void {
+    this.q = '';
+    this.router.navigate(['/recipes'], {
+      queryParams: { category: this.category || undefined, difficulty: this.difficulty || undefined, sort: this.sort !== 'newest' ? this.sort : undefined },
+    });
+  }
+
+  clearAll(): void {
+    this.q = '';
+    this.router.navigate(['/recipes']);
   }
 
   goToPage(page: number): void {

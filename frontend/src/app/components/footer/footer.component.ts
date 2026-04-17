@@ -35,6 +35,11 @@ import { AuthService } from '../../services/auth.service';
           </div>
         </div>
 
+        <div class="footer-quote">
+          <svg class="quote-icon" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M10 8C5.6 8 2 11.6 2 16v8h8v-8H6c0-2.2 1.8-4 4-4V8zm16 0c-4.4 0-8 3.6-8 8v8h8v-8h-4c0-2.2 1.8-4 4-4V8z"/></svg>
+          <p>Готвенето е любов, превърната в ястие.</p>
+        </div>
+
         <div class="footer-bottom">
           <p class="copyright">© {{ currentYear }} Кулинарният блог на Иво</p>
           <span class="footer-sep"></span>
@@ -51,9 +56,9 @@ import { AuthService } from '../../services/auth.service';
   styles: [`
     .site-footer {
       margin-top: auto;
-      background: #1c1917;
-      color: #a8a29e;
-      border-top: 3px solid #78350f;
+      background: oklch(14% 0.008 50);
+      color: oklch(60% 0.01 50);
+      border-top: 3px solid var(--clr-brand);
     }
     .footer-inner {
       max-width: 1200px;
@@ -67,7 +72,7 @@ import { AuthService } from '../../services/auth.service';
       align-items: flex-start;
       gap: 3rem;
       padding-bottom: 2.5rem;
-      border-bottom: 1px solid rgba(255,255,255,0.07);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       margin-bottom: 1.5rem;
     }
 
@@ -84,17 +89,17 @@ import { AuthService } from '../../services/auth.service';
       gap: 0.55rem;
       text-decoration: none;
     }
-    .brand-icon { width: 1.75rem; height: 1.75rem; flex-shrink: 0; color: #78350f; }
+    .brand-icon { width: 1.75rem; height: 1.75rem; flex-shrink: 0; color: var(--clr-brand); }
     .brand-name {
-      font-family: 'Georgia', serif;
-      font-size: 1rem;
+      font-family: var(--font-display);
+      font-size: 1.05rem;
       font-weight: 700;
-      color: #fafaf9;
+      color: oklch(94% 0.005 65);
       letter-spacing: -0.01em;
     }
     .brand-tagline {
       font-size: 0.83rem;
-      color: #a8a29e;
+      color: oklch(60% 0.01 50);
       margin: 0;
       line-height: 1.6;
     }
@@ -115,17 +120,44 @@ import { AuthService } from '../../services/auth.service';
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      color: #a8a29e;
+      color: oklch(50% 0.01 50);
       margin-bottom: 0.25rem;
     }
     .footer-col a {
-      color: #a8a29e;
+      color: oklch(60% 0.01 50);
       text-decoration: none;
       font-size: 0.875rem;
       transition: color 0.2s;
       touch-action: manipulation;
     }
-    .footer-col a:hover { color: #fafaf9; }
+    .footer-col a:hover { color: oklch(94% 0.005 65); }
+
+    /* Quote */
+    .footer-quote {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 1.5rem 0 2rem;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      margin-bottom: 1.5rem;
+    }
+    .quote-icon {
+      width: 1.5rem;
+      height: 1.5rem;
+      flex-shrink: 0;
+      color: var(--clr-brand);
+      opacity: 0.6;
+      margin-top: 0.1rem;
+    }
+    .footer-quote p {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-style: italic;
+      color: oklch(72% 0.01 55);
+      margin: 0;
+      line-height: 1.5;
+      letter-spacing: 0.01em;
+    }
 
     /* Bottom */
     .footer-bottom {
@@ -137,27 +169,27 @@ import { AuthService } from '../../services/auth.service';
     }
     .copyright {
       font-size: 0.78rem;
-      color: #a8a29e;
+      color: oklch(45% 0.008 50);
       margin: 0;
     }
     .footer-sep {
       width: 3px;
       height: 3px;
       border-radius: 50%;
-      background: #3c3836;
+      background: oklch(30% 0.008 50);
     }
     .made-with {
       display: flex;
       align-items: center;
       gap: 0.3rem;
       font-size: 0.78rem;
-      color: #a8a29e;
+      color: oklch(45% 0.008 50);
       margin: 0;
     }
     .heart {
       width: 0.8rem;
       height: 0.8rem;
-      color: #dc2626;
+      color: var(--clr-error);
     }
 
     @media (max-width: 600px) {
@@ -170,7 +202,7 @@ import { AuthService } from '../../services/auth.service';
       .footer-col a {
         padding: 0.65rem 0;
         font-size: 0.95rem;
-        border-bottom: 1px solid rgba(255,255,255,0.05);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         min-height: 2.75rem;
         display: flex;
         align-items: center;

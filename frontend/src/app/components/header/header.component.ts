@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, OnDestroy, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { ThemeService } from '../../services/theme.service';
 
 @Component({
   selector: 'app-header',
@@ -30,6 +31,15 @@ import { AuthService } from '../../services/auth.service';
             }
           </div>
           <div class="nav-auth">
+            <button class="theme-toggle" (click)="theme.toggle()"
+                    [attr.aria-label]="theme.isDark() ? 'Включи светъл режим' : 'Включи тъмен режим'"
+                    [attr.aria-pressed]="theme.isDark()">
+              @if (theme.isDark()) {
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+              } @else {
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+              }
+            </button>
             @if (auth.isAuthenticated()) {
               <button class="logout-btn" (click)="auth.logout()">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
@@ -56,9 +66,19 @@ import { AuthService } from '../../services/auth.service';
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l1.5-7.5A2 2 0 0 1 6.46 2h11.08a2 2 0 0 1 1.96 1.5L21 11"/><path d="M3 11h18v2a7 7 0 0 1-14 0H3z"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="17" x2="12" y2="20"/></svg>
           Кулинарен блог
         </a>
-        <button class="drawer-close" (click)="close()" aria-label="Затвори менюто">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
+        <div class="drawer-header-actions">
+          <button class="theme-toggle" (click)="theme.toggle()"
+                  [attr.aria-label]="theme.isDark() ? 'Включи светъл режим' : 'Включи тъмен режим'">
+            @if (theme.isDark()) {
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            } @else {
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            }
+          </button>
+          <button class="drawer-close" (click)="close()" aria-label="Затвори менюто">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
       </div>
 
       @if (auth.isAuthenticated()) {
@@ -116,16 +136,16 @@ import { AuthService } from '../../services/auth.service';
       position: sticky;
       top: 0;
       z-index: 50;
-      background: rgba(255, 255, 255, 0.92);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      background: color-mix(in oklch, var(--clr-surface) 92%, transparent);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--clr-border-faint);
       transition: box-shadow 0.3s, border-color 0.3s, background 0.3s;
     }
     .site-header.scrolled {
-      background: rgba(255, 255, 255, 0.97);
+      background: color-mix(in oklch, var(--clr-surface) 97%, transparent);
       box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 8px 24px rgba(0,0,0,0.07);
-      border-bottom-color: rgba(0, 0, 0, 0.09);
+      border-bottom-color: var(--clr-border);
     }
     .header-inner {
       max-width: 1200px;
@@ -148,17 +168,17 @@ import { AuthService } from '../../services/auth.service';
       text-decoration: none;
       flex-shrink: 0;
     }
-    .brand-icon { width: 1.9rem; height: 1.9rem; flex-shrink: 0; color: #78350f; }
+    .brand-icon { width: 1.9rem; height: 1.9rem; flex-shrink: 0; color: var(--clr-brand); }
     .brand-text {
-      font-family: 'Georgia', serif;
-      font-size: 1.05rem;
+      font-family: var(--font-display);
+      font-size: 1.1rem;
       font-weight: 700;
-      color: #1c1917;
+      color: var(--clr-text);
       letter-spacing: -0.01em;
       white-space: nowrap;
       transition: color 0.2s;
     }
-    .brand:hover .brand-text { color: #78350f; }
+    .brand:hover .brand-text { color: var(--clr-brand); }
 
     /* Desktop nav */
     .nav-links { display: flex; align-items: center; gap: 0.25rem; }
@@ -166,40 +186,52 @@ import { AuthService } from '../../services/auth.service';
     .nav-auth {
       display: flex; align-items: center; gap: 0.5rem;
       margin-left: 0.75rem; padding-left: 0.75rem;
-      border-left: 1px solid #e7e5e4;
+      border-left: 1px solid var(--clr-border);
     }
     .nav-links a {
       padding: 0.45rem 0.9rem; border-radius: 9999px;
       text-decoration: none; font-size: 0.875rem; font-weight: 500;
-      color: #57534e; transition: background 0.18s, color 0.18s;
+      color: var(--clr-text-muted); transition: background 0.18s, color 0.18s;
       white-space: nowrap; min-height: 2.25rem;
       display: flex; align-items: center;
     }
-    .nav-links a:hover { background: #f5f0e8; color: #1c1917; }
-    .nav-links a.active { background: #f5f0e8; color: #78350f; font-weight: 600; }
-    .signin-link { color: #57534e; }
+    .nav-links a:hover { background: var(--clr-surface-hover); color: var(--clr-text); }
+    .nav-links a.active { background: var(--clr-surface-hover); color: var(--clr-brand); font-weight: 600; }
+    .signin-link { color: var(--clr-text-muted); }
     .register-btn {
-      background: linear-gradient(135deg, #78350f, #92400e) !important;
+      background: var(--clr-brand) !important;
       color: #fff !important; font-weight: 600 !important;
-      box-shadow: 0 1px 4px rgba(120,53,15,0.3);
-      transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s !important;
+      box-shadow: 0 1px 4px color-mix(in oklch, var(--clr-brand) 30%, transparent);
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s !important;
     }
     .register-btn:hover {
-      background: linear-gradient(135deg, #6c2d0c, #7c3a0c) !important;
-      opacity: 0.93; transform: translateY(-1px);
-      box-shadow: 0 3px 10px rgba(120,53,15,0.35) !important;
+      background: var(--clr-brand-dark) !important;
+      transform: translateY(-1px);
+      box-shadow: 0 3px 10px color-mix(in oklch, var(--clr-brand) 35%, transparent) !important;
     }
-    .register-btn.active { background: linear-gradient(135deg, #78350f, #92400e) !important; }
+    .register-btn.active { background: var(--clr-brand) !important; }
     .logout-btn {
       display: flex; align-items: center; gap: 0.35rem;
       padding: 0.45rem 0.9rem; border-radius: 9999px;
       border: none; background: none; font-size: 0.875rem; font-weight: 500;
-      color: #dc2626; cursor: pointer;
+      color: var(--clr-error); cursor: pointer;
       transition: background 0.18s, color 0.18s;
       white-space: nowrap; min-height: 2.25rem; touch-action: manipulation;
     }
     .logout-btn svg { width: 0.9rem; height: 0.9rem; }
-    .logout-btn:hover { background: #fef2f2; color: #991b1b; }
+    .logout-btn:hover { background: var(--clr-error-bg); color: var(--clr-error-dark); }
+
+    /* Theme toggle */
+    .theme-toggle {
+      display: flex; align-items: center; justify-content: center;
+      width: 2.25rem; height: 2.25rem;
+      border: none; background: none; border-radius: 9999px;
+      color: var(--clr-text-muted); cursor: pointer;
+      transition: background 0.18s, color 0.18s;
+      touch-action: manipulation; flex-shrink: 0;
+    }
+    .theme-toggle svg { width: 1rem; height: 1rem; }
+    .theme-toggle:hover { background: var(--clr-surface-hover); color: var(--clr-text); }
 
     /* Mobile toggle — hidden on desktop */
     .mobile-toggle {
@@ -213,14 +245,14 @@ import { AuthService } from '../../services/auth.service';
       touch-action: manipulation;
       order: -1;
     }
-    .mobile-toggle:hover { background: #f5f0e8; }
+    .mobile-toggle:hover { background: var(--clr-surface-hover); }
     .hamburger {
       display: block; width: 1.25rem; height: 2px;
-      background: #1c1917; position: relative;
+      background: var(--clr-text); position: relative;
     }
     .hamburger::before, .hamburger::after {
       content: ''; position: absolute; left: 0;
-      width: 100%; height: 2px; background: #1c1917;
+      width: 100%; height: 2px; background: var(--clr-text);
     }
     .hamburger::before { top: -6px; }
     .hamburger::after { top: 6px; }
@@ -229,7 +261,7 @@ import { AuthService } from '../../services/auth.service';
     .drawer-overlay {
       display: none;
       position: fixed; inset: 0;
-      background: rgba(0,0,0,0.45);
+      background: rgba(0, 0, 0, 0.5);
       z-index: 59;
       backdrop-filter: blur(2px);
     }
@@ -240,12 +272,12 @@ import { AuthService } from '../../services/auth.service';
       position: fixed; top: 0; left: 0;
       width: 280px; max-width: 85vw;
       height: 100vh; height: 100dvh;
-      background: #fff;
+      background: var(--clr-surface);
       z-index: 60;
       flex-direction: column;
       transform: translateX(-100%);
       transition: transform 0.28s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      box-shadow: 4px 0 24px rgba(0,0,0,0.12);
+      box-shadow: 4px 0 24px rgba(0,0,0,0.18);
       overflow-y: auto;
     }
     .mobile-drawer.open { transform: translateX(0); }
@@ -253,27 +285,28 @@ import { AuthService } from '../../services/auth.service';
     .drawer-header {
       display: flex; align-items: center;
       justify-content: space-between;
-      padding: 1rem 1rem 1rem 1.25rem;
-      border-bottom: 1px solid #f0ece6;
+      padding: 1rem 0.75rem 1rem 1.25rem;
+      border-bottom: 1px solid var(--clr-border-faint);
       flex-shrink: 0;
     }
+    .drawer-header-actions { display: flex; align-items: center; gap: 0.25rem; }
     .drawer-brand {
       display: flex; align-items: center; gap: 0.5rem;
       text-decoration: none;
-      font-family: 'Georgia', serif; font-size: 0.95rem;
-      font-weight: 700; color: #1c1917;
+      font-family: var(--font-display); font-size: 0.95rem;
+      font-weight: 700; color: var(--clr-text);
     }
-    .drawer-brand svg { width: 1.4rem; height: 1.4rem; color: #78350f; flex-shrink: 0; }
+    .drawer-brand svg { width: 1.4rem; height: 1.4rem; color: var(--clr-brand); flex-shrink: 0; }
     .drawer-close {
       background: none; border: none; cursor: pointer;
-      padding: 0.4rem; border-radius: 0.5rem; color: #78716c;
+      padding: 0.4rem; border-radius: 0.5rem; color: var(--clr-text-muted);
       transition: background 0.2s, color 0.2s;
       min-width: 2.5rem; min-height: 2.5rem;
       display: flex; align-items: center; justify-content: center;
       touch-action: manipulation;
     }
     .drawer-close svg { width: 1.1rem; height: 1.1rem; }
-    .drawer-close:hover { background: #f5f0e8; color: #1c1917; }
+    .drawer-close:hover { background: var(--clr-surface-hover); color: var(--clr-text); }
 
     .drawer-user {
       display: flex; align-items: center; gap: 0.75rem;
@@ -281,26 +314,26 @@ import { AuthService } from '../../services/auth.service';
     }
     .drawer-avatar {
       width: 2.5rem; height: 2.5rem; border-radius: 50%;
-      background: #78350f; color: #fff;
+      background: var(--clr-brand); color: #fff;
       font-size: 1rem; font-weight: 700;
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0; text-transform: uppercase;
     }
     .drawer-user-info { display: flex; flex-direction: column; gap: 0.1rem; min-width: 0; }
     .drawer-user-name {
-      font-size: 0.9rem; font-weight: 600; color: #1c1917;
+      font-size: 0.9rem; font-weight: 600; color: var(--clr-text);
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
     .drawer-user-role {
-      font-size: 0.7rem; color: #a8a29e;
+      font-size: 0.7rem; color: var(--clr-text-faint);
       text-transform: uppercase; letter-spacing: 0.05em;
     }
 
-    .drawer-sep { height: 1px; background: #f0ece6; margin: 0 1.25rem; }
+    .drawer-sep { height: 1px; background: var(--clr-border-faint); margin: 0 1.25rem; }
 
     .drawer-nav {
       display: flex; flex-direction: column;
-      padding: 0.75rem 0.75rem;
+      padding: 0.75rem;
       flex: 1;
       gap: 0.125rem;
     }
@@ -310,46 +343,48 @@ import { AuthService } from '../../services/auth.service';
       border-radius: 0.75rem;
       text-decoration: none;
       font-size: 0.95rem; font-weight: 500;
-      color: #292524;
+      color: var(--clr-text);
       transition: background 0.18s, color 0.18s;
       touch-action: manipulation; min-height: 3rem;
     }
-    .drawer-item svg { width: 1.15rem; height: 1.15rem; flex-shrink: 0; color: #78716c; }
-    .drawer-item:hover { background: #f5f0e8; }
+    .drawer-item svg { width: 1.15rem; height: 1.15rem; flex-shrink: 0; color: var(--clr-text-muted); }
+    .drawer-item:hover { background: var(--clr-surface-hover); }
     .drawer-item.active {
-      background: #fef3e2; color: #78350f; font-weight: 600;
+      background: var(--clr-surface-active); color: var(--clr-brand); font-weight: 600;
     }
-    .drawer-item.active svg { color: #78350f; }
+    .drawer-item.active svg { color: var(--clr-brand); }
 
     .drawer-footer {
-      padding: 0.75rem; border-top: 1px solid #f0ece6;
+      padding: 0.75rem; border-top: 1px solid var(--clr-border-faint);
       display: flex; flex-direction: column; gap: 0.5rem;
       flex-shrink: 0;
     }
     .drawer-logout {
       display: flex; align-items: center; gap: 0.75rem;
-      padding: 0.75rem 0.75rem; border-radius: 0.75rem;
+      padding: 0.75rem; border-radius: 0.75rem;
       border: none; background: none; width: 100%;
-      font-size: 0.95rem; font-weight: 500; color: #dc2626;
+      font-size: 0.95rem; font-weight: 500; color: var(--clr-error);
       cursor: pointer; touch-action: manipulation; min-height: 3rem;
       transition: background 0.18s;
     }
     .drawer-logout svg { width: 1.15rem; height: 1.15rem; flex-shrink: 0; }
-    .drawer-logout:hover { background: #fef2f2; }
+    .drawer-logout:hover { background: var(--clr-error-bg); }
     .drawer-signin {
       display: block; padding: 0.75rem 1rem; border-radius: 0.75rem;
       text-decoration: none; text-align: center;
-      font-size: 0.95rem; font-weight: 500; color: #57534e;
+      font-size: 0.95rem; font-weight: 500; color: var(--clr-text-muted);
       transition: background 0.18s;
     }
-    .drawer-signin:hover { background: #f5f0e8; }
+    .drawer-signin:hover { background: var(--clr-surface-hover); }
     .drawer-register {
       display: block; padding: 0.75rem 1rem; border-radius: 0.75rem;
       text-decoration: none; text-align: center;
       font-size: 0.95rem; font-weight: 600;
-      background: linear-gradient(135deg, #78350f, #92400e);
+      background: var(--clr-brand);
       color: #fff;
+      transition: background 0.2s;
     }
+    .drawer-register:hover { background: var(--clr-brand-dark); }
 
     @media (max-width: 768px) {
       .mobile-toggle { display: flex; }
@@ -370,6 +405,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   auth = inject(AuthService);
+  theme = inject(ThemeService);
   drawerOpen = signal(false);
   scrolled = signal(false);
 

@@ -10,16 +10,18 @@ import { Recipe } from '../../models/models';
     <a [routerLink]="['/recipes', recipe.slug]" class="card"
        [class.featured]="featured" [class.compact]="compact"
        [style.animation-delay]="(index < 6 ? index : 5) * 50 + 'ms'">
-      <div class="card-image" [style.background]="gradient">
+      <div class="card-image" [class.img-loaded]="imgLoaded" [style.background]="gradient">
         @if (recipe.hero_image) {
           <img [src]="recipe.hero_image" [alt]="recipe.title"
                [loading]="priority ? 'eager' : 'lazy'"
-               [attr.fetchpriority]="priority ? 'high' : null" />
+               [attr.fetchpriority]="priority ? 'high' : null"
+               (load)="onImgLoad()" />
         }
         @if (!compact) {
           <div class="card-overlay">
             <span class="overlay-btn">Виж рецептата →</span>
           </div>
+          <span class="mobile-label" aria-hidden="true">Виж рецептата</span>
         }
       </div>
       <div class="card-body">
@@ -51,18 +53,23 @@ import { Recipe } from '../../models/models';
       display: block;
       border-radius: 1.25rem;
       overflow: hidden;
-      background: #ffffff;
-      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+      background: var(--clr-surface);
+      box-shadow: var(--shadow-sm);
       text-decoration: none;
       color: inherit;
-      transition: transform 0.28s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.28s ease;
-      animation: fadeInUp 0.45s both;
+      transition: transform 0.35s var(--ease-out-expo), box-shadow 0.35s var(--ease-out-expo);
+      animation: fadeInUp 0.5s var(--ease-out-expo) both;
       touch-action: manipulation;
       cursor: pointer;
     }
     .card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 16px 40px rgba(28, 25, 23, 0.13);
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+    }
+    .card:active {
+      transform: translateY(-1px) scale(0.99);
+      box-shadow: var(--shadow-sm);
+      transition-duration: 0.1s;
     }
 
     /* --- Image --- */
@@ -78,10 +85,36 @@ import { Recipe } from '../../models/models';
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.45s ease;
+      transition: transform 0.5s var(--ease-out-expo), opacity 0.35s ease;
+      opacity: 0;
+    }
+    .card-image.img-loaded img {
+      opacity: 1;
     }
     .card:hover .card-image img {
       transform: scale(1.04);
+    }
+
+    /* skeleton shimmer — shown until image loads */
+    .card-image:not(.img-loaded)::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--clr-skeleton, #f0ede8);
+      z-index: 1;
+    }
+    .card-image:not(.img-loaded)::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background: linear-gradient(90deg, transparent 0%, var(--clr-skeleton-shine, rgba(255,255,255,0.55)) 50%, transparent 100%);
+      transform: translateX(-100%);
+      animation: img-shimmer 1.4s ease-in-out infinite;
+    }
+    @keyframes img-shimmer {
+      from { transform: translateX(-100%); }
+      to   { transform: translateX(100%); }
     }
 
     /* --- Hover overlay --- */
@@ -115,33 +148,60 @@ import { Recipe } from '../../models/models';
       transform: translateY(0);
     }
 
+    /* mobile persistent label — only on touch devices */
+    .mobile-label {
+      display: none;
+    }
+    @media (hover: none) {
+      .mobile-label {
+        display: block;
+        position: absolute;
+        bottom: 0.6rem;
+        right: 0.75rem;
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        color: #fff;
+        background: rgba(28,25,23,0.55);
+        backdrop-filter: blur(6px);
+        padding: 0.25rem 0.65rem;
+        border-radius: 9999px;
+        border: 1px solid rgba(255,255,255,0.2);
+        z-index: 2;
+        pointer-events: none;
+      }
+    }
+
     /* --- Body --- */
-    .card-body { padding: 1.2rem 1.25rem 1.25rem; }
+    .card-body { padding: 1.25rem 1.375rem 1.375rem; }
     .category {
       display: inline-block;
-      font-size: 0.68rem;
+      font-size: 0.65rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: #2d6a4f;
-      background: #d8f3dc;
-      padding: 0.22rem 0.7rem;
+      letter-spacing: 0.12em;
+      color: var(--clr-green-text);
+      background: var(--clr-green-bg);
+      padding: 0.2rem 0.65rem;
       border-radius: 9999px;
-      margin-bottom: 0.45rem;
+      margin-bottom: 0.55rem;
     }
     .title {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 1.15rem;
-      color: #1c1917;
-      margin: 0 0 0.45rem;
-      line-height: 1.35;
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--clr-text);
+      margin: 0 0 0.5rem;
+      line-height: 1.25;
     }
     .card.featured .title {
-      font-size: 1.4rem;
+      font-size: 1.6rem;
+      font-weight: 800;
+      line-height: 1.15;
     }
     .excerpt {
       font-size: 0.875rem;
-      color: #57534e;
+      color: var(--clr-text-muted);
       line-height: 1.65;
       margin: 0;
       display: -webkit-box;
@@ -156,10 +216,11 @@ import { Recipe } from '../../models/models';
       display: flex;
       gap: 1rem;
       margin-top: 1rem;
-      padding-top: 0.75rem;
-      border-top: 1px solid rgba(0, 0, 0, 0.06);
+      padding-top: 0.875rem;
+      border-top: 1px solid var(--clr-border-faint);
       font-size: 0.78rem;
-      color: #57534e;
+      color: var(--clr-text-muted);
+      align-items: center;
     }
     .meta-item {
       display: flex;
@@ -170,7 +231,7 @@ import { Recipe } from '../../models/models';
     .difficulty {
       margin-left: auto;
       font-weight: 600;
-      color: #44403c;
+      color: var(--clr-text-muted);
     }
 
     /* --- Compact (horizontal) variant --- */
@@ -230,6 +291,9 @@ export class RecipeCardComponent {
   @Input() index = 0;
   @Input() featured = false;
   @Input() compact = false;
+
+  imgLoaded = false;
+  onImgLoad(): void { this.imgLoaded = true; }
 
   get gradient(): string {
     const from = this.recipe.hero_palette_from || '#d6c5a5';
