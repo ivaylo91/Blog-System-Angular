@@ -150,7 +150,7 @@ import { PerfService } from '../../services/perf.service';
     </div>
   `,
   styles: [`
-    .page { padding: 3rem 1.5rem 5rem; background-color: #faf7f4; background-image: url('/backgrounds/cooking-pattern.svg'); background-size: 500px; background-repeat: repeat; min-height: 100vh; }
+    .page { padding: 3rem 1.5rem 5rem; background-color: var(--clr-bg, #faf7f4); background-image: url('/backgrounds/cooking-pattern.svg'); background-size: 500px; background-repeat: repeat; min-height: 100dvh; }
     .page-inner { max-width: 1200px; margin: 0 auto; }
     .page-header {
       text-align: center;
@@ -239,8 +239,8 @@ import { PerfService } from '../../services/perf.service';
       color: #1c1917;
     }
     .pill.active {
-      background: #1c1917;
-      border-color: #1c1917;
+      background: var(--clr-brand, #78350f);
+      border-color: var(--clr-brand, #78350f);
       color: #fff;
       font-weight: 600;
     }

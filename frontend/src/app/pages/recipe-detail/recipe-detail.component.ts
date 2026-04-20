@@ -345,7 +345,7 @@ import { Subscription } from 'rxjs';
     }
   `,
   styles: [`
-    .detail-page { min-height: 100vh; background-color: #faf7f4; background-image: url('/backgrounds/cooking-pattern.svg'); background-size: 500px; background-repeat: repeat; }
+    .detail-page { min-height: 100dvh; background-color: var(--clr-bg, #faf7f4); background-image: url('/backgrounds/cooking-pattern.svg'); background-size: 500px; background-repeat: repeat; }
 
     /* ===== HERO ===== */
     .hero-banner {
@@ -404,7 +404,7 @@ import { Subscription } from 'rxjs';
     }
     h1 {
       font-family: var(--font-display, 'Alegreya', Georgia, serif);
-      font-size: 3rem;
+      font-size: clamp(1.8rem, 4vw, 3rem);
       color: #fff;
       margin: 0 0 0.75rem;
       line-height: 1.1;
@@ -673,7 +673,7 @@ import { Subscription } from 'rxjs';
       justify-content: center;
       gap: 0;
       position: sticky;
-      top: 0;
+      top: 4rem;
       z-index: 10;
       padding: 0;
       box-shadow: 0 1px 8px rgba(0,0,0,0.06);
@@ -719,8 +719,8 @@ import { Subscription } from 'rxjs';
       flex-direction: column;
       gap: 1.25rem;
       position: sticky;
-      top: 4.5rem;
-      max-height: calc(100vh - 5rem);
+      top: calc(4rem + 3.25rem);
+      max-height: calc(100dvh - 8rem);
       overflow-y: auto;
       scrollbar-width: thin;
       scrollbar-color: rgba(0,0,0,0.12) transparent;
