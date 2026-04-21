@@ -102,20 +102,20 @@ import { Subscription } from 'rxjs';
 
         <!-- Jump-to nav -->
         <nav class="jump-nav" aria-label="Навигация в рецептата">
-          <a href="#ingredients" class="jump-link">
+          <button type="button" class="jump-link" (click)="scrollTo('ingredients')">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg>
             Съставки
-          </a>
+          </button>
           <span class="jump-sep" aria-hidden="true"></span>
-          <a href="#steps" class="jump-link">
+          <button type="button" class="jump-link" (click)="scrollTo('steps')">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
             Приготвяне
-          </a>
+          </button>
           <span class="jump-sep" aria-hidden="true"></span>
-          <a href="#comments" class="jump-link">
+          <button type="button" class="jump-link" (click)="scrollTo('comments')">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
             Коментари
-          </a>
+          </button>
         </nav>
 
         <!-- Main body -->
@@ -552,6 +552,7 @@ import { Subscription } from 'rxjs';
       padding: 1.5rem;
       border: 1px solid var(--clr-border-faint);
       box-shadow: var(--shadow-sm);
+      scroll-margin-top: 8rem;
     }
     .section-heading {
       display: flex;
@@ -728,6 +729,10 @@ import { Subscription } from 'rxjs';
       font-weight: 600;
       color: var(--clr-text-muted);
       text-decoration: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
       transition: color 0.2s var(--ease-out-expo), background 0.2s var(--ease-out-expo);
       position: relative;
       white-space: nowrap;
@@ -796,6 +801,7 @@ import { Subscription } from 'rxjs';
       padding: 1.25rem;
       border: 1px solid var(--clr-border-faint);
       box-shadow: var(--shadow-sm);
+      scroll-margin-top: 8rem;
     }
     .card-label {
       display: flex;
@@ -1156,6 +1162,10 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
       };
     }
     return base;
+  }
+
+  scrollTo(id: string): void {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   printRecipe(): void {

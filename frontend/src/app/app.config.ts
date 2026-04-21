@@ -13,7 +13,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(
       routes,
       withPreloading(IdlePreloadStrategy),
-      withInMemoryScrolling({ scrollPositionRestoration: 'top' }),
+      withInMemoryScrolling({ scrollPositionRestoration: 'top', anchorScrolling: 'enabled' }),
       withViewTransitions({ skipInitialTransition: true }),
     ),
     provideHttpClient(withFetch(), withInterceptors([authInterceptor])),

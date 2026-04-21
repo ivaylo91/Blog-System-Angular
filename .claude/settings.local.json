@@ -5,7 +5,13 @@
       "Bash(xargs ls:*)",
       "Bash(python /c/Users/ipene/.claude/skills/ui-ux-pro-max/scripts/search.py \"food blog cooking recipe warm earthy\" --domain ux -n 8)",
       "Bash(python /c/Users/ipene/.claude/skills/ui-ux-pro-max/scripts/search.py \"recipe food blog editorial\" --domain landing -n 5)",
-      "Bash(python /c/Users/ipene/.claude/skills/ui-ux-pro-max/scripts/search.py \"accessibility touch interaction animation\" --domain ux -n 12)"
+      "Bash(python /c/Users/ipene/.claude/skills/ui-ux-pro-max/scripts/search.py \"accessibility touch interaction animation\" --domain ux -n 12)",
+      "Bash(npm install *)",
+      "Bash(npx ng *)",
+      "Bash(npx skills *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)"
     ]
   }
 }
