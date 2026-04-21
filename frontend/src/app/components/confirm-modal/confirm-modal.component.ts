@@ -21,29 +21,42 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
     .overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.4);
+      background: rgba(0, 0, 0, 0.45);
       display: flex;
       align-items: center;
       justify-content: center;
       z-index: 100;
+      animation: fade-in 0.18s var(--ease-out-expo);
+    }
+    @keyframes fade-in {
+      from { opacity: 0; }
+      to   { opacity: 1; }
     }
     .modal {
-      background: white;
+      background: var(--clr-surface);
       border-radius: 1.5rem;
       padding: 2rem;
       max-width: 400px;
       width: 90%;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+      box-shadow: var(--shadow-xl);
+      animation: modal-in 0.25s var(--ease-out-expo);
+    }
+    @keyframes modal-in {
+      from { opacity: 0; transform: translateY(12px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
     }
     h3 {
       margin: 0 0 0.5rem;
-      font-family: 'Georgia', serif;
-      color: #1c1917;
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--clr-text);
     }
     p {
-      color: #57534e;
+      color: var(--clr-text-muted);
       font-size: 0.9rem;
       line-height: 1.6;
+      margin: 0;
     }
     .actions {
       display: flex;
@@ -58,24 +71,20 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
       font-weight: 600;
       cursor: pointer;
       border: 1px solid;
-      transition: all 0.2s;
+      transition: background 0.18s var(--ease-out-expo), color 0.18s var(--ease-out-expo);
     }
     .btn-cancel {
-      background: white;
-      color: #57534e;
-      border-color: #d6d3d1;
+      background: var(--clr-surface);
+      color: var(--clr-text-muted);
+      border-color: var(--clr-border-strong);
     }
-    .btn-cancel:hover {
-      background: #f5f5f4;
-    }
+    .btn-cancel:hover { background: var(--clr-surface-hover); }
     .btn-confirm {
-      background: #dc2626;
-      color: white;
-      border-color: #dc2626;
+      background: var(--clr-error);
+      color: var(--clr-surface);
+      border-color: var(--clr-error);
     }
-    .btn-confirm:hover {
-      background: #b91c1c;
-    }
+    .btn-confirm:hover { background: var(--clr-error-dark); border-color: var(--clr-error-dark); }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

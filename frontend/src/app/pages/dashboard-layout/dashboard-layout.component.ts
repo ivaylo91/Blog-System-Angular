@@ -198,10 +198,9 @@ import { AuthService } from '../../services/auth.service';
       font-size: 0.875rem;
       font-weight: 500;
       color: #a8a29e;
-      transition: background 0.18s, color 0.18s;
+      transition: background 0.18s var(--ease-out-expo), color 0.18s var(--ease-out-expo);
       touch-action: manipulation;
       min-height: 2.75rem;
-      border-left: 2px solid transparent;
     }
     .nav-item svg { width: 1rem; height: 1rem; flex-shrink: 0; }
     .nav-item:hover {
@@ -209,10 +208,9 @@ import { AuthService } from '../../services/auth.service';
       color: #e7e5e4;
     }
     .nav-item.active {
-      background: rgba(120, 53, 15, 0.18);
+      background: rgba(120, 53, 15, 0.28);
       color: #fafaf9;
       font-weight: 600;
-      border-left-color: #78350f;
     }
     .nav-item-external { opacity: 0.85; }
     .nav-item-external:hover { opacity: 1; }

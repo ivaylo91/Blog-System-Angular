@@ -159,12 +159,12 @@ import { PerfService } from '../../services/perf.service';
     .page-header h1 {
       font-family: var(--font-display, 'Alegreya', Georgia, serif);
       font-size: 2.6rem;
-      color: #1c1917;
+      color: var(--clr-text);
       margin: 0 0 0.5rem;
       letter-spacing: -0.02em;
     }
     .page-header p {
-      color: #57534e;
+      color: var(--clr-text-muted);
       font-size: 1rem;
       font-weight: 300;
       margin: 0;
@@ -175,11 +175,11 @@ import { PerfService } from '../../services/perf.service';
       display: flex;
       border-radius: 0.875rem;
       overflow: hidden;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.09);
-      border: 1.5px solid rgba(0,0,0,0.09);
+      box-shadow: var(--shadow-sm);
+      border: 1.5px solid var(--clr-border);
       max-width: 560px;
       margin: 0 auto 1.75rem;
-      background: #fff;
+      background: var(--clr-surface);
     }
     .search-input {
       flex: 1;
@@ -188,24 +188,24 @@ import { PerfService } from '../../services/perf.service';
       font-size: 0.95rem;
       outline: none;
       background: transparent;
-      color: #1c1917;
+      color: var(--clr-text);
     }
     .search-btn {
       display: flex;
       align-items: center;
       gap: 0.45rem;
       padding: 0.85rem 1.5rem;
-      background: #4a7c59;
-      color: white;
+      background: var(--clr-green);
+      color: var(--clr-surface);
       border: none;
       font-weight: 600;
       font-size: 0.9rem;
       cursor: pointer;
-      transition: background 0.2s;
+      transition: background 0.18s var(--ease-out-expo);
       touch-action: manipulation;
     }
     .search-btn svg { width: 1rem; height: 1rem; flex-shrink: 0; }
-    .search-btn:hover { background: #3a6347; }
+    .search-btn:hover { background: var(--clr-green-dark); }
 
     /* Pill filters */
     .pill-filters {
@@ -222,26 +222,26 @@ import { PerfService } from '../../services/perf.service';
     .pill {
       padding: 0.5rem 1.1rem;
       border-radius: 9999px;
-      border: 1.5px solid rgba(0,0,0,0.1);
-      background: #fff;
-      color: #44403c;
+      border: 1.5px solid var(--clr-border);
+      background: var(--clr-surface);
+      color: var(--clr-text-muted);
       font-size: 0.875rem;
       font-weight: 500;
       cursor: pointer;
-      transition: background 0.18s, border-color 0.18s, color 0.18s;
+      transition: background 0.18s var(--ease-out-expo), border-color 0.18s var(--ease-out-expo), color 0.18s var(--ease-out-expo);
       white-space: nowrap;
       min-height: 2.75rem;
       touch-action: manipulation;
     }
     .pill:hover {
-      background: #f5f0e8;
-      border-color: rgba(0,0,0,0.18);
-      color: #1c1917;
+      background: var(--clr-surface-hover);
+      border-color: var(--clr-border-strong);
+      color: var(--clr-text);
     }
     .pill.active {
-      background: var(--clr-brand, #78350f);
-      border-color: var(--clr-brand, #78350f);
-      color: #fff;
+      background: var(--clr-brand);
+      border-color: var(--clr-brand);
+      color: var(--clr-surface);
       font-weight: 600;
     }
     .pill-sm {
@@ -252,7 +252,7 @@ import { PerfService } from '../../services/perf.service';
     .sort-divider {
       width: 1px;
       height: 1.25rem;
-      background: rgba(0,0,0,0.15);
+      background: var(--clr-border-strong);
       flex-shrink: 0;
       align-self: center;
       margin: 0 0.25rem;
@@ -266,16 +266,16 @@ import { PerfService } from '../../services/perf.service';
       gap: 0.5rem;
       margin-bottom: 1.5rem;
       padding: 0.75rem 1rem;
-      background: var(--clr-surface-alt, #faf7f4);
+      background: var(--clr-surface-alt);
       border-radius: 0.875rem;
-      border: 1px solid rgba(0,0,0,0.07);
+      border: 1px solid var(--clr-border-faint);
     }
     .filters-label {
       font-size: 0.72rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      color: #78716c;
+      color: var(--clr-text-faint);
       margin-right: 0.25rem;
       flex-shrink: 0;
     }
@@ -284,17 +284,17 @@ import { PerfService } from '../../services/perf.service';
       align-items: center;
       gap: 0.3rem;
       padding: 0.35rem 0.6rem 0.35rem 0.7rem;
-      background: #1c1917;
-      color: #fff;
+      background: var(--clr-text);
+      color: var(--clr-bg);
       border: none;
       border-radius: 9999px;
       font-size: 0.78rem;
       font-weight: 600;
       cursor: pointer;
-      transition: background 0.15s, transform 0.15s;
+      transition: background 0.15s var(--ease-out-expo), transform 0.15s var(--ease-out-expo);
       touch-action: manipulation;
     }
-    .active-chip:hover { background: #44403c; }
+    .active-chip:hover { background: var(--clr-text-muted); }
     .active-chip:active { transform: scale(0.97); }
     .active-chip > svg:first-child { width: 0.7rem; height: 0.7rem; opacity: 0.7; }
     .chip-x {
@@ -309,15 +309,15 @@ import { PerfService } from '../../services/perf.service';
       border: none;
       font-size: 0.75rem;
       font-weight: 600;
-      color: #57534e;
+      color: var(--clr-text-muted);
       cursor: pointer;
       text-decoration: underline;
       text-underline-offset: 2px;
       padding: 0.25rem;
-      transition: color 0.15s;
+      transition: color 0.15s var(--ease-out-expo);
       touch-action: manipulation;
     }
-    .clear-all:hover { color: #1c1917; }
+    .clear-all:hover { color: var(--clr-text); }
 
     /* Recipe grid */
     .recipe-grid {
@@ -332,36 +332,36 @@ import { PerfService } from '../../services/perf.service';
       align-items: center;
       gap: 0.5rem;
       padding: 4rem 2rem;
-      color: #57534e;
+      color: var(--clr-text-muted);
       text-align: center;
     }
     .no-results svg {
       width: 3rem;
       height: 3rem;
-      color: #c4b49a;
+      color: var(--clr-text-faint);
       margin-bottom: 0.5rem;
     }
     .no-results p {
       font-size: 1.05rem;
       font-weight: 600;
-      color: #1c1917;
+      color: var(--clr-text);
       margin: 0;
     }
     .no-results span {
       font-size: 0.875rem;
-      color: #78716c;
+      color: var(--clr-text-faint);
     }
 
     /* Skeleton — shimmer uses transform:translateX (composited, no repaint) */
     .skeleton-card {
       border-radius: 1.25rem;
       overflow: hidden;
-      background: #fff;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+      background: var(--clr-surface);
+      box-shadow: var(--shadow-sm);
     }
     .sk-img {
       aspect-ratio: 4/3;
-      background: #f0ede8;
+      background: var(--clr-skeleton);
       position: relative;
       overflow: hidden;
     }
@@ -369,7 +369,7 @@ import { PerfService } from '../../services/perf.service';
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.55) 50%, transparent 100%);
+      background: linear-gradient(90deg, transparent 0%, var(--clr-skeleton-shine) 50%, transparent 100%);
       transform: translateX(-100%);
       animation: shimmer 1.5s ease-in-out infinite;
     }
@@ -378,7 +378,7 @@ import { PerfService } from '../../services/perf.service';
     .sk-line {
       height: 0.8rem;
       border-radius: 9999px;
-      background: #f0ede8;
+      background: var(--clr-skeleton);
       position: relative;
       overflow: hidden;
     }
@@ -386,7 +386,7 @@ import { PerfService } from '../../services/perf.service';
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.55) 50%, transparent 100%);
+      background: linear-gradient(90deg, transparent 0%, var(--clr-skeleton-shine) 50%, transparent 100%);
       transform: translateX(-100%);
       animation: shimmer 1.5s ease-in-out infinite;
     }
@@ -413,22 +413,22 @@ import { PerfService } from '../../services/perf.service';
       height: 2.75rem;
       padding: 0 0.75rem;
       border-radius: 0.75rem;
-      border: 1.5px solid rgba(0,0,0,0.1);
-      background: #fff;
+      border: 1.5px solid var(--clr-border);
+      background: var(--clr-surface);
       cursor: pointer;
       font-weight: 600;
       font-size: 0.9rem;
-      transition: background 0.18s, border-color 0.18s, color 0.18s;
-      color: #1c1917;
+      transition: background 0.18s var(--ease-out-expo), border-color 0.18s var(--ease-out-expo), color 0.18s var(--ease-out-expo);
+      color: var(--clr-text);
       touch-action: manipulation;
     }
     .page-btn:disabled { opacity: 0.35; cursor: not-allowed; }
     .page-btn.active {
-      background: #1c1917;
-      color: white;
-      border-color: #1c1917;
+      background: var(--clr-text);
+      color: var(--clr-bg);
+      border-color: var(--clr-text);
     }
-    .page-btn:hover:not(.active):not(:disabled) { background: #f0ede8; border-color: rgba(0,0,0,0.18); }
+    .page-btn:hover:not(.active):not(:disabled) { background: var(--clr-surface-hover); border-color: var(--clr-border-strong); }
     .page-ellipsis {
       display: flex;
       align-items: center;
@@ -436,7 +436,7 @@ import { PerfService } from '../../services/perf.service';
       min-width: 2rem;
       height: 2.75rem;
       font-size: 0.9rem;
-      color: #78716c;
+      color: var(--clr-text-faint);
       user-select: none;
     }
     .page-counter { display: none; }
@@ -458,7 +458,7 @@ import { PerfService } from '../../services/perf.service';
         align-items: center;
         font-size: 0.9rem;
         font-weight: 600;
-        color: #1c1917;
+        color: var(--clr-text);
         padding: 0 0.75rem;
       }
     }

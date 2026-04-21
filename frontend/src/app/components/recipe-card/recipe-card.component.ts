@@ -125,7 +125,7 @@ import { Recipe } from '../../models/models';
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: background 0.35s ease;
+      transition: background 0.35s var(--ease-out-expo);
     }
     .card:hover .card-overlay {
       background: rgba(28, 25, 23, 0.42);
@@ -140,7 +140,7 @@ import { Recipe } from '../../models/models';
       border-radius: 9999px;
       opacity: 0;
       transform: translateY(10px);
-      transition: opacity 0.3s ease, transform 0.3s ease;
+      transition: opacity 0.28s var(--ease-out-expo), transform 0.28s var(--ease-out-expo);
       backdrop-filter: blur(4px);
     }
     .card:hover .overlay-btn {

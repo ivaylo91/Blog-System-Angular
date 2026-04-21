@@ -22,15 +22,17 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
     .stars { display: inline-flex; gap: 0.1rem; }
     .star {
       font-size: 1.5rem;
-      color: #d6d3d1;
+      color: var(--clr-border-strong);
       background: none;
       border: none;
       cursor: pointer;
-      padding: 0;
-      transition: color 0.15s;
+      padding: 0.1rem;
+      transition: color 0.15s var(--ease-out-expo), transform 0.15s var(--ease-out-expo);
+      line-height: 1;
     }
+    .star:not(:disabled):hover { transform: scale(1.2); }
     .star:disabled { cursor: default; }
-    .star.filled { color: #f59e0b; }
+    .star.filled { color: var(--clr-amber); }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
