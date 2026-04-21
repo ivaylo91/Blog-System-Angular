@@ -50,15 +50,25 @@
         Header set Cache-Control "no-store"
     </FilesMatch>
 
+    # Unhashed font files (@fontsource copies — no hash in filename) — 7 days
+    <FilesMatch "\.(woff2|woff)$">
+        Header set Cache-Control "public, max-age=604800"
+    </FilesMatch>
+
     # Angular hashed assets — filename ends with -XXXXXXXX (8 uppercase base32 chars)
-    # Covers: chunk-QJJGTXCS.js, main-YASK6DDW.js, styles-3M62JTIQ.css,
-    #         inter-latin-wght-normal-NRMW37G5.woff2, playfair-...-PPGHEFGC.woff2, etc.
+    # Overrides the font rule above for any hashed font files
+    # Covers: chunk-QJJGTXCS.js, main-YASK6DDW.js, styles-3M62JTIQ.css
     <FilesMatch "-[A-Z0-9]{8}\.(js|css|woff2|woff|ttf)$">
         Header set Cache-Control "public, max-age=31536000, immutable"
     </FilesMatch>
 
-    # Uploaded recipe images — long random filenames, safe to cache 30 days
+    # Static SVG assets (backgrounds, icons) — 7 days
     SetEnvIf Request_URI "^/storage/" is_upload
+    <FilesMatch "\.svg$">
+        Header set Cache-Control "public, max-age=604800"
+    </FilesMatch>
+
+    # Uploaded recipe images — long random filenames, safe to cache 30 days
     <FilesMatch "\.(jpg|jpeg|png|webp|gif)$">
         Header set Cache-Control "public, max-age=2592000" env=is_upload
     </FilesMatch>
@@ -76,7 +86,9 @@
     # ── Security headers ────────────────────────────────────────────────────
     Header set X-Content-Type-Options "nosniff"
     Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-Permitted-Cross-Domain-Policies "none"
     Header set Referrer-Policy "strict-origin-when-cross-origin"
+    Header set Permissions-Policy "camera=(), microphone=(), geolocation=()"
 </IfModule>
 
 # ── Mime types ───────────────────────────────────────────────────────────────
