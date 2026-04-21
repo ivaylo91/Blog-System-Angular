@@ -7,3 +7,23 @@
 .main-content {
   flex: 1;
 }
+
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  z-index: 9999;
+  padding: 0.65rem 1.25rem;
+  background: var(--clr-brand);
+  color: oklch(100% 0 0);
+  font-weight: 700;
+  font-size: 0.875rem;
+  border-radius: 0 0 0.75rem 0.75rem;
+  text-decoration: none;
+  transition: top 0.15s var(--ease-out-expo);
+}
+.skip-link:focus {
+  top: 0;
+  outline: 2.5px solid oklch(100% 0 0);
+  outline-offset: 2px;
+}

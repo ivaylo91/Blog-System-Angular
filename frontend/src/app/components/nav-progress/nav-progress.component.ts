@@ -18,9 +18,9 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
       z-index: 10000;
       height: 3px;
       width: 0%;
-      background: linear-gradient(90deg, #4a7c59, #6daf7e);
+      background: linear-gradient(90deg, var(--clr-green), var(--clr-brand-hover));
       border-radius: 0 2px 2px 0;
-      box-shadow: 0 0 10px rgba(74, 124, 89, 0.5);
+      box-shadow: 0 0 10px color-mix(in oklch, var(--clr-green) 50%, transparent);
       animation: grow 1.2s cubic-bezier(0.1, 0.6, 0.4, 1) forwards;
     }
     .nav-bar.done {

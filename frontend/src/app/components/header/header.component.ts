@@ -11,7 +11,7 @@ import { ThemeService } from '../../services/theme.service';
     <header class="site-header" [class.scrolled]="scrolled()">
       <div class="header-inner">
 
-        <button class="mobile-toggle" (click)="drawerOpen.set(true)"
+        <button class="mobile-toggle" (click)="openDrawer()"
                 aria-label="Отвори менюто" [attr.aria-expanded]="drawerOpen()">
           <span class="hamburger"></span>
         </button>
@@ -55,9 +55,7 @@ import { ThemeService } from '../../services/theme.service';
     </header>
 
     <!-- ── Mobile left drawer ──────────────────────────────────────────── -->
-    @if (drawerOpen()) {
-      <div class="drawer-overlay" (click)="drawerOpen.set(false)" aria-hidden="true"></div>
-    }
+    <div class="drawer-overlay" [class.visible]="drawerOpen()" (click)="close()" aria-hidden="true"></div>
 
     <div class="mobile-drawer" [class.open]="drawerOpen()" role="dialog" aria-label="Навигация">
 
@@ -188,28 +186,31 @@ import { ThemeService } from '../../services/theme.service';
       margin-left: 0.75rem; padding-left: 0.75rem;
       border-left: 1px solid var(--clr-border);
     }
-    .nav-links a {
+    .nav-links a:not(.register-btn) {
       padding: 0.45rem 0.9rem; border-radius: 9999px;
       text-decoration: none; font-size: 0.875rem; font-weight: 500;
       color: var(--clr-text-muted); transition: background 0.18s, color 0.18s;
       white-space: nowrap; min-height: 2.25rem;
       display: flex; align-items: center;
     }
-    .nav-links a:hover { background: var(--clr-surface-hover); color: var(--clr-text); }
-    .nav-links a.active { background: var(--clr-surface-hover); color: var(--clr-brand); font-weight: 600; }
-    .signin-link { color: var(--clr-text-muted); }
+    .nav-links a:not(.register-btn):hover { background: var(--clr-surface-hover); color: var(--clr-text); }
+    .nav-links a:not(.register-btn).active { background: var(--clr-surface-hover); color: var(--clr-brand); font-weight: 600; }
     .register-btn {
-      background: var(--clr-brand) !important;
-      color: #fff !important; font-weight: 600 !important;
+      display: flex; align-items: center;
+      padding: 0.45rem 0.9rem; border-radius: 9999px;
+      text-decoration: none; white-space: nowrap; min-height: 2.25rem;
+      background: var(--clr-brand);
+      color: oklch(100% 0 0); font-weight: 600; font-size: 0.875rem;
       box-shadow: 0 1px 4px color-mix(in oklch, var(--clr-brand) 30%, transparent);
-      transition: background 0.2s, transform 0.15s, box-shadow 0.2s !important;
+      transition: background 0.2s var(--ease-out-expo), transform 0.15s var(--ease-out-expo), box-shadow 0.2s var(--ease-out-expo);
     }
     .register-btn:hover {
-      background: var(--clr-brand-dark) !important;
+      background: var(--clr-brand-dark);
       transform: translateY(-1px);
-      box-shadow: 0 3px 10px color-mix(in oklch, var(--clr-brand) 35%, transparent) !important;
+      box-shadow: 0 3px 10px color-mix(in oklch, var(--clr-brand) 35%, transparent);
     }
-    .register-btn.active { background: var(--clr-brand) !important; }
+    .register-btn:active { transform: translateY(0); }
+    .register-btn.active { background: var(--clr-brand); }
     .logout-btn {
       display: flex; align-items: center; gap: 0.35rem;
       padding: 0.45rem 0.9rem; border-radius: 9999px;
@@ -259,11 +260,17 @@ import { ThemeService } from '../../services/theme.service';
 
     /* ── Drawer overlay ─────────────────────────────────────────────── */
     .drawer-overlay {
-      display: none;
       position: fixed; inset: 0;
       background: rgba(0, 0, 0, 0.5);
       z-index: 59;
       backdrop-filter: blur(2px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.28s var(--ease-out-expo);
+    }
+    .drawer-overlay.visible {
+      opacity: 1;
+      pointer-events: auto;
     }
 
     /* ── Left drawer ────────────────────────────────────────────────── */
@@ -276,7 +283,7 @@ import { ThemeService } from '../../services/theme.service';
       z-index: 60;
       flex-direction: column;
       transform: translateX(-100%);
-      transition: transform 0.28s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      transition: transform 0.28s var(--ease-out-expo);
       box-shadow: 4px 0 24px rgba(0,0,0,0.18);
       overflow-y: auto;
     }
@@ -314,7 +321,7 @@ import { ThemeService } from '../../services/theme.service';
     }
     .drawer-avatar {
       width: 2.5rem; height: 2.5rem; border-radius: 50%;
-      background: var(--clr-brand); color: #fff;
+      background: var(--clr-brand); color: oklch(100% 0 0);
       font-size: 1rem; font-weight: 700;
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0; text-transform: uppercase;
@@ -381,15 +388,14 @@ import { ThemeService } from '../../services/theme.service';
       text-decoration: none; text-align: center;
       font-size: 0.95rem; font-weight: 600;
       background: var(--clr-brand);
-      color: #fff;
-      transition: background 0.2s;
+      color: oklch(100% 0 0);
+      transition: background 0.2s var(--ease-out-expo);
     }
     .drawer-register:hover { background: var(--clr-brand-dark); }
 
     @media (max-width: 768px) {
       .mobile-toggle { display: flex; }
       .nav-links { display: none; }
-      .drawer-overlay { display: block; }
       .mobile-drawer { display: flex; }
       .site-header.scrolled .header-inner { height: 3.5rem; }
     }
@@ -398,7 +404,7 @@ import { ThemeService } from '../../services/theme.service';
       .header-inner { padding: 0 1rem; }
     }
     @media (prefers-reduced-motion: reduce) {
-      .mobile-drawer { transition: none; }
+      .mobile-drawer, .drawer-overlay { transition: none; }
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -409,7 +415,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
   drawerOpen = signal(false);
   scrolled = signal(false);
 
-  close() { this.drawerOpen.set(false); }
+  openDrawer(): void {
+    this.drawerOpen.set(true);
+    document.body.style.overflow = 'hidden';
+  }
+
+  close(): void {
+    this.drawerOpen.set(false);
+    document.body.style.overflow = '';
+  }
 
   userInitial(): string {
     const name = this.auth.user()?.name || '';
@@ -423,5 +437,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy(): void {
     window.removeEventListener('scroll', this.scrollHandler);
+    document.body.style.overflow = '';
   }
 }
