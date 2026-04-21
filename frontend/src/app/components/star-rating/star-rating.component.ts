@@ -4,12 +4,18 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
   selector: 'app-star-rating',
   standalone: true,
   template: `
-    <div class="stars">
+    <div class="stars"
+      [attr.role]="interactive ? 'group' : 'img'"
+      [attr.aria-label]="interactive ? 'Избери оценка' : 'Оценка ' + value + ' от 5'">
       @for (star of stars; track star) {
         <button
           type="button"
           class="star"
           [class.filled]="star <= (hoverValue || value)"
+          [attr.aria-label]="interactive ? ('Оценка ' + star + ' от 5') : null"
+          [attr.aria-pressed]="interactive ? (star <= value) : null"
+          [attr.aria-hidden]="!interactive ? 'true' : null"
+          [attr.tabindex]="!interactive ? -1 : null"
           (mouseenter)="interactive && (hoverValue = star)"
           (mouseleave)="interactive && (hoverValue = 0)"
           (click)="interactive && select(star)"

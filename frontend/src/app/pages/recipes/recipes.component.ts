@@ -40,25 +40,25 @@ import { PerfService } from '../../services/perf.service';
 
         <!-- Pill filters: categories -->
         @if (categories.length > 0) {
-          <div class="pill-filters">
-            <button class="pill" [class.active]="!category" (click)="selectCategory('')">Всички</button>
+          <div class="pill-filters" role="group" aria-label="Категории">
+            <button class="pill" [class.active]="!category" [attr.aria-pressed]="!category" (click)="selectCategory('')">Всички</button>
             @for (cat of categories; track cat.id) {
-              <button class="pill" [class.active]="category === cat.slug"
+              <button class="pill" [class.active]="category === cat.slug" [attr.aria-pressed]="category === cat.slug"
                       (click)="selectCategory(cat.slug)">{{ cat.name }}</button>
             }
           </div>
         }
 
         <!-- Pill filters: difficulty + sort -->
-        <div class="pill-filters pill-filters-secondary">
-          <button class="pill pill-sm" [class.active]="!difficulty" (click)="selectDifficulty('')">Всяка трудност</button>
-          <button class="pill pill-sm" [class.active]="difficulty === 'Лесно'" (click)="selectDifficulty('Лесно')">Лесно</button>
-          <button class="pill pill-sm" [class.active]="difficulty === 'Средно'" (click)="selectDifficulty('Средно')">Средно</button>
-          <button class="pill pill-sm" [class.active]="difficulty === 'За напреднали'" (click)="selectDifficulty('За напреднали')">За напреднали</button>
+        <div class="pill-filters pill-filters-secondary" role="group" aria-label="Филтри">
+          <button class="pill pill-sm" [class.active]="!difficulty" [attr.aria-pressed]="!difficulty" (click)="selectDifficulty('')">Всяка трудност</button>
+          <button class="pill pill-sm" [class.active]="difficulty === 'Лесно'" [attr.aria-pressed]="difficulty === 'Лесно'" (click)="selectDifficulty('Лесно')">Лесно</button>
+          <button class="pill pill-sm" [class.active]="difficulty === 'Средно'" [attr.aria-pressed]="difficulty === 'Средно'" (click)="selectDifficulty('Средно')">Средно</button>
+          <button class="pill pill-sm" [class.active]="difficulty === 'За напреднали'" [attr.aria-pressed]="difficulty === 'За напреднали'" (click)="selectDifficulty('За напреднали')">За напреднали</button>
           <span class="sort-divider" aria-hidden="true"></span>
-          <button class="pill pill-sm" [class.active]="sort === 'newest'" (click)="selectSort('newest')">Най-нови</button>
-          <button class="pill pill-sm" [class.active]="sort === 'fastest'" (click)="selectSort('fastest')">Най-бързи</button>
-          <button class="pill pill-sm" [class.active]="sort === 'easiest'" (click)="selectSort('easiest')">Най-лесни</button>
+          <button class="pill pill-sm" [class.active]="sort === 'newest'" [attr.aria-pressed]="sort === 'newest'" (click)="selectSort('newest')">Най-нови</button>
+          <button class="pill pill-sm" [class.active]="sort === 'fastest'" [attr.aria-pressed]="sort === 'fastest'" (click)="selectSort('fastest')">Най-бързи</button>
+          <button class="pill pill-sm" [class.active]="sort === 'easiest'" [attr.aria-pressed]="sort === 'easiest'" (click)="selectSort('easiest')">Най-лесни</button>
         </div>
 
         <!-- Active filter chips -->
@@ -243,6 +243,10 @@ import { PerfService } from '../../services/perf.service';
       border-color: var(--clr-brand);
       color: var(--clr-surface);
       font-weight: 600;
+    }
+    .pill:focus-visible {
+      outline: 2.5px solid var(--clr-focus);
+      outline-offset: 2px;
     }
     .pill-sm {
       padding: 0.4rem 0.9rem;

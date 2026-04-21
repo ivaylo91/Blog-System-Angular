@@ -8,6 +8,7 @@ import { ToastService } from '../../services/toast.service';
 import { PerfService } from '../../services/perf.service';
 import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.component';
 import { StarRatingComponent } from '../../components/star-rating/star-rating.component';
+import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-modal.component';
 import { Recipe, Comment, FavoriteStatusResponse } from '../../models/models';
 import { SeoService } from '../../services/seo.service';
 import { Subscription } from 'rxjs';
@@ -15,8 +16,17 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-recipe-detail',
   standalone: true,
-  imports: [RouterLink, DatePipe, FormsModule, RecipeCardComponent, StarRatingComponent],
+  imports: [RouterLink, DatePipe, FormsModule, RecipeCardComponent, StarRatingComponent, ConfirmModalComponent],
   template: `
+    <app-confirm-modal
+      [open]="confirmDeleteId !== null"
+      title="Изтрий коментар"
+      message="Сигурни ли сте, че искате да изтриете този коментар? Действието е необратимо."
+      confirmLabel="Изтрий"
+      (confirmed)="deleteComment(confirmDeleteId!)"
+      (cancelled)="confirmDeleteId = null">
+    </app-confirm-modal>
+
     @if (recipe) {
       <div class="detail-page">
 
@@ -196,12 +206,22 @@ import { Subscription } from 'rxjs';
 
               <!-- Favorite -->
               @if (auth.isAuthenticated()) {
-                <button class="favorite-btn" [class.favorited]="favoriteStatus?.isFavorite" (click)="toggleFavorite()">
+                <button class="favorite-btn"
+                  [class.favorited]="favoriteStatus?.isFavorite"
+                  [disabled]="favoriting"
+                  [attr.aria-pressed]="!!favoriteStatus?.isFavorite"
+                  [attr.aria-label]="favoriteStatus?.isFavorite ? 'Премахни от любими' : 'Добави в любими'"
+                  (click)="toggleFavorite()">
+                  @if (favoriting) {
+                    <svg class="spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-dasharray="32" stroke-dashoffset="24"/></svg>
+                  } @else if (favoriteStatus?.isFavorite) {
+                    <svg viewBox="0 0 24 24" fill="var(--clr-error)" stroke="var(--clr-error)" stroke-width="2" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                  } @else {
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                  }
                   @if (favoriteStatus?.isFavorite) {
-                    <svg viewBox="0 0 24 24" fill="#ef4444" stroke="#ef4444" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
                     Запазено · {{ favoriteStatus?.favoriteCount }}
                   } @else {
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
                     Запази · {{ favoriteStatus?.favoriteCount || 0 }}
                   }
                 </button>
@@ -238,10 +258,18 @@ import { Subscription } from 'rxjs';
                   <form (submit)="onComment($event)">
                     <textarea [(ngModel)]="commentBody" name="body"
                               placeholder="Напиши мнението си..." rows="4"
-                              class="comment-textarea"></textarea>
-                    <button type="submit" class="submit-btn">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-                      Публикувай
+                              class="comment-textarea"
+                              [disabled]="submittingComment"
+                              maxlength="2000"></textarea>
+                    <button type="submit" class="submit-btn"
+                            [disabled]="submittingComment || !commentBody.trim()">
+                      @if (submittingComment) {
+                        <svg class="spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-dasharray="32" stroke-dashoffset="24"/></svg>
+                        Изпращане...
+                      } @else {
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                        Публикувай
+                      }
                     </button>
                   </form>
                 </div>
@@ -270,8 +298,8 @@ import { Subscription } from 'rxjs';
                         <span class="comment-date">{{ comment.created_at | date:'dd MMM yyyy' }}</span>
                       </div>
                       @if (canDeleteComment(comment)) {
-                        <button class="delete-comment-btn" (click)="deleteComment(comment.id)" title="Изтрий">
-                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                        <button class="delete-comment-btn" (click)="confirmDelete(comment.id)" aria-label="Изтрий коментар">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
                         </button>
                       }
                     </div>
@@ -284,15 +312,28 @@ import { Subscription } from 'rxjs';
                       <p class="comment-body">{{ comment.body }}</p>
                     }
                     @if (auth.isAuthenticated()) {
-                      <button class="reply-btn" (click)="startReply(comment.id)">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 17 4 12 9 7"/><path d="M20 18v-2a4 4 0 0 0-4-4H4"/></svg>
+                      <button class="reply-btn"
+                        [attr.aria-expanded]="replyingToId === comment.id"
+                        (click)="startReply(comment.id)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="9 17 4 12 9 7"/><path d="M20 18v-2a4 4 0 0 0-4-4H4"/></svg>
                         {{ replyingToId === comment.id ? 'Отказ' : 'Отговори' }}
                       </button>
                     }
                     @if (replyingToId === comment.id) {
                       <form class="reply-form" (submit)="submitReply($event, comment.id)">
-                        <textarea [(ngModel)]="replyBody" [name]="'reply-' + comment.id" rows="2" placeholder="Напиши отговор..."></textarea>
-                        <button type="submit" class="submit-btn">Изпрати</button>
+                        <textarea [(ngModel)]="replyBody" [name]="'reply-' + comment.id" rows="2"
+                                  placeholder="Напиши отговор..."
+                                  [disabled]="submittingReply"
+                                  maxlength="1000"></textarea>
+                        <button type="submit" class="submit-btn"
+                                [disabled]="submittingReply || !replyBody.trim()">
+                          @if (submittingReply) {
+                            <svg class="spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-dasharray="32" stroke-dashoffset="24"/></svg>
+                            Изпращане...
+                          } @else {
+                            Изпрати
+                          }
+                        </button>
                       </form>
                     }
                     @if (comment.replies && comment.replies.length > 0) {
@@ -306,8 +347,8 @@ import { Subscription } from 'rxjs';
                                 <span class="comment-date">{{ reply.created_at | date:'dd MMM yyyy' }}</span>
                               </div>
                               @if (canDeleteComment(reply)) {
-                                <button class="delete-comment-btn" (click)="deleteComment(reply.id)" title="Изтрий">
-                                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                                <button class="delete-comment-btn" (click)="confirmDelete(reply.id)" aria-label="Изтрий отговор">
+                                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
                                 </button>
                               }
                             </div>
@@ -747,7 +788,8 @@ import { Subscription } from 'rxjs';
     }
     .favorite-btn svg { width: 1.1rem; height: 1.1rem; }
     .favorite-btn.favorited { background: var(--clr-error-bg); border-color: var(--clr-error); color: var(--clr-error); }
-    .favorite-btn:hover { box-shadow: var(--shadow-md); }
+    .favorite-btn:hover:not(:disabled) { box-shadow: var(--shadow-md); }
+    .favorite-btn:disabled { opacity: 0.7; cursor: wait; }
     .sidebar-card {
       background: var(--clr-surface);
       border-radius: 1.25rem;
@@ -819,7 +861,10 @@ import { Subscription } from 'rxjs';
       transition: background 0.18s var(--ease-out-expo);
     }
     .submit-btn svg { width: 0.85rem; height: 0.85rem; }
-    .submit-btn:hover { background: var(--clr-green-dark); }
+    .submit-btn:hover:not(:disabled) { background: var(--clr-green-dark); }
+    .submit-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+    .spin { animation: spin 0.75s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
     /* Login prompt */
     .login-prompt {
@@ -990,6 +1035,10 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
   replyBody = '';
   copied = false;
   canNativeShare = typeof navigator !== 'undefined' && !!navigator.share;
+  favoriting = false;
+  submittingComment = false;
+  submittingReply = false;
+  confirmDeleteId: number | null = null;
   private subs = new Subscription();
 
   get currentUrl(): string { return typeof window !== 'undefined' ? window.location.href : ''; }
@@ -1114,14 +1163,21 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
   }
 
   toggleFavorite(): void {
-    if (!this.recipe) return;
+    if (!this.recipe || this.favoriting) return;
+    this.favoriting = true;
+    this.cdr.markForCheck();
     this.recipeService.toggleFavorite(this.recipe.slug).subscribe({
       next: (s) => {
         this.favoriteStatus = s;
+        this.favoriting = false;
         this.toast.success(s.isFavorite ? 'Добавено в любими.' : 'Премахнато от любими.');
         this.cdr.markForCheck();
       },
-      error: () => this.toast.error('Грешка при запазване.'),
+      error: () => {
+        this.favoriting = false;
+        this.toast.error('Грешка при запазване.');
+        this.cdr.markForCheck();
+      },
     });
   }
 
@@ -1141,17 +1197,24 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
 
   onComment(e: Event): void {
     e.preventDefault();
-    if (!this.recipe || !this.commentBody.trim()) return;
+    if (!this.recipe || !this.commentBody.trim() || this.submittingComment) return;
+    this.submittingComment = true;
+    this.cdr.markForCheck();
     this.recipeService.commentRecipe(this.recipe.slug, this.commentBody, this.userRating || undefined).subscribe({
       next: (comment) => {
         const idx = this.comments.findIndex(c => c.id === comment.id);
         if (idx >= 0) { this.comments[idx] = comment; } else { this.comments.unshift(comment); }
         this.comments = [...this.comments];
         this.commentBody = '';
+        this.submittingComment = false;
         this.toast.success('Коментарът е публикуван.');
         this.cdr.markForCheck();
       },
-      error: () => this.toast.error('Грешка при публикуване на коментар.'),
+      error: () => {
+        this.submittingComment = false;
+        this.toast.error('Грешка при публикуване на коментар.');
+        this.cdr.markForCheck();
+      },
     });
   }
 
@@ -1163,7 +1226,9 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
 
   submitReply(e: Event, parentId: number): void {
     e.preventDefault();
-    if (!this.recipe || !this.replyBody.trim()) return;
+    if (!this.recipe || !this.replyBody.trim() || this.submittingReply) return;
+    this.submittingReply = true;
+    this.cdr.markForCheck();
     this.recipeService.commentRecipe(this.recipe.slug, this.replyBody, undefined, parentId).subscribe({
       next: (reply) => {
         const parent = this.comments.find(c => c.id === parentId);
@@ -1173,11 +1238,21 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
         }
         this.replyingToId = null;
         this.replyBody = '';
+        this.submittingReply = false;
         this.toast.success('Отговорът е публикуван.');
         this.cdr.markForCheck();
       },
-      error: () => this.toast.error('Грешка при публикуване на отговор.'),
+      error: () => {
+        this.submittingReply = false;
+        this.toast.error('Грешка при публикуване на отговор.');
+        this.cdr.markForCheck();
+      },
     });
+  }
+
+  confirmDelete(id: number): void {
+    this.confirmDeleteId = id;
+    this.cdr.markForCheck();
   }
 
   canDeleteComment(comment: Comment): boolean {
@@ -1188,6 +1263,7 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
   }
 
   deleteComment(id: number): void {
+    this.confirmDeleteId = null;
     this.recipeService.deleteComment(id).subscribe({
       next: () => {
         this.comments = this.comments.filter(c => c.id !== id).map(c => ({
