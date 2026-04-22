@@ -62,9 +62,11 @@ import { Recipe } from '../../models/models';
       touch-action: manipulation;
       cursor: pointer;
     }
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: var(--shadow-lg);
+    @media (hover: hover) and (pointer: fine) {
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-lg);
+      }
     }
     .card:active {
       transform: translateY(-1px) scale(0.99);
@@ -85,14 +87,16 @@ import { Recipe } from '../../models/models';
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.5s var(--ease-out-expo), opacity 0.35s ease;
+      transition: transform 0.5s var(--ease-out-expo), opacity 0.35s var(--ease-out-expo);
       opacity: 0;
     }
     .card-image.img-loaded img {
       opacity: 1;
     }
-    .card:hover .card-image img {
-      transform: scale(1.04);
+    @media (hover: hover) and (pointer: fine) {
+      .card:hover .card-image img {
+        transform: scale(1.04);
+      }
     }
 
     /* skeleton shimmer — shown until image loads */
@@ -110,7 +114,7 @@ import { Recipe } from '../../models/models';
       z-index: 2;
       background: linear-gradient(90deg, transparent 0%, var(--clr-skeleton-shine, rgba(255,255,255,0.55)) 50%, transparent 100%);
       transform: translateX(-100%);
-      animation: img-shimmer 1.4s ease-in-out infinite;
+      animation: img-shimmer 1.4s linear infinite;
     }
     @keyframes img-shimmer {
       from { transform: translateX(-100%); }
@@ -127,8 +131,10 @@ import { Recipe } from '../../models/models';
       justify-content: center;
       transition: background 0.35s var(--ease-out-expo);
     }
-    .card:hover .card-overlay {
-      background: rgba(28, 25, 23, 0.42);
+    @media (hover: hover) and (pointer: fine) {
+      .card:hover .card-overlay {
+        background: rgba(28, 25, 23, 0.42);
+      }
     }
     .overlay-btn {
       color: #fff;
@@ -143,9 +149,11 @@ import { Recipe } from '../../models/models';
       transition: opacity 0.28s var(--ease-out-expo), transform 0.28s var(--ease-out-expo);
       backdrop-filter: blur(4px);
     }
-    .card:hover .overlay-btn {
-      opacity: 1;
-      transform: translateY(0);
+    @media (hover: hover) and (pointer: fine) {
+      .card:hover .overlay-btn {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     /* mobile persistent label — only on touch devices */

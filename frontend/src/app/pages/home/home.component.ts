@@ -368,7 +368,7 @@ import { PerfService } from '../../services/perf.service';
       inset: 0;
       background: linear-gradient(90deg, transparent 0%, var(--clr-skeleton-shine) 50%, transparent 100%);
       transform: translateX(-100%);
-      animation: shimmer 1.5s ease-in-out infinite;
+      animation: shimmer 1.5s linear infinite;
     }
     .hero-placeholder {
       border-radius: calc(2rem - 7px);
@@ -469,7 +469,7 @@ import { PerfService } from '../../services/perf.service';
       inset: 0;
       background: linear-gradient(90deg, transparent 0%, var(--clr-skeleton-shine) 50%, transparent 100%);
       transform: translateX(-100%);
-      animation: shimmer 1.5s ease-in-out infinite;
+      animation: shimmer 1.5s linear infinite;
     }
     .sk-img-hero { aspect-ratio: 3/2; }
     .sk-img-side { width: 110px; aspect-ratio: unset; min-height: 90px; }
@@ -488,7 +488,7 @@ import { PerfService } from '../../services/perf.service';
       inset: 0;
       background: linear-gradient(90deg, transparent 0%, var(--clr-skeleton-shine) 50%, transparent 100%);
       transform: translateX(-100%);
-      animation: shimmer 1.5s ease-in-out infinite;
+      animation: shimmer 1.5s linear infinite;
     }
     .sk-short  { width: 35%; }
     .sk-long   { width: 80%; }

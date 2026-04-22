@@ -62,16 +62,24 @@ import { ToastService } from '../../services/toast.service';
       background: none;
       border: none;
       cursor: pointer;
-      padding: 0;
+      padding: 0.2rem;
       opacity: 0.6;
       display: flex;
       align-items: center;
+      border-radius: 0.25rem;
+      transition: opacity 0.15s var(--ease-out-expo);
+      touch-action: manipulation;
     }
     .toast-close:hover { opacity: 1; }
+    .toast-close:active { transform: scale(0.9); }
     .toast-close svg { width: 0.9rem; height: 0.9rem; }
     @media (max-width: 480px) {
       .toast-container { left: 1rem; right: 1rem; bottom: 1rem; }
       .toast { max-width: 100%; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .toast { animation: none; }
+      .toast-close { transition: none; }
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -71,8 +71,10 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
       font-weight: 600;
       cursor: pointer;
       border: 1px solid;
-      transition: background 0.18s var(--ease-out-expo), color 0.18s var(--ease-out-expo);
+      transition: background 0.18s var(--ease-out-expo), color 0.18s var(--ease-out-expo), transform 0.1s var(--ease-out-expo);
+      touch-action: manipulation;
     }
+    .btn-cancel:active, .btn-confirm:active { transform: scale(0.97); }
     .btn-cancel {
       background: var(--clr-surface);
       color: var(--clr-text-muted);
@@ -85,6 +87,11 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
       border-color: var(--clr-error);
     }
     .btn-confirm:hover { background: var(--clr-error-dark); border-color: var(--clr-error-dark); }
+    @media (prefers-reduced-motion: reduce) {
+      .overlay, .modal { animation: none; }
+      .btn-cancel, .btn-confirm { transition: none; }
+      .btn-cancel:active, .btn-confirm:active { transform: none; }
+    }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -176,7 +176,7 @@ import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.co
       inset: 0;
       background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.55) 50%, transparent 100%);
       transform: translateX(-100%);
-      animation: shimmer 1.5s ease-in-out infinite;
+      animation: shimmer 1.5s linear infinite;
     }
     .sk-body { padding: 1.2rem; display: flex; flex-direction: column; gap: 0.55rem; }
     .sk-meta { display: flex; gap: 0.75rem; margin-top: 0.25rem; }
@@ -193,7 +193,7 @@ import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.co
       inset: 0;
       background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.55) 50%, transparent 100%);
       transform: translateX(-100%);
-      animation: shimmer 1.5s ease-in-out infinite;
+      animation: shimmer 1.5s linear infinite;
     }
     .sk-short  { width: 30%; }
     .sk-long   { width: 75%; }

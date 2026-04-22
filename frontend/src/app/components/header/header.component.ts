@@ -138,7 +138,7 @@ import { ThemeService } from '../../services/theme.service';
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--clr-border-faint);
-      transition: box-shadow 0.3s, border-color 0.3s, background 0.3s;
+      transition: box-shadow 0.3s var(--ease-out-expo), border-color 0.3s var(--ease-out-expo), background 0.3s var(--ease-out-expo);
     }
     .site-header.scrolled {
       background: color-mix(in oklch, var(--clr-surface) 97%, transparent);
@@ -154,7 +154,7 @@ import { ThemeService } from '../../services/theme.service';
       align-items: center;
       justify-content: space-between;
       gap: 1rem;
-      transition: height 0.3s;
+      transition: height 0.3s var(--ease-out-expo);
     }
     .site-header.scrolled .header-inner { height: 3.25rem; }
 

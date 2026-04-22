@@ -153,7 +153,7 @@ import { SeoService } from '../../services/seo.service';
       border-radius: 1.5rem;
       border: 1px solid var(--clr-border-faint);
       box-shadow: var(--shadow-xl);
-      animation: card-in 0.35s var(--ease-out-expo) both;
+      animation: card-in 0.28s var(--ease-out-expo) both;
     }
     @keyframes card-in {
       from { opacity: 0; transform: translateY(16px) scale(0.98); }
