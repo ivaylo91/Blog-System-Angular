@@ -57,7 +57,7 @@ class RecipeController extends Controller
             'ingredients',
             'steps',
             'topLevelComments.author',
-        ])->where('slug', $slug)->where('published', true)->first();
+        ])->withCount('favoritedBy')->where('slug', $slug)->where('published', true)->first();
 
         if (! $recipe) {
             return response()->json(['message' => 'Рецептата не е намерена.'], 404);
@@ -70,7 +70,7 @@ class RecipeController extends Controller
 
         $averageRating = $ratingData->count > 0 ? round($ratingData->avg, 1) : null;
         $ratingsCount  = (int) $ratingData->count;
-        $favoriteCount = $recipe->favoritedBy()->count();
+        $favoriteCount = $recipe->favorited_by_count;
 
         $recipeData = $recipe->toArray();
         $recipeData['comments'] = $recipeData['top_level_comments'] ?? [];
@@ -162,14 +162,14 @@ class RecipeController extends Controller
             'difficulty' => 'in:Лесно,Средно,За напреднали',
             'published' => 'boolean',
             'category_id' => 'nullable|exists:categories,id',
-            'ingredients' => 'array',
-            'ingredients.*.amount' => 'required|string',
-            'ingredients.*.name' => 'required|string',
-            'steps' => 'array',
-            'steps.*.title' => 'required|string',
-            'steps.*.description' => 'required|string',
-            'tags' => 'array',
-            'tags.*' => 'string',
+            'ingredients' => 'array|max:100',
+            'ingredients.*.amount' => 'required|string|max:50',
+            'ingredients.*.name' => 'required|string|max:200',
+            'steps' => 'array|max:50',
+            'steps.*.title' => 'required|string|max:255',
+            'steps.*.description' => 'required|string|max:5000',
+            'tags' => 'array|max:20',
+            'tags.*' => 'string|max:50',
             'hero_image' => 'nullable|image|mimes:jpeg,png,webp|max:5120',
         ]);
 
@@ -249,14 +249,14 @@ class RecipeController extends Controller
             'difficulty' => 'in:Лесно,Средно,За напреднали',
             'published' => 'boolean',
             'category_id' => 'nullable|exists:categories,id',
-            'ingredients' => 'array',
-            'ingredients.*.amount' => 'required|string',
-            'ingredients.*.name' => 'required|string',
-            'steps' => 'array',
-            'steps.*.title' => 'required|string',
-            'steps.*.description' => 'required|string',
-            'tags' => 'array',
-            'tags.*' => 'string',
+            'ingredients' => 'array|max:100',
+            'ingredients.*.amount' => 'required|string|max:50',
+            'ingredients.*.name' => 'required|string|max:200',
+            'steps' => 'array|max:50',
+            'steps.*.title' => 'required|string|max:255',
+            'steps.*.description' => 'required|string|max:5000',
+            'tags' => 'array|max:20',
+            'tags.*' => 'string|max:50',
             'hero_image' => 'nullable|image|mimes:jpeg,png,webp|max:5120',
         ]);
 

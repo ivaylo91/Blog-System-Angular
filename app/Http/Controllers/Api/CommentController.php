@@ -30,6 +30,10 @@ class CommentController extends Controller
 
         $parentId = $validated['parent_id'] ?? null;
 
+        if ($parentId && Comment::where('id', $parentId)->whereNotNull('parent_id')->exists()) {
+            return response()->json(['message' => 'Не можете да отговаряте на отговор.'], 422);
+        }
+
         // Replies are always new; only top-level comments use firstOrNew
         if ($parentId) {
             $comment = new Comment([
