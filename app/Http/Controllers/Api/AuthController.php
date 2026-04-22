@@ -39,7 +39,8 @@ class AuthController extends Controller
 
         $user->refresh();
 
-        $token = $user->createToken('auth-token')->plainTextToken;
+        Auth::login($user);
+        $request->session()->regenerate();
 
         return response()->json([
             'user' => [
@@ -49,7 +50,6 @@ class AuthController extends Controller
                 'role' => $user->role,
                 'image' => $user->image,
             ],
-            'token' => $token,
         ], 201);
     }
 
@@ -76,8 +76,9 @@ class AuthController extends Controller
             ]);
         }
 
+        $request->session()->regenerate();
+
         $user = Auth::user();
-        $token = $user->createToken('auth-token')->plainTextToken;
 
         RateLimiter::clear($key);
 
@@ -89,13 +90,14 @@ class AuthController extends Controller
                 'role' => $user->role,
                 'image' => $user->image,
             ],
-            'token' => $token,
         ]);
     }
 
     public function logout(Request $request): JsonResponse
     {
-        $request->user()->currentAccessToken()->delete();
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
         return response()->json(['message' => 'Излизането е успешно.']);
     }
@@ -116,8 +118,10 @@ class AuthController extends Controller
     public function deleteAccount(Request $request): JsonResponse
     {
         $user = $request->user();
-        $user->tokens()->delete();
         $user->delete();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
         return response()->json(['message' => 'Акаунтът е изтрит успешно.']);
     }

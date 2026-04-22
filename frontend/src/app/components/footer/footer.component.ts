@@ -43,6 +43,8 @@ import { AuthService } from '../../services/auth.service';
         <div class="footer-bottom">
           <p class="copyright">© {{ currentYear }} Кулинарният блог на Иво</p>
           <span class="footer-sep"></span>
+          <a routerLink="/privacy" class="privacy-link">Политика за поверителност</a>
+          <span class="footer-sep"></span>
           <p class="made-with">
             Направено с
             <svg class="heart" viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
@@ -178,6 +180,13 @@ import { AuthService } from '../../services/auth.service';
       border-radius: 50%;
       background: oklch(30% 0.008 50);
     }
+    .privacy-link {
+      font-size: 0.78rem;
+      color: oklch(45% 0.008 50);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .privacy-link:hover { color: oklch(70% 0.01 50); }
     .made-with {
       display: flex;
       align-items: center;
