@@ -1107,6 +1107,7 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
           title: res.recipe.title,
           description: res.recipe.excerpt || res.recipe.description?.slice(0, 155) || '',
           image: res.recipe.hero_image || undefined,
+          type: 'article',
         });
         this.seo.setJsonLd(this.buildJsonLd(res.recipe, res.averageRating, res.ratingsCount));
         if (this.auth.isAuthenticated() && this.auth.user()) {

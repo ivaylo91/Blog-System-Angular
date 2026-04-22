@@ -15,8 +15,11 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     tap({
       error: (err) => {
         if (err.status === 401) {
+          const hadUser = !!localStorage.getItem('user');
           localStorage.removeItem('user');
-          router.navigate(['/signin']);
+          if (hadUser) {
+            router.navigate(['/signin']);
+          }
         }
       },
     })
