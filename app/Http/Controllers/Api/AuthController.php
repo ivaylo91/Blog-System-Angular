@@ -113,6 +113,15 @@ class AuthController extends Controller
         ]);
     }
 
+    public function deleteAccount(Request $request): JsonResponse
+    {
+        $user = $request->user();
+        $user->tokens()->delete();
+        $user->delete();
+
+        return response()->json(['message' => 'Акаунтът е изтрит успешно.']);
+    }
+
     public function updateProfile(Request $request): JsonResponse
     {
         $user = $request->user();
