@@ -76,18 +76,21 @@ import { SeoService } from '../../services/seo.service';
               }
             </div>
 
-            <!-- Share bar -->
+            <!-- Share bar — native share on touch, direct links on desktop -->
             <div class="share-bar">
               <span class="share-label">Сподели:</span>
-              <a class="share-btn share-fb" [href]="'https://www.facebook.com/sharer/sharer.php?u=' + encodedUrl()" target="_blank" rel="noopener" title="Facebook">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-              </a>
-              <a class="share-btn share-x" [href]="'https://twitter.com/intent/tweet?url=' + encodedUrl() + '&text=' + encodedTitle()" target="_blank" rel="noopener" title="X">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-              </a>
-              <a class="share-btn share-wa" [href]="'https://wa.me/?text=' + encodedTitle() + '%20' + encodedUrl()" target="_blank" rel="noopener" title="WhatsApp">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.121 1.531 5.855L.057 23.885l6.196-1.452A11.942 11.942 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.882a9.88 9.88 0 0 1-5.031-1.37l-.361-.214-3.735.875.892-3.653-.235-.374A9.867 9.867 0 0 1 2.118 12C2.118 6.52 6.52 2.118 12 2.118S21.882 6.52 21.882 12 17.48 21.882 12 21.882z"/></svg>
-              </a>
+              @if (canNativeShare) {
+                <button class="share-btn share-native" (click)="nativeShare()" title="Сподели">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                </button>
+              } @else {
+                <a class="share-btn share-fb" [href]="'https://www.facebook.com/sharer/sharer.php?u=' + encodedUrl()" target="_blank" rel="noopener" title="Facebook">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                </a>
+                <a class="share-btn share-wa" [href]="'https://wa.me/?text=' + encodedTitle() + '%20' + encodedUrl()" target="_blank" rel="noopener" title="WhatsApp">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.121 1.531 5.855L.057 23.885l6.196-1.452A11.942 11.942 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.882a9.88 9.88 0 0 1-5.031-1.37l-.361-.214-3.735.875.892-3.653-.235-.374A9.867 9.867 0 0 1 2.118 12C2.118 6.52 6.52 2.118 12 2.118S21.882 6.52 21.882 12 17.48 21.882 12 21.882z"/></svg>
+                </a>
+              }
               <button class="share-btn share-copy" (click)="copyLink()" [title]="copied() ? 'Копирано!' : 'Копирай връзка'">
                 @if (copied()) {
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
@@ -95,11 +98,6 @@ import { SeoService } from '../../services/seo.service';
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
                 }
               </button>
-              @if (canNativeShare) {
-                <button class="share-btn share-native" (click)="nativeShare()" title="Сподели">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-                </button>
-              }
               <button class="share-btn share-print" (click)="printRecipe()" title="Принтирай">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
               </button>
@@ -390,10 +388,53 @@ import { SeoService } from '../../services/seo.service';
         }
 
       </div>
+    } @else if (loadError()) {
+      <div class="detail-load-error" role="status">
+        <p class="detail-load-error-msg">Тази рецепта не е намерена.</p>
+        <a routerLink="/recipes" class="detail-load-error-btn">← Обратно към рецептите</a>
+      </div>
     }
   `,
   styles: [`
     .detail-page { min-height: 100dvh; background-color: var(--clr-bg, #faf7f4); background-image: url('/backgrounds/cooking-pattern.svg'); background-size: 500px; background-repeat: repeat; }
+
+    /* Load error — editorial, matches home .featured-error */
+    .detail-load-error {
+      min-height: 60dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      padding: clamp(3rem, 8vw, 6rem) 1.5rem;
+      text-align: center;
+    }
+    .detail-load-error-msg {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: clamp(1.15rem, 1.8vw, 1.4rem);
+      color: var(--clr-text-muted);
+      margin: 0;
+      max-width: 32ch;
+      line-height: 1.4;
+    }
+    .detail-load-error-btn {
+      padding: 0.7rem 1.5rem;
+      border-radius: 9999px;
+      border: 1px solid var(--clr-border);
+      background: var(--clr-surface);
+      color: var(--clr-text);
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.2s var(--ease-out-expo), border-color 0.2s var(--ease-out-expo), transform 0.15s var(--ease-out-expo);
+    }
+    .detail-load-error-btn:hover {
+      background: var(--clr-surface-hover);
+      border-color: var(--clr-border-strong);
+      transform: translateY(-1px);
+    }
+    .detail-load-error-btn:active { transform: translateY(0); }
 
     /* ===== READING PROGRESS ===== */
     .read-progress {
@@ -544,7 +585,6 @@ import { SeoService } from '../../services/seo.service';
     .share-btn svg { width: 0.9rem; height: 0.9rem; }
     .share-btn:hover { transform: translateY(-2px); }
     .share-fb:hover  { background: #1877f2; border-color: #1877f2; }
-    .share-x:hover   { background: #000; border-color: #000; }
     .share-wa:hover  { background: #25d366; border-color: #25d366; }
     .share-copy:hover, .share-native:hover { background: rgba(255,255,255,0.3); }
 
@@ -1110,6 +1150,7 @@ export class RecipeDetailComponent {
   };
   checkedIngredients = signal<Set<number>>(new Set());
   recipe = signal<Recipe | null>(null);
+  loadError = signal(false);
   relatedRecipes = signal<Recipe[]>([]);
   comments = signal<Comment[]>([]);
   averageRating = signal<number | null>(null);
@@ -1165,10 +1206,14 @@ export class RecipeDetailComponent {
   }
 
   copyLink(): void {
-    navigator.clipboard.writeText(this.currentUrl).then(() => {
-      this.copied.set(true);
-      setTimeout(() => this.copied.set(false), 2000);
-    });
+    navigator.clipboard.writeText(this.currentUrl).then(
+      () => {
+        this.copied.set(true);
+        this.toast.success('Връзката е копирана.');
+        setTimeout(() => this.copied.set(false), 2000);
+      },
+      () => this.toast.error('Неуспешно копиране.'),
+    );
   }
 
   nativeShare(): void {
@@ -1178,6 +1223,7 @@ export class RecipeDetailComponent {
 
   loadRecipe(slug: string): void {
     this.perf.mark('recipe_detail_fetch_start');
+    this.loadError.set(false);
     this.recipeService.getRecipe(slug).pipe(takeUntilDestroyed()).subscribe({
       next: (res) => {
         this.recipe.set(res.recipe);
@@ -1200,7 +1246,10 @@ export class RecipeDetailComponent {
         this.perf.mark('recipe_detail_ready');
         this.perf.measure('recipe_detail_load', 'recipe_detail_fetch_start', 'recipe_detail_ready');
       },
-      error: () => this.toast.error('Рецептата не беше намерена.'),
+      error: () => {
+        this.loadError.set(true);
+        this.toast.error('Рецептата не беше намерена.');
+      },
     });
     this.recipeService.getRelatedRecipes(slug).pipe(takeUntilDestroyed()).subscribe({
       next: (r) => this.relatedRecipes.set(r),
