@@ -11,7 +11,29 @@
       "Bash(npx skills *)",
       "Bash(git add *)",
       "Bash(git commit -m ' *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(git -C \"c:/Users/ipene/Desktop/Blog-System-Angular\" status)",
+      "Bash(git -C \"c:/Users/ipene/Desktop/Blog-System-Angular\" diff)",
+      "Bash(git -C \"c:/Users/ipene/Desktop/Blog-System-Angular\" log --oneline -5)",
+      "Bash(git -C \"c:/Users/ipene/Desktop/Blog-System-Angular\" add app/Http/Controllers/Api/CommentController.php app/Http/Controllers/Api/RecipeController.php app/Models/User.php composer.json)",
+      "Bash(git -C c:/Users/ipene/Desktop/Blog-System-Angular commit -m ' *)",
+      "Bash(git -C \"c:/Users/ipene/Desktop/Blog-System-Angular\" push)",
+      "Bash(git -C \"c:/Users/ipene/Desktop/Blog-System-Angular\" add public/)",
+      "Bash(git -C \"c:/Users/ipene/Desktop/Blog-System-Angular\" status --short public/)",
+      "Bash(git -C \"c:/Users/ipene/Desktop/Blog-System-Angular\" check-ignore -v \"public/chunk-44MRYGK2.js\" \"public/main-LIC64JO6.js\" \"public/styles-OKVV74UO.css\")",
+      "Bash(git -C \"c:/Users/ipene/Desktop/Blog-System-Angular\" ls-files --others --exclude-standard \"public/chunk-44MRYGK2.js\")",
+      "Bash(git -C \"c:/Users/ipene/Desktop/Blog-System-Angular\" ls-files --ignored --exclude-standard \"public/chunk-44MRYGK2.js\")",
+      "Bash(git -C \"c:/Users/ipene/Desktop/Blog-System-Angular\" ls-files --others --ignored --exclude-standard -- \"public/\")",
+      "Bash(git -C \"c:/Users/ipene/Desktop/Blog-System-Angular\" ls-files --others -- \"public/\")",
+      "Bash(git -C \"c:/Users/ipene/Desktop/Blog-System-Angular\" ls-files -- \"public/\")",
+      "Bash(grep -E \"\\\\.\\(js|css\\)$\")",
+      "Bash(git -C \"c:/Users/ipene/Desktop/Blog-System-Angular\" diff --cached --stat)",
+      "Bash(git -C \"c:/Users/ipene/Desktop/Blog-System-Angular\" show HEAD:public/main-LIC64JO6.js)",
+      "Bash(git -C \"c:/Users/ipene/Desktop/Blog-System-Angular\" add app/Models/Recipe.php app/Http/Controllers/Api/AuthController.php routes/api.php)",
+      "Bash(npm run *)",
+      "Bash(git -C c:/Users/ipene/Desktop/Blog-System-Angular add app/Http/Controllers/Api/AuthController.php frontend/src/app/services/auth.service.ts frontend/src/app/interceptors/auth.interceptor.ts frontend/src/app/models/models.ts frontend/src/app/app.routes.ts frontend/src/app/pages/privacy/privacy.component.ts frontend/src/app/components/footer/footer.component.ts frontend/proxy.conf.json public/)",
+      "Bash(composer update *)",
+      "Bash(git -C \"c:/Users/ipene/Desktop/Blog-System-Angular\" add composer.lock)"
     ]
   }
 }

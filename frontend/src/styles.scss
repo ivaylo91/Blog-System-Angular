@@ -164,19 +164,19 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not(.light) {
-    --clr-bg:            oklch(14% 0.008 50);   /* deep warm dark */
-    --clr-surface:       oklch(19% 0.009 50);   /* card surface */
-    --clr-surface-alt:   oklch(16% 0.008 50);   /* slightly recessed */
-    --clr-surface-hover: oklch(24% 0.01 50);    /* hover state */
-    --clr-surface-active:oklch(26% 0.04 55);    /* active nav */
+    --clr-bg:            oklch(12% 0.020 45);   /* espresso base */
+    --clr-surface:       oklch(17% 0.022 45);   /* cocoa card */
+    --clr-surface-alt:   oklch(14% 0.021 45);   /* recessed cocoa */
+    --clr-surface-hover: oklch(22% 0.025 48);   /* warm hover */
+    --clr-surface-active:oklch(26% 0.05 55);    /* active nav */
 
-    --clr-text:          oklch(92% 0.006 65);   /* warm off-white */
-    --clr-text-muted:    oklch(65% 0.012 55);   /* muted warm */
-    --clr-text-faint:    oklch(42% 0.01 50);    /* very faint */
+    --clr-text:          oklch(94% 0.016 70);   /* creamy off-white */
+    --clr-text-muted:    oklch(68% 0.020 58);   /* warm muted */
+    --clr-text-faint:    oklch(44% 0.015 52);   /* very faint */
 
-    --clr-border:        rgba(255, 255, 255, 0.09);
-    --clr-border-faint:  rgba(255, 255, 255, 0.05);
-    --clr-border-strong: rgba(255, 255, 255, 0.14);
+    --clr-border:        rgba(255, 228, 194, 0.10);
+    --clr-border-faint:  rgba(255, 228, 194, 0.055);
+    --clr-border-strong: rgba(255, 228, 194, 0.16);
 
     --shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.35);
     --shadow-md: 0 4px 24px rgba(0, 0, 0, 0.45);
@@ -202,19 +202,19 @@
 
 /* Class-based dark mode (user toggle overrides OS) */
 html.dark {
-  --clr-bg:            oklch(14% 0.008 50);
-  --clr-surface:       oklch(19% 0.009 50);
-  --clr-surface-alt:   oklch(16% 0.008 50);
-  --clr-surface-hover: oklch(24% 0.01 50);
-  --clr-surface-active:oklch(26% 0.04 55);
+  --clr-bg:            oklch(12% 0.020 45);
+  --clr-surface:       oklch(17% 0.022 45);
+  --clr-surface-alt:   oklch(14% 0.021 45);
+  --clr-surface-hover: oklch(22% 0.025 48);
+  --clr-surface-active:oklch(26% 0.05 55);
 
-  --clr-text:          oklch(92% 0.006 65);
-  --clr-text-muted:    oklch(65% 0.012 55);
-  --clr-text-faint:    oklch(42% 0.01 50);
+  --clr-text:          oklch(94% 0.016 70);
+  --clr-text-muted:    oklch(68% 0.020 58);
+  --clr-text-faint:    oklch(44% 0.015 52);
 
-  --clr-border:        rgba(255, 255, 255, 0.09);
-  --clr-border-faint:  rgba(255, 255, 255, 0.05);
-  --clr-border-strong: rgba(255, 255, 255, 0.14);
+  --clr-border:        rgba(255, 228, 194, 0.10);
+  --clr-border-faint:  rgba(255, 228, 194, 0.055);
+  --clr-border-strong: rgba(255, 228, 194, 0.16);
 
   --shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.35);
   --shadow-md: 0 4px 24px rgba(0, 0, 0, 0.45);

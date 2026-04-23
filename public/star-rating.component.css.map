@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/components/star-rating/star-rating.component.ts"],
+  "sourcesContent": ["\n    .stars { display: inline-flex; gap: 0.1rem; }\n    .star {\n      font-size: 1.5rem;\n      color: var(--clr-border-strong);\n      background: none;\n      border: none;\n      cursor: pointer;\n      padding: 0.1rem;\n      transition: color 0.15s var(--ease-out-expo), transform 0.15s var(--ease-out-expo);\n      line-height: 1;\n    }\n    .star:not(:disabled):hover { transform: scale(1.2); }\n    .star:disabled { cursor: default; }\n    .star.filled { color: var(--clr-amber); }\n  "],
+  "mappings": ";AACI,CAAA;AAAS,WAAA;AAAsB,OAAA;;AAC/B,CAAA;AACE,aAAA;AACA,SAAA,IAAA;AACA,cAAA;AACA,UAAA;AACA,UAAA;AACA,WAAA;AACA,cAAA,MAAA,MAAA,IAAA,gBAAA,EAAA,UAAA,MAAA,IAAA;AACA,eAAA;;AAEF,CAVA,IAUA,KAAA,UAAA;AAA6B,aAAA,MAAA;;AAC7B,CAXA,IAWA;AAAiB,UAAA;;AACjB,CAZA,IAYA,CAAA;AAAe,SAAA,IAAA;;",
+  "names": []
+}

@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/app.scss"],
+  "sourcesContent": [":host {\r\n  display: flex;\r\n  flex-direction: column;\r\n  min-height: 100vh;\r\n}\r\n\r\n.main-content {\r\n  flex: 1;\r\n}\r\n\r\n.skip-link {\r\n  position: absolute;\r\n  top: -100%;\r\n  left: 1rem;\r\n  z-index: 9999;\r\n  padding: 0.65rem 1.25rem;\r\n  background: var(--clr-brand);\r\n  color: oklch(100% 0 0);\r\n  font-weight: 700;\r\n  font-size: 0.875rem;\r\n  border-radius: 0 0 0.75rem 0.75rem;\r\n  text-decoration: none;\r\n  transition: top 0.15s var(--ease-out-expo);\r\n}\r\n.skip-link:focus {\r\n  top: 0;\r\n  outline: 2.5px solid oklch(100% 0 0);\r\n  outline-offset: 2px;\r\n}\r\n"],
+  "mappings": ";AAAA;AACE,WAAA;AACA,kBAAA;AACA,cAAA;;AAGF,CAAA;AACE,QAAA;;AAGF,CAAA;AACE,YAAA;AACA,OAAA;AACA,QAAA;AACA,WAAA;AACA,WAAA,QAAA;AACA,cAAA,IAAA;AACA,SAAA;AACA,eAAA;AACA,aAAA;AACA,iBAAA,EAAA,EAAA,QAAA;AACA,mBAAA;AACA,cAAA,IAAA,MAAA,IAAA;;AAEF,CAdA,SAcA;AACE,OAAA;AACA,WAAA,MAAA,MAAA,MAAA,KAAA,EAAA;AACA,kBAAA;;",
+  "names": []
+}

@@ -32,6 +32,11 @@ import { SeoService } from '../../services/seo.service';
     @if (recipe(); as recipe) {
       <div class="detail-page">
 
+        <!-- Reading progress bar -->
+        <div class="read-progress" aria-hidden="true">
+          <div class="read-progress-bar" [style.transform]="'scaleX(' + readProgress() + ')'"></div>
+        </div>
+
         <!-- Full-bleed hero image -->
         <div class="hero-banner" [style.background]="heroGradient()">
           @if (recipe.hero_image) {
@@ -124,16 +129,33 @@ import { SeoService } from '../../services/seo.service';
         <div class="body-wrap">
           <div class="content-grid">
 
-            <!-- LEFT: main content -->
-            <main class="main-content">
+            <!-- RIGHT on desktop, TOP on mobile: sticky ingredients + favorite -->
+            <aside class="sidebar">
 
-              @if (recipe.description) {
-                <div class="prose-card">
-                  <p>{{ recipe.description }}</p>
-                </div>
+              <!-- Favorite -->
+              @if (auth.isAuthenticated()) {
+                <button class="favorite-btn"
+                  [class.favorited]="favoriteStatus()?.isFavorite"
+                  [disabled]="favoriting()"
+                  [attr.aria-pressed]="!!favoriteStatus()?.isFavorite"
+                  [attr.aria-label]="favoriteStatus()?.isFavorite ? 'Премахни от любими' : 'Добави в любими'"
+                  (click)="toggleFavorite()">
+                  @if (favoriting()) {
+                    <svg class="spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-dasharray="32" stroke-dashoffset="24"/></svg>
+                  } @else if (favoriteStatus()?.isFavorite) {
+                    <svg viewBox="0 0 24 24" fill="var(--clr-error)" stroke="var(--clr-error)" stroke-width="2" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                  } @else {
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                  }
+                  @if (favoriteStatus()?.isFavorite) {
+                    Запазено · {{ favoriteStatus()?.favoriteCount }}
+                  } @else {
+                    Запази · {{ favoriteStatus()?.favoriteCount || 0 }}
+                  }
+                </button>
               }
 
-              <!-- Ingredients -->
+              <!-- Ingredients (sticky) -->
               <div class="section-card" id="ingredients">
                 <div class="section-heading">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg>
@@ -171,6 +193,17 @@ import { SeoService } from '../../services/seo.service';
                 }
               </div>
 
+            </aside>
+
+            <!-- LEFT on desktop, BELOW on mobile: intro + steps + rating + comments -->
+            <main class="main-content">
+
+              @if (recipe.description) {
+                <div class="prose-card">
+                  <p>{{ recipe.description }}</p>
+                </div>
+              }
+
               <!-- Steps -->
               <div class="section-card" id="steps">
                 <div class="section-heading">
@@ -201,36 +234,8 @@ import { SeoService } from '../../services/seo.service';
                   }
                 </div>
               }
-            </main>
-
-            <!-- RIGHT: sidebar -->
-            <aside class="sidebar">
-
-              <!-- Favorite -->
-              @if (auth.isAuthenticated()) {
-                <button class="favorite-btn"
-                  [class.favorited]="favoriteStatus()?.isFavorite"
-                  [disabled]="favoriting()"
-                  [attr.aria-pressed]="!!favoriteStatus()?.isFavorite"
-                  [attr.aria-label]="favoriteStatus()?.isFavorite ? 'Премахни от любими' : 'Добави в любими'"
-                  (click)="toggleFavorite()">
-                  @if (favoriting()) {
-                    <svg class="spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-dasharray="32" stroke-dashoffset="24"/></svg>
-                  } @else if (favoriteStatus()?.isFavorite) {
-                    <svg viewBox="0 0 24 24" fill="var(--clr-error)" stroke="var(--clr-error)" stroke-width="2" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                  } @else {
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                  }
-                  @if (favoriteStatus()?.isFavorite) {
-                    Запазено · {{ favoriteStatus()?.favoriteCount }}
-                  } @else {
-                    Запази · {{ favoriteStatus()?.favoriteCount || 0 }}
-                  }
-                </button>
-              }
-
               <!-- Rating -->
-              <div class="sidebar-card">
+              <div class="panel-card">
                 <div class="card-label">
                   <svg viewBox="0 0 24 24" fill="currentColor" class="star-icon"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                   Оценка
@@ -252,7 +257,7 @@ import { SeoService } from '../../services/seo.service';
 
               <!-- Comment form -->
               @if (auth.isAuthenticated()) {
-                <div class="sidebar-card">
+                <div class="panel-card">
                   <div class="card-label">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
                     Остави коментар
@@ -276,14 +281,14 @@ import { SeoService } from '../../services/seo.service';
                   </form>
                 </div>
               } @else {
-                <div class="sidebar-card login-prompt">
+                <div class="panel-card login-prompt">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
                   <p>За оценка или коментар <a routerLink="/signin">влез в профила си</a>.</p>
                 </div>
               }
 
               <!-- Comments -->
-              <div class="sidebar-card" id="comments">
+              <div class="panel-card" id="comments">
                 <div class="card-label">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
                   Коментари
@@ -365,7 +370,7 @@ import { SeoService } from '../../services/seo.service';
                 }
               </div>
 
-            </aside>
+            </main>
           </div>
         </div>
 
@@ -389,6 +394,27 @@ import { SeoService } from '../../services/seo.service';
   `,
   styles: [`
     .detail-page { min-height: 100dvh; background-color: var(--clr-bg, #faf7f4); background-image: url('/backgrounds/cooking-pattern.svg'); background-size: 500px; background-repeat: repeat; }
+
+    /* ===== READING PROGRESS ===== */
+    .read-progress {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      z-index: 51;
+      pointer-events: none;
+      background: transparent;
+    }
+    .read-progress-bar {
+      height: 100%;
+      background: var(--clr-brand);
+      transform-origin: left;
+      transform: scaleX(0);
+      will-change: transform;
+      box-shadow: 0 0 8px color-mix(in oklch, var(--clr-brand) 45%, transparent);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .read-progress-bar { transition: none; }
+    }
 
     /* ===== HERO ===== */
     .hero-banner {
@@ -526,25 +552,64 @@ import { SeoService } from '../../services/seo.service';
     .body-wrap { max-width: 1200px; margin: 0 auto; padding: 2.5rem 1.5rem; }
     .content-grid {
       display: grid;
-      grid-template-columns: 1fr 360px;
+      grid-template-columns: 1fr 340px;
+      grid-template-areas: "main aside";
       gap: 2rem;
       align-items: start;
     }
-    .main-content { min-width: 0; display: flex; flex-direction: column; gap: 1.5rem; }
+    .main-content { grid-area: main; min-width: 0; display: flex; flex-direction: column; gap: 1.5rem; }
+    .sidebar { grid-area: aside; }
 
-    /* Prose card */
+    /* Prose card — editorial intro with drop cap */
     .prose-card {
       background: var(--clr-surface);
       border-radius: 1.25rem;
-      padding: 1.5rem;
+      padding: 1.75rem 1.75rem 1.6rem;
       border: 1px solid var(--clr-border-faint);
       box-shadow: var(--shadow-sm);
     }
     .prose-card p {
-      color: var(--clr-text-muted);
-      line-height: 1.85;
+      color: var(--clr-text);
+      line-height: 1.8;
       margin: 0;
-      font-size: 1rem;
+      font-size: 1.08rem;
+      font-family: var(--font-display);
+      font-weight: 400;
+    }
+    .prose-card p::first-letter {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 800;
+      font-size: 4.2em;
+      line-height: 0.85;
+      float: left;
+      color: var(--clr-brand);
+      padding: 0.4rem 0.7rem 0 0;
+      margin-top: 0.15rem;
+    }
+    .prose-card p::first-line {
+      font-variant-caps: small-caps;
+      letter-spacing: 0.04em;
+      color: var(--clr-text);
+    }
+
+    /* Pull quote — for editorial callouts inside body copy */
+    .pull-quote {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 700;
+      font-size: clamp(1.4rem, 2.2vw, 1.8rem);
+      line-height: 1.35;
+      color: var(--clr-brand);
+      border-left: 3px solid var(--clr-brand);
+      padding: 0.25rem 0 0.25rem 1.5rem;
+      margin: 2rem 0 2rem -0.5rem;
+      max-width: 36ch;
+    }
+    @media (max-width: 640px) {
+      .prose-card { padding: 1.5rem 1.4rem 1.4rem; }
+      .prose-card p { font-size: 1rem; }
+      .prose-card p::first-letter { font-size: 3.6em; padding-right: 0.55rem; }
     }
 
     /* Section cards */
@@ -800,10 +865,11 @@ import { SeoService } from '../../services/seo.service';
     .favorite-btn.favorited { background: var(--clr-error-bg); border-color: var(--clr-error); color: var(--clr-error); }
     .favorite-btn:hover:not(:disabled) { box-shadow: var(--shadow-md); }
     .favorite-btn:disabled { opacity: 0.7; cursor: wait; }
-    .sidebar-card {
+    .sidebar-card,
+    .panel-card {
       background: var(--clr-surface);
       border-radius: 1.25rem;
-      padding: 1.25rem;
+      padding: 1.5rem;
       border: 1px solid var(--clr-border-faint);
       box-shadow: var(--shadow-sm);
       scroll-margin-top: 8rem;
@@ -994,15 +1060,24 @@ import { SeoService } from '../../services/seo.service';
     .reply-avatar { width: 1.5rem !important; height: 1.5rem !important; font-size: 0.65rem !important; }
 
     @media print {
-      app-header, app-footer, .share-bar, .sidebar, .related-section, .back-link, .hero-overlay { display: none !important; }
+      app-header, app-footer, .share-bar, .related-section, .back-link, .hero-overlay, .read-progress, .favorite-btn { display: none !important; }
       .hero-banner { min-height: auto !important; }
       .hero-img { position: static !important; width: 100% !important; height: 300px !important; object-fit: cover; }
-      .content-grid { grid-template-columns: 1fr !important; }
+      .content-grid {
+        grid-template-columns: 1fr !important;
+        grid-template-areas: "aside" "main" !important;
+      }
+      .sidebar { position: static !important; max-height: none !important; overflow: visible !important; }
       .body-wrap { padding: 1rem !important; }
     }
 
     @media (max-width: 900px) {
-      .content-grid { grid-template-columns: 1fr; }
+      .content-grid {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "aside"
+          "main";
+      }
       h1 { font-size: 2.2rem; }
       .hero-banner { min-height: 420px; }
       .sidebar {
@@ -1034,6 +1109,18 @@ export class RecipeDetailComponent {
   auth = inject(AuthService);
 
   Math = Math;
+  readProgress = signal(0);
+  private rafPending = false;
+  private onScroll = () => {
+    if (this.rafPending) return;
+    this.rafPending = true;
+    requestAnimationFrame(() => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      this.readProgress.set(docHeight > 0 ? Math.min(1, Math.max(0, scrollTop / docHeight)) : 0);
+      this.rafPending = false;
+    });
+  };
   checkedIngredients = signal<Set<number>>(new Set());
   recipe = signal<Recipe | null>(null);
   relatedRecipes = signal<Recipe[]>([]);
@@ -1067,10 +1154,17 @@ export class RecipeDetailComponent {
       this.checkedIngredients.set(new Set());
       this.loadRecipe(params['slug']);
     });
+    if (typeof window !== 'undefined') {
+      window.addEventListener('scroll', this.onScroll, { passive: true });
+      this.onScroll();
+    }
   }
 
   ngOnDestroy(): void {
     this.seo.removeJsonLd();
+    if (typeof window !== 'undefined') {
+      window.removeEventListener('scroll', this.onScroll);
+    }
   }
 
   toggleIngredient(id: number): void {

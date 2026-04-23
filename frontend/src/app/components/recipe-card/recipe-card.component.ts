@@ -8,7 +8,7 @@ import { Recipe } from '../../models/models';
   imports: [RouterLink],
   template: `
     <a [routerLink]="['/recipes', recipe.slug]" class="card"
-       [class.featured]="featured" [class.compact]="compact"
+       [class.featured]="featured" [class.compact]="compact" [class.overlay]="overlay"
        [style.animation-delay]="(index < 6 ? index : 5) * 50 + 'ms'">
       <div class="card-image" [class.img-loaded]="imgLoaded" [style.background]="gradient">
         @if (recipe.hero_image) {
@@ -17,7 +17,10 @@ import { Recipe } from '../../models/models';
                [attr.fetchpriority]="priority ? 'high' : null"
                (load)="onImgLoad()" />
         }
-        @if (!compact) {
+        @if (numbered) {
+          <span class="card-num" aria-hidden="true">{{ paddedIndex }}</span>
+        }
+        @if (!compact && !overlay) {
           <div class="card-overlay">
             <span class="overlay-btn">Виж рецептата →</span>
           </div>
@@ -29,7 +32,7 @@ import { Recipe } from '../../models/models';
           <span class="category">{{ recipe.category.name }}</span>
         }
         <h3 class="title">{{ recipe.title }}</h3>
-        @if (!compact) {
+        @if (!compact && (!overlay || featured)) {
           <p class="excerpt">{{ recipe.excerpt }}</p>
         }
         <div class="meta">
@@ -37,7 +40,7 @@ import { Recipe } from '../../models/models';
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
             {{ recipe.prep_minutes + recipe.cook_minutes }} мин
           </span>
-          @if (!compact) {
+          @if (!compact && !overlay) {
             <span class="meta-item">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
               {{ recipe.servings }} порции
@@ -252,6 +255,87 @@ import { Recipe } from '../../models/models';
     .diff-medium { background: var(--clr-amber-bg);  color: var(--clr-amber-text); }
     .diff-hard   { background: var(--clr-rust-bg);   color: var(--clr-rust-text); }
 
+    /* --- Editorial counter (top-left corner) --- */
+    .card-num {
+      position: absolute;
+      top: 0.85rem;
+      left: 1rem;
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      color: rgba(255, 255, 255, 0.95);
+      z-index: 3;
+      text-shadow: 0 1px 12px rgba(0, 0, 0, 0.4);
+      pointer-events: none;
+    }
+    .card-num::before {
+      content: '';
+      display: inline-block;
+      width: 1.4rem;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.7);
+      vertical-align: middle;
+      margin-right: 0.45rem;
+      transform: translateY(-1px);
+    }
+    .card.featured .card-num { font-size: 1.15rem; top: 1.1rem; left: 1.25rem; }
+
+    /* --- Overlay variant (bento tile — image fills, text scrim at bottom) --- */
+    .card.overlay {
+      position: relative;
+      height: 100%;
+      display: block;
+      isolation: isolate;
+    }
+    .card.overlay .card-image {
+      position: absolute;
+      inset: 0;
+      aspect-ratio: auto;
+      z-index: 0;
+    }
+    .card.overlay .card-body {
+      position: absolute;
+      inset: auto 0 0 0;
+      padding: 1.1rem 1.25rem 1.15rem;
+      background: linear-gradient(180deg, transparent 0%, rgba(12, 10, 8, 0.35) 40%, rgba(12, 10, 8, 0.82) 100%);
+      color: #fff;
+      z-index: 2;
+    }
+    .card.overlay .category {
+      background: rgba(255, 255, 255, 0.18);
+      color: #fff;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+    }
+    .card.overlay .title {
+      color: #fff;
+      font-size: 1.15rem;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+    }
+    .card.overlay.featured .title {
+      font-size: clamp(1.65rem, 2.6vw, 2.35rem);
+      line-height: 1.08;
+      letter-spacing: -0.025em;
+      font-weight: 800;
+    }
+    .card.overlay .excerpt { color: rgba(255, 255, 255, 0.88); }
+    .card.overlay .meta {
+      border-top-color: rgba(255, 255, 255, 0.22);
+      color: rgba(255, 255, 255, 0.92);
+      margin-top: 0.75rem;
+      padding-top: 0.65rem;
+    }
+    .card.overlay .difficulty { background: rgba(255, 255, 255, 0.18); color: #fff; }
+    .card.overlay .diff-easy   { background: oklch(68% 0.14 145 / 0.9); color: #fff; }
+    .card.overlay .diff-medium { background: oklch(72% 0.14 70 / 0.9);  color: #fff; }
+    .card.overlay .diff-hard   { background: oklch(62% 0.17 30 / 0.9);  color: #fff; }
+    @media (hover: hover) and (pointer: fine) {
+      .card.overlay:hover .card-image img { transform: scale(1.06); }
+    }
+
     /* --- Compact (horizontal) variant --- */
     .card.compact {
       display: flex;
@@ -309,6 +393,12 @@ export class RecipeCardComponent {
   @Input() index = 0;
   @Input() featured = false;
   @Input() compact = false;
+  @Input() overlay = false;
+  @Input() numbered = false;
+
+  get paddedIndex(): string {
+    return String(this.index + 1).padStart(2, '0');
+  }
 
   imgLoaded = false;
   onImgLoad(): void { this.imgLoaded = true; }
