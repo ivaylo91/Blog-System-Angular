@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { RecipeService } from '../../services/recipe.service';
-import { DashboardStats } from '../../models/models';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { DashboardService } from '../../services/dashboard.service';
 import { SeoService } from '../../services/seo.service';
 
 @Component({
@@ -26,28 +26,28 @@ import { SeoService } from '../../services/seo.service';
           <div class="stat-icon green">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
           </div>
-          <span class="stat-number">{{ stats?.publishedRecipes ?? '—' }}</span>
+          <span class="stat-number">{{ stats()?.publishedRecipes ?? '—' }}</span>
           <span class="stat-label">Публикувани</span>
         </div>
         <div class="stat-card">
           <div class="stat-icon yellow">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
           </div>
-          <span class="stat-number">{{ stats?.draftRecipes ?? '—' }}</span>
+          <span class="stat-number">{{ stats()?.draftRecipes ?? '—' }}</span>
           <span class="stat-label">Чернови</span>
         </div>
         <div class="stat-card">
           <div class="stat-icon blue">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
           </div>
-          <span class="stat-number">{{ stats?.totalComments ?? '—' }}</span>
+          <span class="stat-number">{{ stats()?.totalComments ?? '—' }}</span>
           <span class="stat-label">Коментари</span>
         </div>
         <div class="stat-card">
           <div class="stat-icon red">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
           </div>
-          <span class="stat-number">{{ stats?.totalFavorites ?? '—' }}</span>
+          <span class="stat-number">{{ stats()?.totalFavorites ?? '—' }}</span>
           <span class="stat-label">Запазвания</span>
         </div>
       </div>
@@ -94,14 +94,14 @@ import { SeoService } from '../../services/seo.service';
             <h2 class="card-title">Последни коментари</h2>
             <a routerLink="/dashboard/comments" class="view-all">Виж всички →</a>
           </div>
-          @if (!stats?.recentComments?.length) {
+          @if (!stats()?.recentComments?.length) {
             <div class="empty-block">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
               <span>Няма коментари все още.</span>
             </div>
           } @else {
             <ul class="comment-list">
-              @for (c of stats!.recentComments; track c.id) {
+              @for (c of stats()!.recentComments; track c.id) {
                 <li class="comment-item">
                   <div class="comment-top">
                     <div class="comment-avatar">{{ c.author?.name?.charAt(0) || '?' }}</div>
@@ -384,18 +384,17 @@ import { SeoService } from '../../services/seo.service';
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DashboardComponent implements OnInit {
-  private recipeService = inject(RecipeService);
+export class DashboardComponent {
+  private dashboardService = inject(DashboardService);
   private seo = inject(SeoService);
-  private cdr = inject(ChangeDetectorRef);
-  stats: DashboardStats | null = null;
 
-  ngOnInit(): void {
+  stats = toSignal(this.dashboardService.getStats());
+
+  constructor() {
     this.seo.set({
       title: 'Табло',
       description: 'Управлявай рецептите, коментарите и любимите си в таблото на кулинарния блог.',
     });
-    this.recipeService.getDashboardStats().subscribe(s => { this.stats = s; this.cdr.markForCheck(); });
   }
 
   formatDate(date: string): string {

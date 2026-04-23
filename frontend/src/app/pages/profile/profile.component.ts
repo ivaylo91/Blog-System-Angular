@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { SeoService } from '../../services/seo.service';
@@ -12,11 +12,11 @@ import { SeoService } from '../../services/seo.service';
       <div class="profile-card">
         <h1>Моят профил</h1>
 
-        @if (success) {
-          <div class="success-msg">{{ success }}</div>
+        @if (success()) {
+          <div class="success-msg">{{ success() }}</div>
         }
-        @if (error) {
-          <div class="error-msg">{{ error }}</div>
+        @if (error()) {
+          <div class="error-msg">{{ error() }}</div>
         }
 
         <form (submit)="onSubmit($event)">
@@ -29,12 +29,12 @@ import { SeoService } from '../../services/seo.service';
           <label>Профилна снимка</label>
           <input type="file" (change)="onFileChange($event)" accept="image/jpeg,image/png,image/webp" />
 
-          @if (previewUrl) {
-            <img [src]="previewUrl" class="avatar-preview" alt="Преглед" />
+          @if (previewUrl()) {
+            <img [src]="previewUrl()" class="avatar-preview" alt="Преглед" />
           }
 
-          <button type="submit" [disabled]="loading" class="submit-btn">
-            {{ loading ? 'Запазване...' : 'Запази промените' }}
+          <button type="submit" [disabled]="loading()" class="submit-btn">
+            {{ loading() ? 'Запазване...' : 'Запази промените' }}
           </button>
         </form>
       </div>
@@ -122,41 +122,37 @@ import { SeoService } from '../../services/seo.service';
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent {
   auth = inject(AuthService);
   private seo = inject(SeoService);
-  private cdr = inject(ChangeDetectorRef);
 
-  name = '';
+  name = this.auth.user()?.name || '';
   imageFile: File | null = null;
-  previewUrl: string | null = null;
-  loading = false;
-  success = '';
-  error = '';
+  previewUrl = signal<string | null>(this.auth.user()?.image || null);
+  loading = signal(false);
+  success = signal('');
+  error = signal('');
 
-  ngOnInit(): void {
+  constructor() {
     this.seo.set({
       title: 'Профил',
       description: 'Управлявай настройките на своя профил в кулинарния блог на Иво.',
     });
-    this.name = this.auth.user()?.name || '';
-    this.previewUrl = this.auth.user()?.image || null;
   }
 
   onFileChange(e: Event): void {
     const file = (e.target as HTMLInputElement).files?.[0];
     if (file) {
       this.imageFile = file;
-      this.previewUrl = URL.createObjectURL(file);
-      this.cdr.markForCheck();
+      this.previewUrl.set(URL.createObjectURL(file));
     }
   }
 
   onSubmit(e: Event): void {
     e.preventDefault();
-    this.loading = true;
-    this.success = '';
-    this.error = '';
+    this.loading.set(true);
+    this.success.set('');
+    this.error.set('');
 
     const formData = new FormData();
     formData.append('name', this.name);
@@ -166,14 +162,12 @@ export class ProfileComponent implements OnInit {
 
     this.auth.updateProfile(formData).subscribe({
       next: () => {
-        this.loading = false;
-        this.success = 'Профилът е обновен успешно.';
-        this.cdr.markForCheck();
+        this.loading.set(false);
+        this.success.set('Профилът е обновен успешно.');
       },
       error: (err) => {
-        this.loading = false;
-        this.error = err.error?.message || 'Грешка при обновяване.';
-        this.cdr.markForCheck();
+        this.loading.set(false);
+        this.error.set(err.error?.message || 'Грешка при обновяване.');
       },
     });
   }

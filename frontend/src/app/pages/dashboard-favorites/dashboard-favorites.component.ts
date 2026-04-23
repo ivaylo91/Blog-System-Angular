@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { RecipeService } from '../../services/recipe.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FavoriteService } from '../../services/favorite.service';
 import { Recipe } from '../../models/models';
 import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.component';
 
@@ -219,18 +220,15 @@ import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.co
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DashboardFavoritesComponent implements OnInit {
-  private recipeService = inject(RecipeService);
+export class DashboardFavoritesComponent {
+  private favoriteService = inject(FavoriteService);
   recipes = signal<Recipe[]>([]);
   loading = signal(true);
   skeletons = [0, 1, 2, 3, 4, 5];
 
-  ngOnInit(): void {
-    this.recipeService.getFavorites().subscribe({
-      next: (r) => {
-        this.recipes.set(r);
-        this.loading.set(false);
-      },
+  constructor() {
+    this.favoriteService.getFavorites().pipe(takeUntilDestroyed()).subscribe({
+      next: (r) => { this.recipes.set(r); this.loading.set(false); },
       error: () => this.loading.set(false),
     });
   }

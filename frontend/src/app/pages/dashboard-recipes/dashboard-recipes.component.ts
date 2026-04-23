@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { RecipeService } from '../../services/recipe.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { DashboardService } from '../../services/dashboard.service';
 import { AuthService } from '../../services/auth.service';
 import { ToastService } from '../../services/toast.service';
 import { Recipe } from '../../models/models';
@@ -301,9 +302,8 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DashboardRecipesComponent implements OnInit {
-  private recipeService = inject(RecipeService);
-  private cdr = inject(ChangeDetectorRef);
+export class DashboardRecipesComponent {
+  private dashboardService = inject(DashboardService);
   private toast = inject(ToastService);
   auth = inject(AuthService);
 
@@ -322,12 +322,12 @@ export class DashboardRecipesComponent implements OnInit {
     return recipe.user_id === this.auth.user()?.id;
   }
 
-  ngOnInit(): void {
+  constructor() {
     this.loadRecipes();
   }
 
   loadRecipes(): void {
-    this.recipeService.getDashboardRecipes().subscribe({
+    this.dashboardService.getRecipes().pipe(takeUntilDestroyed()).subscribe({
       next: r => { this.recipes.set(r); this.applyFilter(); },
       error: () => this.toast.error('Грешка при зареждане на рецепти.'),
     });
@@ -345,7 +345,6 @@ export class DashboardRecipesComponent implements OnInit {
       );
     }
     this.filteredRecipes.set(result);
-    this.cdr.markForCheck();
   }
 
   setFilter(status: 'all' | 'published' | 'draft'): void {
@@ -355,7 +354,7 @@ export class DashboardRecipesComponent implements OnInit {
 
   togglePublish(recipe: Recipe): void {
     if (!this.canManage(recipe)) return;
-    this.recipeService.togglePublish(recipe.slug, !recipe.published).subscribe({
+    this.dashboardService.togglePublish(recipe.slug, !recipe.published).subscribe({
       next: () => { this.toast.success(recipe.published ? 'Рецептата е скрита.' : 'Рецептата е публикувана.'); this.loadRecipes(); },
       error: () => this.toast.error('Грешка при промяна на статуса.'),
     });
@@ -369,7 +368,7 @@ export class DashboardRecipesComponent implements OnInit {
   deleteRecipe(): void {
     const recipe = this.recipeToDelete();
     if (!recipe) return;
-    this.recipeService.deleteRecipe(recipe.slug).subscribe({
+    this.dashboardService.deleteRecipe(recipe.slug).subscribe({
       next: () => {
         this.showDeleteModal.set(false);
         this.recipeToDelete.set(null);

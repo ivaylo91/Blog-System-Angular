@@ -1,5 +1,7 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { catchError, of, tap } from 'rxjs';
 import { RecipeService } from '../../services/recipe.service';
 import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.component';
 import { Recipe } from '../../models/models';
@@ -43,17 +45,17 @@ import { PerfService } from '../../services/perf.service';
         </div>
         <div class="hero-visual">
           <div class="hero-frame">
-            @if (featured.length > 0 && featured[0].hero_image) {
-              <a class="hero-image-wrap" [routerLink]="['/recipes', featured[0].slug]">
-                <img [src]="featured[0].hero_image" [alt]="featured[0].title"
+            @if (featured().length > 0 && featured()[0].hero_image) {
+              <a class="hero-image-wrap" [routerLink]="['/recipes', featured()[0].slug]">
+                <img [src]="featured()[0].hero_image" [alt]="featured()[0].title"
                      fetchpriority="high" loading="eager" class="hero-img" />
                 <div class="hero-img-badge">
                   <span class="badge-label">Избрана рецепта</span>
-                  <span class="badge-title">{{ featured[0].title }}</span>
+                  <span class="badge-title">{{ featured()[0].title }}</span>
                   <span class="badge-arrow">Виж рецептата →</span>
                 </div>
               </a>
-            } @else if (loading) {
+            } @else if (loading()) {
               <div class="hero-skeleton"></div>
             } @else {
               <div class="hero-placeholder">
@@ -73,7 +75,7 @@ import { PerfService } from '../../services/perf.service';
           <a routerLink="/recipes" class="section-link">Виж всички →</a>
         </div>
 
-        @if (loading) {
+        @if (loading()) {
           <div class="mag-layout">
             <div class="mag-hero">
               <div class="skeleton-card">
@@ -112,21 +114,21 @@ import { PerfService } from '../../services/perf.service';
         } @else {
           <!-- Magazine top: hero left (2/3) + 3 stacked right (1/3) -->
           <div class="mag-layout">
-            @if (featured.length > 0) {
+            @if (featured().length > 0) {
               <div class="mag-hero">
-                <app-recipe-card [recipe]="featured[0]" [priority]="true" [index]="0" [featured]="true" />
+                <app-recipe-card [recipe]="featured()[0]" [priority]="true" [index]="0" [featured]="true" />
               </div>
             }
             <div class="mag-side">
-              @for (recipe of featured.slice(1, 4); track recipe.id; let i = $index) {
+              @for (recipe of featured().slice(1, 4); track recipe.id; let i = $index) {
                 <app-recipe-card [recipe]="recipe" [index]="i + 1" [compact]="true" />
               }
             </div>
           </div>
           <!-- Bottom row: remaining cards in 4-col grid -->
-          @if (featured.length > 4) {
+          @if (featured().length > 4) {
             <div class="mag-bottom-grid">
-              @for (recipe of featured.slice(4); track recipe.id; let i = $index) {
+              @for (recipe of featured().slice(4); track recipe.id; let i = $index) {
                 <app-recipe-card [recipe]="recipe" [index]="i + 4" />
               }
             </div>
@@ -586,36 +588,33 @@ import { PerfService } from '../../services/perf.service';
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
   private recipeService = inject(RecipeService);
   private router = inject(Router);
   private seo = inject(SeoService);
-  private cdr = inject(ChangeDetectorRef);
   private perf = inject(PerfService);
 
-  featured: Recipe[] = [];
   searchQuery = '';
-  loading = true;
-  skeletons = [0, 1, 2, 3, 4, 5, 6];
+  readonly skeletons = [0, 1, 2, 3, 4, 5, 6];
 
-  ngOnInit(): void {
+  private featuredResult = toSignal(
+    this.recipeService.getFeaturedRecipes().pipe(
+      tap(() => {
+        this.perf.mark('home_featured_ready');
+        this.perf.measure('home_featured_load', 'home_start', 'home_featured_ready');
+      }),
+      catchError(() => of([] as Recipe[])),
+    ),
+  );
+
+  featured = computed(() => this.featuredResult() ?? []);
+  loading = computed(() => this.featuredResult() === undefined);
+
+  constructor() {
     this.perf.mark('home_start');
     this.seo.set({
       title: 'Начало',
       description: 'Традиционни български рецепти, споделени с любов. Открий лесни и вкусни ястия за всеки повод в кулинарния блог на Иво.',
-    });
-    this.recipeService.getFeaturedRecipes().subscribe({
-      next: (recipes) => {
-        this.featured = recipes;
-        this.loading = false;
-        this.cdr.markForCheck();
-        this.perf.mark('home_featured_ready');
-        this.perf.measure('home_featured_load', 'home_start', 'home_featured_ready');
-      },
-      error: () => {
-        this.loading = false;
-        this.cdr.markForCheck();
-      },
     });
   }
 

@@ -1,8 +1,11 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RecipeService } from '../../services/recipe.service';
+import { FavoriteService } from '../../services/favorite.service';
+import { CommentService } from '../../services/comment.service';
 import { AuthService } from '../../services/auth.service';
 import { ToastService } from '../../services/toast.service';
 import { PerfService } from '../../services/perf.service';
@@ -11,7 +14,6 @@ import { StarRatingComponent } from '../../components/star-rating/star-rating.co
 import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-modal.component';
 import { Recipe, Comment, FavoriteStatusResponse } from '../../models/models';
 import { SeoService } from '../../services/seo.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-recipe-detail',
@@ -19,19 +21,19 @@ import { Subscription } from 'rxjs';
   imports: [RouterLink, DatePipe, FormsModule, RecipeCardComponent, StarRatingComponent, ConfirmModalComponent],
   template: `
     <app-confirm-modal
-      [open]="confirmDeleteId !== null"
+      [open]="confirmDeleteId() !== null"
       title="Изтрий коментар"
       message="Сигурни ли сте, че искате да изтриете този коментар? Действието е необратимо."
       confirmLabel="Изтрий"
-      (confirmed)="deleteComment(confirmDeleteId!)"
-      (cancelled)="confirmDeleteId = null">
+      (confirmed)="deleteComment(confirmDeleteId()!)"
+      (cancelled)="confirmDeleteId.set(null)">
     </app-confirm-modal>
 
-    @if (recipe) {
+    @if (recipe(); as recipe) {
       <div class="detail-page">
 
         <!-- Full-bleed hero image -->
-        <div class="hero-banner" [style.background]="heroGradient">
+        <div class="hero-banner" [style.background]="heroGradient()">
           @if (recipe.hero_image) {
             <img [src]="recipe.hero_image" [alt]="recipe.title" class="hero-img" fetchpriority="high" loading="eager" />
           }
@@ -61,10 +63,10 @@ import { Subscription } from 'rxjs';
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
                 <span>{{ recipe.difficulty }}</span>
               </div>
-              @if (averageRating) {
+              @if (averageRating()) {
                 <div class="stat-pill stat-pill-gold">
                   <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                  <span>{{ averageRating.toFixed(1) }}</span>
+                  <span>{{ averageRating()!.toFixed(1) }}</span>
                 </div>
               }
             </div>
@@ -72,17 +74,17 @@ import { Subscription } from 'rxjs';
             <!-- Share bar -->
             <div class="share-bar">
               <span class="share-label">Сподели:</span>
-              <a class="share-btn share-fb" [href]="'https://www.facebook.com/sharer/sharer.php?u=' + encodedUrl" target="_blank" rel="noopener" title="Facebook">
+              <a class="share-btn share-fb" [href]="'https://www.facebook.com/sharer/sharer.php?u=' + encodedUrl()" target="_blank" rel="noopener" title="Facebook">
                 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
               </a>
-              <a class="share-btn share-x" [href]="'https://twitter.com/intent/tweet?url=' + encodedUrl + '&text=' + encodedTitle" target="_blank" rel="noopener" title="X">
+              <a class="share-btn share-x" [href]="'https://twitter.com/intent/tweet?url=' + encodedUrl() + '&text=' + encodedTitle()" target="_blank" rel="noopener" title="X">
                 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
               </a>
-              <a class="share-btn share-wa" [href]="'https://wa.me/?text=' + encodedTitle + '%20' + encodedUrl" target="_blank" rel="noopener" title="WhatsApp">
+              <a class="share-btn share-wa" [href]="'https://wa.me/?text=' + encodedTitle() + '%20' + encodedUrl()" target="_blank" rel="noopener" title="WhatsApp">
                 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.121 1.531 5.855L.057 23.885l6.196-1.452A11.942 11.942 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.882a9.88 9.88 0 0 1-5.031-1.37l-.361-.214-3.735.875.892-3.653-.235-.374A9.867 9.867 0 0 1 2.118 12C2.118 6.52 6.52 2.118 12 2.118S21.882 6.52 21.882 12 17.48 21.882 12 21.882z"/></svg>
               </a>
-              <button class="share-btn share-copy" (click)="copyLink()" [title]="copied ? 'Копирано!' : 'Копирай връзка'">
-                @if (copied) {
+              <button class="share-btn share-copy" (click)="copyLink()" [title]="copied() ? 'Копирано!' : 'Копирай връзка'">
+                @if (copied()) {
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
                 } @else {
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
@@ -138,22 +140,22 @@ import { Subscription } from 'rxjs';
                   <h2>Съставки</h2>
                   <span class="count-badge">{{ recipe.ingredients?.length || 0 }}</span>
                 </div>
-                @if (checkedIngredients.size > 0) {
+                @if (checkedIngredients().size > 0) {
                   <div class="ing-progress">
-                    <div class="ing-progress-bar" [style.transform]="'scaleX(' + (checkedIngredients.size / (recipe.ingredients?.length || 1)) + ')'"></div>
+                    <div class="ing-progress-bar" [style.transform]="'scaleX(' + (checkedIngredients().size / (recipe.ingredients?.length || 1)) + ')'"></div>
                   </div>
                 }
                 <ul class="ingredients-list">
                   @for (ing of recipe.ingredients; track ing.id) {
-                    <li [class.checked]="checkedIngredients.has(ing.id)"
+                    <li [class.checked]="checkedIngredients().has(ing.id)"
                         (click)="toggleIngredient(ing.id)"
                         role="checkbox"
-                        [attr.aria-checked]="checkedIngredients.has(ing.id)"
+                        [attr.aria-checked]="checkedIngredients().has(ing.id)"
                         tabindex="0"
                         (keydown.space)="$event.preventDefault(); toggleIngredient(ing.id)"
                         (keydown.enter)="toggleIngredient(ing.id)">
                       <span class="ing-check" aria-hidden="true">
-                        @if (checkedIngredients.has(ing.id)) {
+                        @if (checkedIngredients().has(ing.id)) {
                           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                         }
                       </span>
@@ -162,7 +164,7 @@ import { Subscription } from 'rxjs';
                     </li>
                   }
                 </ul>
-                @if (checkedIngredients.size > 0) {
+                @if (checkedIngredients().size > 0) {
                   <button class="ing-reset" (click)="clearIngredients()">
                     Изчисти всички
                   </button>
@@ -207,22 +209,22 @@ import { Subscription } from 'rxjs';
               <!-- Favorite -->
               @if (auth.isAuthenticated()) {
                 <button class="favorite-btn"
-                  [class.favorited]="favoriteStatus?.isFavorite"
-                  [disabled]="favoriting"
-                  [attr.aria-pressed]="!!favoriteStatus?.isFavorite"
-                  [attr.aria-label]="favoriteStatus?.isFavorite ? 'Премахни от любими' : 'Добави в любими'"
+                  [class.favorited]="favoriteStatus()?.isFavorite"
+                  [disabled]="favoriting()"
+                  [attr.aria-pressed]="!!favoriteStatus()?.isFavorite"
+                  [attr.aria-label]="favoriteStatus()?.isFavorite ? 'Премахни от любими' : 'Добави в любими'"
                   (click)="toggleFavorite()">
-                  @if (favoriting) {
+                  @if (favoriting()) {
                     <svg class="spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-dasharray="32" stroke-dashoffset="24"/></svg>
-                  } @else if (favoriteStatus?.isFavorite) {
+                  } @else if (favoriteStatus()?.isFavorite) {
                     <svg viewBox="0 0 24 24" fill="var(--clr-error)" stroke="var(--clr-error)" stroke-width="2" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
                   } @else {
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
                   }
-                  @if (favoriteStatus?.isFavorite) {
-                    Запазено · {{ favoriteStatus?.favoriteCount }}
+                  @if (favoriteStatus()?.isFavorite) {
+                    Запазено · {{ favoriteStatus()?.favoriteCount }}
                   } @else {
-                    Запази · {{ favoriteStatus?.favoriteCount || 0 }}
+                    Запази · {{ favoriteStatus()?.favoriteCount || 0 }}
                   }
                 </button>
               }
@@ -234,16 +236,16 @@ import { Subscription } from 'rxjs';
                   Оценка
                 </div>
                 <div class="avg-row">
-                  <span class="avg-num">{{ averageRating ? averageRating.toFixed(1) : '—' }}</span>
+                  <span class="avg-num">{{ averageRating() ? averageRating()!.toFixed(1) : '—' }}</span>
                   <div class="avg-meta">
-                    <app-star-rating [value]="Math.round(averageRating || 0)" [interactive]="false" />
-                    <span class="rating-count">{{ ratingsCount > 0 ? ratingsCount + ' оценки' : 'Все още няма' }}</span>
+                    <app-star-rating [value]="Math.round(averageRating() || 0)" [interactive]="false" />
+                    <span class="rating-count">{{ ratingsCount() > 0 ? ratingsCount() + ' оценки' : 'Все още няма' }}</span>
                   </div>
                 </div>
                 @if (auth.isAuthenticated()) {
                   <div class="user-rating">
                     <p>Твоята оценка:</p>
-                    <app-star-rating [value]="userRating" (rated)="onRate($event)" />
+                    <app-star-rating [value]="userRating()" (rated)="onRate($event)" />
                   </div>
                 }
               </div>
@@ -256,14 +258,14 @@ import { Subscription } from 'rxjs';
                     Остави коментар
                   </div>
                   <form (submit)="onComment($event)">
-                    <textarea [(ngModel)]="commentBody" name="body"
+                    <textarea [ngModel]="commentBody()" (ngModelChange)="commentBody.set($event)" name="body"
                               placeholder="Напиши мнението си..." rows="4"
                               class="comment-textarea"
-                              [disabled]="submittingComment"
+                              [disabled]="submittingComment()"
                               maxlength="2000"></textarea>
                     <button type="submit" class="submit-btn"
-                            [disabled]="submittingComment || !commentBody.trim()">
-                      @if (submittingComment) {
+                            [disabled]="submittingComment() || !commentBody().trim()">
+                      @if (submittingComment()) {
                         <svg class="spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-dasharray="32" stroke-dashoffset="24"/></svg>
                         Изпращане...
                       } @else {
@@ -285,11 +287,11 @@ import { Subscription } from 'rxjs';
                 <div class="card-label">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
                   Коментари
-                  @if (comments.length > 0) {
-                    <span class="count-badge ml">{{ comments.length }}</span>
+                  @if (comments().length > 0) {
+                    <span class="count-badge ml">{{ comments().length }}</span>
                   }
                 </div>
-                @for (comment of comments; track comment.id) {
+                @for (comment of comments(); track comment.id) {
                   <div class="comment">
                     <div class="comment-header">
                       <div class="comment-avatar">{{ (comment.author?.name || comment.author?.email || 'Ч')[0].toUpperCase() }}</div>
@@ -313,21 +315,21 @@ import { Subscription } from 'rxjs';
                     }
                     @if (auth.isAuthenticated()) {
                       <button class="reply-btn"
-                        [attr.aria-expanded]="replyingToId === comment.id"
+                        [attr.aria-expanded]="replyingToId() === comment.id"
                         (click)="startReply(comment.id)">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="9 17 4 12 9 7"/><path d="M20 18v-2a4 4 0 0 0-4-4H4"/></svg>
-                        {{ replyingToId === comment.id ? 'Отказ' : 'Отговори' }}
+                        {{ replyingToId() === comment.id ? 'Отказ' : 'Отговори' }}
                       </button>
                     }
-                    @if (replyingToId === comment.id) {
+                    @if (replyingToId() === comment.id) {
                       <form class="reply-form" (submit)="submitReply($event, comment.id)">
-                        <textarea [(ngModel)]="replyBody" [name]="'reply-' + comment.id" rows="2"
+                        <textarea [ngModel]="replyBody()" (ngModelChange)="replyBody.set($event)" [name]="'reply-' + comment.id" rows="2"
                                   placeholder="Напиши отговор..."
-                                  [disabled]="submittingReply"
+                                  [disabled]="submittingReply()"
                                   maxlength="1000"></textarea>
                         <button type="submit" class="submit-btn"
-                                [disabled]="submittingReply || !replyBody.trim()">
-                          @if (submittingReply) {
+                                [disabled]="submittingReply() || !replyBody().trim()">
+                          @if (submittingReply()) {
                             <svg class="spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-dasharray="32" stroke-dashoffset="24"/></svg>
                             Изпращане...
                           } @else {
@@ -368,14 +370,14 @@ import { Subscription } from 'rxjs';
         </div>
 
         <!-- Related -->
-        @if (relatedRecipes.length > 0) {
+        @if (relatedRecipes().length > 0) {
           <section class="related-section">
             <div class="related-header">
               <h2>Подобни рецепти</h2>
               <a routerLink="/recipes" class="related-link">Виж всички →</a>
             </div>
             <div class="related-grid">
-              @for (r of relatedRecipes; track r.id; let i = $index) {
+              @for (r of relatedRecipes(); track r.id; let i = $index) {
                 <app-recipe-card [recipe]="r" [index]="i" />
               }
             </div>
@@ -1021,91 +1023,86 @@ import { Subscription } from 'rxjs';
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RecipeDetailComponent implements OnInit, OnDestroy {
+export class RecipeDetailComponent {
   private recipeService = inject(RecipeService);
+  private favoriteService = inject(FavoriteService);
+  private commentService = inject(CommentService);
   private route = inject(ActivatedRoute);
   private seo = inject(SeoService);
-  cdr = inject(ChangeDetectorRef);
   private toast = inject(ToastService);
   private perf = inject(PerfService);
   auth = inject(AuthService);
 
   Math = Math;
-  checkedIngredients = new Set<number>();
-  recipe: Recipe | null = null;
-  relatedRecipes: Recipe[] = [];
-  comments: Comment[] = [];
-  averageRating: number | null = null;
-  ratingsCount = 0;
-  favoriteStatus: FavoriteStatusResponse | null = null;
-  userRating = 0;
-  commentBody = '';
-  replyingToId: number | null = null;
-  replyBody = '';
-  copied = false;
+  checkedIngredients = signal<Set<number>>(new Set());
+  recipe = signal<Recipe | null>(null);
+  relatedRecipes = signal<Recipe[]>([]);
+  comments = signal<Comment[]>([]);
+  averageRating = signal<number | null>(null);
+  ratingsCount = signal(0);
+  favoriteStatus = signal<FavoriteStatusResponse | null>(null);
+  userRating = signal(0);
+  commentBody = signal('');
+  replyingToId = signal<number | null>(null);
+  replyBody = signal('');
+  copied = signal(false);
   canNativeShare = typeof navigator !== 'undefined' && !!navigator.share;
-  favoriting = false;
-  submittingComment = false;
-  submittingReply = false;
-  confirmDeleteId: number | null = null;
-  private subs = new Subscription();
+  favoriting = signal(false);
+  submittingComment = signal(false);
+  submittingReply = signal(false);
+  confirmDeleteId = signal<number | null>(null);
 
-  get currentUrl(): string { return typeof window !== 'undefined' ? window.location.href : ''; }
-  get encodedUrl(): string { return encodeURIComponent(this.currentUrl); }
-  get encodedTitle(): string { return encodeURIComponent(this.recipe?.title || ''); }
+  readonly currentUrl = typeof window !== 'undefined' ? window.location.href : '';
+  encodedUrl = computed(() => encodeURIComponent(this.currentUrl));
+  encodedTitle = computed(() => encodeURIComponent(this.recipe()?.title || ''));
+  heroGradient = computed(() => {
+    const r = this.recipe();
+    if (!r) return '#1c1917';
+    return `linear-gradient(135deg, ${r.hero_palette_from || '#3a3028'}, ${r.hero_palette_to || '#1c1917'})`;
+  });
+
+  constructor() {
+    this.route.params.pipe(takeUntilDestroyed()).subscribe(params => {
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      this.checkedIngredients.set(new Set());
+      this.loadRecipe(params['slug']);
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.seo.removeJsonLd();
+  }
 
   toggleIngredient(id: number): void {
-    const next = new Set(this.checkedIngredients);
+    const next = new Set(this.checkedIngredients());
     if (next.has(id)) { next.delete(id); } else { next.add(id); }
-    this.checkedIngredients = next;
-    this.cdr.markForCheck();
+    this.checkedIngredients.set(next);
   }
 
   clearIngredients(): void {
-    this.checkedIngredients = new Set();
-    this.cdr.markForCheck();
+    this.checkedIngredients.set(new Set());
   }
 
   copyLink(): void {
     navigator.clipboard.writeText(this.currentUrl).then(() => {
-      this.copied = true;
-      this.cdr.markForCheck();
-      setTimeout(() => { this.copied = false; this.cdr.markForCheck(); }, 2000);
+      this.copied.set(true);
+      setTimeout(() => this.copied.set(false), 2000);
     });
   }
 
   nativeShare(): void {
-    navigator.share({ title: this.recipe?.title || '', text: this.recipe?.excerpt || '', url: this.currentUrl }).catch(() => {});
-  }
-
-  get heroGradient(): string {
-    if (!this.recipe) return '#1c1917';
-    const from = this.recipe.hero_palette_from || '#3a3028';
-    const to   = this.recipe.hero_palette_to   || '#1c1917';
-    return `linear-gradient(135deg, ${from}, ${to})`;
-  }
-
-  ngOnInit(): void {
-    this.subs.add(this.route.params.subscribe(params => {
-      window.scrollTo({ top: 0, behavior: 'instant' });
-      this.checkedIngredients = new Set();
-      this.loadRecipe(params['slug']);
-    }));
-  }
-
-  ngOnDestroy(): void {
-    this.subs.unsubscribe();
-    this.seo.removeJsonLd();
+    const r = this.recipe();
+    navigator.share({ title: r?.title || '', text: r?.excerpt || '', url: this.currentUrl }).catch(() => {});
   }
 
   loadRecipe(slug: string): void {
     this.perf.mark('recipe_detail_fetch_start');
-    this.recipeService.getRecipe(slug).subscribe({
+    this.recipeService.getRecipe(slug).pipe(takeUntilDestroyed()).subscribe({
       next: (res) => {
-        this.recipe = res.recipe;
-        this.averageRating = res.averageRating;
-        this.ratingsCount = res.ratingsCount;
-        this.comments = res.recipe.comments || [];
+        this.recipe.set(res.recipe);
+        this.averageRating.set(res.averageRating);
+        this.ratingsCount.set(res.ratingsCount);
+        this.comments.set(res.recipe.comments || []);
         this.seo.set({
           title: res.recipe.title,
           description: res.recipe.excerpt || res.recipe.description?.slice(0, 155) || '',
@@ -1115,23 +1112,22 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
         this.seo.setJsonLd(this.buildJsonLd(res.recipe, res.averageRating, res.ratingsCount));
         if (this.auth.isAuthenticated() && this.auth.user()) {
           const userId = this.auth.user()!.id;
-          const userComment = this.comments.find(c => c.user_id === userId);
-          if (userComment?.rating) this.userRating = userComment.rating;
-          if (userComment?.body)   this.commentBody = userComment.body;
+          const userComment = this.comments().find(c => c.user_id === userId);
+          if (userComment?.rating) this.userRating.set(userComment.rating);
+          if (userComment?.body)   this.commentBody.set(userComment.body);
         }
-        this.cdr.markForCheck();
         this.perf.mark('recipe_detail_ready');
         this.perf.measure('recipe_detail_load', 'recipe_detail_fetch_start', 'recipe_detail_ready');
       },
       error: () => this.toast.error('Рецептата не беше намерена.'),
     });
-    this.recipeService.getRelatedRecipes(slug).subscribe({
-      next: (r) => { this.relatedRecipes = r; this.cdr.markForCheck(); },
+    this.recipeService.getRelatedRecipes(slug).pipe(takeUntilDestroyed()).subscribe({
+      next: (r) => this.relatedRecipes.set(r),
       error: () => {},
     });
     if (this.auth.isAuthenticated()) {
-      this.recipeService.getFavoriteStatus(slug).subscribe({
-        next: (s) => { this.favoriteStatus = s; this.cdr.markForCheck(); },
+      this.favoriteService.getFavoriteStatus(slug).pipe(takeUntilDestroyed()).subscribe({
+        next: (s) => this.favoriteStatus.set(s),
         error: () => {},
       });
     }
@@ -1177,33 +1173,31 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
   }
 
   toggleFavorite(): void {
-    if (!this.recipe || this.favoriting) return;
-    this.favoriting = true;
-    this.cdr.markForCheck();
-    this.recipeService.toggleFavorite(this.recipe.slug).subscribe({
+    const r = this.recipe();
+    if (!r || this.favoriting()) return;
+    this.favoriting.set(true);
+    this.favoriteService.toggleFavorite(r.slug).subscribe({
       next: (s) => {
-        this.favoriteStatus = s;
-        this.favoriting = false;
+        this.favoriteStatus.set(s);
+        this.favoriting.set(false);
         this.toast.success(s.isFavorite ? 'Добавено в любими.' : 'Премахнато от любими.');
-        this.cdr.markForCheck();
       },
       error: () => {
-        this.favoriting = false;
+        this.favoriting.set(false);
         this.toast.error('Грешка при запазване.');
-        this.cdr.markForCheck();
       },
     });
   }
 
   onRate(rating: number): void {
-    if (!this.recipe) return;
-    this.recipeService.rateRecipe(this.recipe.slug, rating).subscribe({
+    const r = this.recipe();
+    if (!r) return;
+    this.commentService.rate(r.slug, rating).subscribe({
       next: (res) => {
-        this.userRating = res.rating;
-        this.averageRating = res.averageRating;
-        this.ratingsCount = res.ratingsCount;
+        this.userRating.set(res.rating);
+        this.averageRating.set(res.averageRating);
+        this.ratingsCount.set(res.ratingsCount);
         this.toast.success('Оценката е запазена.');
-        this.cdr.markForCheck();
       },
       error: () => this.toast.error('Грешка при оценяване.'),
     });
@@ -1211,62 +1205,56 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
 
   onComment(e: Event): void {
     e.preventDefault();
-    if (!this.recipe || !this.commentBody.trim() || this.submittingComment) return;
-    this.submittingComment = true;
-    this.cdr.markForCheck();
-    this.recipeService.commentRecipe(this.recipe.slug, this.commentBody, this.userRating || undefined).subscribe({
+    const r = this.recipe();
+    if (!r || !this.commentBody().trim() || this.submittingComment()) return;
+    this.submittingComment.set(true);
+    this.commentService.comment(r.slug, this.commentBody(), this.userRating() || undefined).subscribe({
       next: (comment) => {
-        const idx = this.comments.findIndex(c => c.id === comment.id);
-        if (idx >= 0) { this.comments[idx] = comment; } else { this.comments.unshift(comment); }
-        this.comments = [...this.comments];
-        this.commentBody = '';
-        this.submittingComment = false;
+        const current = this.comments();
+        const idx = current.findIndex(c => c.id === comment.id);
+        this.comments.set(idx >= 0
+          ? current.map((c, i) => i === idx ? comment : c)
+          : [comment, ...current]);
+        this.commentBody.set('');
+        this.submittingComment.set(false);
         this.toast.success('Коментарът е публикуван.');
-        this.cdr.markForCheck();
       },
       error: () => {
-        this.submittingComment = false;
+        this.submittingComment.set(false);
         this.toast.error('Грешка при публикуване на коментар.');
-        this.cdr.markForCheck();
       },
     });
   }
 
   startReply(commentId: number): void {
-    this.replyingToId = this.replyingToId === commentId ? null : commentId;
-    this.replyBody = '';
-    this.cdr.markForCheck();
+    this.replyingToId.set(this.replyingToId() === commentId ? null : commentId);
+    this.replyBody.set('');
   }
 
   submitReply(e: Event, parentId: number): void {
     e.preventDefault();
-    if (!this.recipe || !this.replyBody.trim() || this.submittingReply) return;
-    this.submittingReply = true;
-    this.cdr.markForCheck();
-    this.recipeService.commentRecipe(this.recipe.slug, this.replyBody, undefined, parentId).subscribe({
+    const r = this.recipe();
+    if (!r || !this.replyBody().trim() || this.submittingReply()) return;
+    this.submittingReply.set(true);
+    this.commentService.comment(r.slug, this.replyBody(), undefined, parentId).subscribe({
       next: (reply) => {
-        const parent = this.comments.find(c => c.id === parentId);
-        if (parent) {
-          parent.replies = [...(parent.replies || []), reply];
-          this.comments = [...this.comments];
-        }
-        this.replyingToId = null;
-        this.replyBody = '';
-        this.submittingReply = false;
+        this.comments.set(this.comments().map(c =>
+          c.id === parentId ? { ...c, replies: [...(c.replies || []), reply] } : c
+        ));
+        this.replyingToId.set(null);
+        this.replyBody.set('');
+        this.submittingReply.set(false);
         this.toast.success('Отговорът е публикуван.');
-        this.cdr.markForCheck();
       },
       error: () => {
-        this.submittingReply = false;
+        this.submittingReply.set(false);
         this.toast.error('Грешка при публикуване на отговор.');
-        this.cdr.markForCheck();
       },
     });
   }
 
   confirmDelete(id: number): void {
-    this.confirmDeleteId = id;
-    this.cdr.markForCheck();
+    this.confirmDeleteId.set(id);
   }
 
   canDeleteComment(comment: Comment): boolean {
@@ -1277,14 +1265,15 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
   }
 
   deleteComment(id: number): void {
-    this.confirmDeleteId = null;
-    this.recipeService.deleteComment(id).subscribe({
+    this.confirmDeleteId.set(null);
+    this.commentService.delete(id).subscribe({
       next: () => {
-        this.comments = this.comments.filter(c => c.id !== id).map(c => ({
-          ...c, replies: c.replies?.filter(r => r.id !== id) || [],
-        }));
+        this.comments.set(
+          this.comments()
+            .filter(c => c.id !== id)
+            .map(c => ({ ...c, replies: c.replies?.filter(r => r.id !== id) || [] }))
+        );
         this.toast.success('Коментарът е изтрит.');
-        this.cdr.markForCheck();
       },
       error: () => this.toast.error('Грешка при изтриване.'),
     });

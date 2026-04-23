@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { RecipeService } from '../../services/recipe.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { CommentService } from '../../services/comment.service';
 import { Comment } from '../../models/models';
 import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-modal.component';
 
@@ -284,8 +285,9 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DashboardCommentsComponent implements OnInit {
-  private recipeService = inject(RecipeService);
+export class DashboardCommentsComponent {
+  private commentService = inject(CommentService);
+  private destroyRef = inject(DestroyRef);
   comments = signal<Comment[]>([]);
   selectedIds = signal<number[]>([]);
   showDeleteModal = signal(false);
@@ -293,12 +295,12 @@ export class DashboardCommentsComponent implements OnInit {
   deleteModalMessage = signal('');
   private deleteAction: (() => void) | null = null;
 
-  ngOnInit(): void {
+  constructor() {
     this.loadComments();
   }
 
   loadComments(): void {
-    this.recipeService.getAdminComments().subscribe(c => {
+    this.commentService.getAdminComments().pipe(takeUntilDestroyed(this.destroyRef)).subscribe(c => {
       this.comments.set(c);
       this.selectedIds.set([]);
     });
@@ -336,7 +338,7 @@ export class DashboardCommentsComponent implements OnInit {
     this.deleteModalTitle.set('Изтриване на коментар');
     this.deleteModalMessage.set('Сигурни ли сте, че искате да изтриете този коментар?');
     this.deleteAction = () => {
-      this.recipeService.deleteComment(comment.id).subscribe(() => this.loadComments());
+      this.commentService.delete(comment.id).subscribe(() => this.loadComments());
     };
     this.showDeleteModal.set(true);
   }
@@ -346,7 +348,7 @@ export class DashboardCommentsComponent implements OnInit {
     this.deleteModalTitle.set('Изтриване на коментари');
     this.deleteModalMessage.set(`Сигурни ли сте, че искате да изтриете ${count} коментар${count === 1 ? '' : 'а'}?`);
     this.deleteAction = () => {
-      this.recipeService.bulkDeleteComments(this.selectedIds()).subscribe(() => this.loadComments());
+      this.commentService.bulkDelete(this.selectedIds()).subscribe(() => this.loadComments());
     };
     this.showDeleteModal.set(true);
   }

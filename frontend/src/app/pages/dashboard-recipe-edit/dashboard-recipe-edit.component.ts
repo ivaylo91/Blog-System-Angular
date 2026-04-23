@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { RecipeService } from '../../services/recipe.service';
+import { DashboardService } from '../../services/dashboard.service';
 import { Category } from '../../models/models';
 
 interface IngredientInput { name: string; quantity: string; }
@@ -175,8 +176,8 @@ interface StepInput { description: string; }
             </div>
             <label class="file-drop">
               <input type="file" accept="image/*" (change)="onImageChange($event)" />
-              @if (imagePreview) {
-                <img [src]="imagePreview" alt="Преглед" class="img-preview" />
+              @if (imagePreview()) {
+                <img [src]="imagePreview()" alt="Преглед" class="img-preview" />
               } @else {
                 <div class="file-placeholder">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
@@ -512,9 +513,9 @@ interface StepInput { description: string; }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DashboardRecipeEditComponent implements OnInit {
+export class DashboardRecipeEditComponent {
   private recipeService = inject(RecipeService);
-  private cdr = inject(ChangeDetectorRef);
+  private dashboardService = inject(DashboardService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 
@@ -535,18 +536,18 @@ export class DashboardRecipeEditComponent implements OnInit {
   tagsInput = '';
   published = false;
   imageFile: File | null = null;
-  imagePreview: string | null = null;
+  imagePreview = signal<string | null>(null);
   ingredients: IngredientInput[] = [{ name: '', quantity: '' }];
   steps: StepInput[] = [{ description: '' }];
 
-  ngOnInit(): void {
+  constructor() {
     this.recipeService.getCategories().subscribe(c => this.categories.set(c));
 
     const slug = this.route.snapshot.paramMap.get('slug');
     if (slug) {
       this.isNew.set(false);
       this.recipeSlug = slug;
-      this.recipeService.getDashboardRecipes().subscribe(recipes => {
+      this.dashboardService.getRecipes().subscribe(recipes => {
         const recipe = recipes.find(r => r.slug === this.recipeSlug);
         if (recipe) {
           this.title = recipe.title;
@@ -562,8 +563,7 @@ export class DashboardRecipeEditComponent implements OnInit {
           this.steps = recipe.steps?.map(s => ({ description: s.description })) || [];
           if (this.ingredients.length === 0) this.ingredients = [{ name: '', quantity: '' }];
           if (this.steps.length === 0) this.steps = [{ description: '' }];
-          if (recipe.hero_image) this.imagePreview = recipe.hero_image;
-          this.cdr.markForCheck();
+          if (recipe.hero_image) this.imagePreview.set(recipe.hero_image);
         }
       });
     }
@@ -573,8 +573,7 @@ export class DashboardRecipeEditComponent implements OnInit {
     const input = event.target as HTMLInputElement;
     if (input.files?.length) {
       this.imageFile = input.files[0];
-      this.imagePreview = URL.createObjectURL(this.imageFile);
-      this.cdr.markForCheck();
+      this.imagePreview.set(URL.createObjectURL(this.imageFile));
     }
   }
 
@@ -615,8 +614,8 @@ export class DashboardRecipeEditComponent implements OnInit {
     });
 
     const req$ = this.isNew()
-      ? this.recipeService.createRecipe(formData)
-      : this.recipeService.updateRecipe(this.recipeSlug, formData);
+      ? this.dashboardService.createRecipe(formData)
+      : this.dashboardService.updateRecipe(this.recipeSlug, formData);
 
     req$.subscribe({
       next: () => {

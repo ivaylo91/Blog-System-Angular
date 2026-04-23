@@ -1,1 +1,0 @@
-import{o}from"./chunk-B5AJOPHQ.js";var n=class t{supported=typeof performance<"u"&&typeof performance.mark=="function";mark(r){if(this.supported)try{performance.mark(r)}catch{}}measure(r,e,a){if(this.supported)try{performance.measure(r,e,a)}catch{}}static \u0275fac=function(e){return new(e||t)};static \u0275prov=o({token:t,factory:t.\u0275fac,providedIn:"root"})};export{n as a};

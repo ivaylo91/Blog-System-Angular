@@ -1,11 +1,11 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RecipeService } from '../../services/recipe.service';
 import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.component';
 import { Recipe, Category } from '../../models/models';
 import { SeoService } from '../../services/seo.service';
-import { Subscription } from 'rxjs';
 import { PerfService } from '../../services/perf.service';
 
 @Component({
@@ -26,7 +26,7 @@ import { PerfService } from '../../services/perf.service';
         <form class="search-bar" (submit)="search($event)">
           <input
             type="text"
-            [(ngModel)]="q"
+            [ngModel]="q()" (ngModelChange)="q.set($event)"
             name="q"
             placeholder="Търси по заглавие или съставка..."
             aria-label="Търси рецепти"
@@ -40,11 +40,11 @@ import { PerfService } from '../../services/perf.service';
         </form>
 
         <!-- Pill filters: categories -->
-        @if (categories.length > 0) {
+        @if (categories().length > 0) {
           <div class="pill-filters" role="group" aria-label="Категории">
-            <button class="pill" [class.active]="!category" [attr.aria-pressed]="!category" (click)="selectCategory('')">Всички</button>
-            @for (cat of categories; track cat.id) {
-              <button class="pill" [class.active]="category === cat.slug" [attr.aria-pressed]="category === cat.slug"
+            <button class="pill" [class.active]="!category()" [attr.aria-pressed]="!category()" (click)="selectCategory('')">Всички</button>
+            @for (cat of categories(); track cat.id) {
+              <button class="pill" [class.active]="category() === cat.slug" [attr.aria-pressed]="category() === cat.slug"
                       (click)="selectCategory(cat.slug)">{{ cat.name }}</button>
             }
           </div>
@@ -52,42 +52,42 @@ import { PerfService } from '../../services/perf.service';
 
         <!-- Pill filters: difficulty + sort -->
         <div class="pill-filters pill-filters-secondary" role="group" aria-label="Филтри">
-          <button class="pill pill-sm" [class.active]="!difficulty" [attr.aria-pressed]="!difficulty" (click)="selectDifficulty('')">Всяка трудност</button>
-          <button class="pill pill-sm" [class.active]="difficulty === 'Лесно'" [attr.aria-pressed]="difficulty === 'Лесно'" (click)="selectDifficulty('Лесно')">Лесно</button>
-          <button class="pill pill-sm" [class.active]="difficulty === 'Средно'" [attr.aria-pressed]="difficulty === 'Средно'" (click)="selectDifficulty('Средно')">Средно</button>
-          <button class="pill pill-sm" [class.active]="difficulty === 'За напреднали'" [attr.aria-pressed]="difficulty === 'За напреднали'" (click)="selectDifficulty('За напреднали')">За напреднали</button>
+          <button class="pill pill-sm" [class.active]="!difficulty()" [attr.aria-pressed]="!difficulty()" (click)="selectDifficulty('')">Всяка трудност</button>
+          <button class="pill pill-sm" [class.active]="difficulty() === 'Лесно'" [attr.aria-pressed]="difficulty() === 'Лесно'" (click)="selectDifficulty('Лесно')">Лесно</button>
+          <button class="pill pill-sm" [class.active]="difficulty() === 'Средно'" [attr.aria-pressed]="difficulty() === 'Средно'" (click)="selectDifficulty('Средно')">Средно</button>
+          <button class="pill pill-sm" [class.active]="difficulty() === 'За напреднали'" [attr.aria-pressed]="difficulty() === 'За напреднали'" (click)="selectDifficulty('За напреднали')">За напреднали</button>
           <span class="sort-divider" aria-hidden="true"></span>
-          <button class="pill pill-sm" [class.active]="sort === 'newest'" [attr.aria-pressed]="sort === 'newest'" (click)="selectSort('newest')">Най-нови</button>
-          <button class="pill pill-sm" [class.active]="sort === 'fastest'" [attr.aria-pressed]="sort === 'fastest'" (click)="selectSort('fastest')">Най-бързи</button>
-          <button class="pill pill-sm" [class.active]="sort === 'easiest'" [attr.aria-pressed]="sort === 'easiest'" (click)="selectSort('easiest')">Най-лесни</button>
+          <button class="pill pill-sm" [class.active]="sort() === 'newest'" [attr.aria-pressed]="sort() === 'newest'" (click)="selectSort('newest')">Най-нови</button>
+          <button class="pill pill-sm" [class.active]="sort() === 'fastest'" [attr.aria-pressed]="sort() === 'fastest'" (click)="selectSort('fastest')">Най-бързи</button>
+          <button class="pill pill-sm" [class.active]="sort() === 'easiest'" [attr.aria-pressed]="sort() === 'easiest'" (click)="selectSort('easiest')">Най-лесни</button>
         </div>
 
         <!-- Active filter chips -->
-        @if (category || difficulty || (sort && sort !== 'newest') || q) {
+        @if (category() || difficulty() || (sort() && sort() !== 'newest') || q()) {
           <div class="active-filters" aria-label="Активни филтри">
             <span class="filters-label">Филтри:</span>
-            @if (q) {
+            @if (q()) {
               <button class="active-chip" (click)="clearSearch()" aria-label="Премахни търсенето">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                "{{ q }}"
+                "{{ q() }}"
                 <svg class="chip-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
               </button>
             }
-            @if (category) {
+            @if (category()) {
               <button class="active-chip" (click)="selectCategory('')" aria-label="Премахни категория">
-                {{ getCategoryName(category) }}
+                {{ getCategoryName(category()) }}
                 <svg class="chip-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
               </button>
             }
-            @if (difficulty) {
+            @if (difficulty()) {
               <button class="active-chip" (click)="selectDifficulty('')" aria-label="Премахни трудност">
-                {{ difficulty }}
+                {{ difficulty() }}
                 <svg class="chip-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
               </button>
             }
-            @if (sort && sort !== 'newest') {
+            @if (sort() && sort() !== 'newest') {
               <button class="active-chip" (click)="selectSort('newest')" aria-label="Премахни сортиране">
-                {{ sort === 'fastest' ? 'Най-бързи' : 'Най-лесни' }}
+                {{ sort() === 'fastest' ? 'Най-бързи' : 'Най-лесни' }}
                 <svg class="chip-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
               </button>
             }
@@ -96,7 +96,7 @@ import { PerfService } from '../../services/perf.service';
         }
 
         <!-- Recipe grid / skeleton -->
-        @if (loading) {
+        @if (loading()) {
           <div class="recipe-grid">
             @for (s of skeletons; track s) {
               <div class="skeleton-card">
@@ -116,7 +116,7 @@ import { PerfService } from '../../services/perf.service';
           </div>
         } @else {
           <div class="recipe-grid">
-            @for (recipe of recipes; track recipe.id; let i = $index) {
+            @for (recipe of recipes(); track recipe.id; let i = $index) {
               <app-recipe-card [recipe]="recipe" [priority]="i === 0" [index]="i" />
             } @empty {
               <div class="no-results">
@@ -128,23 +128,23 @@ import { PerfService } from '../../services/perf.service';
           </div>
         }
 
-        @if (lastPage > 1) {
+        @if (lastPage() > 1) {
           <div class="pagination">
-            <button class="page-btn" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)" aria-label="Предишна страница">‹</button>
-            <span class="page-counter">{{ currentPage }} / {{ lastPage }}</span>
-            @for (p of pageNumbers; track $index) {
+            <button class="page-btn" [disabled]="currentPage() === 1" (click)="goToPage(currentPage() - 1)" aria-label="Предишна страница">‹</button>
+            <span class="page-counter">{{ currentPage() }} / {{ lastPage() }}</span>
+            @for (p of pageNumbers(); track $index) {
               @if (p === null) {
                 <span class="page-ellipsis" aria-hidden="true">…</span>
               } @else {
                 <button
                   class="page-btn"
-                  [class.active]="p === currentPage"
-                  [attr.aria-current]="p === currentPage ? 'page' : null"
+                  [class.active]="p === currentPage()"
+                  [attr.aria-current]="p === currentPage() ? 'page' : null"
                   (click)="goToPage(p)"
                 >{{ p }}</button>
               }
             }
-            <button class="page-btn" [disabled]="currentPage === lastPage" (click)="goToPage(currentPage + 1)" aria-label="Следваща страница">›</button>
+            <button class="page-btn" [disabled]="currentPage() === lastPage()" (click)="goToPage(currentPage() + 1)" aria-label="Следваща страница">›</button>
           </div>
         }
       </div>
@@ -484,32 +484,31 @@ import { PerfService } from '../../services/perf.service';
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RecipesComponent implements OnInit, OnDestroy {
+export class RecipesComponent {
   private recipeService = inject(RecipeService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private seo = inject(SeoService);
-  private cdr = inject(ChangeDetectorRef);
   private perf = inject(PerfService);
+  private destroyRef = inject(DestroyRef);
 
-  recipes: Recipe[] = [];
-  categories: Category[] = [];
-  q = '';
-  category = '';
-  difficulty = '';
-  sort = 'newest';
-  currentPage = 1;
-  lastPage = 1;
-  loading = true;
-  skeletons = [0, 1, 2, 3, 4, 5];
+  recipes = signal<Recipe[]>([]);
+  categories = signal<Category[]>([]);
+  q = signal('');
+  category = signal('');
+  difficulty = signal('');
+  sort = signal('newest');
+  currentPage = signal(1);
+  lastPage = signal(1);
+  loading = signal(true);
+  readonly skeletons = [0, 1, 2, 3, 4, 5];
 
   private debounceTimer?: ReturnType<typeof setTimeout>;
   private lastSearchQ = '';
-  private subs = new Subscription();
 
-  get pageNumbers(): (number | null)[] {
-    const total = this.lastPage;
-    const cur = this.currentPage;
+  pageNumbers = computed<(number | null)[]>(() => {
+    const total = this.lastPage();
+    const cur = this.currentPage();
     if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
     const pages: (number | null)[] = [1];
     if (cur > 3) pages.push(null);
@@ -519,58 +518,58 @@ export class RecipesComponent implements OnInit, OnDestroy {
     if (cur < total - 2) pages.push(null);
     pages.push(total);
     return pages;
-  }
+  });
 
-  ngOnInit(): void {
+  constructor() {
     this.seo.set({
       title: 'Рецепти',
       description: 'Разгледай всички традиционни български рецепти. Филтрирай по категория, трудност и време за приготвяне.',
     });
 
-    this.subs.add(this.recipeService.getCategories().subscribe(cats => { this.categories = cats; this.cdr.markForCheck(); }));
-    this.subs.add(this.route.queryParams.subscribe(params => {
-      this.q = params['q'] || '';
-      this.category = params['category'] || '';
-      this.difficulty = params['difficulty'] || '';
-      this.sort = params['sort'] || 'newest';
-      this.currentPage = +(params['page'] || 1);
-      this.loadRecipes();
-    }));
-  }
+    this.recipeService.getCategories()
+      .pipe(takeUntilDestroyed())
+      .subscribe(cats => this.categories.set(cats));
 
-  ngOnDestroy(): void {
-    clearTimeout(this.debounceTimer);
-    this.subs.unsubscribe();
+    this.route.queryParams
+      .pipe(takeUntilDestroyed())
+      .subscribe(params => {
+        this.q.set(params['q'] || '');
+        this.category.set(params['category'] || '');
+        this.difficulty.set(params['difficulty'] || '');
+        this.sort.set(params['sort'] || 'newest');
+        this.currentPage.set(+(params['page'] || 1));
+        this.loadRecipes();
+      });
+
+    this.destroyRef.onDestroy(() => clearTimeout(this.debounceTimer));
   }
 
   onSearchInput(): void {
     clearTimeout(this.debounceTimer);
     this.debounceTimer = setTimeout(() => {
-      if (this.q === this.lastSearchQ) return;
-      this.lastSearchQ = this.q;
+      if (this.q() === this.lastSearchQ) return;
+      this.lastSearchQ = this.q();
       this.router.navigate(['/recipes'], {
-        queryParams: { q: this.q || undefined, category: this.category || undefined, difficulty: this.difficulty || undefined, sort: this.sort !== 'newest' ? this.sort : undefined, page: undefined },
+        queryParams: { q: this.q() || undefined, category: this.category() || undefined, difficulty: this.difficulty() || undefined, sort: this.sort() !== 'newest' ? this.sort() : undefined, page: undefined },
       });
     }, 350);
   }
 
   loadRecipes(): void {
-    this.loading = true;
-    this.cdr.markForCheck();
+    this.loading.set(true);
     this.perf.mark('recipes_fetch_start');
     this.recipeService.getRecipes({
-      q: this.q,
-      category: this.category,
-      difficulty: this.difficulty,
-      sort: this.sort,
-      page: this.currentPage,
+      q: this.q(),
+      category: this.category(),
+      difficulty: this.difficulty(),
+      sort: this.sort(),
+      page: this.currentPage(),
       per_page: 6,
-    }).subscribe(res => {
-      this.recipes = res.data;
-      this.currentPage = res.current_page;
-      this.lastPage = res.last_page;
-      this.loading = false;
-      this.cdr.markForCheck();
+    }).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(res => {
+      this.recipes.set(res.data);
+      this.currentPage.set(res.current_page);
+      this.lastPage.set(res.last_page);
+      this.loading.set(false);
       this.perf.mark('recipes_ready');
       this.perf.measure('recipes_list_load', 'recipes_fetch_start', 'recipes_ready');
     });
@@ -579,10 +578,10 @@ export class RecipesComponent implements OnInit, OnDestroy {
   selectCategory(slug: string): void {
     this.router.navigate(['/recipes'], {
       queryParams: {
-        q: this.q || undefined,
+        q: this.q() || undefined,
         category: slug || undefined,
-        difficulty: this.difficulty || undefined,
-        sort: this.sort !== 'newest' ? this.sort : undefined,
+        difficulty: this.difficulty() || undefined,
+        sort: this.sort() !== 'newest' ? this.sort() : undefined,
         page: undefined,
       },
     });
@@ -591,10 +590,10 @@ export class RecipesComponent implements OnInit, OnDestroy {
   selectDifficulty(d: string): void {
     this.router.navigate(['/recipes'], {
       queryParams: {
-        q: this.q || undefined,
-        category: this.category || undefined,
+        q: this.q() || undefined,
+        category: this.category() || undefined,
         difficulty: d || undefined,
-        sort: this.sort !== 'newest' ? this.sort : undefined,
+        sort: this.sort() !== 'newest' ? this.sort() : undefined,
         page: undefined,
       },
     });
@@ -603,9 +602,9 @@ export class RecipesComponent implements OnInit, OnDestroy {
   selectSort(s: string): void {
     this.router.navigate(['/recipes'], {
       queryParams: {
-        q: this.q || undefined,
-        category: this.category || undefined,
-        difficulty: this.difficulty || undefined,
+        q: this.q() || undefined,
+        category: this.category() || undefined,
+        difficulty: this.difficulty() || undefined,
         sort: s !== 'newest' ? s : undefined,
         page: undefined,
       },
@@ -616,28 +615,28 @@ export class RecipesComponent implements OnInit, OnDestroy {
     e.preventDefault();
     this.router.navigate(['/recipes'], {
       queryParams: {
-        q: this.q || undefined,
-        category: this.category || undefined,
-        difficulty: this.difficulty || undefined,
-        sort: this.sort !== 'newest' ? this.sort : undefined,
+        q: this.q() || undefined,
+        category: this.category() || undefined,
+        difficulty: this.difficulty() || undefined,
+        sort: this.sort() !== 'newest' ? this.sort() : undefined,
         page: undefined,
       },
     });
   }
 
   getCategoryName(slug: string): string {
-    return this.categories.find(c => c.slug === slug)?.name || slug;
+    return this.categories().find(c => c.slug === slug)?.name || slug;
   }
 
   clearSearch(): void {
-    this.q = '';
+    this.q.set('');
     this.router.navigate(['/recipes'], {
-      queryParams: { category: this.category || undefined, difficulty: this.difficulty || undefined, sort: this.sort !== 'newest' ? this.sort : undefined },
+      queryParams: { category: this.category() || undefined, difficulty: this.difficulty() || undefined, sort: this.sort() !== 'newest' ? this.sort() : undefined },
     });
   }
 
   clearAll(): void {
-    this.q = '';
+    this.q.set('');
     this.router.navigate(['/recipes']);
   }
 
