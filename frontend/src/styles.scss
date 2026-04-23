@@ -95,7 +95,7 @@
 
   /* Surfaces */
   --clr-bg:           oklch(92% 0.01 65);  /* body #ede8e1 */
-  --clr-surface:      oklch(100% 0 0);     /* card white */
+  --clr-surface:      oklch(99.5% 0.004 65); /* card — warm white */
   --clr-surface-alt:  oklch(97% 0.006 65); /* hero bg #faf7f4 */
   --clr-surface-hover:oklch(95% 0.01 65);  /* nav hover #f5f0e8 */
   --clr-surface-active:oklch(96% 0.04 65); /* active bg #fef3e2 */
@@ -118,6 +118,11 @@
   --clr-amber-text:   oklch(38% 0.10 65);  /* text on amber bg */
   --clr-amber-border: oklch(83% 0.11 72);  /* border for amber surfaces */
 
+  /* Rust/terracotta — difficulty "advanced" indicator */
+  --clr-rust-bg:      oklch(95% 0.04 32);  /* light terracotta tint */
+  --clr-rust-text:    oklch(40% 0.16 30);  /* deep terracotta */
+  --clr-rust-border:  oklch(84% 0.09 33);  /* border for rust surfaces */
+
   /* Semantic */
   --clr-error:        oklch(50% 0.18 25);  /* #dc2626 */
   --clr-error-bg:     oklch(97% 0.02 25);  /* #fef2f2 */
@@ -127,6 +132,17 @@
   --clr-border:       rgba(0, 0, 0, 0.08);
   --clr-border-faint: rgba(0, 0, 0, 0.05);
   --clr-border-strong:rgba(0, 0, 0, 0.12);
+
+  /* Spacing scale — 4pt base */
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-5:  1.5rem;
+  --space-6:  2rem;
+  --space-7:  3rem;
+  --space-8:  4rem;
+  --space-9:  6rem;
 
   /* Shadows */
   --shadow-sm:  0 2px 12px rgba(0, 0, 0, 0.07);
@@ -177,6 +193,10 @@
     --clr-amber-bg:      oklch(24% 0.06 65);
     --clr-amber-text:    oklch(80% 0.12 70);
     --clr-amber-border:  oklch(42% 0.10 68);
+
+    --clr-rust-bg:       oklch(27% 0.07 30);
+    --clr-rust-text:     oklch(74% 0.13 32);
+    --clr-rust-border:   oklch(42% 0.12 31);
   }
 }
 
@@ -211,6 +231,10 @@ html.dark {
   --clr-amber-bg:      oklch(24% 0.06 65);
   --clr-amber-text:    oklch(80% 0.12 70);
   --clr-amber-border:  oklch(42% 0.10 68);
+
+  --clr-rust-bg:       oklch(27% 0.07 30);
+  --clr-rust-text:     oklch(74% 0.13 32);
+  --clr-rust-border:   oklch(42% 0.12 31);
 }
 
 /* ── Base reset ─────────────────────────────────────────────────────────── */

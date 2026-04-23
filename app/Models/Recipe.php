@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -77,19 +78,14 @@ class Recipe extends Model
         return $this->belongsToMany(User::class, 'favorites')->withTimestamps();
     }
 
-    public function getAverageRatingAttribute(): ?float
+    /** Comments that carry a star rating — use withCount/withAvg at query time, not per-record. */
+    public function ratings(): HasMany
     {
-        $avg = $this->comments()->whereNotNull('rating')->avg('rating');
-        return $avg ? round($avg, 1) : null;
+        return $this->hasMany(Comment::class)->whereNotNull('rating');
     }
 
-    public function getRatingsCountAttribute(): int
+    public function scopePublished(Builder $query): Builder
     {
-        return $this->comments()->whereNotNull('rating')->count();
-    }
-
-    public function getFavoriteCountAttribute(): int
-    {
-        return $this->favoritedBy()->count();
+        return $query->where('published', true);
     }
 }

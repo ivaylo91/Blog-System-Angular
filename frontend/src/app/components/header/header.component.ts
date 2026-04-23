@@ -154,7 +154,6 @@ import { ThemeService } from '../../services/theme.service';
       align-items: center;
       justify-content: space-between;
       gap: 1rem;
-      transition: height 0.3s var(--ease-out-expo);
     }
     .site-header.scrolled .header-inner { height: 3.25rem; }
 

@@ -17,6 +17,7 @@ import { PerfService } from '../../services/perf.service';
       <div class="page-inner">
 
         <header class="page-header">
+          <span class="page-eyebrow">Готварски блог</span>
           <h1>Рецепти</h1>
           <p>Открий традиционни български рецепти за всеки повод.</p>
         </header>
@@ -153,12 +154,25 @@ import { PerfService } from '../../services/perf.service';
     .page { padding: 3rem 1.5rem 5rem; background-color: var(--clr-bg, #faf7f4); background-image: url('/backgrounds/cooking-pattern.svg'); background-size: 500px; background-repeat: repeat; min-height: 100dvh; }
     .page-inner { max-width: 1200px; margin: 0 auto; }
     .page-header {
-      text-align: center;
-      margin-bottom: 2.5rem;
+      text-align: left;
+      margin-bottom: 2rem;
+    }
+    .page-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--clr-green-text);
+      background: var(--clr-green-bg);
+      padding: 0.3rem 0.9rem;
+      border-radius: 9999px;
+      margin-bottom: 1rem;
     }
     .page-header h1 {
       font-family: var(--font-display, 'Alegreya', Georgia, serif);
-      font-size: 2.6rem;
+      font-size: clamp(2rem, 4vw, 3rem);
       color: var(--clr-text);
       margin: 0 0 0.5rem;
       letter-spacing: -0.02em;
@@ -168,6 +182,7 @@ import { PerfService } from '../../services/perf.service';
       font-size: 1rem;
       font-weight: 300;
       margin: 0;
+      max-width: 55ch;
     }
 
     /* Search bar */
@@ -178,7 +193,7 @@ import { PerfService } from '../../services/perf.service';
       box-shadow: var(--shadow-sm);
       border: 1.5px solid var(--clr-border);
       max-width: 560px;
-      margin: 0 auto 1.75rem;
+      margin: 0 0 1.5rem;
       background: var(--clr-surface);
     }
     .search-input {
@@ -212,12 +227,13 @@ import { PerfService } from '../../services/perf.service';
       display: flex;
       flex-wrap: wrap;
       gap: 0.5rem;
-      margin-bottom: 1rem;
-      justify-content: center;
+      margin-bottom: 0.75rem;
+      justify-content: flex-start;
     }
     .pill-filters-secondary {
       margin-bottom: 2.5rem;
       align-items: center;
+      justify-content: flex-start;
     }
     .pill {
       padding: 0.5rem 1.1rem;
@@ -447,7 +463,6 @@ import { PerfService } from '../../services/perf.service';
 
     @media (max-width: 640px) {
       .recipe-grid { grid-template-columns: 1fr; }
-      .page-header h1 { font-size: 2rem; }
       .btn-text { display: none; }
       .search-btn { padding: 0.85rem 1rem; }
       .pill { min-height: 2.75rem; }

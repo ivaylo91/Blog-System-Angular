@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -26,14 +29,14 @@ class AuthController extends Controller
         RateLimiter::hit($key, 60);
 
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|email|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
         ]);
 
         $user = User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
+            'name'     => $validated['name'],
+            'email'    => $validated['email'],
             'password' => Hash::make($validated['password']),
         ]);
 
@@ -42,15 +45,7 @@ class AuthController extends Controller
         Auth::login($user);
         $request->session()->regenerate();
 
-        return response()->json([
-            'user' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'role' => $user->role,
-                'image' => $user->image,
-            ],
-        ], 201);
+        return response()->json(['user' => new UserResource($user)], 201);
     }
 
     public function login(Request $request): JsonResponse
@@ -66,7 +61,7 @@ class AuthController extends Controller
         RateLimiter::hit($key, 60);
 
         $validated = $request->validate([
-            'email' => 'required|email',
+            'email'    => 'required|email',
             'password' => 'required|string|min:8',
         ]);
 
@@ -77,20 +72,9 @@ class AuthController extends Controller
         }
 
         $request->session()->regenerate();
-
-        $user = Auth::user();
-
         RateLimiter::clear($key);
 
-        return response()->json([
-            'user' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'role' => $user->role,
-                'image' => $user->image,
-            ],
-        ]);
+        return response()->json(['user' => new UserResource(Auth::user())]);
     }
 
     public function logout(Request $request): JsonResponse
@@ -104,26 +88,7 @@ class AuthController extends Controller
 
     public function user(Request $request): JsonResponse
     {
-        $user = $request->user();
-
-        return response()->json([
-            'id' => $user->id,
-            'name' => $user->name,
-            'email' => $user->email,
-            'role' => $user->role,
-            'image' => $user->image,
-        ]);
-    }
-
-    public function deleteAccount(Request $request): JsonResponse
-    {
-        $user = $request->user();
-        $user->delete();
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return response()->json(['message' => 'Акаунтът е изтрит успешно.']);
+        return response()->json(new UserResource($request->user()));
     }
 
     public function updateProfile(Request $request): JsonResponse
@@ -131,7 +96,7 @@ class AuthController extends Controller
         $user = $request->user();
 
         $validated = $request->validate([
-            'name' => 'sometimes|string|max:255',
+            'name'  => 'sometimes|string|max:255',
             'image' => 'sometimes|image|mimes:jpeg,png,webp|max:5120',
         ]);
 
@@ -142,12 +107,16 @@ class AuthController extends Controller
 
         $user->update($validated);
 
-        return response()->json([
-            'id' => $user->id,
-            'name' => $user->name,
-            'email' => $user->email,
-            'role' => $user->role,
-            'image' => $user->image,
-        ]);
+        return response()->json(new UserResource($user->fresh()));
+    }
+
+    public function deleteAccount(Request $request): JsonResponse
+    {
+        $request->user()->delete();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return response()->json(['message' => 'Акаунтът е изтрит успешно.']);
     }
 }

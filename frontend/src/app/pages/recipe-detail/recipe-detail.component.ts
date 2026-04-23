@@ -140,7 +140,7 @@ import { Subscription } from 'rxjs';
                 </div>
                 @if (checkedIngredients.size > 0) {
                   <div class="ing-progress">
-                    <div class="ing-progress-bar" [style.width.%]="(checkedIngredients.size / (recipe.ingredients?.length || 1)) * 100"></div>
+                    <div class="ing-progress-bar" [style.transform]="'scaleX(' + (checkedIngredients.size / (recipe.ingredients?.length || 1)) + ')'"></div>
                   </div>
                 }
                 <ul class="ingredients-list">
@@ -588,9 +588,12 @@ import { Subscription } from 'rxjs';
     }
     .ing-progress-bar {
       height: 100%;
+      width: 100%;
       background: var(--clr-green);
       border-radius: 9999px;
-      transition: width 0.4s var(--ease-out-expo, cubic-bezier(0.16,1,0.3,1));
+      transform-origin: left;
+      transform: scaleX(0);
+      transition: transform 0.4s var(--ease-out-expo, cubic-bezier(0.16,1,0.3,1));
     }
 
     /* Ingredients */

@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\RecipeResource;
 use App\Models\Recipe;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -11,39 +14,44 @@ class FavoriteController extends Controller
 {
     public function toggle(Request $request, string $slug): JsonResponse
     {
-        $recipe = Recipe::where('slug', $slug)->firstOrFail();
-        $user = $request->user();
+        $recipe = Recipe::withCount('favoritedBy')
+            ->where('slug', $slug)
+            ->firstOrFail();
 
+        $user       = $request->user();
         $isFavorite = $user->favoriteRecipes()->where('recipe_id', $recipe->id)->exists();
 
         if ($isFavorite) {
             $user->favoriteRecipes()->detach($recipe->id);
+            $newCount = $recipe->favorited_by_count - 1;
         } else {
             $user->favoriteRecipes()->attach($recipe->id);
+            $newCount = $recipe->favorited_by_count + 1;
         }
 
         return response()->json([
-            'isFavorite' => ! $isFavorite,
-            'favoriteCount' => $recipe->favoritedBy()->count(),
+            'isFavorite'    => ! $isFavorite,
+            'favoriteCount' => max(0, $newCount),
         ]);
     }
 
     public function status(Request $request, string $slug): JsonResponse
     {
-        $recipe = Recipe::where('slug', $slug)->first();
+        $recipe = Recipe::withCount('favoritedBy')
+            ->where('slug', $slug)
+            ->first();
 
         if (! $recipe) {
             return response()->json(['isFavorite' => false, 'favoriteCount' => 0]);
         }
 
-        $isFavorite = false;
-        if ($request->user()) {
-            $isFavorite = $request->user()->favoriteRecipes()->where('recipe_id', $recipe->id)->exists();
-        }
+        $isFavorite = $request->user()
+            ? $request->user()->favoriteRecipes()->where('recipe_id', $recipe->id)->exists()
+            : false;
 
         return response()->json([
-            'isFavorite' => $isFavorite,
-            'favoriteCount' => $recipe->favoritedBy()->count(),
+            'isFavorite'    => $isFavorite,
+            'favoriteCount' => (int) $recipe->favorited_by_count,
         ]);
     }
 
@@ -54,6 +62,6 @@ class FavoriteController extends Controller
             ->with(['category'])
             ->get();
 
-        return response()->json($recipes);
+        return response()->json(RecipeResource::collection($recipes));
     }
 }

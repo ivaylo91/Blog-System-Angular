@@ -381,7 +381,7 @@ import { PerfService } from '../../services/perf.service';
     .hero-placeholder svg { width: 5rem; height: 5rem; }
 
     /* ===== BENTO GRID ===== */
-    .featured { padding: clamp(3rem, 6vw, 5.5rem) 1.5rem clamp(3.5rem, 7vw, 6.5rem); background: var(--clr-surface); }
+    .featured { padding: clamp(3rem, 6vw, 5.5rem) 1.5rem clamp(3rem, 5vw, 5rem); background: var(--clr-surface); }
     .section-inner { max-width: 1200px; margin: 0 auto; }
     .section-heading {
       display: flex;
@@ -430,22 +430,22 @@ import { PerfService } from '../../services/perf.service';
     .mag-layout {
       display: grid;
       grid-template-columns: 2fr 1fr;
-      gap: 1.25rem;
+      gap: 1.5rem;
       align-items: start;
     }
     .mag-hero { min-width: 0; }
     .mag-side {
       display: flex;
       flex-direction: column;
-      gap: 1.25rem;
+      gap: 1rem;
       min-width: 0;
     }
-    /* Bottom row */
+    /* Bottom row — intentionally more space above to signal a tier break */
     .mag-bottom-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 1.25rem;
-      margin-top: 1.25rem;
+      gap: 1.5rem;
+      margin-top: 2.5rem;
     }
 
     /* Skeleton cards */

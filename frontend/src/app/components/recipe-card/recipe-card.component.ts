@@ -43,7 +43,10 @@ import { Recipe } from '../../models/models';
               {{ recipe.servings }} порции
             </span>
           }
-          <span class="difficulty">{{ recipe.difficulty }}</span>
+          <span class="difficulty"
+                [class.diff-easy]="recipe.difficulty === 'Лесно'"
+                [class.diff-medium]="recipe.difficulty === 'Средно'"
+                [class.diff-hard]="recipe.difficulty === 'За напреднали'">{{ recipe.difficulty }}</span>
         </div>
       </div>
     </a>
@@ -238,9 +241,16 @@ import { Recipe } from '../../models/models';
     .meta-item svg { width: 0.85rem; height: 0.85rem; flex-shrink: 0; }
     .difficulty {
       margin-left: auto;
-      font-weight: 600;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.18rem 0.55rem;
+      border-radius: 9999px;
+      background: var(--clr-surface-alt);
       color: var(--clr-text-muted);
     }
+    .diff-easy   { background: var(--clr-green-bg);  color: var(--clr-green-text); }
+    .diff-medium { background: var(--clr-amber-bg);  color: var(--clr-amber-text); }
+    .diff-hard   { background: var(--clr-rust-bg);   color: var(--clr-rust-text); }
 
     /* --- Compact (horizontal) variant --- */
     .card.compact {
