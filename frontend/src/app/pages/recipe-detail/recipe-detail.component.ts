@@ -593,19 +593,6 @@ import { SeoService } from '../../services/seo.service';
       color: var(--clr-text);
     }
 
-    /* Pull quote — for editorial callouts inside body copy */
-    .pull-quote {
-      font-family: var(--font-display);
-      font-style: italic;
-      font-weight: 700;
-      font-size: clamp(1.4rem, 2.2vw, 1.8rem);
-      line-height: 1.35;
-      color: var(--clr-brand);
-      border-left: 3px solid var(--clr-brand);
-      padding: 0.25rem 0 0.25rem 1.5rem;
-      margin: 2rem 0 2rem -0.5rem;
-      max-width: 36ch;
-    }
     @media (max-width: 640px) {
       .prose-card { padding: 1.5rem 1.4rem 1.4rem; }
       .prose-card p { font-size: 1rem; }

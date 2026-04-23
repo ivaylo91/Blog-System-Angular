@@ -22,7 +22,6 @@
     "@fontsource-variable/inter": "^5.2.8",
     "@fontsource-variable/rubik": "^5.2.8",
     "@fontsource/alegreya": "^5.2.8",
-    "@fontsource/playfair-display": "^5.2.8",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "^0.16.1"

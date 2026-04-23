@@ -1,10 +1,9 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { catchError, of, tap } from 'rxjs';
+import { catchError, map, of, tap } from 'rxjs';
 import { RecipeService } from '../../services/recipe.service';
 import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.component';
-import { Recipe } from '../../models/models';
 import { FormsModule } from '@angular/forms';
 import { SeoService } from '../../services/seo.service';
 import { PerfService } from '../../services/perf.service';
@@ -64,6 +63,11 @@ import { PerfService } from '../../services/perf.service';
                 <div class="sk-tile"></div>
               </div>
             }
+          </div>
+        } @else if (errored()) {
+          <div class="featured-error" role="status">
+            <p class="featured-error-msg">Рецептите не се зареждат в момента.</p>
+            <button type="button" class="featured-error-btn" (click)="retry()">Опитай пак</button>
           </div>
         } @else if (featured().length >= 6) {
           <div class="bento">
@@ -136,7 +140,7 @@ import { PerfService } from '../../services/perf.service';
     /* ===== HERO — full-bleed editorial ===== */
     .hero {
       position: relative;
-      min-height: clamp(520px, 78vh, 760px);
+      min-height: clamp(520px, 78dvh, 760px);
       display: flex;
       align-items: flex-end;
       padding: clamp(4rem, 10vw, 7rem) 1.5rem clamp(2.5rem, 6vw, 4.5rem);
@@ -382,6 +386,42 @@ import { PerfService } from '../../services/perf.service';
       margin-top: 2.5rem;
     }
 
+    /* Error state — editorial, not alert-y */
+    .featured-error {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.25rem;
+      padding: clamp(2.5rem, 6vw, 4rem) 1.5rem;
+      text-align: center;
+      background: var(--clr-surface-alt);
+      border: 1px solid var(--clr-border-faint);
+      border-radius: 1.25rem;
+    }
+    .featured-error-msg {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+      color: var(--clr-text-muted);
+      margin: 0;
+      max-width: 32ch;
+      line-height: 1.4;
+    }
+    .featured-error-btn {
+      padding: 0.65rem 1.4rem;
+      border-radius: 9999px;
+      border: 1px solid var(--clr-border);
+      background: var(--clr-surface);
+      color: var(--clr-text);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s var(--ease-out-expo), border-color 0.2s var(--ease-out-expo), transform 0.15s var(--ease-out-expo);
+      touch-action: manipulation;
+    }
+    .featured-error-btn:hover { background: var(--clr-surface-hover); border-color: var(--clr-border-strong); transform: translateY(-1px); }
+    .featured-error-btn:active { transform: translateY(0); }
+
     /* Skeleton tile — shimmering block that matches bento cell shape */
     .sk-tile {
       width: 100%;
@@ -540,7 +580,7 @@ import { PerfService } from '../../services/perf.service';
     .cta-btn:active { transform: translateY(0) scale(0.98); transition-duration: 0.08s; }
 
     @media (max-width: 900px) {
-      .hero { min-height: clamp(460px, 70vh, 620px); }
+      .hero { min-height: clamp(460px, 70dvh, 620px); }
       .hero-featured-title { max-width: 18ch; }
       .bento {
         grid-template-columns: repeat(2, 1fr);
@@ -556,7 +596,7 @@ import { PerfService } from '../../services/perf.service';
     }
     @media (max-width: 640px) {
       .hero {
-        min-height: clamp(440px, 80vh, 560px);
+        min-height: clamp(440px, 80dvh, 560px);
         padding: clamp(3rem, 12vw, 5rem) 1.25rem clamp(2rem, 6vw, 3rem);
       }
       .hero-title { max-width: 14ch; }
@@ -619,12 +659,21 @@ export class HomeComponent {
         this.perf.mark('home_featured_ready');
         this.perf.measure('home_featured_load', 'home_start', 'home_featured_ready');
       }),
-      catchError(() => of([] as Recipe[])),
+      map(recipes => ({ kind: 'success' as const, recipes })),
+      catchError(() => of({ kind: 'error' as const })),
     ),
   );
 
-  featured = computed(() => this.featuredResult() ?? []);
+  featured = computed(() => {
+    const r = this.featuredResult();
+    return r?.kind === 'success' ? r.recipes : [];
+  });
   loading = computed(() => this.featuredResult() === undefined);
+  errored = computed(() => this.featuredResult()?.kind === 'error');
+
+  retry(): void {
+    window.location.reload();
+  }
 
   constructor() {
     this.perf.mark('home_start');
