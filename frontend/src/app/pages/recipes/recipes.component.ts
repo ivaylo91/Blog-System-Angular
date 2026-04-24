@@ -479,6 +479,7 @@ import { PerfService } from '../../services/perf.service';
         font-weight: 600;
         color: var(--clr-text);
         padding: 0 0.75rem;
+        font-variant-numeric: tabular-nums;
       }
     }
   `],

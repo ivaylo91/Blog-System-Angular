@@ -15,7 +15,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
       position: fixed;
       top: 0;
       left: 0;
-      z-index: 10000;
+      z-index: var(--z-progress);
       height: 3px;
       width: 0%;
       background: linear-gradient(90deg, var(--clr-green), var(--clr-brand-hover));

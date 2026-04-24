@@ -235,6 +235,7 @@ import { Recipe } from '../../models/models';
       font-size: 0.78rem;
       color: var(--clr-text-muted);
       align-items: center;
+      font-variant-numeric: tabular-nums;
     }
     .meta-item {
       display: flex;

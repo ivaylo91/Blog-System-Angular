@@ -547,6 +547,7 @@ import { SeoService } from '../../services/seo.service';
       color: #fff;
       font-size: 0.82rem;
       font-weight: 500;
+      font-variant-numeric: tabular-nums;
     }
     .stat-pill svg { width: 0.9rem; height: 0.9rem; }
     .stat-pill-gold { background: color-mix(in oklch, var(--clr-amber) 20%, transparent); border-color: color-mix(in oklch, var(--clr-amber) 50%, transparent); color: var(--clr-amber); }

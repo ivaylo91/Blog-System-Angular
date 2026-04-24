@@ -25,7 +25,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 100;
+      z-index: var(--z-modal);
       animation: fade-in 0.18s var(--ease-out-expo);
     }
     @keyframes fade-in {
