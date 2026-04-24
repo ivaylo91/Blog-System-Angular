@@ -379,12 +379,18 @@ import { PerfService } from '../../services/perf.service';
       height: 100%;
     }
 
+    /* Anti-slop: no "3 equal cards horizontally". 2fr | 1fr | 1fr asymmetric split
+       with a zig-zag bias — first card dominates, next two share the remainder. */
     .featured-rest {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: 2fr 1fr 1fr;
       gap: var(--space-6);
       margin-top: var(--space-8);
+      align-items: start;
     }
+    .featured-rest > :nth-child(1) { grid-row: span 2; }
+    .featured-rest > :nth-child(2) { padding-top: var(--space-5); }
+    .featured-rest > :nth-child(3) { padding-top: var(--space-9); }
 
     /* Error state — editorial, not alert-y */
     .featured-error {
@@ -539,7 +545,13 @@ import { PerfService } from '../../services/perf.service';
       .collection:hover .col-arrow { transform: none; }
     }
 
-    .cta { text-align: center; margin-top: var(--space-10); }
+    /* Anti-center bias: CTA skews to right-end with massive left white-space */
+    .cta {
+      display: flex;
+      justify-content: flex-end;
+      padding-left: clamp(0rem, 20vw, 14rem);
+      margin-top: var(--space-10);
+    }
     .cta-btn {
       display: inline-flex;
       align-items: center;
@@ -592,7 +604,14 @@ import { PerfService } from '../../services/perf.service';
           "b d"
           "e f";
       }
-      .featured-rest { grid-template-columns: repeat(2, 1fr); }
+      .featured-rest {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-5);
+      }
+      .featured-rest > :nth-child(1) { grid-row: span 1; }
+      .featured-rest > :nth-child(2),
+      .featured-rest > :nth-child(3) { padding-top: 0; }
+      .cta { justify-content: center; padding-left: 0; }
     }
     @media (max-width: 640px) {
       .hero {

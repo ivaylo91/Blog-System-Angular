@@ -339,11 +339,44 @@ import { PerfService } from '../../services/perf.service';
     }
     .clear-all:hover { color: var(--clr-text); }
 
-    /* Recipe grid */
+    /* Bento 2.0: anti-3-col-uniform grid.
+       Base is 3 fractional tracks (not equal). First card spans 2 cols as
+       "editorial hero". Every 7th card after that spans 2 cols for rhythm.
+       Every 11th spans 2 rows for masonry-ish variance. */
     .recipe-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      grid-template-columns: 1.4fr 1fr 1fr;
+      grid-auto-rows: minmax(0, auto);
       gap: var(--space-6);
+    }
+    .recipe-grid > app-recipe-card { min-width: 0; }
+    .recipe-grid > app-recipe-card:nth-child(9n + 1) { grid-column: span 2; }
+    .recipe-grid > app-recipe-card:nth-child(11n + 4) { grid-row: span 2; }
+
+    /* Cascade reveal — full coverage, not just first 6. Overrides card's JS delay. */
+    .recipe-grid > app-recipe-card { --card-i: 0; animation-delay: calc(var(--card-i) * 45ms) !important; }
+    .recipe-grid > app-recipe-card:nth-child(1)  { --card-i: 0; }
+    .recipe-grid > app-recipe-card:nth-child(2)  { --card-i: 1; }
+    .recipe-grid > app-recipe-card:nth-child(3)  { --card-i: 2; }
+    .recipe-grid > app-recipe-card:nth-child(4)  { --card-i: 3; }
+    .recipe-grid > app-recipe-card:nth-child(5)  { --card-i: 4; }
+    .recipe-grid > app-recipe-card:nth-child(6)  { --card-i: 5; }
+    .recipe-grid > app-recipe-card:nth-child(7)  { --card-i: 6; }
+    .recipe-grid > app-recipe-card:nth-child(8)  { --card-i: 7; }
+    .recipe-grid > app-recipe-card:nth-child(9)  { --card-i: 8; }
+    .recipe-grid > app-recipe-card:nth-child(10) { --card-i: 9; }
+    .recipe-grid > app-recipe-card:nth-child(11) { --card-i: 10; }
+    .recipe-grid > app-recipe-card:nth-child(12) { --card-i: 11; }
+    .recipe-grid > app-recipe-card:nth-child(n + 13) { --card-i: 12; }
+
+    @media (min-width: 1280px) {
+      .recipe-grid { grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: var(--space-7); }
+      .recipe-grid > app-recipe-card:nth-child(9n + 1) { grid-column: span 2; }
+    }
+    @media (max-width: 900px) {
+      .recipe-grid { grid-template-columns: 1fr 1fr; gap: var(--space-5); }
+      .recipe-grid > app-recipe-card:nth-child(9n + 1),
+      .recipe-grid > app-recipe-card:nth-child(11n + 4) { grid-column: auto; grid-row: auto; }
     }
     .no-results {
       grid-column: 1 / -1;
