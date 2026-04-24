@@ -629,11 +629,34 @@ import { PerfService } from '../../services/perf.service';
       .hero-featured-label { display: none; }
     }
 
+    /* Hero entrance choreography */
+    @keyframes hero-rise {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero-eyebrow,
+    .hero-title,
+    .hero-subtitle,
+    .search-form,
+    .hero-featured {
+      animation: hero-rise 620ms var(--ease-out-expo) both;
+    }
+    .hero-eyebrow  { animation-delay:   0ms; }
+    .hero-title    { animation-delay: 120ms; }
+    .hero-subtitle { animation-delay: 240ms; }
+    .search-form   { animation-delay: 360ms; }
+    .hero-featured { animation-delay: 480ms; }
+
     @media (prefers-reduced-motion: reduce) {
       .hero-featured { transition: background 0.2s, border-color 0.2s; }
       .hero-featured:hover { transform: none; }
       .hero-featured-arrow { transition: none; }
       .hero-featured:hover .hero-featured-arrow { transform: none; }
+      .hero-eyebrow,
+      .hero-title,
+      .hero-subtitle,
+      .search-form,
+      .hero-featured { animation: none; }
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,

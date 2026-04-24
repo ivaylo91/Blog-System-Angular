@@ -134,6 +134,7 @@ import { SeoService } from '../../services/seo.service';
               @if (auth.isAuthenticated()) {
                 <button class="favorite-btn"
                   [class.favorited]="favoriteStatus()?.isFavorite"
+                  [class.pulse]="heartPulse()"
                   [disabled]="favoriting()"
                   [attr.aria-pressed]="!!favoriteStatus()?.isFavorite"
                   [attr.aria-label]="favoriteStatus()?.isFavorite ? 'Премахни от любими' : 'Добави в любими'"
@@ -484,6 +485,22 @@ import { SeoService } from '../../services/seo.service';
       margin: 0 auto;
       width: 100%;
       padding: 3rem 1.5rem 2.5rem;
+    }
+    @keyframes hero-rise {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero-content > * {
+      animation: hero-rise 640ms var(--ease-out-expo) both;
+    }
+    .hero-content > *:nth-child(1) { animation-delay:   0ms; }
+    .hero-content > *:nth-child(2) { animation-delay:  80ms; }
+    .hero-content > *:nth-child(3) { animation-delay: 160ms; }
+    .hero-content > *:nth-child(4) { animation-delay: 260ms; }
+    .hero-content > *:nth-child(5) { animation-delay: 360ms; }
+    .hero-content > *:nth-child(6) { animation-delay: 460ms; }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-content > * { animation: none; }
     }
     .back-link {
       display: inline-flex;
@@ -889,13 +906,25 @@ import { SeoService } from '../../services/seo.service';
       font-size: 0.9rem;
       font-weight: 600;
       cursor: pointer;
-      transition: box-shadow 0.2s var(--ease-out-expo), background 0.18s var(--ease-out-expo), color 0.18s var(--ease-out-expo), border-color 0.18s var(--ease-out-expo);
+      transition: box-shadow 0.2s var(--ease-out-expo), background 0.18s var(--ease-out-expo), color 0.18s var(--ease-out-expo), border-color 0.18s var(--ease-out-expo), transform 0.12s var(--ease-out-expo);
       color: var(--clr-text-muted);
     }
-    .favorite-btn svg { width: 1.1rem; height: 1.1rem; }
+    .favorite-btn svg { width: 1.1rem; height: 1.1rem; transform-origin: center; }
     .favorite-btn.favorited { background: var(--clr-error-bg); border-color: var(--clr-error); color: var(--clr-error); }
+    .favorite-btn.pulse svg { animation: heart-pop 360ms var(--ease-out-expo) both; }
     .favorite-btn:hover:not(:disabled) { box-shadow: var(--shadow-md); }
+    .favorite-btn:active:not(:disabled) { transform: scale(0.97); }
     .favorite-btn:disabled { opacity: 0.7; cursor: wait; }
+    @keyframes heart-pop {
+      0%   { transform: scale(0.8); }
+      45%  { transform: scale(1.28); }
+      100% { transform: scale(1); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .favorite-btn { transition: box-shadow 0.2s, background 0.18s, color 0.18s, border-color 0.18s; }
+      .favorite-btn:active:not(:disabled) { transform: none; }
+      .favorite-btn.pulse svg { animation: none; }
+    }
     .sidebar-card,
     .panel-card {
       background: var(--clr-surface);
@@ -1170,6 +1199,7 @@ export class RecipeDetailComponent {
   copied = signal(false);
   canNativeShare = typeof navigator !== 'undefined' && !!navigator.share;
   favoriting = signal(false);
+  heartPulse = signal(false);
   submittingComment = signal(false);
   submittingReply = signal(false);
   confirmDeleteId = signal<number | null>(null);
@@ -1317,6 +1347,10 @@ export class RecipeDetailComponent {
       next: (s) => {
         this.favoriteStatus.set(s);
         this.favoriting.set(false);
+        if (s.isFavorite) {
+          this.heartPulse.set(true);
+          setTimeout(() => this.heartPulse.set(false), 420);
+        }
         this.toast.success(s.isFavorite ? 'Добавено в любими.' : 'Премахнато от любими.');
       },
       error: () => {
