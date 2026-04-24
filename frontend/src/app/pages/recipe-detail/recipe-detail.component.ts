@@ -804,7 +804,10 @@ import { SeoService } from '../../services/seo.service';
       font-weight: 500;
     }
 
-    /* ===== JUMP-TO NAV ===== */
+    /* ===== JUMP-TO NAV =====
+       Sticks below the scrolled header. Jump-nav is only revealed after
+       scrolling past the hero, by which point the header is always in
+       its compact scrolled state (3.25rem desktop / 3.5rem mobile). */
     .jump-nav {
       background: var(--clr-surface, #fff);
       border-bottom: 1px solid var(--clr-border-faint, rgba(0,0,0,0.06));
@@ -813,10 +816,10 @@ import { SeoService } from '../../services/seo.service';
       justify-content: center;
       gap: 0;
       position: sticky;
-      top: 4rem;
+      top: 3.25rem;
       z-index: 10;
       padding: 0;
-      box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+      box-shadow: 0 1px 8px rgba(28,25,23,0.06);
     }
     .jump-link {
       display: inline-flex;
@@ -1114,6 +1117,9 @@ import { SeoService } from '../../services/seo.service';
         overflow-y: visible;
       }
       .jump-link { padding: 0.75rem 1rem; font-size: 0.78rem; }
+    }
+    @media (max-width: 768px) {
+      .jump-nav { top: 3.5rem; }
     }
     @media (max-width: 640px) {
       h1 { font-size: 1.8rem; }
