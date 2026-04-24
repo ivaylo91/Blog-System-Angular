@@ -143,7 +143,7 @@ import { PerfService } from '../../services/perf.service';
       min-height: clamp(520px, 78dvh, 760px);
       display: flex;
       align-items: flex-end;
-      padding: clamp(4rem, 10vw, 7rem) 1.5rem clamp(2.5rem, 6vw, 4.5rem);
+      padding: clamp(4rem, 10vw, 7rem) var(--space-6) clamp(2.5rem, 6vw, 4.5rem);
       overflow: hidden;
       background-color: oklch(22% 0.02 40);
       color: #fff;
@@ -182,10 +182,10 @@ import { PerfService } from '../../services/perf.service';
       text-transform: uppercase;
       letter-spacing: 0.22em;
       color: rgba(255,255,255,0.85);
-      padding: 0.35rem 0.9rem;
+      padding: var(--space-1) var(--space-4);
       border: 1px solid rgba(255,255,255,0.28);
       border-radius: 9999px;
-      margin-bottom: 1.75rem;
+      margin-bottom: var(--space-7);
       backdrop-filter: blur(6px);
       -webkit-backdrop-filter: blur(6px);
     }
@@ -195,7 +195,7 @@ import { PerfService } from '../../services/perf.service';
       font-weight: 800;
       color: #fff;
       line-height: 0.98;
-      margin: 0 0 1.5rem;
+      margin: 0 0 var(--space-6);
       letter-spacing: -0.035em;
       max-width: 16ch;
       text-shadow: 0 2px 30px rgba(0,0,0,0.35);
@@ -209,7 +209,7 @@ import { PerfService } from '../../services/perf.service';
       color: rgba(255,255,255,0.9);
       font-size: clamp(1rem, 1.3vw, 1.2rem);
       line-height: 1.6;
-      margin: 0 0 2.25rem;
+      margin: 0 0 var(--space-7);
       font-weight: 400;
       max-width: 48ch;
       text-shadow: 0 1px 14px rgba(0,0,0,0.3);
@@ -230,7 +230,7 @@ import { PerfService } from '../../services/perf.service';
     }
     .search-input {
       flex: 1;
-      padding: 1rem 1.35rem;
+      padding: var(--space-4) var(--space-5);
       border: none;
       font-size: 0.95rem;
       outline: none;
@@ -241,8 +241,8 @@ import { PerfService } from '../../services/perf.service';
     .search-btn {
       display: flex;
       align-items: center;
-      gap: 0.45rem;
-      padding: 1rem 1.6rem;
+      gap: var(--space-2);
+      padding: var(--space-4) var(--space-6);
       background: var(--clr-green);
       color: #fff;
       border: none;
@@ -260,9 +260,9 @@ import { PerfService } from '../../services/perf.service';
     .hero-featured {
       display: inline-flex;
       align-items: center;
-      gap: 0.75rem;
-      margin-top: 2.25rem;
-      padding: 0.7rem 1.1rem 0.7rem 1.15rem;
+      gap: var(--space-3);
+      margin-top: var(--space-7);
+      padding: var(--space-3) var(--space-4);
       background: rgba(255,255,255,0.1);
       border: 1px solid rgba(255,255,255,0.22);
       border-radius: 9999px;
@@ -307,14 +307,14 @@ import { PerfService } from '../../services/perf.service';
     }
 
     /* ===== BENTO GRID ===== */
-    .featured { padding: clamp(3rem, 6vw, 5.5rem) 1.5rem clamp(3rem, 5vw, 5rem); background: var(--clr-surface); }
+    .featured { padding: clamp(3rem, 6vw, 5.5rem) var(--space-6) clamp(3rem, 5vw, 5rem); background: var(--clr-surface); }
     .section-inner { max-width: 1200px; margin: 0 auto; }
     .section-heading {
       display: flex;
       align-items: flex-end;
       justify-content: space-between;
-      margin-bottom: 2.5rem;
-      gap: 1rem;
+      margin-bottom: var(--space-8);
+      gap: var(--space-4);
     }
     .section-title {
       font-family: var(--font-display);
@@ -325,7 +325,7 @@ import { PerfService } from '../../services/perf.service';
       letter-spacing: -0.025em;
       line-height: 1.1;
       position: relative;
-      padding-bottom: 0.8rem;
+      padding-bottom: var(--space-3);
     }
     .section-title::after {
       content: '';
@@ -344,13 +344,13 @@ import { PerfService } from '../../services/perf.service';
       text-decoration: none;
       display: inline-flex;
       align-items: center;
-      gap: 0.3rem;
+      gap: var(--space-1);
       transition: gap 0.25s cubic-bezier(0.25, 1, 0.5, 1);
       white-space: nowrap;
       flex-shrink: 0;
-      padding-bottom: 0.8rem;
+      padding-bottom: var(--space-3);
     }
-    .section-link:hover { gap: 0.6rem; }
+    .section-link:hover { gap: var(--space-2); }
 
     /* ===== BENTO: ragged grid with varied weights ===== */
     .bento {
@@ -361,7 +361,7 @@ import { PerfService } from '../../services/perf.service';
         "a a b c"
         "a a b d"
         "e e f f";
-      gap: 1.25rem;
+      gap: var(--space-5);
     }
     .tile-a { grid-area: a; }
     .tile-b { grid-area: b; }
@@ -382,8 +382,8 @@ import { PerfService } from '../../services/perf.service';
     .featured-rest {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-      margin-top: 2.5rem;
+      gap: var(--space-6);
+      margin-top: var(--space-8);
     }
 
     /* Error state — editorial, not alert-y */
@@ -391,8 +391,8 @@ import { PerfService } from '../../services/perf.service';
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 1.25rem;
-      padding: clamp(2.5rem, 6vw, 4rem) 1.5rem;
+      gap: var(--space-5);
+      padding: clamp(2.5rem, 6vw, 4rem) var(--space-6);
       text-align: center;
       background: var(--clr-surface-alt);
       border: 1px solid var(--clr-border-faint);
@@ -408,7 +408,7 @@ import { PerfService } from '../../services/perf.service';
       line-height: 1.4;
     }
     .featured-error-btn {
-      padding: 0.65rem 1.4rem;
+      padding: var(--space-3) var(--space-5);
       border-radius: 9999px;
       border: 1px solid var(--clr-border);
       background: var(--clr-surface);
@@ -446,21 +446,21 @@ import { PerfService } from '../../services/perf.service';
 
     /* ===== COLLECTIONS ===== */
     .collections {
-      padding: clamp(3rem, 6vw, 5rem) 1.5rem clamp(3rem, 6vw, 5rem);
+      padding: clamp(3rem, 6vw, 5rem) var(--space-6) clamp(3rem, 6vw, 5rem);
       background: var(--clr-surface-alt);
       border-top: 1px solid var(--clr-border-faint);
     }
     .collection-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1.25rem;
+      gap: var(--space-5);
     }
     .collection {
       position: relative;
       display: flex;
       flex-direction: column;
-      gap: 0.4rem;
-      padding: 1.5rem 1.5rem 1.3rem;
+      gap: var(--space-2);
+      padding: var(--space-6) var(--space-6) var(--space-5);
       min-height: 200px;
       border-radius: 1.25rem;
       text-decoration: none;
@@ -506,7 +506,7 @@ import { PerfService } from '../../services/perf.service';
       height: 1px;
       background: currentColor;
       vertical-align: middle;
-      margin-right: 0.4rem;
+      margin-right: var(--space-2);
       opacity: 0.55;
       transform: translateY(-1px);
     }
@@ -539,12 +539,12 @@ import { PerfService } from '../../services/perf.service';
       .collection:hover .col-arrow { transform: none; }
     }
 
-    .cta { text-align: center; margin-top: 3.5rem; }
+    .cta { text-align: center; margin-top: var(--space-10); }
     .cta-btn {
       display: inline-flex;
       align-items: center;
-      gap: 0.75rem;
-      padding: 0.875rem 0.875rem 0.875rem 1.875rem;
+      gap: var(--space-3);
+      padding: var(--space-3) var(--space-3) var(--space-3) var(--space-7);
       background: var(--clr-green);
       color: #fff;
       border-radius: 9999px;
@@ -597,14 +597,14 @@ import { PerfService } from '../../services/perf.service';
     @media (max-width: 640px) {
       .hero {
         min-height: clamp(440px, 80dvh, 560px);
-        padding: clamp(3rem, 12vw, 5rem) 1.25rem clamp(2rem, 6vw, 3rem);
+        padding: clamp(3rem, 12vw, 5rem) var(--space-5) clamp(2rem, 6vw, 3rem);
       }
       .hero-title { max-width: 14ch; }
-      .hero-subtitle { font-size: 1rem; margin-bottom: 1.5rem; }
+      .hero-subtitle { font-size: 1rem; margin-bottom: var(--space-6); }
       .search-form { max-width: 100%; border-radius: 0.75rem; }
-      .search-input { padding: 0.85rem 1.1rem; font-size: 0.9rem; }
-      .search-btn { padding: 0.85rem 1.15rem; font-size: 0.85rem; }
-      .hero-featured { margin-top: 1.5rem; }
+      .search-input { padding: var(--space-3) var(--space-4); font-size: 0.9rem; }
+      .search-btn { padding: var(--space-3) var(--space-4); font-size: 0.85rem; }
+      .hero-featured { margin-top: var(--space-6); }
       .hero-featured-title { max-width: 14ch; font-size: 0.88rem; }
       .section-title::after { width: 2rem; }
       .bento {
@@ -618,10 +618,10 @@ import { PerfService } from '../../services/perf.service';
           "d"
           "e"
           "f";
-        gap: 1rem;
+        gap: var(--space-4);
       }
       .tile-a { grid-area: a; }
-      .featured-rest { grid-template-columns: 1fr; gap: 1rem; }
+      .featured-rest { grid-template-columns: 1fr; gap: var(--space-4); }
       .cta-btn { width: 100%; justify-content: center; box-sizing: border-box; }
     }
     @media (max-width: 400px) {

@@ -151,11 +151,11 @@ import { PerfService } from '../../services/perf.service';
     </div>
   `,
   styles: [`
-    .page { padding: 3rem 1.5rem 5rem; background-color: var(--clr-bg, #faf7f4); background-image: url('/backgrounds/cooking-pattern.svg'); background-size: 500px; background-repeat: repeat; min-height: 100dvh; }
+    .page { padding: var(--space-9) var(--space-6) var(--space-10); background-color: var(--clr-bg, #faf7f4); background-image: url('/backgrounds/cooking-pattern.svg'); background-size: 500px; background-repeat: repeat; min-height: 100dvh; }
     .page-inner { max-width: 1200px; margin: 0 auto; }
     .page-header {
       text-align: left;
-      margin-bottom: 2rem;
+      margin-bottom: var(--space-7);
     }
     .page-eyebrow {
       display: inline-flex;
@@ -166,15 +166,15 @@ import { PerfService } from '../../services/perf.service';
       letter-spacing: 0.16em;
       color: var(--clr-green-text);
       background: var(--clr-green-bg);
-      padding: 0.3rem 0.9rem;
+      padding: var(--space-1) var(--space-4);
       border-radius: 9999px;
-      margin-bottom: 1rem;
+      margin-bottom: var(--space-4);
     }
     .page-header h1 {
       font-family: var(--font-display, 'Alegreya', Georgia, serif);
       font-size: clamp(2rem, 4vw, 3rem);
       color: var(--clr-text);
-      margin: 0 0 0.5rem;
+      margin: 0 0 var(--space-2);
       letter-spacing: -0.02em;
     }
     .page-header p {
@@ -193,12 +193,12 @@ import { PerfService } from '../../services/perf.service';
       box-shadow: var(--shadow-sm);
       border: 1.5px solid var(--clr-border);
       max-width: 560px;
-      margin: 0 0 1.5rem;
+      margin: 0 0 var(--space-6);
       background: var(--clr-surface);
     }
     .search-input {
       flex: 1;
-      padding: 0.85rem 1.25rem;
+      padding: var(--space-3) var(--space-5);
       border: none;
       font-size: 0.95rem;
       outline: none;
@@ -208,8 +208,8 @@ import { PerfService } from '../../services/perf.service';
     .search-btn {
       display: flex;
       align-items: center;
-      gap: 0.45rem;
-      padding: 0.85rem 1.5rem;
+      gap: var(--space-2);
+      padding: var(--space-3) var(--space-6);
       background: var(--clr-green);
       color: var(--clr-surface);
       border: none;
@@ -226,17 +226,17 @@ import { PerfService } from '../../services/perf.service';
     .pill-filters {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-bottom: 0.75rem;
+      gap: var(--space-2);
+      margin-bottom: var(--space-3);
       justify-content: flex-start;
     }
     .pill-filters-secondary {
-      margin-bottom: 2.5rem;
+      margin-bottom: var(--space-8);
       align-items: center;
       justify-content: flex-start;
     }
     .pill {
-      padding: 0.5rem 1.1rem;
+      padding: var(--space-2) var(--space-4);
       border-radius: 9999px;
       border: 1.5px solid var(--clr-border);
       background: var(--clr-surface);
@@ -265,17 +265,17 @@ import { PerfService } from '../../services/perf.service';
       outline-offset: 2px;
     }
     .pill-sm {
-      padding: 0.4rem 0.9rem;
+      padding: var(--space-2) var(--space-3);
       font-size: 0.8rem;
       min-height: 2.75rem;
     }
     .sort-divider {
       width: 1px;
-      height: 1.25rem;
+      height: var(--space-5);
       background: var(--clr-border-strong);
       flex-shrink: 0;
       align-self: center;
-      margin: 0 0.25rem;
+      margin: 0 var(--space-1);
     }
 
     /* Active filter chips */
@@ -283,9 +283,9 @@ import { PerfService } from '../../services/perf.service';
       display: flex;
       align-items: center;
       flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-bottom: 1.5rem;
-      padding: 0.75rem 1rem;
+      gap: var(--space-2);
+      margin-bottom: var(--space-6);
+      padding: var(--space-3) var(--space-4);
       background: var(--clr-surface-alt);
       border-radius: 0.875rem;
       border: 1px solid var(--clr-border-faint);
@@ -296,14 +296,14 @@ import { PerfService } from '../../services/perf.service';
       text-transform: uppercase;
       letter-spacing: 0.08em;
       color: var(--clr-text-faint);
-      margin-right: 0.25rem;
+      margin-right: var(--space-1);
       flex-shrink: 0;
     }
     .active-chip {
       display: inline-flex;
       align-items: center;
-      gap: 0.3rem;
-      padding: 0.35rem 0.6rem 0.35rem 0.7rem;
+      gap: var(--space-1);
+      padding: var(--space-1) var(--space-3);
       background: var(--clr-text);
       color: var(--clr-bg);
       border: none;
@@ -333,7 +333,7 @@ import { PerfService } from '../../services/perf.service';
       cursor: pointer;
       text-decoration: underline;
       text-underline-offset: 2px;
-      padding: 0.25rem;
+      padding: var(--space-1);
       transition: color 0.15s var(--ease-out-expo);
       touch-action: manipulation;
     }
@@ -343,15 +343,15 @@ import { PerfService } from '../../services/perf.service';
     .recipe-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 1.5rem;
+      gap: var(--space-6);
     }
     .no-results {
       grid-column: 1 / -1;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0.5rem;
-      padding: 4rem 2rem;
+      gap: var(--space-2);
+      padding: var(--space-10) var(--space-7);
       color: var(--clr-text-muted);
       text-align: center;
     }
@@ -359,7 +359,7 @@ import { PerfService } from '../../services/perf.service';
       width: 3rem;
       height: 3rem;
       color: var(--clr-text-faint);
-      margin-bottom: 0.5rem;
+      margin-bottom: var(--space-2);
     }
     .no-results p {
       font-size: 1.05rem;
@@ -393,8 +393,8 @@ import { PerfService } from '../../services/perf.service';
       transform: translateX(-100%);
       animation: shimmer 1.5s linear infinite;
     }
-    .sk-body { padding: 1.2rem; display: flex; flex-direction: column; gap: 0.55rem; }
-    .sk-meta { display: flex; gap: 0.75rem; margin-top: 0.25rem; }
+    .sk-body { padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-2); }
+    .sk-meta { display: flex; gap: var(--space-3); margin-top: var(--space-1); }
     .sk-line {
       height: 0.8rem;
       border-radius: 9999px;
@@ -425,13 +425,13 @@ import { PerfService } from '../../services/perf.service';
       align-items: center;
       justify-content: center;
       flex-wrap: wrap;
-      gap: 0.4rem;
-      margin-top: 3rem;
+      gap: var(--space-2);
+      margin-top: var(--space-9);
     }
     .page-btn {
       min-width: 2.75rem;
       height: 2.75rem;
-      padding: 0 0.75rem;
+      padding: 0 var(--space-3);
       border-radius: 0.75rem;
       border: 1.5px solid var(--clr-border);
       background: var(--clr-surface);
@@ -464,7 +464,7 @@ import { PerfService } from '../../services/perf.service';
     @media (max-width: 640px) {
       .recipe-grid { grid-template-columns: 1fr; }
       .btn-text { display: none; }
-      .search-btn { padding: 0.85rem 1rem; }
+      .search-btn { padding: var(--space-3) var(--space-4); }
       .pill { min-height: 2.75rem; }
       .pill-sm { min-height: 2.75rem; }
       .page-btn { min-width: 2.75rem; height: 2.75rem; }
@@ -478,7 +478,7 @@ import { PerfService } from '../../services/perf.service';
         font-size: 0.9rem;
         font-weight: 600;
         color: var(--clr-text);
-        padding: 0 0.75rem;
+        padding: 0 var(--space-3);
         font-variant-numeric: tabular-nums;
       }
     }

@@ -147,7 +147,7 @@ import { Recipe } from '../../models/models';
       font-weight: 600;
       font-size: 0.9rem;
       letter-spacing: 0.03em;
-      padding: 0.55rem 1.2rem;
+      padding: var(--space-2) var(--space-5);
       border: 1.5px solid rgba(255, 255, 255, 0.75);
       border-radius: 9999px;
       opacity: 0;
@@ -170,15 +170,15 @@ import { Recipe } from '../../models/models';
       .mobile-label {
         display: block;
         position: absolute;
-        bottom: 0.6rem;
-        right: 0.75rem;
+        bottom: var(--space-2);
+        right: var(--space-3);
         font-size: 0.7rem;
         font-weight: 700;
         letter-spacing: 0.05em;
         color: #fff;
         background: rgba(28,25,23,0.55);
         backdrop-filter: blur(6px);
-        padding: 0.25rem 0.65rem;
+        padding: var(--space-1) var(--space-3);
         border-radius: 9999px;
         border: 1px solid rgba(255,255,255,0.2);
         z-index: 2;
@@ -187,7 +187,7 @@ import { Recipe } from '../../models/models';
     }
 
     /* --- Body --- */
-    .card-body { padding: 1.25rem 1.375rem 1.375rem; }
+    .card-body { padding: var(--space-5) var(--space-6) var(--space-6); }
     .category {
       display: inline-block;
       font-size: 0.65rem;
@@ -196,16 +196,16 @@ import { Recipe } from '../../models/models';
       letter-spacing: 0.12em;
       color: var(--clr-green-text);
       background: var(--clr-green-bg);
-      padding: 0.2rem 0.65rem;
+      padding: var(--space-1) var(--space-3);
       border-radius: 9999px;
-      margin-bottom: 0.55rem;
+      margin-bottom: var(--space-2);
     }
     .title {
       font-family: var(--font-display);
       font-size: 1.25rem;
       font-weight: 700;
       color: var(--clr-text);
-      margin: 0 0 0.5rem;
+      margin: 0 0 var(--space-2);
       line-height: 1.25;
     }
     .card.featured .title {
@@ -228,9 +228,9 @@ import { Recipe } from '../../models/models';
     }
     .meta {
       display: flex;
-      gap: 1rem;
-      margin-top: 1rem;
-      padding-top: 0.875rem;
+      gap: var(--space-4);
+      margin-top: var(--space-4);
+      padding-top: var(--space-3);
       border-top: 1px solid var(--clr-border-faint);
       font-size: 0.78rem;
       color: var(--clr-text-muted);
@@ -240,14 +240,14 @@ import { Recipe } from '../../models/models';
     .meta-item {
       display: flex;
       align-items: center;
-      gap: 0.3rem;
+      gap: var(--space-1);
     }
     .meta-item svg { width: 0.85rem; height: 0.85rem; flex-shrink: 0; }
     .difficulty {
       margin-left: auto;
       font-size: 0.7rem;
       font-weight: 700;
-      padding: 0.18rem 0.55rem;
+      padding: var(--space-1) var(--space-2);
       border-radius: 9999px;
       background: var(--clr-surface-alt);
       color: var(--clr-text-muted);
@@ -259,8 +259,8 @@ import { Recipe } from '../../models/models';
     /* --- Editorial counter (top-left corner) --- */
     .card-num {
       position: absolute;
-      top: 0.85rem;
-      left: 1rem;
+      top: var(--space-3);
+      left: var(--space-4);
       font-family: var(--font-display);
       font-size: 0.95rem;
       font-weight: 800;
@@ -277,10 +277,10 @@ import { Recipe } from '../../models/models';
       height: 1px;
       background: rgba(255, 255, 255, 0.7);
       vertical-align: middle;
-      margin-right: 0.45rem;
+      margin-right: var(--space-2);
       transform: translateY(-1px);
     }
-    .card.featured .card-num { font-size: 1.15rem; top: 1.1rem; left: 1.25rem; }
+    .card.featured .card-num { font-size: 1.15rem; top: var(--space-4); left: var(--space-5); }
 
     /* --- Overlay variant (bento tile — image fills, text scrim at bottom) --- */
     .card.overlay {
@@ -298,7 +298,7 @@ import { Recipe } from '../../models/models';
     .card.overlay .card-body {
       position: absolute;
       inset: auto 0 0 0;
-      padding: 1.1rem 1.25rem 1.15rem;
+      padding: var(--space-4) var(--space-5);
       background: linear-gradient(180deg, transparent 0%, rgba(12, 10, 8, 0.35) 40%, rgba(12, 10, 8, 0.82) 100%);
       color: #fff;
       z-index: 2;
@@ -326,8 +326,8 @@ import { Recipe } from '../../models/models';
     .card.overlay .meta {
       border-top-color: rgba(255, 255, 255, 0.22);
       color: rgba(255, 255, 255, 0.92);
-      margin-top: 0.75rem;
-      padding-top: 0.65rem;
+      margin-top: var(--space-3);
+      padding-top: var(--space-3);
     }
     .card.overlay .difficulty { background: rgba(255, 255, 255, 0.18); color: #fff; }
     .card.overlay .diff-easy   { background: oklch(68% 0.14 145 / 0.9); color: #fff; }
@@ -351,19 +351,19 @@ import { Recipe } from '../../models/models';
       border-radius: 1rem 0 0 1rem;
     }
     .card.compact .card-body {
-      padding: 0.9rem 1rem;
+      padding: var(--space-4);
       display: flex;
       flex-direction: column;
       justify-content: center;
-      gap: 0.3rem;
+      gap: var(--space-1);
     }
     .card.compact .category { margin-bottom: 0; }
     .card.compact .title { font-size: 0.95rem; margin: 0; }
     .card.compact .meta {
-      margin-top: 0.5rem;
-      padding-top: 0.5rem;
+      margin-top: var(--space-2);
+      padding-top: var(--space-2);
       font-size: 0.75rem;
-      gap: 0.75rem;
+      gap: var(--space-3);
     }
 
     @keyframes fadeInUp {
@@ -381,9 +381,9 @@ import { Recipe } from '../../models/models';
 
     @media (max-width: 500px) {
       .card.compact .card-image { width: 90px; }
-      .card.compact .card-body { padding: 0.75rem 0.875rem; }
+      .card.compact .card-body { padding: var(--space-3) var(--space-4); }
       .card.compact .title { font-size: 0.875rem; }
-      .card.compact .meta { font-size: 0.7rem; gap: 0.5rem; }
+      .card.compact .meta { font-size: 0.7rem; gap: var(--space-2); }
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
