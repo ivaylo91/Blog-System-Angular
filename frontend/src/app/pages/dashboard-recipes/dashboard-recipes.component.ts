@@ -201,12 +201,15 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
     .pill:hover:not(.active) { background: #f5f0e8; border-color: rgba(0,0,0,0.18); }
 
     /* Scroll-shadow pattern: warm-tinted shadows on left/right edges that
-       fade out when scrolled to that end (Lea Verou technique). */
+       fade out when scrolled to that end (Lea Verou technique). Inner top
+       highlight reads as a machined enclosure edge. */
     .table-wrap {
       border-radius: 1.5rem;
       border: 1px solid rgba(0,0,0,0.14);
       overflow-x: auto;
-      box-shadow: 0 4px 16px rgba(28,25,23,0.08);
+      box-shadow:
+        0 4px 16px rgba(28,25,23,0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.55);
       background:
         linear-gradient(to right, #ffffff, #ffffff) left center / 40px 100% no-repeat local,
         linear-gradient(to right, #ffffff, #ffffff) right center / 40px 100% no-repeat local,

@@ -657,13 +657,18 @@ import { SeoService } from '../../services/seo.service';
       .prose-card p::first-letter { font-size: 3.6em; padding-right: 0.55rem; }
     }
 
-    /* Section cards */
+    /* Section cards — polished bezel via layered shadows: ambient drop +
+       hairline outer ring + 1px inner top highlight (reads like light catching
+       a machined edge). Hairline border drops in favor of the box-shadow ring
+       so the inner highlight registers cleanly against the surface. */
     .section-card {
       background: var(--clr-surface);
       border-radius: 1.25rem;
       padding: 1.5rem;
-      border: 1px solid var(--clr-border-faint);
-      box-shadow: var(--shadow-sm);
+      box-shadow:
+        var(--shadow-sm),
+        0 0 0 1px var(--clr-border-faint),
+        inset 0 1px 0 rgba(255, 255, 255, 0.55);
       scroll-margin-top: 8rem;
     }
     .section-heading {

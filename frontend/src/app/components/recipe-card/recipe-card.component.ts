@@ -55,11 +55,17 @@ import { Recipe } from '../../models/models';
     </a>
   `,
   styles: [`
+    /* Double-bezel architecture: outer shell (recessed warm tint + hairline ring)
+       wraps inner core (image + body) with concentric corner radii. The ::before
+       pseudo paints a 1px inner highlight along the top edge — reads like light
+       catching a machined enclosure. */
     .card {
       display: block;
-      border-radius: 1.25rem;
-      overflow: hidden;
-      background: var(--clr-surface);
+      position: relative;
+      padding: 4px;
+      border-radius: 1.5rem;
+      background: var(--clr-surface-alt);
+      border: 1px solid var(--clr-border-faint);
       box-shadow: var(--shadow-sm);
       text-decoration: none;
       color: inherit;
@@ -67,6 +73,18 @@ import { Recipe } from '../../models/models';
       animation: fadeInUp 0.5s var(--ease-out-expo) both;
       touch-action: manipulation;
       cursor: pointer;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      right: 4px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.55) 50%, transparent 100%);
+      border-radius: calc(1.5rem - 4px) calc(1.5rem - 4px) 0 0;
+      z-index: 3;
+      pointer-events: none;
     }
     @media (hover: hover) and (pointer: fine) {
       .card:hover {
@@ -85,6 +103,7 @@ import { Recipe } from '../../models/models';
       aspect-ratio: 4 / 3;
       position: relative;
       overflow: hidden;
+      border-radius: calc(1.5rem - 4px) calc(1.5rem - 4px) 0 0;
     }
     .card.featured .card-image {
       aspect-ratio: 16 / 9;
@@ -187,7 +206,11 @@ import { Recipe } from '../../models/models';
     }
 
     /* --- Body --- */
-    .card-body { padding: var(--space-5) var(--space-6) var(--space-6); }
+    .card-body {
+      padding: var(--space-5) var(--space-6) var(--space-6);
+      background: var(--clr-surface);
+      border-radius: 0 0 calc(1.5rem - 4px) calc(1.5rem - 4px);
+    }
     .category {
       display: inline-block;
       font-size: 0.65rem;
@@ -282,13 +305,22 @@ import { Recipe } from '../../models/models';
     }
     .card.featured .card-num { font-size: 1.15rem; top: var(--space-4); left: var(--space-5); }
 
-    /* --- Overlay variant (bento tile — image fills, text scrim at bottom) --- */
+    /* --- Overlay variant (bento tile — image fills, text scrim at bottom).
+       Bezel disabled: bento needs edge-to-edge image fill. --- */
     .card.overlay {
       position: relative;
       height: 100%;
       display: block;
       isolation: isolate;
+      padding: 0;
+      background: transparent;
+      border: none;
+      border-radius: 1.25rem;
+      overflow: hidden;
     }
+    .card.overlay::before { display: none; }
+    .card.overlay .card-image { border-radius: 0; }
+    .card.overlay .card-body { border-radius: 0; }
     .card.overlay .card-image {
       position: absolute;
       inset: 0;
@@ -337,11 +369,27 @@ import { Recipe } from '../../models/models';
       .card.overlay:hover .card-image img { transform: scale(1.06); }
     }
 
-    /* --- Compact (horizontal) variant --- */
+    /* --- Compact (horizontal) variant — side-concentric bezel --- */
     .card.compact {
       display: flex;
       flex-direction: row;
       border-radius: 1rem;
+    }
+    .card.compact::before {
+      top: 4px;
+      bottom: 4px;
+      left: 4px;
+      right: auto;
+      width: 1px;
+      height: auto;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, transparent 60%);
+      border-radius: calc(1rem - 4px) 0 0 calc(1rem - 4px);
+    }
+    .card.compact .card-image {
+      border-radius: calc(1rem - 4px) 0 0 calc(1rem - 4px);
+    }
+    .card.compact .card-body {
+      border-radius: 0 calc(1rem - 4px) calc(1rem - 4px) 0;
     }
     .card.compact .card-image {
       aspect-ratio: unset;

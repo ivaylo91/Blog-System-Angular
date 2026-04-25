@@ -143,12 +143,16 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
     .btn-bulk-delete:hover { background: #fee2e2; border-color: #f87171; color: #991b1b; }
 
     /* Table wrap — scroll-shadow pattern: warm-tinted shadows on left/right
-       edges that fade out when scrolled to that end (Lea Verou technique). */
+       edges that fade out when scrolled to that end (Lea Verou technique).
+       Inner top highlight stacks on the box-shadow chain to read as a
+       machined enclosure edge. */
     .table-wrap {
       border-radius: 1.25rem;
       border: 1px solid rgba(0,0,0,0.09);
       overflow-x: auto;
-      box-shadow: 0 2px 12px rgba(28,25,23,0.06);
+      box-shadow:
+        0 2px 12px rgba(28,25,23,0.06),
+        inset 0 1px 0 rgba(255, 255, 255, 0.55);
       background:
         linear-gradient(to right, #ffffff, #ffffff) left center / 40px 100% no-repeat local,
         linear-gradient(to right, #ffffff, #ffffff) right center / 40px 100% no-repeat local,
