@@ -183,13 +183,12 @@ import { ThemeService } from '../../services/theme.service';
     }
     .brand:hover .brand-text { color: var(--clr-brand); }
 
-    /* Desktop nav */
+    /* Nav layout — main routes live in the drawer; only auth controls
+       stay inline on desktop (theme toggle + signin/register or logout). */
     .nav-links { display: flex; align-items: center; gap: 0.25rem; }
-    .nav-main { display: flex; align-items: center; gap: 0.35rem; }
+    .nav-main { display: none; }
     .nav-auth {
       display: flex; align-items: center; gap: 0.5rem;
-      margin-left: 0.75rem; padding-left: 0.75rem;
-      border-left: 1px solid var(--clr-border);
     }
     .nav-links a:not(.register-btn) {
       padding: 0.45rem 0.9rem; border-radius: 9999px;
@@ -239,9 +238,9 @@ import { ThemeService } from '../../services/theme.service';
     .theme-toggle svg { width: 1rem; height: 1rem; }
     .theme-toggle:hover { background: var(--clr-surface-hover); color: var(--clr-text); }
 
-    /* Mobile toggle — hidden on desktop */
+    /* Hamburger toggle — visible at all viewports; primary nav affordance */
     .mobile-toggle {
-      display: none;
+      display: flex;
       background: none; border: none;
       padding: 0.5rem; cursor: pointer;
       border-radius: 0.5rem;
@@ -278,18 +277,18 @@ import { ThemeService } from '../../services/theme.service';
       pointer-events: auto;
     }
 
-    /* ── Left drawer ────────────────────────────────────────────────── */
+    /* ── Left-slide drawer (visible at all viewports) ──────────────── */
     .mobile-drawer {
-      display: none;
+      display: flex;
       position: fixed; top: 0; left: 0;
-      width: 280px; max-width: 85vw;
+      width: 320px; max-width: 85vw;
       height: 100vh; height: 100dvh;
       background: var(--clr-surface);
       z-index: var(--z-drawer);
       flex-direction: column;
       transform: translateX(-100%);
-      transition: transform 0.28s var(--ease-out-expo);
-      box-shadow: 4px 0 24px rgba(28,25,23,0.18);
+      transition: transform 0.32s cubic-bezier(0.32, 0.72, 0, 1);
+      box-shadow: 4px 0 24px rgba(28, 25, 23, 0.18);
       overflow-y: auto;
     }
     .mobile-drawer.open { transform: translateX(0); }
@@ -399,10 +398,12 @@ import { ThemeService } from '../../services/theme.service';
     .drawer-register:hover { background: var(--clr-brand-dark); }
 
     @media (max-width: 768px) {
-      .mobile-toggle { display: flex; }
-      .nav-links { display: none; }
-      .mobile-drawer { display: flex; }
       .site-header.scrolled .header-inner { height: 3.5rem; }
+    }
+    /* Below 640px the header collapses to brand + hamburger only —
+       auth controls (theme + signin/register or logout) move to the drawer. */
+    @media (max-width: 640px) {
+      .nav-auth { display: none; }
     }
     @media (max-width: 400px) {
       .brand-text { font-size: 0.92rem; }
