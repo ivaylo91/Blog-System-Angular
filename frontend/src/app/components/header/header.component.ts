@@ -11,8 +11,9 @@ import { ThemeService } from '../../services/theme.service';
     <header class="site-header" [class.scrolled]="scrolled()">
       <div class="header-inner">
 
-        <button class="mobile-toggle" (click)="openDrawer()"
-                aria-label="Отвори менюто" [attr.aria-expanded]="drawerOpen()">
+        <button class="mobile-toggle" [class.open]="drawerOpen()" (click)="toggleDrawer()"
+                [attr.aria-label]="drawerOpen() ? 'Затвори менюто' : 'Отвори менюто'"
+                [attr.aria-expanded]="drawerOpen()">
           <span class="hamburger"></span>
         </button>
 
@@ -136,32 +137,48 @@ import { ThemeService } from '../../services/theme.service';
     </div>
   `,
   styles: [`
+    /* Fluid Island: outer wrapper holds the layout slot (sticky in flex flow);
+       .header-inner is the visual pill — detached from edges, glass-blurred,
+       inner-highlight-rimmed. Wrapper is pointer-events:none so dead space
+       around the pill doesn't catch clicks. */
     .site-header {
       position: sticky;
-      top: 0;
+      top: 1rem;
       z-index: var(--z-sticky);
-      background: color-mix(in oklch, var(--clr-surface) 92%, transparent);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--clr-border-faint);
-      transition: box-shadow 0.3s var(--ease-out-expo), border-color 0.3s var(--ease-out-expo), background 0.3s var(--ease-out-expo);
-    }
-    .site-header.scrolled {
-      background: color-mix(in oklch, var(--clr-surface) 97%, transparent);
-      box-shadow: 0 1px 3px rgba(28,25,23,0.05), 0 8px 24px rgba(28,25,23,0.07);
-      border-bottom-color: var(--clr-border);
+      padding: 1rem 1.5rem 0;
+      display: flex;
+      justify-content: center;
+      pointer-events: none;
     }
     .header-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 1.5rem;
-      height: 4rem;
+      pointer-events: auto;
+      max-width: 100%;
+      padding: 0 0.75rem 0 1.25rem;
+      height: 3.5rem;
+      border-radius: 9999px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
+      gap: 1.25rem;
+      background: color-mix(in oklch, var(--clr-surface) 84%, transparent);
+      backdrop-filter: blur(20px) saturate(140%);
+      -webkit-backdrop-filter: blur(20px) saturate(140%);
+      box-shadow:
+        0 8px 24px rgba(28, 25, 23, 0.08),
+        0 0 0 1px var(--clr-border-faint),
+        inset 0 1px 0 rgba(255, 255, 255, 0.55);
+      transition:
+        box-shadow 0.4s var(--ease-out-expo),
+        background 0.4s var(--ease-out-expo),
+        height 0.3s var(--ease-out-expo);
     }
-    .site-header.scrolled .header-inner { height: 3.25rem; }
+    .site-header.scrolled .header-inner {
+      height: 3.1rem;
+      background: color-mix(in oklch, var(--clr-surface) 94%, transparent);
+      box-shadow:
+        0 14px 32px rgba(28, 25, 23, 0.13),
+        0 0 0 1px var(--clr-border),
+        inset 0 1px 0 rgba(255, 255, 255, 0.55);
+    }
 
     /* Brand */
     .brand {
@@ -255,44 +272,58 @@ import { ThemeService } from '../../services/theme.service';
     .hamburger {
       display: block; width: 1.25rem; height: 2px;
       background: var(--clr-text); position: relative;
+      transition: background 0.18s var(--ease-out-expo);
     }
     .hamburger::before, .hamburger::after {
       content: ''; position: absolute; left: 0;
       width: 100%; height: 2px; background: var(--clr-text);
+      transition: transform 0.32s cubic-bezier(0.32, 0.72, 0, 1);
     }
     .hamburger::before { top: -6px; }
     .hamburger::after { top: 6px; }
+    /* Morph to ✕: middle line fades, top/bottom rotate to converge at center */
+    .mobile-toggle.open .hamburger { background: transparent; }
+    .mobile-toggle.open .hamburger::before { transform: translateY(6px) rotate(45deg); }
+    .mobile-toggle.open .hamburger::after  { transform: translateY(-6px) rotate(-45deg); }
 
-    /* ── Drawer overlay ─────────────────────────────────────────────── */
+    /* ── Drawer overlay (legacy — kept for click-out-to-close behaviour) ── */
     .drawer-overlay {
       position: fixed; inset: 0;
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(28, 25, 23, 0.18);
       z-index: var(--z-overlay);
-      backdrop-filter: blur(2px);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.28s var(--ease-out-expo);
+      transition: opacity 0.4s var(--ease-out-expo);
     }
     .drawer-overlay.visible {
       opacity: 1;
       pointer-events: auto;
     }
 
-    /* ── Left drawer ────────────────────────────────────────────────── */
+    /* ── Mobile drawer — fullscreen takeover with warm-glass surface ─── */
     .mobile-drawer {
       display: none;
-      position: fixed; top: 0; left: 0;
-      width: 280px; max-width: 85vw;
-      height: 100vh; height: 100dvh;
-      background: var(--clr-surface);
+      position: fixed; inset: 0;
+      width: 100%;
+      height: 100dvh;
+      background: color-mix(in oklch, var(--clr-surface) 96%, transparent);
+      backdrop-filter: blur(28px) saturate(140%);
+      -webkit-backdrop-filter: blur(28px) saturate(140%);
       z-index: var(--z-drawer);
       flex-direction: column;
-      transform: translateX(-100%);
-      transition: transform 0.28s var(--ease-out-expo);
-      box-shadow: 4px 0 24px rgba(28,25,23,0.18);
+      opacity: 0;
+      pointer-events: none;
+      transition:
+        opacity 0.42s cubic-bezier(0.32, 0.72, 0, 1);
       overflow-y: auto;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
     }
-    .mobile-drawer.open { transform: translateX(0); }
+    .mobile-drawer.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
 
     .drawer-header {
       display: flex; align-items: center;
@@ -402,14 +433,40 @@ import { ThemeService } from '../../services/theme.service';
       .mobile-toggle { display: flex; }
       .nav-links { display: none; }
       .mobile-drawer { display: flex; }
-      .site-header.scrolled .header-inner { height: 3.5rem; }
+      .site-header { padding-top: 0.75rem; top: 0.75rem; }
+      .site-header.scrolled .header-inner { height: 3rem; }
+      /* Header pill must stack above the fullscreen drawer so the morphed ✕
+         remains accessible. */
+      .site-header { z-index: calc(var(--z-drawer) + 1); }
+
+      /* Staggered fade-up reveal of drawer items on open */
+      .drawer-nav .drawer-item {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      .mobile-drawer.open .drawer-nav .drawer-item {
+        animation: drawer-item-rise 520ms cubic-bezier(0.32, 0.72, 0, 1) forwards;
+      }
+      .mobile-drawer.open .drawer-nav .drawer-item:nth-child(1) { animation-delay: 140ms; }
+      .mobile-drawer.open .drawer-nav .drawer-item:nth-child(2) { animation-delay: 195ms; }
+      .mobile-drawer.open .drawer-nav .drawer-item:nth-child(3) { animation-delay: 250ms; }
+      .mobile-drawer.open .drawer-nav .drawer-item:nth-child(4) { animation-delay: 305ms; }
+      .mobile-drawer.open .drawer-nav .drawer-item:nth-child(5) { animation-delay: 360ms; }
+      @keyframes drawer-item-rise {
+        from { opacity: 0; transform: translateY(18px); filter: blur(4px); }
+        to   { opacity: 1; transform: translateY(0);    filter: blur(0); }
+      }
     }
     @media (max-width: 400px) {
       .brand-text { font-size: 0.92rem; }
-      .header-inner { padding: 0 1rem; }
+      .site-header { padding: 0.6rem 0.75rem 0; top: 0.6rem; }
+      .header-inner { padding: 0 0.5rem 0 0.85rem; gap: 0.5rem; }
     }
     @media (prefers-reduced-motion: reduce) {
       .mobile-drawer, .drawer-overlay { transition: none; }
+      .header-inner { transition: none; }
+      .hamburger, .hamburger::before, .hamburger::after { transition: none; }
+      .mobile-drawer.open .drawer-nav .drawer-item { animation: none; opacity: 1; transform: none; filter: none; }
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -423,6 +480,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
   openDrawer(): void {
     this.drawerOpen.set(true);
     document.body.style.overflow = 'hidden';
+  }
+
+  toggleDrawer(): void {
+    if (this.drawerOpen()) {
+      this.close();
+    } else {
+      this.openDrawer();
+    }
   }
 
   close(): void {
