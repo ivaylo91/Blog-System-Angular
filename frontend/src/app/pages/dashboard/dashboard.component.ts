@@ -187,12 +187,12 @@ import { SeoService } from '../../services/seo.service';
       flex-direction: column;
       align-items: flex-start;
       gap: 0.5rem;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      box-shadow: 0 2px 10px rgba(28,25,23,0.05);
       transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
     .stat-card:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.09);
+      box-shadow: 0 8px 24px rgba(28,25,23,0.09);
     }
     .stat-icon {
       width: 2.5rem;
@@ -235,7 +235,7 @@ import { SeoService } from '../../services/seo.service';
       border-radius: 1.25rem;
       border: 1px solid rgba(0,0,0,0.07);
       padding: 1.25rem;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      box-shadow: 0 2px 10px rgba(28,25,23,0.05);
     }
     .card-header {
       display: flex;

@@ -142,13 +142,19 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
     .btn-bulk-delete svg { width: 0.875rem; height: 0.875rem; flex-shrink: 0; }
     .btn-bulk-delete:hover { background: #fee2e2; border-color: #f87171; color: #991b1b; }
 
-    /* Table wrap */
+    /* Table wrap — scroll-shadow pattern: warm-tinted shadows on left/right
+       edges that fade out when scrolled to that end (Lea Verou technique). */
     .table-wrap {
-      background: #ffffff;
       border-radius: 1.25rem;
       border: 1px solid rgba(0,0,0,0.09);
       overflow-x: auto;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      box-shadow: 0 2px 12px rgba(28,25,23,0.06);
+      background:
+        linear-gradient(to right, #ffffff, #ffffff) left center / 40px 100% no-repeat local,
+        linear-gradient(to right, #ffffff, #ffffff) right center / 40px 100% no-repeat local,
+        linear-gradient(to right, rgba(28,25,23,0.16), transparent) left center / 14px 100% no-repeat scroll,
+        linear-gradient(to left,  rgba(28,25,23,0.16), transparent) right center / 14px 100% no-repeat scroll,
+        #ffffff;
     }
 
     /* Empty state */

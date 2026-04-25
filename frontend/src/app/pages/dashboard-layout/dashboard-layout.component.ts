@@ -374,7 +374,7 @@ import { AuthService } from '../../services/auth.service';
         background: #fff;
         border-top: 1px solid rgba(0,0,0,0.08);
         z-index: 30;
-        box-shadow: 0 -2px 12px rgba(0,0,0,0.06);
+        box-shadow: 0 -2px 12px rgba(28,25,23,0.06);
       }
       .bottom-nav-item {
         flex: 1;

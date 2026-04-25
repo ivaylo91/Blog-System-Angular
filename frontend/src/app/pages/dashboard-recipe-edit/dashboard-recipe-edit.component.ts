@@ -283,7 +283,7 @@ interface StepInput { description: string; }
       border-radius: 1.25rem;
       border: 1px solid rgba(0,0,0,0.07);
       padding: 1.5rem;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+      box-shadow: 0 2px 12px rgba(28,25,23,0.05);
     }
     .card-title {
       display: flex;

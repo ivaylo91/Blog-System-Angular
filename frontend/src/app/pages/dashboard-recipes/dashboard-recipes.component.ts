@@ -200,12 +200,19 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
     .pill.active { background: #78350f; color: #fff; border-color: #78350f; }
     .pill:hover:not(.active) { background: #f5f0e8; border-color: rgba(0,0,0,0.18); }
 
+    /* Scroll-shadow pattern: warm-tinted shadows on left/right edges that
+       fade out when scrolled to that end (Lea Verou technique). */
     .table-wrap {
-      background: #ffffff;
       border-radius: 1.5rem;
       border: 1px solid rgba(0,0,0,0.14);
       overflow-x: auto;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      box-shadow: 0 4px 16px rgba(28,25,23,0.08);
+      background:
+        linear-gradient(to right, #ffffff, #ffffff) left center / 40px 100% no-repeat local,
+        linear-gradient(to right, #ffffff, #ffffff) right center / 40px 100% no-repeat local,
+        linear-gradient(to right, rgba(28,25,23,0.16), transparent) left center / 14px 100% no-repeat scroll,
+        linear-gradient(to left,  rgba(28,25,23,0.16), transparent) right center / 14px 100% no-repeat scroll,
+        #ffffff;
     }
     table { width: 100%; border-collapse: collapse; }
     th {

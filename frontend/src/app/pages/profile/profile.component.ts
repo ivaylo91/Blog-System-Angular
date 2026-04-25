@@ -53,7 +53,7 @@ import { SeoService } from '../../services/seo.service';
       background: #ffffff;
       border-radius: 2rem;
       border: 1px solid rgba(0,0,0,0.14);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+      box-shadow: 0 20px 60px rgba(28,25,23,0.12);
     }
     h1 {
       font-family: 'Georgia', serif;

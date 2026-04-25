@@ -113,7 +113,7 @@ import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.co
       background: #ffffff;
       border-radius: 1.25rem;
       border: 1px solid rgba(0,0,0,0.07);
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      box-shadow: 0 2px 10px rgba(28,25,23,0.05);
     }
     .empty-icon {
       width: 5rem;
@@ -163,7 +163,7 @@ import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.co
       border-radius: 1.25rem;
       overflow: hidden;
       background: #fff;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      box-shadow: 0 2px 10px rgba(28,25,23,0.05);
     }
     .sk-img {
       aspect-ratio: 4/3;
