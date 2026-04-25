@@ -296,11 +296,12 @@ p, li {
   text-wrap: pretty;
 }
 
-/* ── Focus indicator ────────────────────────────────────────────────────── */
+/* ── Focus indicator ──────────────────────────────────────────────────────
+   Outline follows each element's own border-radius in modern browsers —
+   never force a radius here, or pill buttons & cards collapse on focus. */
 :focus-visible {
   outline: 2.5px solid var(--clr-focus);
   outline-offset: 3px;
-  border-radius: 4px;
 }
 
 /* ── View transitions ───────────────────────────────────────────────────── */

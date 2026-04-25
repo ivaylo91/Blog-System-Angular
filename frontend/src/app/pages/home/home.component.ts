@@ -38,13 +38,6 @@ import { PerfService } from '../../services/perf.service';
             <span>Търси</span>
           </button>
         </form>
-        @if (featured().length > 0) {
-          <a class="hero-featured" [routerLink]="['/recipes', featured()[0].slug]">
-            <span class="hero-featured-label">Избрана рецепта</span>
-            <span class="hero-featured-title">{{ featured()[0].title }}</span>
-            <span class="hero-featured-arrow" aria-hidden="true">→</span>
-          </a>
-        }
       </div>
     </section>
 
@@ -161,8 +154,14 @@ import { PerfService } from '../../services/perf.service';
       position: absolute;
       inset: 0;
       z-index: -1;
+      /* Three-layer scrim. Top: radial darkening anchored bottom-left so the
+         content region (eyebrow → featured pill) sits on a guaranteed contrast
+         floor regardless of how bright the underlying photo is — top-right
+         stays open for the image to breathe. Middle/bottom: existing vertical
+         + horizontal washes. */
       background:
-        linear-gradient(180deg, rgba(12,10,8,0.25) 0%, rgba(12,10,8,0) 35%, rgba(12,10,8,0.55) 75%, rgba(12,10,8,0.88) 100%),
+        radial-gradient(78% 70% at 8% 95%, rgba(8,6,4,0.62) 0%, rgba(8,6,4,0.28) 45%, transparent 75%),
+        linear-gradient(180deg, rgba(12,10,8,0.30) 0%, rgba(12,10,8,0.05) 30%, rgba(12,10,8,0.60) 75%, rgba(12,10,8,0.92) 100%),
         linear-gradient(90deg, rgba(12,10,8,0.55) 0%, rgba(12,10,8,0.15) 55%, transparent 100%);
     }
     .hero:not(.has-image) .hero-scrim {
@@ -181,9 +180,9 @@ import { PerfService } from '../../services/perf.service';
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.22em;
-      color: rgba(255,255,255,0.85);
+      color: rgba(255,255,255,0.95);
       padding: var(--space-1) var(--space-4);
-      border: 1px solid rgba(255,255,255,0.28);
+      border: 1px solid rgba(255,255,255,0.32);
       border-radius: 9999px;
       margin-bottom: var(--space-7);
       backdrop-filter: blur(6px);
@@ -206,13 +205,13 @@ import { PerfService } from '../../services/perf.service';
       font-weight: 800;
     }
     .hero-subtitle {
-      color: rgba(255,255,255,0.9);
+      color: #fff;
       font-size: clamp(1rem, 1.3vw, 1.2rem);
       line-height: 1.6;
       margin: 0 0 var(--space-7);
       font-weight: 400;
       max-width: 48ch;
-      text-shadow: 0 1px 14px rgba(0,0,0,0.3);
+      text-shadow: 0 1px 18px rgba(0,0,0,0.45);
     }
     .search-form {
       display: flex;
@@ -256,55 +255,6 @@ import { PerfService } from '../../services/perf.service';
     .search-btn svg { width: 1rem; height: 1rem; flex-shrink: 0; }
     .search-btn:hover { background: var(--clr-green-dark); }
     .search-btn:active { transform: scale(0.97); }
-
-    .hero-featured {
-      display: inline-flex;
-      align-items: center;
-      gap: var(--space-3);
-      margin-top: var(--space-7);
-      padding: var(--space-3) var(--space-4);
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.22);
-      border-radius: 9999px;
-      color: #fff;
-      text-decoration: none;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      max-width: 100%;
-      transition: background 0.25s var(--ease-out-expo), transform 0.25s var(--ease-out-expo), border-color 0.25s;
-    }
-    .hero-featured:hover {
-      background: rgba(255,255,255,0.18);
-      border-color: rgba(255,255,255,0.4);
-      transform: translateY(-2px);
-    }
-    .hero-featured-label {
-      font-size: 0.68rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: rgba(255,255,255,0.75);
-      flex-shrink: 0;
-    }
-    .hero-featured-title {
-      font-family: var(--font-display);
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: #fff;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 24ch;
-    }
-    .hero-featured-arrow {
-      font-size: 1rem;
-      color: color-mix(in oklch, var(--clr-brand) 30%, #fff);
-      flex-shrink: 0;
-      transition: transform 0.25s var(--ease-out-expo);
-    }
-    .hero-featured:hover .hero-featured-arrow {
-      transform: translateX(4px);
-    }
 
     /* ===== BENTO GRID ===== */
     .featured { padding: clamp(3rem, 6vw, 5.5rem) var(--space-6) clamp(3rem, 5vw, 5rem); background: var(--clr-surface); }
@@ -593,7 +543,6 @@ import { PerfService } from '../../services/perf.service';
 
     @media (max-width: 900px) {
       .hero { min-height: clamp(460px, 70dvh, 620px); }
-      .hero-featured-title { max-width: 18ch; }
       .bento {
         grid-template-columns: repeat(2, 1fr);
         grid-template-rows: repeat(5, clamp(180px, 40vw, 240px));
@@ -623,8 +572,6 @@ import { PerfService } from '../../services/perf.service';
       .search-form { max-width: 100%; border-radius: 0.75rem; }
       .search-input { padding: var(--space-3) var(--space-4); font-size: 0.9rem; }
       .search-btn { padding: var(--space-3) var(--space-4); font-size: 0.85rem; }
-      .hero-featured { margin-top: var(--space-6); }
-      .hero-featured-title { max-width: 14ch; font-size: 0.88rem; }
       .section-title::after { width: 2rem; }
       .bento {
         grid-template-columns: 1fr;
@@ -645,7 +592,6 @@ import { PerfService } from '../../services/perf.service';
     }
     @media (max-width: 400px) {
       .search-btn span { display: none; }
-      .hero-featured-label { display: none; }
     }
 
     /* Hero entrance choreography */
@@ -656,26 +602,19 @@ import { PerfService } from '../../services/perf.service';
     .hero-eyebrow,
     .hero-title,
     .hero-subtitle,
-    .search-form,
-    .hero-featured {
+    .search-form {
       animation: hero-rise 620ms var(--ease-out-expo) both;
     }
     .hero-eyebrow  { animation-delay:   0ms; }
     .hero-title    { animation-delay: 120ms; }
     .hero-subtitle { animation-delay: 240ms; }
     .search-form   { animation-delay: 360ms; }
-    .hero-featured { animation-delay: 480ms; }
 
     @media (prefers-reduced-motion: reduce) {
-      .hero-featured { transition: background 0.2s, border-color 0.2s; }
-      .hero-featured:hover { transform: none; }
-      .hero-featured-arrow { transition: none; }
-      .hero-featured:hover .hero-featured-arrow { transform: none; }
       .hero-eyebrow,
       .hero-title,
       .hero-subtitle,
-      .search-form,
-      .hero-featured { animation: none; }
+      .search-form { animation: none; }
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,

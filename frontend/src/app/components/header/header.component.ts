@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, OnDestroy, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, inject, OnInit, OnDestroy, signal, viewChild } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { ThemeService } from '../../services/theme.service';
@@ -58,7 +58,9 @@ import { ThemeService } from '../../services/theme.service';
     <!-- ── Mobile left drawer ──────────────────────────────────────────── -->
     <div class="drawer-overlay" [class.visible]="drawerOpen()" (click)="close()" aria-hidden="true"></div>
 
-    <div class="mobile-drawer" [class.open]="drawerOpen()" role="dialog" aria-label="Навигация">
+    <div class="mobile-drawer" #drawer [class.open]="drawerOpen()"
+         role="dialog" aria-modal="true" aria-label="Навигация"
+         [attr.inert]="drawerOpen() ? null : ''">
 
       <div class="drawer-header">
         <a routerLink="/" class="drawer-brand" (click)="close()">
@@ -421,14 +423,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
   drawerOpen = signal(false);
   scrolled = signal(false);
 
+  private drawerEl = viewChild<ElementRef<HTMLElement>>('drawer');
+  private triggerEl: HTMLElement | null = null;
+
   openDrawer(): void {
+    this.triggerEl = document.activeElement as HTMLElement | null;
     this.drawerOpen.set(true);
     document.body.style.overflow = 'hidden';
+    queueMicrotask(() => this.getFocusableElements()[0]?.focus());
   }
 
   close(): void {
+    if (!this.drawerOpen()) return;
     this.drawerOpen.set(false);
     document.body.style.overflow = '';
+    this.triggerEl?.focus();
+    this.triggerEl = null;
   }
 
   userInitial(): string {
@@ -436,13 +446,46 @@ export class HeaderComponent implements OnInit, OnDestroy {
     return name.charAt(0).toUpperCase() || '?';
   }
 
+  private getFocusableElements(): HTMLElement[] {
+    const root = this.drawerEl()?.nativeElement;
+    if (!root) return [];
+    const selector = 'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])';
+    return Array.from(root.querySelectorAll<HTMLElement>(selector))
+      .filter(el => el.offsetParent !== null);
+  }
+
   private scrollHandler = () => this.scrolled.set(window.scrollY > 30);
+
+  private keydownHandler = (e: KeyboardEvent) => {
+    if (!this.drawerOpen()) return;
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      this.close();
+      return;
+    }
+    if (e.key === 'Tab') {
+      const focusable = this.getFocusableElements();
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const active = document.activeElement as HTMLElement | null;
+      if (e.shiftKey && (active === first || !this.drawerEl()?.nativeElement.contains(active))) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  };
 
   ngOnInit(): void {
     window.addEventListener('scroll', this.scrollHandler, { passive: true });
+    document.addEventListener('keydown', this.keydownHandler);
   }
   ngOnDestroy(): void {
     window.removeEventListener('scroll', this.scrollHandler);
+    document.removeEventListener('keydown', this.keydownHandler);
     document.body.style.overflow = '';
   }
 }
