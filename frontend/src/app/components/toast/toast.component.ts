@@ -41,7 +41,7 @@ import { ToastService } from '../../services/toast.service';
       align-items: center;
       gap: 0.5rem;
       padding: 0.75rem 1rem;
-      border-radius: 0.875rem;
+      border-radius: var(--radius-md);
       font-size: 0.875rem;
       font-weight: 500;
       max-width: 360px;

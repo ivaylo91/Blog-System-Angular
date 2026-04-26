@@ -158,6 +158,15 @@
   /* Focus */
   --clr-focus: oklch(48% 0.09 155);
 
+  /* Border radius scale — promote raw values here so the shape language is one knob. */
+  --radius-xs:     0.5rem;    /* icon buttons, inline chrome */
+  --radius-sm:     0.75rem;   /* drawer items, form fields, dashboard buttons */
+  --radius-md:     0.875rem;  /* search form, toasts, filter pills */
+  --radius-lg:     1.25rem;   /* cards, bento tiles, panels */
+  --radius-xl:     1.5rem;    /* recipe-card outer shell, modal */
+  --radius-pill:   9999px;    /* pill buttons, tags, badges */
+  --radius-circle: 50%;       /* avatars, circular icon buttons */
+
   /* z-index scale (global chrome) */
   --z-sticky:   50;     /* sticky header */
   --z-overlay:  59;     /* drawer backdrop */

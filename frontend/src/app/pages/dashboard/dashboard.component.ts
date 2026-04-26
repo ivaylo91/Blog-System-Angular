@@ -158,7 +158,7 @@ import { SeoService } from '../../services/seo.service';
       padding: 0.65rem 1.25rem;
       background: #4a7c59;
       color: #fff;
-      border-radius: 0.75rem;
+      border-radius: var(--radius-sm);
       text-decoration: none;
       font-weight: 600;
       font-size: 0.875rem;
@@ -181,7 +181,7 @@ import { SeoService } from '../../services/seo.service';
     .stat-card {
       padding: 1.5rem 1.25rem;
       background: #ffffff;
-      border-radius: 1.25rem;
+      border-radius: var(--radius-lg);
       border: 1px solid rgba(0,0,0,0.07);
       display: flex;
       flex-direction: column;
@@ -197,7 +197,7 @@ import { SeoService } from '../../services/seo.service';
     .stat-icon {
       width: 2.5rem;
       height: 2.5rem;
-      border-radius: 0.75rem;
+      border-radius: var(--radius-sm);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -232,7 +232,7 @@ import { SeoService } from '../../services/seo.service';
     }
     .card {
       background: #ffffff;
-      border-radius: 1.25rem;
+      border-radius: var(--radius-lg);
       border: 1px solid rgba(0,0,0,0.07);
       padding: 1.25rem;
       box-shadow: 0 2px 10px rgba(28,25,23,0.05);
@@ -269,7 +269,7 @@ import { SeoService } from '../../services/seo.service';
       gap: 0.75rem;
       padding: 0.7rem 0.875rem;
       background: #fafaf9;
-      border-radius: 0.875rem;
+      border-radius: var(--radius-md);
       border: 1px solid rgba(0,0,0,0.07);
       text-decoration: none;
       color: #1c1917;
@@ -283,7 +283,7 @@ import { SeoService } from '../../services/seo.service';
     .ql-icon {
       width: 1.75rem;
       height: 1.75rem;
-      border-radius: 0.5rem;
+      border-radius: var(--radius-xs);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -321,7 +321,7 @@ import { SeoService } from '../../services/seo.service';
     .comment-item {
       padding: 0.875rem;
       background: #fafaf9;
-      border-radius: 0.875rem;
+      border-radius: var(--radius-md);
       border: 1px solid rgba(0,0,0,0.06);
     }
     .comment-top {
@@ -333,7 +333,7 @@ import { SeoService } from '../../services/seo.service';
     .comment-avatar {
       width: 1.75rem;
       height: 1.75rem;
-      border-radius: 50%;
+      border-radius: var(--radius-circle);
       background: #4a7c59;
       color: #fff;
       font-size: 0.7rem;

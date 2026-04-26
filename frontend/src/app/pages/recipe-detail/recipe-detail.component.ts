@@ -421,7 +421,7 @@ import { SeoService } from '../../services/seo.service';
     }
     .detail-load-error-btn {
       padding: 0.7rem 1.5rem;
-      border-radius: 9999px;
+      border-radius: var(--radius-pill);
       border: 1px solid var(--clr-border);
       background: var(--clr-surface);
       color: var(--clr-text);
@@ -526,7 +526,7 @@ import { SeoService } from '../../services/seo.service';
       color: var(--clr-green-text);
       background: var(--clr-green-bg);
       padding: 0.25rem 0.75rem;
-      border-radius: 9999px;
+      border-radius: var(--radius-pill);
       margin-bottom: 0.75rem;
     }
     h1 {
@@ -560,7 +560,7 @@ import { SeoService } from '../../services/seo.service';
       background: rgba(255,255,255,0.15);
       backdrop-filter: blur(8px);
       border: 1px solid rgba(255,255,255,0.25);
-      border-radius: 9999px;
+      border-radius: var(--radius-pill);
       color: #fff;
       font-size: 0.82rem;
       font-weight: 500;
@@ -591,7 +591,7 @@ import { SeoService } from '../../services/seo.service';
       justify-content: center;
       width: 2.1rem;
       height: 2.1rem;
-      border-radius: 50%;
+      border-radius: var(--radius-circle);
       border: 1.5px solid rgba(255,255,255,0.3);
       background: rgba(255,255,255,0.12);
       backdrop-filter: blur(6px);
@@ -621,7 +621,7 @@ import { SeoService } from '../../services/seo.service';
     /* Prose card — editorial intro with drop cap */
     .prose-card {
       background: var(--clr-surface);
-      border-radius: 1.25rem;
+      border-radius: var(--radius-lg);
       padding: 1.75rem 1.75rem 1.6rem;
       border: 1px solid var(--clr-border-faint);
       box-shadow: var(--shadow-sm);
@@ -663,7 +663,7 @@ import { SeoService } from '../../services/seo.service';
        so the inner highlight registers cleanly against the surface. */
     .section-card {
       background: var(--clr-surface);
-      border-radius: 1.25rem;
+      border-radius: var(--radius-lg);
       padding: 1.5rem;
       box-shadow:
         var(--shadow-sm),
@@ -691,7 +691,7 @@ import { SeoService } from '../../services/seo.service';
       color: var(--clr-green-text);
       background: var(--clr-green-bg);
       padding: 0.2rem 0.6rem;
-      border-radius: 9999px;
+      border-radius: var(--radius-pill);
     }
     .count-badge.ml { margin-left: 0.5rem; }
 
@@ -699,7 +699,7 @@ import { SeoService } from '../../services/seo.service';
     .ing-progress {
       height: 3px;
       background: rgba(0,0,0,0.06);
-      border-radius: 9999px;
+      border-radius: var(--radius-pill);
       margin-bottom: 1rem;
       overflow: hidden;
     }
@@ -707,7 +707,7 @@ import { SeoService } from '../../services/seo.service';
       height: 100%;
       width: 100%;
       background: var(--clr-green);
-      border-radius: 9999px;
+      border-radius: var(--radius-pill);
       transform-origin: left;
       transform: scaleX(0);
       transition: transform 0.4s var(--ease-out-expo, cubic-bezier(0.16,1,0.3,1));
@@ -727,7 +727,7 @@ import { SeoService } from '../../services/seo.service';
       border-bottom: 1px solid rgba(0,0,0,0.05);
       font-size: 0.925rem;
       cursor: pointer;
-      border-radius: 0.5rem;
+      border-radius: var(--radius-xs);
       transition: background 0.15s, opacity 0.25s;
       -webkit-user-select: none;
       user-select: none;
@@ -745,7 +745,7 @@ import { SeoService } from '../../services/seo.service';
     .ing-check {
       width: 1.1rem;
       height: 1.1rem;
-      border-radius: 50%;
+      border-radius: var(--radius-circle);
       border: 1.5px solid rgba(0,0,0,0.2);
       display: flex;
       align-items: center;
@@ -786,7 +786,7 @@ import { SeoService } from '../../services/seo.service';
       flex-shrink: 0;
       width: 2.25rem;
       height: 2.25rem;
-      border-radius: 50%;
+      border-radius: var(--radius-circle);
       background: var(--clr-green);
       color: oklch(100% 0 0);
       font-weight: 700;
@@ -820,7 +820,7 @@ import { SeoService } from '../../services/seo.service';
     .tag {
       padding: 0.3rem 0.85rem;
       background: var(--clr-surface-hover);
-      border-radius: 9999px;
+      border-radius: var(--radius-pill);
       font-size: 0.78rem;
       color: var(--clr-text-muted);
       font-weight: 500;
@@ -933,7 +933,7 @@ import { SeoService } from '../../services/seo.service';
     .sidebar-card,
     .panel-card {
       background: var(--clr-surface);
-      border-radius: 1.25rem;
+      border-radius: var(--radius-lg);
       padding: 1.5rem;
       border: 1px solid var(--clr-border-faint);
       box-shadow: var(--shadow-sm);
@@ -976,7 +976,7 @@ import { SeoService } from '../../services/seo.service';
       width: 100%;
       padding: 0.75rem;
       border: 1.5px solid var(--clr-border);
-      border-radius: 0.75rem;
+      border-radius: var(--radius-sm);
       font-size: 0.875rem;
       resize: vertical;
       outline: none;
@@ -996,7 +996,7 @@ import { SeoService } from '../../services/seo.service';
       background: var(--clr-green);
       color: oklch(100% 0 0);
       border: none;
-      border-radius: 9999px;
+      border-radius: var(--radius-pill);
       font-weight: 700;
       cursor: pointer;
       font-size: 0.85rem;
@@ -1034,7 +1034,7 @@ import { SeoService } from '../../services/seo.service';
     .comment-avatar {
       width: 2rem;
       height: 2rem;
-      border-radius: 50%;
+      border-radius: var(--radius-circle);
       background: var(--clr-green);
       color: oklch(100% 0 0);
       font-size: 0.8rem;
@@ -1101,7 +1101,7 @@ import { SeoService } from '../../services/seo.service';
       font-weight: 600;
       color: var(--clr-text-muted);
       cursor: pointer;
-      border-radius: 0.5rem;
+      border-radius: var(--radius-xs);
       transition: background 0.15s var(--ease-out-expo), color 0.15s var(--ease-out-expo);
     }
     .reply-btn svg { width: 0.75rem; height: 0.75rem; }

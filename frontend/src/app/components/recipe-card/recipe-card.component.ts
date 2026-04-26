@@ -63,7 +63,7 @@ import { Recipe } from '../../models/models';
       display: block;
       position: relative;
       padding: 4px;
-      border-radius: 1.5rem;
+      border-radius: var(--radius-xl);
       background: var(--clr-surface-alt);
       border: 1px solid var(--clr-border-faint);
       box-shadow: var(--shadow-sm);
@@ -82,7 +82,7 @@ import { Recipe } from '../../models/models';
       right: 4px;
       height: 1px;
       background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.55) 50%, transparent 100%);
-      border-radius: calc(1.5rem - 4px) calc(1.5rem - 4px) 0 0;
+      border-radius: calc(var(--radius-xl) - 4px) calc(var(--radius-xl) - 4px) 0 0;
       z-index: 3;
       pointer-events: none;
     }
@@ -103,7 +103,7 @@ import { Recipe } from '../../models/models';
       aspect-ratio: 4 / 3;
       position: relative;
       overflow: hidden;
-      border-radius: calc(1.5rem - 4px) calc(1.5rem - 4px) 0 0;
+      border-radius: calc(var(--radius-xl) - 4px) calc(var(--radius-xl) - 4px) 0 0;
     }
     .card.featured .card-image {
       aspect-ratio: 16 / 9;
@@ -168,7 +168,7 @@ import { Recipe } from '../../models/models';
       letter-spacing: 0.03em;
       padding: var(--space-2) var(--space-5);
       border: 1.5px solid rgba(255, 255, 255, 0.75);
-      border-radius: 9999px;
+      border-radius: var(--radius-pill);
       opacity: 0;
       transform: translateY(10px);
       transition: opacity 0.28s var(--ease-out-expo), transform 0.28s var(--ease-out-expo);
@@ -198,7 +198,7 @@ import { Recipe } from '../../models/models';
         background: rgba(28,25,23,0.55);
         backdrop-filter: blur(6px);
         padding: var(--space-1) var(--space-3);
-        border-radius: 9999px;
+        border-radius: var(--radius-pill);
         border: 1px solid rgba(255,255,255,0.2);
         z-index: 2;
         pointer-events: none;
@@ -209,7 +209,7 @@ import { Recipe } from '../../models/models';
     .card-body {
       padding: var(--space-5) var(--space-6) var(--space-6);
       background: var(--clr-surface);
-      border-radius: 0 0 calc(1.5rem - 4px) calc(1.5rem - 4px);
+      border-radius: 0 0 calc(var(--radius-xl) - 4px) calc(var(--radius-xl) - 4px);
     }
     .category {
       display: inline-block;
@@ -220,7 +220,7 @@ import { Recipe } from '../../models/models';
       color: var(--clr-green-text);
       background: var(--clr-green-bg);
       padding: var(--space-1) var(--space-3);
-      border-radius: 9999px;
+      border-radius: var(--radius-pill);
       margin-bottom: var(--space-2);
     }
     .title {
@@ -271,7 +271,7 @@ import { Recipe } from '../../models/models';
       font-size: 0.7rem;
       font-weight: 700;
       padding: var(--space-1) var(--space-2);
-      border-radius: 9999px;
+      border-radius: var(--radius-pill);
       background: var(--clr-surface-alt);
       color: var(--clr-text-muted);
     }
@@ -315,7 +315,7 @@ import { Recipe } from '../../models/models';
       padding: 0;
       background: transparent;
       border: none;
-      border-radius: 1.25rem;
+      border-radius: var(--radius-lg);
       overflow: hidden;
     }
     .card.overlay::before { display: none; }

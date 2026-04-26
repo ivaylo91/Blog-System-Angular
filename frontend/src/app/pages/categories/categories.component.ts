@@ -101,7 +101,7 @@ import { Category } from '../../models/models';
       gap: 0.5rem;
       padding: 1.75rem 1.6rem 1.5rem;
       min-height: 220px;
-      border-radius: 1.25rem;
+      border-radius: var(--radius-lg);
       text-decoration: none;
       color: var(--clr-text);
       overflow: hidden;

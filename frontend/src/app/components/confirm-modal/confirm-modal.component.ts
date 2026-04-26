@@ -34,7 +34,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
     }
     .modal {
       background: var(--clr-surface);
-      border-radius: 1.5rem;
+      border-radius: var(--radius-xl);
       padding: 2rem;
       max-width: 400px;
       width: 90%;
@@ -66,7 +66,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
     }
     .btn-cancel, .btn-confirm {
       padding: 0.5rem 1.25rem;
-      border-radius: 9999px;
+      border-radius: var(--radius-pill);
       font-size: 0.875rem;
       font-weight: 600;
       cursor: pointer;

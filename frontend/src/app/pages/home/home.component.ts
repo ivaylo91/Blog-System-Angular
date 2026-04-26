@@ -183,7 +183,7 @@ import { PerfService } from '../../services/perf.service';
       color: rgba(255,255,255,0.95);
       padding: var(--space-1) var(--space-4);
       border: 1px solid rgba(255,255,255,0.32);
-      border-radius: 9999px;
+      border-radius: var(--radius-pill);
       margin-bottom: var(--space-7);
       backdrop-filter: blur(6px);
       -webkit-backdrop-filter: blur(6px);
@@ -215,7 +215,7 @@ import { PerfService } from '../../services/perf.service';
     }
     .search-form {
       display: flex;
-      border-radius: 0.875rem;
+      border-radius: var(--radius-md);
       overflow: hidden;
       box-shadow: 0 12px 40px rgba(0,0,0,0.25);
       max-width: 480px;
@@ -320,7 +320,7 @@ import { PerfService } from '../../services/perf.service';
     .tile-e { grid-area: e; }
     .tile-f { grid-area: f; }
     .bento-tile {
-      border-radius: 1.25rem;
+      border-radius: var(--radius-lg);
       overflow: hidden;
       min-width: 0;
     }
@@ -352,7 +352,7 @@ import { PerfService } from '../../services/perf.service';
       text-align: center;
       background: var(--clr-surface-alt);
       border: 1px solid var(--clr-border-faint);
-      border-radius: 1.25rem;
+      border-radius: var(--radius-lg);
     }
     .featured-error-msg {
       font-family: var(--font-display);
@@ -365,7 +365,7 @@ import { PerfService } from '../../services/perf.service';
     }
     .featured-error-btn {
       padding: var(--space-3) var(--space-5);
-      border-radius: 9999px;
+      border-radius: var(--radius-pill);
       border: 1px solid var(--clr-border);
       background: var(--clr-surface);
       color: var(--clr-text);
@@ -383,7 +383,7 @@ import { PerfService } from '../../services/perf.service';
       width: 100%;
       height: 100%;
       background: var(--clr-skeleton);
-      border-radius: 1.25rem;
+      border-radius: var(--radius-lg);
       position: relative;
       overflow: hidden;
     }
@@ -418,7 +418,7 @@ import { PerfService } from '../../services/perf.service';
       gap: var(--space-2);
       padding: var(--space-6) var(--space-6) var(--space-5);
       min-height: 200px;
-      border-radius: 1.25rem;
+      border-radius: var(--radius-lg);
       text-decoration: none;
       color: var(--clr-text);
       background:
@@ -509,7 +509,7 @@ import { PerfService } from '../../services/perf.service';
       padding: var(--space-3) var(--space-3) var(--space-3) var(--space-7);
       background: var(--clr-green);
       color: #fff;
-      border-radius: 9999px;
+      border-radius: var(--radius-pill);
       font-weight: 600;
       font-size: 0.95rem;
       text-decoration: none;
@@ -521,7 +521,7 @@ import { PerfService } from '../../services/perf.service';
     .cta-icon {
       width: 2.25rem;
       height: 2.25rem;
-      border-radius: 50%;
+      border-radius: var(--radius-circle);
       background: rgba(255, 255, 255, 0.18);
       display: flex;
       align-items: center;
@@ -569,7 +569,7 @@ import { PerfService } from '../../services/perf.service';
       }
       .hero-title { max-width: 14ch; }
       .hero-subtitle { font-size: 1rem; margin-bottom: var(--space-6); }
-      .search-form { max-width: 100%; border-radius: 0.75rem; }
+      .search-form { max-width: 100%; border-radius: var(--radius-sm); }
       .search-input { padding: var(--space-3) var(--space-4); font-size: 0.9rem; }
       .search-btn { padding: var(--space-3) var(--space-4); font-size: 0.85rem; }
       .section-title::after { width: 2rem; }

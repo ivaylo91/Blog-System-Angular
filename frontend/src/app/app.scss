@@ -18,7 +18,7 @@
   color: oklch(100% 0 0);
   font-weight: 700;
   font-size: 0.875rem;
-  border-radius: 0 0 0.75rem 0.75rem;
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
   text-decoration: none;
   transform: translateY(-110%);
   transition: transform 0.15s var(--ease-out-expo);

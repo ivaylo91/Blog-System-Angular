@@ -193,7 +193,7 @@ import { ThemeService } from '../../services/theme.service';
       display: flex; align-items: center; gap: 0.5rem;
     }
     .nav-links a:not(.register-btn) {
-      padding: 0.45rem 0.9rem; border-radius: 9999px;
+      padding: 0.45rem 0.9rem; border-radius: var(--radius-pill);
       text-decoration: none; font-size: 0.875rem; font-weight: 500;
       color: var(--clr-text-muted); transition: background 0.18s, color 0.18s;
       white-space: nowrap; min-height: 2.25rem;
@@ -203,7 +203,7 @@ import { ThemeService } from '../../services/theme.service';
     .nav-links a:not(.register-btn).active { background: var(--clr-surface-hover); color: var(--clr-brand); font-weight: 600; }
     .register-btn {
       display: flex; align-items: center;
-      padding: 0.45rem 0.9rem; border-radius: 9999px;
+      padding: 0.45rem 0.9rem; border-radius: var(--radius-pill);
       text-decoration: none; white-space: nowrap; min-height: 2.25rem;
       background: var(--clr-brand);
       color: oklch(100% 0 0); font-weight: 600; font-size: 0.875rem;
@@ -219,7 +219,7 @@ import { ThemeService } from '../../services/theme.service';
     .register-btn.active { background: var(--clr-brand); }
     .logout-btn {
       display: flex; align-items: center; gap: 0.35rem;
-      padding: 0.45rem 0.9rem; border-radius: 9999px;
+      padding: 0.45rem 0.9rem; border-radius: var(--radius-pill);
       border: none; background: none; font-size: 0.875rem; font-weight: 500;
       color: var(--clr-error); cursor: pointer;
       transition: background 0.18s, color 0.18s;
@@ -232,7 +232,7 @@ import { ThemeService } from '../../services/theme.service';
     .theme-toggle {
       display: flex; align-items: center; justify-content: center;
       width: 2.25rem; height: 2.25rem;
-      border: none; background: none; border-radius: 9999px;
+      border: none; background: none; border-radius: var(--radius-pill);
       color: var(--clr-text-muted); cursor: pointer;
       transition: background 0.18s, color 0.18s;
       touch-action: manipulation; flex-shrink: 0;
@@ -245,7 +245,7 @@ import { ThemeService } from '../../services/theme.service';
       display: flex;
       background: none; border: none;
       padding: 0.5rem; cursor: pointer;
-      border-radius: 0.5rem;
+      border-radius: var(--radius-xs);
       transition: background 0.2s;
       min-width: 2.75rem; min-height: 2.75rem;
       align-items: center; justify-content: center;
@@ -312,7 +312,7 @@ import { ThemeService } from '../../services/theme.service';
     .drawer-brand svg { width: 1.4rem; height: 1.4rem; color: var(--clr-brand); flex-shrink: 0; }
     .drawer-close {
       background: none; border: none; cursor: pointer;
-      padding: 0.4rem; border-radius: 0.5rem; color: var(--clr-text-muted);
+      padding: 0.4rem; border-radius: var(--radius-xs); color: var(--clr-text-muted);
       transition: background 0.2s, color 0.2s;
       min-width: 2.5rem; min-height: 2.5rem;
       display: flex; align-items: center; justify-content: center;
@@ -326,7 +326,7 @@ import { ThemeService } from '../../services/theme.service';
       padding: 1rem 1.25rem;
     }
     .drawer-avatar {
-      width: 2.5rem; height: 2.5rem; border-radius: 50%;
+      width: 2.5rem; height: 2.5rem; border-radius: var(--radius-circle);
       background: var(--clr-brand); color: oklch(100% 0 0);
       font-size: 1rem; font-weight: 700;
       display: flex; align-items: center; justify-content: center;
@@ -353,7 +353,7 @@ import { ThemeService } from '../../services/theme.service';
     .drawer-item {
       display: flex; align-items: center; gap: 0.75rem;
       padding: 0.75rem 0.75rem;
-      border-radius: 0.75rem;
+      border-radius: var(--radius-sm);
       text-decoration: none;
       font-size: 0.95rem; font-weight: 500;
       color: var(--clr-text);
@@ -374,7 +374,7 @@ import { ThemeService } from '../../services/theme.service';
     }
     .drawer-logout {
       display: flex; align-items: center; gap: 0.75rem;
-      padding: 0.75rem; border-radius: 0.75rem;
+      padding: 0.75rem; border-radius: var(--radius-sm);
       border: none; background: none; width: 100%;
       font-size: 0.95rem; font-weight: 500; color: var(--clr-error);
       cursor: pointer; touch-action: manipulation; min-height: 3rem;
@@ -383,14 +383,14 @@ import { ThemeService } from '../../services/theme.service';
     .drawer-logout svg { width: 1.15rem; height: 1.15rem; flex-shrink: 0; }
     .drawer-logout:hover { background: var(--clr-error-bg); }
     .drawer-signin {
-      display: block; padding: 0.75rem 1rem; border-radius: 0.75rem;
+      display: block; padding: 0.75rem 1rem; border-radius: var(--radius-sm);
       text-decoration: none; text-align: center;
       font-size: 0.95rem; font-weight: 500; color: var(--clr-text-muted);
       transition: background 0.18s;
     }
     .drawer-signin:hover { background: var(--clr-surface-hover); }
     .drawer-register {
-      display: block; padding: 0.75rem 1rem; border-radius: 0.75rem;
+      display: block; padding: 0.75rem 1rem; border-radius: var(--radius-sm);
       text-decoration: none; text-align: center;
       font-size: 0.95rem; font-weight: 600;
       background: var(--clr-brand);

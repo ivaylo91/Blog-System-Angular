@@ -90,7 +90,7 @@ import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.co
       padding: 0 0.6rem;
       background: #fef3c7;
       color: #92400e;
-      border-radius: 999px;
+      border-radius: var(--radius-pill);
       font-size: 0.82rem;
       font-weight: 700;
       flex-shrink: 0;
@@ -111,14 +111,14 @@ import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.co
       text-align: center;
       padding: 4rem 2rem;
       background: #ffffff;
-      border-radius: 1.25rem;
+      border-radius: var(--radius-lg);
       border: 1px solid rgba(0,0,0,0.07);
       box-shadow: 0 2px 10px rgba(28,25,23,0.05);
     }
     .empty-icon {
       width: 5rem;
       height: 5rem;
-      border-radius: 50%;
+      border-radius: var(--radius-circle);
       background: #fee2e2;
       display: flex;
       align-items: center;
@@ -147,7 +147,7 @@ import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.co
       padding: 0.7rem 1.5rem;
       background: #78350f;
       color: #fff;
-      border-radius: 0.75rem;
+      border-radius: var(--radius-sm);
       text-decoration: none;
       font-weight: 600;
       font-size: 0.875rem;
@@ -160,7 +160,7 @@ import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.co
 
     /* Skeleton */
     .skeleton-card {
-      border-radius: 1.25rem;
+      border-radius: var(--radius-lg);
       overflow: hidden;
       background: #fff;
       box-shadow: 0 2px 10px rgba(28,25,23,0.05);
@@ -183,7 +183,7 @@ import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.co
     .sk-meta { display: flex; gap: 0.75rem; margin-top: 0.25rem; }
     .sk-line {
       height: 0.8rem;
-      border-radius: 999px;
+      border-radius: var(--radius-pill);
       background: #f0ede8;
       position: relative;
       overflow: hidden;

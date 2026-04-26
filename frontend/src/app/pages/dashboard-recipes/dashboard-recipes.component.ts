@@ -137,7 +137,7 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
       padding: 0.65rem 1.25rem;
       background: #4a7c59;
       color: #fff;
-      border-radius: 0.75rem;
+      border-radius: var(--radius-sm);
       text-decoration: none;
       font-weight: 600;
       font-size: 0.875rem;
@@ -164,7 +164,7 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
       gap: 0.5rem;
       background: #fff;
       border: 1.5px solid rgba(0,0,0,0.1);
-      border-radius: 0.75rem;
+      border-radius: var(--radius-sm);
       padding: 0.5rem 0.9rem;
       flex: 1;
       min-width: 200px;
@@ -186,7 +186,7 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
     .filter-pills { display: flex; gap: 0.4rem; flex-wrap: wrap; }
     .pill {
       padding: 0.45rem 0.9rem;
-      border-radius: 999px;
+      border-radius: var(--radius-pill);
       border: 1.5px solid rgba(0,0,0,0.12);
       background: #fff;
       font-size: 0.8rem;
@@ -204,7 +204,7 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
        fade out when scrolled to that end (Lea Verou technique). Inner top
        highlight reads as a machined enclosure edge. */
     .table-wrap {
-      border-radius: 1.5rem;
+      border-radius: var(--radius-xl);
       border: 1px solid rgba(0,0,0,0.14);
       overflow-x: auto;
       box-shadow:
@@ -244,7 +244,7 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
     .recipe-link:hover { color: #78350f; text-decoration: underline; }
     .badge {
       padding: 0.2rem 0.6rem;
-      border-radius: 999px;
+      border-radius: var(--radius-pill);
       font-size: 0.75rem;
       font-weight: 700;
     }
@@ -258,7 +258,7 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
       align-items: center;
       gap: 0.3rem;
       padding: 0.3rem 0.7rem;
-      border-radius: 999px;
+      border-radius: var(--radius-pill);
       font-size: 0.75rem;
       font-weight: 700;
       cursor: pointer;
@@ -280,7 +280,7 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
     .actions { display: flex; gap: 0.4rem; align-items: center; }
     .btn-small {
       padding: 0.375rem 0.75rem;
-      border-radius: 0.5rem;
+      border-radius: var(--radius-xs);
       font-size: 0.78rem;
       font-weight: 600;
       cursor: pointer;

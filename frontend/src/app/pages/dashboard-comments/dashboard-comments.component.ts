@@ -131,7 +131,7 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
       background: #fef2f2;
       color: #b91c1c;
       border: 1.5px solid #fca5a5;
-      border-radius: 0.75rem;
+      border-radius: var(--radius-sm);
       font-weight: 600;
       font-size: 0.875rem;
       cursor: pointer;
@@ -147,7 +147,7 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
        Inner top highlight stacks on the box-shadow chain to read as a
        machined enclosure edge. */
     .table-wrap {
-      border-radius: 1.25rem;
+      border-radius: var(--radius-lg);
       border: 1px solid rgba(0,0,0,0.09);
       overflow-x: auto;
       box-shadow:
@@ -213,7 +213,7 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
     .author-avatar {
       width: 1.75rem;
       height: 1.75rem;
-      border-radius: 50%;
+      border-radius: var(--radius-circle);
       background: #4a7c59;
       color: #fff;
       font-size: 0.68rem;
@@ -255,7 +255,7 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
       padding: 0.15rem 0.5rem;
       background: #fef3c7;
       color: #92400e;
-      border-radius: 999px;
+      border-radius: var(--radius-pill);
       font-size: 0.75rem;
       font-weight: 700;
     }
@@ -268,7 +268,7 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
       align-items: center;
       gap: 0.35rem;
       padding: 0.35rem 0.65rem;
-      border-radius: 0.5rem;
+      border-radius: var(--radius-xs);
       font-size: 0.78rem;
       font-weight: 600;
       cursor: pointer;

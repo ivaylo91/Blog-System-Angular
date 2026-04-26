@@ -260,7 +260,7 @@ interface StepInput { description: string; }
       padding: 0.85rem 1rem;
       background: #fef2f2;
       border: 1px solid #fecaca;
-      border-radius: 0.875rem;
+      border-radius: var(--radius-md);
       color: #dc2626;
       font-size: 0.875rem;
       font-weight: 500;
@@ -280,7 +280,7 @@ interface StepInput { description: string; }
     /* Card */
     .card {
       background: #ffffff;
-      border-radius: 1.25rem;
+      border-radius: var(--radius-lg);
       border: 1px solid rgba(0,0,0,0.07);
       padding: 1.5rem;
       box-shadow: 0 2px 12px rgba(28,25,23,0.05);
@@ -318,7 +318,7 @@ interface StepInput { description: string; }
       width: 100%;
       padding: 0.65rem 0.9rem;
       border: 1.5px solid rgba(0,0,0,0.1);
-      border-radius: 0.75rem;
+      border-radius: var(--radius-sm);
       font-size: 0.9rem;
       font-family: inherit;
       box-sizing: border-box;
@@ -363,7 +363,7 @@ interface StepInput { description: string; }
       flex-shrink: 0;
       width: 1.75rem;
       height: 1.75rem;
-      border-radius: 50%;
+      border-radius: var(--radius-circle);
       background: #4a7c59;
       color: #fff;
       font-size: 0.75rem;
@@ -382,7 +382,7 @@ interface StepInput { description: string; }
       gap: 0.4rem;
       padding: 0.5rem 1rem;
       border: 1.5px dashed rgba(74,124,89,0.4);
-      border-radius: 0.75rem;
+      border-radius: var(--radius-sm);
       background: rgba(74,124,89,0.05);
       color: #4a7c59;
       font-size: 0.82rem;
@@ -404,7 +404,7 @@ interface StepInput { description: string; }
       border: none;
       background: #fef2f2;
       color: #dc2626;
-      border-radius: 0.5rem;
+      border-radius: var(--radius-xs);
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -451,7 +451,7 @@ interface StepInput { description: string; }
       align-items: center;
       gap: 0.4rem;
       padding: 0.65rem 1.25rem;
-      border-radius: 0.75rem;
+      border-radius: var(--radius-sm);
       text-decoration: none;
       color: #44403c;
       background: #f0ede8;
@@ -471,7 +471,7 @@ interface StepInput { description: string; }
       background: #4a7c59;
       color: #fff;
       border: none;
-      border-radius: 0.75rem;
+      border-radius: var(--radius-sm);
       font-weight: 600;
       font-size: 0.875rem;
       cursor: pointer;

@@ -167,7 +167,7 @@ import { PerfService } from '../../services/perf.service';
       color: var(--clr-green-text);
       background: var(--clr-green-bg);
       padding: var(--space-1) var(--space-4);
-      border-radius: 9999px;
+      border-radius: var(--radius-pill);
       margin-bottom: var(--space-4);
     }
     .page-header h1 {
@@ -188,7 +188,7 @@ import { PerfService } from '../../services/perf.service';
     /* Search bar */
     .search-bar {
       display: flex;
-      border-radius: 0.875rem;
+      border-radius: var(--radius-md);
       overflow: hidden;
       box-shadow: var(--shadow-sm);
       border: 1.5px solid var(--clr-border);
@@ -237,7 +237,7 @@ import { PerfService } from '../../services/perf.service';
     }
     .pill {
       padding: var(--space-2) var(--space-4);
-      border-radius: 9999px;
+      border-radius: var(--radius-pill);
       border: 1.5px solid var(--clr-border);
       background: var(--clr-surface);
       color: var(--clr-text-muted);
@@ -287,7 +287,7 @@ import { PerfService } from '../../services/perf.service';
       margin-bottom: var(--space-6);
       padding: var(--space-3) var(--space-4);
       background: var(--clr-surface-alt);
-      border-radius: 0.875rem;
+      border-radius: var(--radius-md);
       border: 1px solid var(--clr-border-faint);
     }
     .filters-label {
@@ -307,7 +307,7 @@ import { PerfService } from '../../services/perf.service';
       background: var(--clr-text);
       color: var(--clr-bg);
       border: none;
-      border-radius: 9999px;
+      border-radius: var(--radius-pill);
       font-size: 0.78rem;
       font-weight: 600;
       cursor: pointer;
@@ -407,7 +407,7 @@ import { PerfService } from '../../services/perf.service';
 
     /* Skeleton — shimmer uses transform:translateX (composited, no repaint) */
     .skeleton-card {
-      border-radius: 1.25rem;
+      border-radius: var(--radius-lg);
       overflow: hidden;
       background: var(--clr-surface);
       box-shadow: var(--shadow-sm);
@@ -430,7 +430,7 @@ import { PerfService } from '../../services/perf.service';
     .sk-meta { display: flex; gap: var(--space-3); margin-top: var(--space-1); }
     .sk-line {
       height: 0.8rem;
-      border-radius: 9999px;
+      border-radius: var(--radius-pill);
       background: var(--clr-skeleton);
       position: relative;
       overflow: hidden;
@@ -465,7 +465,7 @@ import { PerfService } from '../../services/perf.service';
       min-width: 2.75rem;
       height: 2.75rem;
       padding: 0 var(--space-3);
-      border-radius: 0.75rem;
+      border-radius: var(--radius-sm);
       border: 1.5px solid var(--clr-border);
       background: var(--clr-surface);
       cursor: pointer;

@@ -177,7 +177,7 @@ import { AuthService } from '../../services/auth.service';
     .footer-sep {
       width: 3px;
       height: 3px;
-      border-radius: 50%;
+      border-radius: var(--radius-circle);
       background: oklch(30% 0.008 50);
     }
     .privacy-link {
