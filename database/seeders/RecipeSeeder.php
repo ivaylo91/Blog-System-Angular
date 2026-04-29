@@ -24,7 +24,12 @@ class RecipeSeeder extends Seeder
                 ['name' => $data['category']]
             );
 
-            // Create recipe
+            // Create recipe (skip if slug already exists)
+            $existing = Recipe::where('slug', $data['slug'])->first();
+            if ($existing) {
+                continue;
+            }
+
             $recipe = Recipe::create([
                 'slug' => $data['slug'],
                 'title' => $data['title'],
