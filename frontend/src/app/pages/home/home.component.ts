@@ -33,9 +33,9 @@ import { PerfService } from '../../services/perf.service';
             aria-label="Търси рецепта"
             class="search-input"
           />
-          <button type="submit" class="search-btn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <span>Търси</span>
+          <button type="submit" class="search-btn" aria-label="Търси рецепта">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <span aria-hidden="true">Търси</span>
           </button>
         </form>
       </div>

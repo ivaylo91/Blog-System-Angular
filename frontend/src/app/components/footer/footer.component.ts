@@ -58,8 +58,8 @@ import { AuthService } from '../../services/auth.service';
   styles: [`
     .site-footer {
       margin-top: auto;
-      background: oklch(14% 0.008 50);
-      color: oklch(60% 0.01 50);
+      background: var(--clr-footer-bg);
+      color: var(--clr-footer-text);
       border-top: 3px solid var(--clr-brand);
     }
     .footer-inner {
@@ -96,12 +96,12 @@ import { AuthService } from '../../services/auth.service';
       font-family: var(--font-display);
       font-size: 1.05rem;
       font-weight: 700;
-      color: oklch(94% 0.005 65);
+      color: var(--clr-footer-text-bright);
       letter-spacing: -0.01em;
     }
     .brand-tagline {
       font-size: 0.83rem;
-      color: oklch(60% 0.01 50);
+      color: var(--clr-footer-text);
       margin: 0;
       line-height: 1.6;
     }
@@ -122,17 +122,17 @@ import { AuthService } from '../../services/auth.service';
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      color: oklch(50% 0.01 50);
+      color: var(--clr-footer-text-muted);
       margin-bottom: 0.25rem;
     }
     .footer-col a {
-      color: oklch(60% 0.01 50);
+      color: var(--clr-footer-text);
       text-decoration: none;
       font-size: 0.875rem;
       transition: color 0.2s;
       touch-action: manipulation;
     }
-    .footer-col a:hover { color: oklch(94% 0.005 65); }
+    .footer-col a:hover { color: var(--clr-footer-text-bright); }
 
     /* Quote */
     .footer-quote {
@@ -155,7 +155,7 @@ import { AuthService } from '../../services/auth.service';
       font-family: var(--font-display);
       font-size: 1.05rem;
       font-style: italic;
-      color: oklch(72% 0.01 55);
+      color: var(--clr-footer-quote);
       margin: 0;
       line-height: 1.5;
       letter-spacing: 0.01em;
@@ -171,28 +171,28 @@ import { AuthService } from '../../services/auth.service';
     }
     .copyright {
       font-size: 0.78rem;
-      color: oklch(45% 0.008 50);
+      color: var(--clr-footer-text-faint);
       margin: 0;
     }
     .footer-sep {
       width: 3px;
       height: 3px;
       border-radius: var(--radius-circle);
-      background: oklch(30% 0.008 50);
+      background: var(--clr-footer-sep);
     }
     .privacy-link {
       font-size: 0.78rem;
-      color: oklch(45% 0.008 50);
+      color: var(--clr-footer-text-faint);
       text-decoration: none;
       transition: color 0.2s;
     }
-    .privacy-link:hover { color: oklch(70% 0.01 50); }
+    .privacy-link:hover { color: var(--clr-footer-text); }
     .made-with {
       display: flex;
       align-items: center;
       gap: 0.3rem;
       font-size: 0.78rem;
-      color: oklch(45% 0.008 50);
+      color: var(--clr-footer-text-faint);
       margin: 0;
     }
     .heart {

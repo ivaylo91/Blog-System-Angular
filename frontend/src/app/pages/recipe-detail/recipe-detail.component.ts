@@ -329,6 +329,7 @@ import { SeoService } from '../../services/seo.service';
                       <form class="reply-form" (submit)="submitReply($event, comment.id)">
                         <textarea [ngModel]="replyBody()" (ngModelChange)="replyBody.set($event)" [name]="'reply-' + comment.id" rows="2"
                                   placeholder="Напиши отговор..."
+                                  aria-label="Напиши отговор"
                                   [disabled]="submittingReply()"
                                   maxlength="1000"></textarea>
                         <button type="submit" class="submit-btn"
@@ -698,7 +699,7 @@ import { SeoService } from '../../services/seo.service';
     /* Ingredients progress */
     .ing-progress {
       height: 3px;
-      background: rgba(0,0,0,0.06);
+      background: var(--clr-border-faint);
       border-radius: var(--radius-pill);
       margin-bottom: 1rem;
       overflow: hidden;
@@ -724,7 +725,7 @@ import { SeoService } from '../../services/seo.service';
       align-items: center;
       gap: 0.75rem;
       padding: 0.65rem 0.4rem;
-      border-bottom: 1px solid rgba(0,0,0,0.05);
+      border-bottom: 1px solid var(--clr-border-faint);
       font-size: 0.925rem;
       cursor: pointer;
       border-radius: var(--radius-xs);
@@ -733,7 +734,7 @@ import { SeoService } from '../../services/seo.service';
       user-select: none;
     }
     .ingredients-list li:last-child { border-bottom: none; }
-    .ingredients-list li:hover { background: rgba(0,0,0,0.025); }
+    .ingredients-list li:hover { background: var(--clr-surface-hover); }
     .ingredients-list li:focus-visible { outline: 2px solid var(--clr-green); outline-offset: 1px; }
     .ingredients-list li.checked {
       opacity: 0.45;
@@ -746,7 +747,7 @@ import { SeoService } from '../../services/seo.service';
       width: 1.1rem;
       height: 1.1rem;
       border-radius: var(--radius-circle);
-      border: 1.5px solid rgba(0,0,0,0.2);
+      border: 1.5px solid var(--clr-border-strong);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -1022,7 +1023,7 @@ import { SeoService } from '../../services/seo.service';
     /* Comments list */
     .comment {
       padding: 1rem 0;
-      border-bottom: 1px solid rgba(0,0,0,0.05);
+      border-bottom: 1px solid var(--clr-border-faint);
     }
     .comment:last-child { border-bottom: none; }
     .comment-header {
@@ -1177,6 +1178,8 @@ export class RecipeDetailComponent {
   auth = inject(AuthService);
 
   Math = Math;
+  private heartPulseTimer: ReturnType<typeof setTimeout> | null = null;
+  private copiedTimer: ReturnType<typeof setTimeout> | null = null;
   readProgress = signal(0);
   private rafPending = false;
   private onScroll = () => {
@@ -1235,6 +1238,8 @@ export class RecipeDetailComponent {
     if (typeof window !== 'undefined') {
       window.removeEventListener('scroll', this.onScroll);
     }
+    if (this.heartPulseTimer !== null) clearTimeout(this.heartPulseTimer);
+    if (this.copiedTimer !== null) clearTimeout(this.copiedTimer);
   }
 
   toggleIngredient(id: number): void {
@@ -1252,7 +1257,8 @@ export class RecipeDetailComponent {
       () => {
         this.copied.set(true);
         this.toast.success('Връзката е копирана.');
-        setTimeout(() => this.copied.set(false), 2000);
+        if (this.copiedTimer !== null) clearTimeout(this.copiedTimer);
+        this.copiedTimer = setTimeout(() => { this.copied.set(false); this.copiedTimer = null; }, 2000);
       },
       () => this.toast.error('Неуспешно копиране.'),
     );
@@ -1354,7 +1360,8 @@ export class RecipeDetailComponent {
         this.favoriting.set(false);
         if (s.isFavorite) {
           this.heartPulse.set(true);
-          setTimeout(() => this.heartPulse.set(false), 420);
+          if (this.heartPulseTimer !== null) clearTimeout(this.heartPulseTimer);
+          this.heartPulseTimer = setTimeout(() => { this.heartPulse.set(false); this.heartPulseTimer = null; }, 420);
         }
         this.toast.success(s.isFavorite ? 'Добавено в любими.' : 'Премахнато от любими.');
       },

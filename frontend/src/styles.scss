@@ -167,6 +167,15 @@
   --radius-pill:   9999px;    /* pill buttons, tags, badges */
   --radius-circle: 50%;       /* avatars, circular icon buttons */
 
+  /* Footer — permanently dark; these do not respond to light/dark toggle */
+  --clr-footer-bg:          oklch(14% 0.008 50);
+  --clr-footer-text:        oklch(60% 0.01 50);
+  --clr-footer-text-bright: oklch(94% 0.005 65);
+  --clr-footer-text-muted:  oklch(50% 0.01 50);
+  --clr-footer-text-faint:  oklch(45% 0.008 50);
+  --clr-footer-quote:       oklch(72% 0.01 55);
+  --clr-footer-sep:         oklch(30% 0.008 50);
+
   /* z-index scale (global chrome) */
   --z-sticky:   50;     /* sticky header */
   --z-overlay:  59;     /* drawer backdrop */
@@ -267,8 +276,11 @@ html {
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  scroll-behavior: smooth;
   color-scheme: light dark;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
 }
 
 body {
