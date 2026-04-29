@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, DestroyRef, afterNextRender } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { catchError, map, of, tap } from 'rxjs';
@@ -44,6 +44,7 @@ import { PerfService } from '../../services/perf.service';
     <!-- FEATURED: bento grid -->
     <section class="featured">
       <div class="section-inner">
+        <span class="section-eyebrow">— Вдъхновение от кухнята</span>
         <div class="section-heading">
           <h2 class="section-title">Избрани рецепти</h2>
           <a routerLink="/recipes" class="section-link">Виж всички →</a>
@@ -109,23 +110,30 @@ import { PerfService } from '../../services/perf.service';
       </div>
     </section>
 
-    <!-- COLLECTIONS: themed buckets -->
-    <section class="collections">
+    <!-- COLLECTIONS: editorial index list -->
+    <section class="collections" data-reveal>
       <div class="section-inner">
+        <span class="section-eyebrow">— Открий по тема</span>
         <div class="section-heading">
           <h2 class="section-title">Тематични колекции</h2>
           <a routerLink="/categories" class="section-link">Всички категории →</a>
         </div>
-        <div class="collection-grid">
+        <ol class="col-list">
           @for (col of collections; track col.query; let i = $index) {
-            <a class="collection" [routerLink]="['/recipes']" [queryParams]="{ q: col.query }" [style.--col-hue]="col.hue">
-              <span class="col-num">{{ pad(i + 1) }}</span>
-              <h3 class="col-title">{{ col.title }}</h3>
-              <p class="col-sub">{{ col.sub }}</p>
-              <span class="col-arrow" aria-hidden="true">→</span>
-            </a>
+            <li class="col-item" [style.--i]="i">
+              <a class="col-strip" [routerLink]="['/recipes']" [queryParams]="{ q: col.query }">
+                <span class="col-index" aria-hidden="true">{{ pad(i + 1) }}</span>
+                <div class="col-content">
+                  <h3 class="col-name">{{ col.title }}</h3>
+                  <p class="col-sub">{{ col.sub }}</p>
+                </div>
+                <span class="col-pill" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+                </span>
+              </a>
+            </li>
           }
-        </div>
+        </ol>
       </div>
     </section>
   `,
@@ -400,100 +408,130 @@ import { PerfService } from '../../services/perf.service';
       to   { transform: translateX(100%); }
     }
 
-    /* ===== COLLECTIONS ===== */
+    /* ===== SECTION EYEBROW ===== */
+    .section-eyebrow {
+      display: block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--clr-brand);
+      margin-bottom: var(--space-3);
+      opacity: 0.9;
+    }
+
+    /* ===== SCROLL REVEAL ===== */
+    [data-reveal] {
+      opacity: 0;
+      transform: translateY(22px);
+      transition:
+        opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    [data-reveal].in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      [data-reveal] { opacity: 1; transform: none; transition: none; }
+      .col-item { opacity: 1 !important; transform: none !important; transition: none !important; }
+    }
+
+    /* ===== COLLECTIONS — editorial index list ===== */
     .collections {
-      padding: clamp(3rem, 6vw, 5rem) var(--space-6) clamp(3rem, 6vw, 5rem);
-      background: var(--clr-surface-alt);
+      padding: clamp(4rem, 7vw, 6.5rem) var(--space-6) clamp(4rem, 7vw, 6.5rem);
+      background: var(--clr-bg);
       border-top: 1px solid var(--clr-border-faint);
     }
-    .collection-grid {
+    .col-list {
+      list-style: none;
+      margin: var(--space-8) 0 0;
+      padding: 0;
+      border-top: 1px solid var(--clr-border-faint);
+    }
+    .col-item {
+      opacity: 0;
+      transform: translateX(-18px);
+      transition:
+        opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+      transition-delay: calc(var(--i, 0) * 90ms + 180ms);
+    }
+    [data-reveal].in-view .col-item {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .col-strip {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: var(--space-5);
-    }
-    .collection {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-2);
-      padding: var(--space-6) var(--space-6) var(--space-5);
-      min-height: 200px;
-      border-radius: var(--radius-lg);
+      grid-template-columns: 5.5rem 1fr auto;
+      align-items: center;
+      gap: var(--space-7);
+      padding: var(--space-7) var(--space-5);
+      margin: 0 calc(-1 * var(--space-5));
+      border-bottom: 1px solid var(--clr-border-faint);
       text-decoration: none;
-      color: var(--clr-text);
-      background:
-        radial-gradient(130% 85% at 0% 0%, color-mix(in oklch, oklch(82% 0.13 var(--col-hue)) 50%, var(--clr-surface)) 0%, var(--clr-surface) 70%);
-      border: 1px solid var(--clr-border-faint);
-      box-shadow: var(--shadow-sm);
-      overflow: hidden;
-      transition: transform 0.35s var(--ease-out-expo), box-shadow 0.35s var(--ease-out-expo), border-color 0.25s;
-      isolation: isolate;
-    }
-    .collection::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(55% 45% at 90% 95%, color-mix(in oklch, oklch(70% 0.14 var(--col-hue)) 38%, transparent) 0%, transparent 100%);
-      z-index: -1;
-      opacity: 0.75;
-      transition: opacity 0.3s var(--ease-out-expo);
+      color: inherit;
+      border-radius: var(--radius-sm);
+      transition: background 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     }
     @media (hover: hover) and (pointer: fine) {
-      .collection:hover {
-        transform: translateY(-4px);
-        box-shadow: var(--shadow-lg);
-        border-color: color-mix(in oklch, oklch(62% 0.13 var(--col-hue)) 40%, var(--clr-border));
+      .col-strip:hover { background: var(--clr-surface); }
+      .col-strip:hover .col-index { color: var(--clr-brand); }
+      .col-strip:hover .col-name { color: var(--clr-brand); }
+      .col-strip:hover .col-pill {
+        background: var(--clr-brand);
+        border-color: var(--clr-brand);
+        color: #fff;
+        transform: translateX(3px) translateY(-2px) scale(1.08);
       }
-      .collection:hover::after { opacity: 1; }
-      .collection:hover .col-arrow { transform: translateX(5px); }
     }
-    .collection:active { transform: translateY(-1px); transition-duration: 0.1s; }
-    .col-num {
+    .col-strip:active { background: var(--clr-surface-hover); }
+    .col-index {
       font-family: var(--font-display);
-      font-size: 0.82rem;
+      font-size: clamp(2.6rem, 4.2vw, 3.8rem);
       font-weight: 800;
-      letter-spacing: 0.12em;
-      color: color-mix(in oklch, oklch(42% 0.12 var(--col-hue)) 90%, var(--clr-text-muted));
+      color: var(--clr-border-strong);
+      letter-spacing: -0.04em;
+      line-height: 1;
+      text-align: right;
+      flex-shrink: 0;
+      transition: color 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .col-num::before {
-      content: '';
-      display: inline-block;
-      width: 1.2rem;
-      height: 1px;
-      background: currentColor;
-      vertical-align: middle;
-      margin-right: var(--space-2);
-      opacity: 0.55;
-      transform: translateY(-1px);
-    }
-    .col-title {
+    .col-content { min-width: 0; }
+    .col-name {
       font-family: var(--font-display);
-      font-size: clamp(1.5rem, 2.2vw, 1.9rem);
+      font-size: clamp(1.55rem, 2.6vw, 2.3rem);
       font-weight: 800;
-      line-height: 1.05;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.025em;
+      line-height: 1.08;
+      margin: 0 0 var(--space-2);
       color: var(--clr-text);
-      margin: 0;
+      transition: color 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .col-sub {
       font-size: 0.9rem;
       color: var(--clr-text-muted);
-      line-height: 1.55;
       margin: 0;
+      line-height: 1.55;
+      max-width: 54ch;
     }
-    .col-arrow {
-      margin-top: auto;
-      align-self: flex-end;
-      font-size: 1.3rem;
-      color: var(--clr-brand);
-      transition: transform 0.3s var(--ease-out-expo);
+    .col-pill {
+      width: 2.75rem;
+      height: 2.75rem;
+      border-radius: 50%;
+      border: 1px solid var(--clr-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--clr-text-faint);
+      transition:
+        border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+        background 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+        color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    @media (prefers-reduced-motion: reduce) {
-      .collection { transition: box-shadow 0.2s, border-color 0.2s; }
-      .collection:hover { transform: none; }
-      .col-arrow { transition: none; }
-      .collection:hover .col-arrow { transform: none; }
-    }
+    .col-pill svg { width: 1.1rem; height: 1.1rem; }
 
     /* Anti-center bias: CTA skews to right-end with massive left white-space */
     .cta {
@@ -589,9 +627,20 @@ import { PerfService } from '../../services/perf.service';
       .tile-a { grid-area: a; }
       .featured-rest { grid-template-columns: 1fr; gap: var(--space-4); }
       .cta-btn { width: 100%; justify-content: center; box-sizing: border-box; }
+      .col-strip {
+        grid-template-columns: 3.5rem 1fr auto;
+        gap: var(--space-4);
+        padding: var(--space-5) var(--space-3);
+        margin: 0 calc(-1 * var(--space-3));
+      }
+      .col-index { font-size: clamp(2rem, 8vw, 2.8rem); }
+      .col-name  { font-size: clamp(1.2rem, 5vw, 1.55rem); }
+      .col-pill  { width: 2.25rem; height: 2.25rem; }
     }
     @media (max-width: 400px) {
       .search-btn span { display: none; }
+      .col-pill { display: none; }
+      .col-strip { grid-template-columns: 3rem 1fr; }
     }
 
     /* Hero entrance choreography */
@@ -657,11 +706,34 @@ export class HomeComponent {
   }
 
   constructor() {
+    const destroyRef = inject(DestroyRef);
     this.perf.mark('home_start');
     this.seo.set({
       title: 'Начало',
       description: 'Традиционни български рецепти, споделени с любов. Открий лесни и вкусни ястия за всеки повод в кулинарния блог на Иво.',
     });
+    afterNextRender(() => {
+      const io = this.initReveal();
+      if (io) destroyRef.onDestroy(() => io.disconnect());
+    });
+  }
+
+  private initReveal(): IntersectionObserver | null {
+    const els = document.querySelectorAll<HTMLElement>('[data-reveal]');
+    if (!els.length) return null;
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            (e.target as HTMLElement).classList.add('in-view');
+            io.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.08, rootMargin: '0px 0px -60px 0px' },
+    );
+    els.forEach(el => io.observe(el));
+    return io;
   }
 
   onSearch(e: Event): void {
