@@ -449,7 +449,7 @@ import { SeoService } from '../../services/seo.service';
     }
     .read-progress-bar {
       height: 100%;
-      background: var(--clr-brand);
+      background: linear-gradient(90deg, var(--clr-brand), var(--clr-amber));
       transform-origin: left;
       transform: scaleX(0);
       will-change: transform;
@@ -603,9 +603,10 @@ import { SeoService } from '../../services/seo.service';
     }
     .share-btn svg { width: 0.9rem; height: 0.9rem; }
     .share-btn:hover { transform: translateY(-2px); }
-    .share-fb:hover  { background: #1877f2; border-color: #1877f2; }
-    .share-wa:hover  { background: #25d366; border-color: #25d366; }
+    .share-fb:hover    { background: #1877f2; border-color: #1877f2; }
+    .share-wa:hover    { background: #25d366; border-color: #25d366; }
     .share-copy:hover, .share-native:hover { background: rgba(255,255,255,0.3); }
+    .share-print:hover { background: color-mix(in oklch, var(--clr-brand) 28%, transparent); border-color: color-mix(in oklch, var(--clr-brand) 55%, rgba(255,255,255,0.3)); }
 
     /* ===== BODY ===== */
     .body-wrap { max-width: 1200px; margin: 0 auto; padding: 2.5rem 1.5rem; }
@@ -775,7 +776,7 @@ import { SeoService } from '../../services/seo.service';
       text-underline-offset: 2px;
       transition: color 0.15s var(--ease-out-expo);
     }
-    .ing-reset:hover { color: var(--clr-text); }
+    .ing-reset:hover { color: var(--clr-green); }
 
     /* Steps */
     .steps-list { display: flex; flex-direction: column; gap: 1.25rem; }
@@ -820,10 +821,10 @@ import { SeoService } from '../../services/seo.service';
     .tags-row svg { width: 0.9rem; height: 0.9rem; color: var(--clr-text-muted); flex-shrink: 0; }
     .tag {
       padding: 0.3rem 0.85rem;
-      background: var(--clr-surface-hover);
+      background: var(--clr-amber-bg);
       border-radius: var(--radius-pill);
       font-size: 0.78rem;
-      color: var(--clr-text-muted);
+      color: var(--clr-amber-text);
       font-weight: 500;
     }
 

@@ -53,9 +53,9 @@ import { PerfService } from '../../services/perf.service';
         <!-- Pill filters: difficulty + sort -->
         <div class="pill-filters pill-filters-secondary" role="group" aria-label="Филтри">
           <button class="pill pill-sm" [class.active]="!difficulty()" [attr.aria-pressed]="!difficulty()" (click)="selectDifficulty('')">Всяка трудност</button>
-          <button class="pill pill-sm" [class.active]="difficulty() === 'Лесно'" [attr.aria-pressed]="difficulty() === 'Лесно'" (click)="selectDifficulty('Лесно')">Лесно</button>
-          <button class="pill pill-sm" [class.active]="difficulty() === 'Средно'" [attr.aria-pressed]="difficulty() === 'Средно'" (click)="selectDifficulty('Средно')">Средно</button>
-          <button class="pill pill-sm" [class.active]="difficulty() === 'За напреднали'" [attr.aria-pressed]="difficulty() === 'За напреднали'" (click)="selectDifficulty('За напреднали')">За напреднали</button>
+          <button class="pill pill-sm pill-easy" [class.active]="difficulty() === 'Лесно'" [attr.aria-pressed]="difficulty() === 'Лесно'" (click)="selectDifficulty('Лесно')">Лесно</button>
+          <button class="pill pill-sm pill-medium" [class.active]="difficulty() === 'Средно'" [attr.aria-pressed]="difficulty() === 'Средно'" (click)="selectDifficulty('Средно')">Средно</button>
+          <button class="pill pill-sm pill-hard" [class.active]="difficulty() === 'За напреднали'" [attr.aria-pressed]="difficulty() === 'За напреднали'" (click)="selectDifficulty('За напреднали')">За напреднали</button>
           <span class="sort-divider" aria-hidden="true"></span>
           <button class="pill pill-sm" [class.active]="sort() === 'newest'" [attr.aria-pressed]="sort() === 'newest'" (click)="selectSort('newest')">Най-нови</button>
           <button class="pill pill-sm" [class.active]="sort() === 'fastest'" [attr.aria-pressed]="sort() === 'fastest'" (click)="selectSort('fastest')">Най-бързи</button>
@@ -260,6 +260,9 @@ import { PerfService } from '../../services/perf.service';
       color: var(--clr-surface);
       font-weight: 600;
     }
+    .pill-easy.active   { background: var(--clr-green-bg);  color: var(--clr-green-text);  border-color: var(--clr-green); }
+    .pill-medium.active { background: var(--clr-amber-bg);  color: var(--clr-amber-text);  border-color: var(--clr-amber-border); }
+    .pill-hard.active   { background: var(--clr-rust-bg);   color: var(--clr-rust-text);   border-color: var(--clr-rust-border); }
     .pill:focus-visible {
       outline: 2.5px solid var(--clr-focus);
       outline-offset: 2px;

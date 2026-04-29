@@ -492,7 +492,7 @@ import { PerfService } from '../../services/perf.service';
       font-family: var(--font-display);
       font-size: clamp(2.6rem, 4.2vw, 3.8rem);
       font-weight: 800;
-      color: var(--clr-border-strong);
+      color: color-mix(in oklch, var(--clr-brand) 22%, transparent);
       letter-spacing: -0.04em;
       line-height: 1;
       text-align: right;
