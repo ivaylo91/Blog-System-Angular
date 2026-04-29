@@ -442,6 +442,8 @@ import { PerfService } from '../../services/perf.service';
       padding: clamp(4rem, 7vw, 6.5rem) var(--space-6) clamp(4rem, 7vw, 6.5rem);
       background: var(--clr-bg);
       border-top: 1px solid var(--clr-border-faint);
+      content-visibility: auto;
+      contain-intrinsic-block-size: 520px;
     }
     .col-list {
       list-style: none;

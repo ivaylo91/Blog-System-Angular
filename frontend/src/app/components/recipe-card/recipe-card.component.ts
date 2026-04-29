@@ -336,11 +336,9 @@ import { Recipe } from '../../models/models';
       z-index: 2;
     }
     .card.overlay .category {
-      background: rgba(255, 255, 255, 0.18);
+      background: rgba(0, 0, 0, 0.42);
       color: #fff;
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      border: 1px solid rgba(255, 255, 255, 0.22);
+      border: 1px solid rgba(255, 255, 255, 0.18);
     }
     .card.overlay .title {
       color: #fff;
