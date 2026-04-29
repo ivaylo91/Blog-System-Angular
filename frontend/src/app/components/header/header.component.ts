@@ -17,7 +17,7 @@ import { ThemeService } from '../../services/theme.service';
         </button>
 
         <a routerLink="/" class="brand">
-          <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l1.5-7.5A2 2 0 0 1 6.46 2h11.08a2 2 0 0 1 1.96 1.5L21 11"/><path d="M3 11h18v2a7 7 0 0 1-14 0H3z"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="17" x2="12" y2="20"/></svg>
+          <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l1.5-7.5A2 2 0 0 1 6.46 2h11.08a2 2 0 0 1 1.96 1.5L21 11"/><path d="M3 11h18v2a7 7 0 0 1-14 0H3z"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="17" x2="12" y2="20"/></svg>
           <span class="brand-text">Кулинарният блог на Иво</span>
         </a>
 
@@ -55,7 +55,6 @@ import { ThemeService } from '../../services/theme.service';
       </div>
     </header>
 
-    <!-- ── Mobile left drawer ──────────────────────────────────────────── -->
     <div class="drawer-overlay" [class.visible]="drawerOpen()" (click)="close()" aria-hidden="true"></div>
 
     <div class="mobile-drawer" #drawer [class.open]="drawerOpen()"
@@ -64,7 +63,7 @@ import { ThemeService } from '../../services/theme.service';
 
       <div class="drawer-header">
         <a routerLink="/" class="drawer-brand" (click)="close()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l1.5-7.5A2 2 0 0 1 6.46 2h11.08a2 2 0 0 1 1.96 1.5L21 11"/><path d="M3 11h18v2a7 7 0 0 1-14 0H3z"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="17" x2="12" y2="20"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l1.5-7.5A2 2 0 0 1 6.46 2h11.08a2 2 0 0 1 1.96 1.5L21 11"/><path d="M3 11h18v2a7 7 0 0 1-14 0H3z"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="17" x2="12" y2="20"/></svg>
           Кулинарен блог
         </a>
         <div class="drawer-header-actions">
@@ -134,7 +133,6 @@ import { ThemeService } from '../../services/theme.service';
           <a routerLink="/register" class="drawer-register" (click)="close()">Регистрация</a>
         }
       </div>
-
     </div>
   `,
   styles: [`
@@ -142,22 +140,22 @@ import { ThemeService } from '../../services/theme.service';
       position: sticky;
       top: 0;
       z-index: var(--z-sticky);
-      background: color-mix(in oklch, var(--clr-surface) 92%, transparent);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      background: color-mix(in oklch, var(--clr-surface) 90%, transparent);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--clr-border-faint);
-      transition: box-shadow 0.3s var(--ease-out-expo), border-color 0.3s var(--ease-out-expo), background 0.3s var(--ease-out-expo);
+      transition: box-shadow 0.28s var(--ease-out-expo), border-color 0.28s var(--ease-out-expo), background 0.28s var(--ease-out-expo);
     }
     .site-header.scrolled {
-      background: color-mix(in oklch, var(--clr-surface) 97%, transparent);
-      box-shadow: 0 1px 3px rgba(28,25,23,0.05), 0 8px 24px rgba(28,25,23,0.07);
+      background: color-mix(in oklch, var(--clr-surface) 96%, transparent);
+      box-shadow: 0 1px 0 var(--clr-border-faint), 0 4px 20px rgba(26,20,14,0.06);
       border-bottom-color: var(--clr-border);
     }
     .header-inner {
-      max-width: 1200px;
+      max-width: 1280px;
       margin: 0 auto;
       padding: 0 1.5rem;
-      height: 4rem;
+      height: 3.75rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -169,14 +167,14 @@ import { ThemeService } from '../../services/theme.service';
     .brand {
       display: flex;
       align-items: center;
-      gap: 0.55rem;
+      gap: 0.5rem;
       text-decoration: none;
       flex-shrink: 0;
     }
-    .brand-icon { width: 1.9rem; height: 1.9rem; flex-shrink: 0; color: var(--clr-brand); }
+    .brand-icon { width: 1.75rem; height: 1.75rem; flex-shrink: 0; color: var(--clr-brand); }
     .brand-text {
       font-family: var(--font-display);
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       font-weight: 700;
       color: var(--clr-text);
       letter-spacing: -0.01em;
@@ -185,118 +183,152 @@ import { ThemeService } from '../../services/theme.service';
     }
     .brand:hover .brand-text { color: var(--clr-brand); }
 
-    /* Nav layout — main routes live in the drawer; only auth controls
-       stay inline on desktop (theme toggle + signin/register or logout). */
     .nav-links { display: flex; align-items: center; gap: 0.25rem; }
     .nav-main { display: none; }
-    .nav-auth {
-      display: flex; align-items: center; gap: 0.5rem;
-    }
+    .nav-auth { display: flex; align-items: center; gap: 0.35rem; }
+
     .nav-links a:not(.register-btn) {
-      padding: 0.45rem 0.9rem; border-radius: var(--radius-pill);
-      text-decoration: none; font-size: 0.875rem; font-weight: 500;
-      color: var(--clr-text-muted); transition: background 0.18s, color 0.18s;
-      white-space: nowrap; min-height: 2.25rem;
-      display: flex; align-items: center;
+      padding: 0.4rem 0.85rem;
+      border-radius: var(--radius-pill);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--clr-text-muted);
+      transition: background 0.16s, color 0.16s;
+      white-space: nowrap;
+      min-height: 2.25rem;
+      display: flex;
+      align-items: center;
     }
     .nav-links a:not(.register-btn):hover { background: var(--clr-surface-hover); color: var(--clr-text); }
-    .nav-links a:not(.register-btn).active { background: var(--clr-surface-hover); color: var(--clr-brand); font-weight: 600; }
+    .nav-links a:not(.register-btn).active { background: var(--clr-surface-active); color: var(--clr-brand); font-weight: 600; }
+
     .register-btn {
-      display: flex; align-items: center;
-      padding: 0.45rem 0.9rem; border-radius: var(--radius-pill);
-      text-decoration: none; white-space: nowrap; min-height: 2.25rem;
+      display: flex;
+      align-items: center;
+      padding: 0.4rem 1rem;
+      border-radius: var(--radius-pill);
+      text-decoration: none;
+      white-space: nowrap;
+      min-height: 2.25rem;
       background: var(--clr-brand);
-      color: oklch(100% 0 0); font-weight: 600; font-size: 0.875rem;
-      box-shadow: 0 1px 4px color-mix(in oklch, var(--clr-brand) 30%, transparent);
-      transition: background 0.2s var(--ease-out-expo), transform 0.15s var(--ease-out-expo), box-shadow 0.2s var(--ease-out-expo);
+      color: oklch(100% 0 0);
+      font-weight: 600;
+      font-size: 0.875rem;
+      transition: background 0.18s var(--ease-out-expo), transform 0.15s var(--ease-out-expo);
     }
-    .register-btn:hover {
-      background: var(--clr-brand-dark);
-      transform: translateY(-1px);
-      box-shadow: 0 3px 10px color-mix(in oklch, var(--clr-brand) 35%, transparent);
-    }
+    .register-btn:hover { background: var(--clr-brand-dark); transform: translateY(-1px); }
     .register-btn:active { transform: translateY(0); }
     .register-btn.active { background: var(--clr-brand); }
+
     .logout-btn {
-      display: flex; align-items: center; gap: 0.35rem;
-      padding: 0.45rem 0.9rem; border-radius: var(--radius-pill);
-      border: none; background: none; font-size: 0.875rem; font-weight: 500;
-      color: var(--clr-error); cursor: pointer;
-      transition: background 0.18s, color 0.18s;
-      white-space: nowrap; min-height: 2.25rem; touch-action: manipulation;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.4rem 0.85rem;
+      border-radius: var(--radius-pill);
+      border: none;
+      background: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--clr-error);
+      cursor: pointer;
+      transition: background 0.16s;
+      white-space: nowrap;
+      min-height: 2.25rem;
+      touch-action: manipulation;
     }
     .logout-btn svg { width: 0.9rem; height: 0.9rem; }
     .logout-btn:hover { background: var(--clr-error-bg); color: var(--clr-error-dark); }
 
-    /* Theme toggle */
     .theme-toggle {
-      display: flex; align-items: center; justify-content: center;
-      width: 2.25rem; height: 2.25rem;
-      border: none; background: none; border-radius: var(--radius-pill);
-      color: var(--clr-text-muted); cursor: pointer;
-      transition: background 0.18s, color 0.18s;
-      touch-action: manipulation; flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.25rem;
+      height: 2.25rem;
+      border: none;
+      background: none;
+      border-radius: var(--radius-circle);
+      color: var(--clr-text-muted);
+      cursor: pointer;
+      transition: background 0.16s, color 0.16s;
+      touch-action: manipulation;
+      flex-shrink: 0;
     }
     .theme-toggle svg { width: 1rem; height: 1rem; }
     .theme-toggle:hover { background: var(--clr-surface-hover); color: var(--clr-text); }
 
-    /* Hamburger toggle — visible at all viewports; primary nav affordance */
     .mobile-toggle {
       display: flex;
-      background: none; border: none;
-      padding: 0.5rem; cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0.5rem;
+      cursor: pointer;
       border-radius: var(--radius-xs);
-      transition: background 0.2s;
-      min-width: 2.75rem; min-height: 2.75rem;
-      align-items: center; justify-content: center;
+      transition: background 0.16s;
+      min-width: 2.75rem;
+      min-height: 2.75rem;
+      align-items: center;
+      justify-content: center;
       touch-action: manipulation;
       order: -1;
     }
     .mobile-toggle:hover { background: var(--clr-surface-hover); }
     .hamburger {
-      display: block; width: 1.25rem; height: 2px;
-      background: var(--clr-text); position: relative;
+      display: block;
+      width: 1.2rem;
+      height: 1.5px;
+      background: var(--clr-text);
+      position: relative;
     }
     .hamburger::before, .hamburger::after {
-      content: ''; position: absolute; left: 0;
-      width: 100%; height: 2px; background: var(--clr-text);
+      content: '';
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 1.5px;
+      background: var(--clr-text);
     }
-    .hamburger::before { top: -6px; }
-    .hamburger::after { top: 6px; }
+    .hamburger::before { top: -5px; }
+    .hamburger::after  { top: 5px; }
 
-    /* ── Drawer overlay ─────────────────────────────────────────────── */
+    /* Drawer overlay */
     .drawer-overlay {
-      position: fixed; inset: 0;
-      background: rgba(0, 0, 0, 0.5);
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
       z-index: var(--z-overlay);
       backdrop-filter: blur(2px);
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.28s var(--ease-out-expo);
+      transition: opacity 0.26s var(--ease-out-expo);
     }
-    .drawer-overlay.visible {
-      opacity: 1;
-      pointer-events: auto;
-    }
+    .drawer-overlay.visible { opacity: 1; pointer-events: auto; }
 
-    /* ── Left-slide drawer (visible at all viewports) ──────────────── */
+    /* Drawer */
     .mobile-drawer {
       display: flex;
-      position: fixed; top: 0; left: 0;
-      width: 320px; max-width: 85vw;
-      height: 100vh; height: 100dvh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 300px;
+      max-width: 85vw;
+      height: 100vh;
+      height: 100dvh;
       background: var(--clr-surface);
       z-index: var(--z-drawer);
       flex-direction: column;
       transform: translateX(-100%);
-      transition: transform 0.32s cubic-bezier(0.32, 0.72, 0, 1);
-      box-shadow: 4px 0 24px rgba(28, 25, 23, 0.18);
+      transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+      box-shadow: 2px 0 32px rgba(26, 20, 14, 0.16);
       overflow-y: auto;
     }
     .mobile-drawer.open { transform: translateX(0); }
 
     .drawer-header {
-      display: flex; align-items: center;
+      display: flex;
+      align-items: center;
       justify-content: space-between;
       padding: 1rem 0.75rem 1rem 1.25rem;
       border-bottom: 1px solid var(--clr-border-faint);
@@ -304,111 +336,155 @@ import { ThemeService } from '../../services/theme.service';
     }
     .drawer-header-actions { display: flex; align-items: center; gap: 0.25rem; }
     .drawer-brand {
-      display: flex; align-items: center; gap: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
       text-decoration: none;
-      font-family: var(--font-display); font-size: 0.95rem;
-      font-weight: 700; color: var(--clr-text);
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--clr-text);
     }
-    .drawer-brand svg { width: 1.4rem; height: 1.4rem; color: var(--clr-brand); flex-shrink: 0; }
+    .drawer-brand svg { width: 1.3rem; height: 1.3rem; color: var(--clr-brand); flex-shrink: 0; }
     .drawer-close {
-      background: none; border: none; cursor: pointer;
-      padding: 0.4rem; border-radius: var(--radius-xs); color: var(--clr-text-muted);
-      transition: background 0.2s, color 0.2s;
-      min-width: 2.5rem; min-height: 2.5rem;
-      display: flex; align-items: center; justify-content: center;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.4rem;
+      border-radius: var(--radius-xs);
+      color: var(--clr-text-muted);
+      transition: background 0.16s, color 0.16s;
+      min-width: 2.25rem;
+      min-height: 2.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       touch-action: manipulation;
     }
-    .drawer-close svg { width: 1.1rem; height: 1.1rem; }
+    .drawer-close svg { width: 1rem; height: 1rem; }
     .drawer-close:hover { background: var(--clr-surface-hover); color: var(--clr-text); }
 
     .drawer-user {
-      display: flex; align-items: center; gap: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
       padding: 1rem 1.25rem;
     }
     .drawer-avatar {
-      width: 2.5rem; height: 2.5rem; border-radius: var(--radius-circle);
-      background: var(--clr-brand); color: oklch(100% 0 0);
-      font-size: 1rem; font-weight: 700;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; text-transform: uppercase;
+      width: 2.25rem;
+      height: 2.25rem;
+      border-radius: var(--radius-circle);
+      background: var(--clr-brand);
+      color: oklch(100% 0 0);
+      font-size: 0.9rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      text-transform: uppercase;
     }
     .drawer-user-info { display: flex; flex-direction: column; gap: 0.1rem; min-width: 0; }
     .drawer-user-name {
-      font-size: 0.9rem; font-weight: 600; color: var(--clr-text);
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--clr-text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .drawer-user-role {
-      font-size: 0.7rem; color: var(--clr-text-faint);
-      text-transform: uppercase; letter-spacing: 0.05em;
+      font-size: 0.68rem;
+      color: var(--clr-text-faint);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
     }
 
     .drawer-sep { height: 1px; background: var(--clr-border-faint); margin: 0 1.25rem; }
 
     .drawer-nav {
-      display: flex; flex-direction: column;
-      padding: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      padding: 0.5rem;
       flex: 1;
-      gap: 0.125rem;
+      gap: 0.1rem;
     }
     .drawer-item {
-      display: flex; align-items: center; gap: 0.75rem;
-      padding: 0.75rem 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.7rem 0.75rem;
       border-radius: var(--radius-sm);
       text-decoration: none;
-      font-size: 0.95rem; font-weight: 500;
+      font-size: 0.9rem;
+      font-weight: 500;
       color: var(--clr-text);
-      transition: background 0.18s, color 0.18s;
-      touch-action: manipulation; min-height: 3rem;
+      transition: background 0.16s, color 0.16s;
+      touch-action: manipulation;
+      min-height: 2.75rem;
     }
-    .drawer-item svg { width: 1.15rem; height: 1.15rem; flex-shrink: 0; color: var(--clr-text-muted); }
+    .drawer-item svg { width: 1.05rem; height: 1.05rem; flex-shrink: 0; color: var(--clr-text-muted); }
     .drawer-item:hover { background: var(--clr-surface-hover); }
-    .drawer-item.active {
-      background: var(--clr-surface-active); color: var(--clr-brand); font-weight: 600;
-    }
+    .drawer-item.active { background: var(--clr-surface-active); color: var(--clr-brand); font-weight: 600; }
     .drawer-item.active svg { color: var(--clr-brand); }
 
     .drawer-footer {
-      padding: 0.75rem; border-top: 1px solid var(--clr-border-faint);
-      display: flex; flex-direction: column; gap: 0.5rem;
+      padding: 0.75rem;
+      border-top: 1px solid var(--clr-border-faint);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
       flex-shrink: 0;
     }
     .drawer-logout {
-      display: flex; align-items: center; gap: 0.75rem;
-      padding: 0.75rem; border-radius: var(--radius-sm);
-      border: none; background: none; width: 100%;
-      font-size: 0.95rem; font-weight: 500; color: var(--clr-error);
-      cursor: pointer; touch-action: manipulation; min-height: 3rem;
-      transition: background 0.18s;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.7rem 0.75rem;
+      border-radius: var(--radius-sm);
+      border: none;
+      background: none;
+      width: 100%;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--clr-error);
+      cursor: pointer;
+      touch-action: manipulation;
+      min-height: 2.75rem;
+      transition: background 0.16s;
     }
-    .drawer-logout svg { width: 1.15rem; height: 1.15rem; flex-shrink: 0; }
+    .drawer-logout svg { width: 1.05rem; height: 1.05rem; flex-shrink: 0; }
     .drawer-logout:hover { background: var(--clr-error-bg); }
+
     .drawer-signin {
-      display: block; padding: 0.75rem 1rem; border-radius: var(--radius-sm);
-      text-decoration: none; text-align: center;
-      font-size: 0.95rem; font-weight: 500; color: var(--clr-text-muted);
-      transition: background 0.18s;
+      display: block;
+      padding: 0.7rem 1rem;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      text-align: center;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--clr-text-muted);
+      transition: background 0.16s;
     }
     .drawer-signin:hover { background: var(--clr-surface-hover); }
     .drawer-register {
-      display: block; padding: 0.75rem 1rem; border-radius: var(--radius-sm);
-      text-decoration: none; text-align: center;
-      font-size: 0.95rem; font-weight: 600;
+      display: block;
+      padding: 0.7rem 1rem;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      text-align: center;
+      font-size: 0.9rem;
+      font-weight: 600;
       background: var(--clr-brand);
       color: oklch(100% 0 0);
-      transition: background 0.2s var(--ease-out-expo);
+      transition: background 0.18s var(--ease-out-expo);
     }
     .drawer-register:hover { background: var(--clr-brand-dark); }
 
-    @media (max-width: 768px) {
-      .site-header.scrolled .header-inner { height: 3.5rem; }
-    }
-    /* Below 640px the header collapses to brand + hamburger only —
-       auth controls (theme + signin/register or logout) move to the drawer. */
-    @media (max-width: 640px) {
-      .nav-auth { display: none; }
-    }
+    @media (max-width: 640px) { .nav-auth { display: none; } }
     @media (max-width: 400px) {
-      .brand-text { font-size: 0.92rem; }
+      .brand-text { font-size: 0.88rem; }
       .header-inner { padding: 0 1rem; }
     }
     @media (prefers-reduced-motion: reduce) {
@@ -455,14 +531,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   private scrollHandler = () => this.scrolled.set(window.scrollY > 30);
-
   private keydownHandler = (e: KeyboardEvent) => {
     if (!this.drawerOpen()) return;
-    if (e.key === 'Escape') {
-      e.preventDefault();
-      this.close();
-      return;
-    }
+    if (e.key === 'Escape') { e.preventDefault(); this.close(); return; }
     if (e.key === 'Tab') {
       const focusable = this.getFocusableElements();
       if (focusable.length === 0) return;
@@ -470,11 +541,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
       const last = focusable[focusable.length - 1];
       const active = document.activeElement as HTMLElement | null;
       if (e.shiftKey && (active === first || !this.drawerEl()?.nativeElement.contains(active))) {
-        e.preventDefault();
-        last.focus();
+        e.preventDefault(); last.focus();
       } else if (!e.shiftKey && active === last) {
-        e.preventDefault();
-        first.focus();
+        e.preventDefault(); first.focus();
       }
     }
   };

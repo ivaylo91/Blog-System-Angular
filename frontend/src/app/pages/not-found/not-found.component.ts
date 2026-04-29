@@ -8,10 +8,9 @@ import { RouterLink } from '@angular/router';
   template: `
     <div class="not-found">
       <div class="content">
-        <div class="emoji">🍳</div>
-        <h1>404</h1>
-        <p class="title">Страницата не е намерена</p>
-        <p class="subtitle">Изглежда тази рецепта е изгоряла или никога не е съществувала.</p>
+        <p class="num" aria-hidden="true">404</p>
+        <h1>Страницата не е намерена</h1>
+        <p class="sub">Изглежда тази рецепта е изгоряла или никога не е съществувала.</p>
         <div class="actions">
           <a routerLink="/" class="btn-primary">Към начало</a>
           <a routerLink="/recipes" class="btn-secondary">Разгледай рецепти</a>
@@ -24,59 +23,72 @@ import { RouterLink } from '@angular/router';
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: calc(100vh - 8rem);
-      padding: 2rem;
-      background: linear-gradient(135deg, #fdf8f0 0%, #f5f0e8 100%);
+      min-height: calc(100dvh - 8rem);
+      padding: 3rem var(--space-6);
+      background: var(--clr-surface);
     }
     .content {
-      text-align: center;
-      max-width: 480px;
+      text-align: left;
+      max-width: 520px;
     }
-    .emoji { font-size: 4rem; margin-bottom: 0.5rem; }
-    h1 {
-      font-family: 'Georgia', serif;
-      font-size: 6rem;
-      color: #78350f;
-      margin: 0;
+    .num {
+      font-family: var(--font-display);
+      font-size: clamp(5rem, 15vw, 10rem);
+      font-weight: 800;
+      color: var(--clr-brand);
+      opacity: 0.12;
       line-height: 1;
-      opacity: 0.15;
+      margin: 0 0 var(--space-4);
+      letter-spacing: -0.04em;
     }
-    .title {
-      font-family: 'Georgia', serif;
-      font-size: 1.75rem;
-      color: #1c1917;
-      margin: 0.5rem 0 0.75rem;
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 3vw, 2.25rem);
+      font-weight: 800;
+      color: var(--clr-text);
+      margin: 0 0 var(--space-4);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
     }
-    .subtitle {
-      color: #57534e;
+    .sub {
       font-size: 1rem;
-      margin: 0 0 2rem;
-      line-height: 1.6;
+      color: var(--clr-text-muted);
+      margin: 0 0 var(--space-8);
+      line-height: 1.65;
+      max-width: 38ch;
     }
-    .actions { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+    .actions { display: flex; gap: var(--space-3); flex-wrap: wrap; }
     .btn-primary {
-      padding: 0.75rem 1.75rem;
-      background: #78350f;
-      color: #fff;
-      border-radius: var(--radius-md);
+      display: inline-flex;
+      align-items: center;
+      padding: var(--space-3) var(--space-6);
+      background: var(--clr-brand);
+      color: oklch(100% 0 0);
+      border-radius: var(--radius-pill);
       text-decoration: none;
       font-weight: 700;
-      font-size: 0.95rem;
-      transition: background 0.2s, transform 0.15s;
+      font-size: 0.9rem;
+      transition: background 0.18s, transform 0.15s;
+      touch-action: manipulation;
     }
-    .btn-primary:hover { background: #5c2a0b; transform: translateY(-1px); }
+    .btn-primary:hover { background: var(--clr-brand-dark); transform: translateY(-1px); }
+    .btn-primary:active { transform: translateY(0); }
     .btn-secondary {
-      padding: 0.75rem 1.75rem;
-      background: #fff;
-      color: #1c1917;
-      border-radius: var(--radius-md);
+      display: inline-flex;
+      align-items: center;
+      padding: var(--space-3) var(--space-6);
+      background: transparent;
+      color: var(--clr-text);
+      border-radius: var(--radius-pill);
       text-decoration: none;
-      font-weight: 700;
-      font-size: 0.95rem;
-      border: 1.5px solid rgba(0,0,0,0.12);
-      transition: background 0.2s, transform 0.15s;
+      font-weight: 600;
+      font-size: 0.9rem;
+      border: 1.5px solid var(--clr-border-strong);
+      transition: background 0.18s, border-color 0.18s, transform 0.15s;
+      touch-action: manipulation;
     }
-    .btn-secondary:hover { background: #f5f0e8; transform: translateY(-1px); }
+    .btn-secondary:hover { background: var(--clr-surface-hover); border-color: var(--clr-border-strong); transform: translateY(-1px); }
+    .btn-secondary:active { transform: translateY(0); }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

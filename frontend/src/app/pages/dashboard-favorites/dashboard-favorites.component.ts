@@ -74,22 +74,23 @@ import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.co
       gap: 1rem;
     }
     h1 {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 1.75rem;
-      color: #1c1917;
-      margin: 0 0 0.2rem;
-      letter-spacing: -0.02em;
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 2.5vw, 1.75rem);
+      font-weight: 800;
+      color: var(--clr-text);
+      margin: 0 0 var(--space-1);
+      letter-spacing: -0.025em;
     }
-    .subtitle { color: #57534e; margin: 0; font-size: 0.875rem; }
+    .subtitle { color: var(--clr-text-muted); margin: 0; font-size: 0.875rem; }
     .count-badge {
       display: flex;
       align-items: center;
       justify-content: center;
       min-width: 2rem;
       height: 2rem;
-      padding: 0 0.6rem;
-      background: #fef3c7;
-      color: #92400e;
+      padding: 0 var(--space-3);
+      background: var(--clr-amber-bg);
+      color: var(--clr-amber-text);
       border-radius: var(--radius-pill);
       font-size: 0.82rem;
       font-weight: 700;
@@ -100,7 +101,7 @@ import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.co
     .favorites-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1.5rem;
+      gap: var(--space-6);
     }
 
     /* Empty state */
@@ -109,65 +110,66 @@ import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.co
       flex-direction: column;
       align-items: center;
       text-align: center;
-      padding: 4rem 2rem;
-      background: #ffffff;
+      padding: var(--space-10) var(--space-7);
+      background: var(--clr-surface);
       border-radius: var(--radius-lg);
-      border: 1px solid rgba(0,0,0,0.07);
-      box-shadow: 0 2px 10px rgba(28,25,23,0.05);
+      border: 1px solid var(--clr-border-faint);
+      box-shadow: var(--shadow-sm);
     }
     .empty-icon {
       width: 5rem;
       height: 5rem;
       border-radius: var(--radius-circle);
-      background: #fee2e2;
+      background: var(--clr-error-bg);
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 1.25rem;
+      margin-bottom: var(--space-5);
     }
-    .empty-icon svg { width: 2.5rem; height: 2.5rem; color: #e11d48; }
+    .empty-icon svg { width: 2.5rem; height: 2.5rem; color: var(--clr-error); }
     .empty-state h2 {
-      font-family: 'Playfair Display', Georgia, serif;
+      font-family: var(--font-display);
       font-size: 1.3rem;
-      color: #1c1917;
-      margin: 0 0 0.5rem;
-      letter-spacing: -0.01em;
+      font-weight: 800;
+      color: var(--clr-text);
+      margin: 0 0 var(--space-2);
+      letter-spacing: -0.02em;
     }
     .empty-state p {
-      color: #57534e;
+      color: var(--clr-text-muted);
       font-size: 0.9rem;
-      margin: 0 0 1.5rem;
+      margin: 0 0 var(--space-6);
       max-width: 320px;
       line-height: 1.6;
     }
     .btn-browse {
       display: inline-flex;
       align-items: center;
-      gap: 0.45rem;
-      padding: 0.7rem 1.5rem;
-      background: #78350f;
-      color: #fff;
-      border-radius: var(--radius-sm);
+      gap: var(--space-2);
+      padding: var(--space-3) var(--space-6);
+      background: var(--clr-brand);
+      color: oklch(100% 0 0);
+      border-radius: var(--radius-pill);
       text-decoration: none;
-      font-weight: 600;
+      font-weight: 700;
       font-size: 0.875rem;
-      transition: background 0.2s, box-shadow 0.2s;
-      box-shadow: 0 2px 8px rgba(120,53,15,0.25);
+      transition: background 0.18s var(--ease-out-expo), transform 0.15s var(--ease-out-expo);
       touch-action: manipulation;
     }
     .btn-browse svg { width: 0.875rem; height: 0.875rem; flex-shrink: 0; }
-    .btn-browse:hover { background: #5c2a0b; box-shadow: 0 4px 14px rgba(120,53,15,0.35); }
+    .btn-browse:hover { background: var(--clr-brand-dark); transform: translateY(-1px); }
+    .btn-browse:active { transform: translateY(0); }
 
     /* Skeleton */
     .skeleton-card {
       border-radius: var(--radius-lg);
       overflow: hidden;
-      background: #fff;
-      box-shadow: 0 2px 10px rgba(28,25,23,0.05);
+      background: var(--clr-surface);
+      box-shadow: var(--shadow-sm);
     }
     .sk-img {
       aspect-ratio: 4/3;
-      background: #f0ede8;
+      background: var(--clr-skeleton);
       position: relative;
       overflow: hidden;
     }
@@ -175,16 +177,16 @@ import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.co
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.55) 50%, transparent 100%);
+      background: linear-gradient(90deg, transparent 0%, var(--clr-skeleton-shine) 50%, transparent 100%);
       transform: translateX(-100%);
       animation: shimmer 1.5s linear infinite;
     }
-    .sk-body { padding: 1.2rem; display: flex; flex-direction: column; gap: 0.55rem; }
-    .sk-meta { display: flex; gap: 0.75rem; margin-top: 0.25rem; }
+    .sk-body { padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-2); }
+    .sk-meta { display: flex; gap: var(--space-3); margin-top: var(--space-1); }
     .sk-line {
       height: 0.8rem;
       border-radius: var(--radius-pill);
-      background: #f0ede8;
+      background: var(--clr-skeleton);
       position: relative;
       overflow: hidden;
     }
@@ -192,7 +194,7 @@ import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.co
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.55) 50%, transparent 100%);
+      background: linear-gradient(90deg, transparent 0%, var(--clr-skeleton-shine) 50%, transparent 100%);
       transform: translateX(-100%);
       animation: shimmer 1.5s linear infinite;
     }

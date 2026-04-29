@@ -210,8 +210,8 @@ import { PerfService } from '../../services/perf.service';
       align-items: center;
       gap: var(--space-2);
       padding: var(--space-3) var(--space-6);
-      background: var(--clr-green);
-      color: var(--clr-surface);
+      background: var(--clr-brand);
+      color: oklch(100% 0 0);
       border: none;
       font-weight: 600;
       font-size: 0.9rem;
@@ -220,7 +220,7 @@ import { PerfService } from '../../services/perf.service';
       touch-action: manipulation;
     }
     .search-btn svg { width: 1rem; height: 1rem; flex-shrink: 0; }
-    .search-btn:hover { background: var(--clr-green-dark); }
+    .search-btn:hover { background: var(--clr-brand-dark); }
 
     /* Pill filters */
     .pill-filters {

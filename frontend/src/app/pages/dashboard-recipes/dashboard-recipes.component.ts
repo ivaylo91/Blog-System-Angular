@@ -123,143 +123,139 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
       gap: 1rem;
     }
     h1 {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 1.75rem;
-      color: #1c1917;
-      margin: 0 0 0.2rem;
-      letter-spacing: -0.02em;
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 2.5vw, 1.75rem);
+      font-weight: 800;
+      color: var(--clr-text);
+      margin: 0 0 var(--space-1);
+      letter-spacing: -0.025em;
     }
-    .subtitle { color: #57534e; font-size: 0.85rem; margin: 0; }
+    .subtitle { color: var(--clr-text-muted); font-size: 0.85rem; margin: 0; }
     .btn-primary {
       display: inline-flex;
       align-items: center;
-      gap: 0.4rem;
-      padding: 0.65rem 1.25rem;
-      background: #4a7c59;
-      color: #fff;
-      border-radius: var(--radius-sm);
+      gap: var(--space-2);
+      padding: var(--space-3) var(--space-5);
+      background: var(--clr-green);
+      color: oklch(100% 0 0);
+      border-radius: var(--radius-pill);
       text-decoration: none;
-      font-weight: 600;
+      font-weight: 700;
       font-size: 0.875rem;
-      transition: background 0.2s, box-shadow 0.2s;
+      transition: background 0.18s var(--ease-out-expo), transform 0.15s var(--ease-out-expo);
       white-space: nowrap;
       flex-shrink: 0;
-      box-shadow: 0 2px 8px rgba(74,124,89,0.25);
       touch-action: manipulation;
     }
     .btn-primary svg { width: 0.875rem; height: 0.875rem; }
-    .btn-primary:hover { background: #3a6347; box-shadow: 0 4px 14px rgba(74,124,89,0.35); }
+    .btn-primary:hover { background: var(--clr-green-dark); transform: translateY(-1px); }
+    .btn-primary:active { transform: translateY(0); }
 
     /* Filter bar */
     .filter-bar {
       display: flex;
       align-items: center;
-      gap: 1rem;
-      margin-bottom: 1.25rem;
+      gap: var(--space-4);
+      margin-bottom: var(--space-5);
       flex-wrap: wrap;
     }
     .search-wrap {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-      background: #fff;
-      border: 1.5px solid rgba(0,0,0,0.1);
+      gap: var(--space-2);
+      background: var(--clr-surface);
+      border: 1.5px solid var(--clr-border);
       border-radius: var(--radius-sm);
-      padding: 0.5rem 0.9rem;
+      padding: var(--space-2) var(--space-4);
       flex: 1;
       min-width: 200px;
       transition: border-color 0.18s, box-shadow 0.18s;
     }
     .search-wrap:focus-within {
-      border-color: #4a7c59;
-      box-shadow: 0 0 0 3px rgba(74,124,89,0.1);
+      border-color: var(--clr-green);
+      box-shadow: 0 0 0 3px color-mix(in oklch, var(--clr-green) 12%, transparent);
     }
-    .search-wrap svg { width: 1rem; height: 1rem; color: #57534e; flex-shrink: 0; }
+    .search-wrap svg { width: 1rem; height: 1rem; color: var(--clr-text-muted); flex-shrink: 0; }
     .search-wrap input {
       border: none;
       outline: none;
       background: transparent;
       font-size: 0.875rem;
       width: 100%;
-      color: #1c1917;
+      color: var(--clr-text);
     }
-    .filter-pills { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+    .filter-pills { display: flex; gap: var(--space-2); flex-wrap: wrap; }
     .pill {
-      padding: 0.45rem 0.9rem;
+      padding: var(--space-2) var(--space-4);
       border-radius: var(--radius-pill);
-      border: 1.5px solid rgba(0,0,0,0.12);
-      background: #fff;
+      border: 1.5px solid var(--clr-border);
+      background: var(--clr-surface);
       font-size: 0.8rem;
       font-weight: 600;
       cursor: pointer;
-      color: #44403c;
+      color: var(--clr-text-muted);
       transition: background 0.18s, border-color 0.18s, color 0.18s;
       touch-action: manipulation;
       min-height: 2.25rem;
     }
-    .pill.active { background: #78350f; color: #fff; border-color: #78350f; }
-    .pill:hover:not(.active) { background: #f5f0e8; border-color: rgba(0,0,0,0.18); }
+    .pill.active { background: var(--clr-brand); color: oklch(100% 0 0); border-color: var(--clr-brand); }
+    .pill:hover:not(.active) { background: var(--clr-surface-hover); border-color: var(--clr-border-strong); color: var(--clr-text); }
 
-    /* Scroll-shadow pattern: warm-tinted shadows on left/right edges that
-       fade out when scrolled to that end (Lea Verou technique). Inner top
-       highlight reads as a machined enclosure edge. */
     .table-wrap {
       border-radius: var(--radius-xl);
-      border: 1px solid rgba(0,0,0,0.14);
+      border: 1px solid var(--clr-border-faint);
       overflow-x: auto;
-      box-shadow:
-        0 4px 16px rgba(28,25,23,0.08),
-        inset 0 1px 0 rgba(255, 255, 255, 0.55);
+      box-shadow: var(--shadow-sm), inset 0 1px 0 rgba(255, 255, 255, 0.55);
       background:
-        linear-gradient(to right, #ffffff, #ffffff) left center / 40px 100% no-repeat local,
-        linear-gradient(to right, #ffffff, #ffffff) right center / 40px 100% no-repeat local,
-        linear-gradient(to right, rgba(28,25,23,0.16), transparent) left center / 14px 100% no-repeat scroll,
-        linear-gradient(to left,  rgba(28,25,23,0.16), transparent) right center / 14px 100% no-repeat scroll,
-        #ffffff;
+        linear-gradient(to right, var(--clr-surface), var(--clr-surface)) left center / 40px 100% no-repeat local,
+        linear-gradient(to right, var(--clr-surface), var(--clr-surface)) right center / 40px 100% no-repeat local,
+        linear-gradient(to right, rgba(28,25,23,0.1), transparent) left center / 14px 100% no-repeat scroll,
+        linear-gradient(to left,  rgba(28,25,23,0.1), transparent) right center / 14px 100% no-repeat scroll,
+        var(--clr-surface);
     }
     table { width: 100%; border-collapse: collapse; }
     th {
       text-align: left;
-      padding: 0.75rem 1rem;
-      font-size: 0.8rem;
+      padding: var(--space-3) var(--space-4);
+      font-size: 0.78rem;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: #44403c;
+      letter-spacing: 0.06em;
+      color: var(--clr-text-muted);
       font-weight: 700;
-      border-bottom: 2px solid rgba(0,0,0,0.1);
-      background: #f5f0e8;
+      border-bottom: 2px solid var(--clr-border-faint);
+      background: var(--clr-surface-alt);
     }
     td {
-      padding: 0.75rem 1rem;
-      border-bottom: 1px solid rgba(0,0,0,0.07);
+      padding: var(--space-3) var(--space-4);
+      border-bottom: 1px solid var(--clr-border-faint);
       font-size: 0.9rem;
-      color: #1c1917;
+      color: var(--clr-text);
       vertical-align: middle;
     }
     tbody tr { transition: background 0.15s; }
-    tbody tr:hover { background: #faf7f4; }
+    tbody tr:hover { background: var(--clr-surface-hover); }
     tbody tr:last-child td { border-bottom: none; }
-    .draft-row td { color: #78716c; }
-    .recipe-link { color: #1c1917; text-decoration: none; font-weight: 600; }
-    .recipe-link:hover { color: #78350f; text-decoration: underline; }
+    .draft-row td { color: var(--clr-text-muted); }
+    .recipe-link { color: var(--clr-text); text-decoration: none; font-weight: 600; }
+    .recipe-link:hover { color: var(--clr-brand); text-decoration: underline; }
     .badge {
-      padding: 0.2rem 0.6rem;
+      padding: 2px var(--space-3);
       border-radius: var(--radius-pill);
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 700;
     }
-    .badge-Лесно { background: #d1fae5; color: #065f46; }
-    .badge-Средно { background: #fde68a; color: #78350f; }
-    .badge-За\\ напреднали { background: #fee2e2; color: #991b1b; }
+    .badge-Лесно { background: var(--clr-green-bg); color: var(--clr-green-text); }
+    .badge-Средно { background: var(--clr-amber-bg); color: var(--clr-amber-text); }
+    .badge-За\ напреднали { background: var(--clr-rust-bg); color: var(--clr-rust-text); }
 
     /* Status toggle button */
     .status-toggle {
       display: inline-flex;
       align-items: center;
-      gap: 0.3rem;
-      padding: 0.3rem 0.7rem;
+      gap: var(--space-1);
+      padding: 2px var(--space-3);
       border-radius: var(--radius-pill);
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 700;
       cursor: pointer;
       border: 1.5px solid transparent;
@@ -268,26 +264,26 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
       white-space: nowrap;
     }
     .status-toggle svg { width: 0.75rem; height: 0.75rem; flex-shrink: 0; }
-    .status-toggle.published { background: #d1fae5; color: #065f46; border-color: #6ee7b7; }
-    .status-toggle.published:hover:not(:disabled) { background: #a7f3d0; }
-    .status-toggle.draft { background: #fef9c3; color: #713f12; border-color: #fde68a; }
-    .status-toggle.draft:hover:not(:disabled) { background: #fef08a; }
+    .status-toggle.published { background: var(--clr-green-bg); color: var(--clr-green-text); border-color: color-mix(in oklch, var(--clr-green) 40%, transparent); }
+    .status-toggle.published:hover:not(:disabled) { background: color-mix(in oklch, var(--clr-green-bg) 80%, var(--clr-green)); }
+    .status-toggle.draft { background: var(--clr-amber-bg); color: var(--clr-amber-text); border-color: color-mix(in oklch, var(--clr-amber) 40%, transparent); }
+    .status-toggle.draft:hover:not(:disabled) { background: color-mix(in oklch, var(--clr-amber-bg) 70%, var(--clr-amber)); }
     .status-toggle:disabled { opacity: 0.45; cursor: default; }
 
-    .author-cell { font-size: 0.85rem; color: #57534e; font-weight: 600; white-space: nowrap; }
-    .no-access { color: #a8a29e; font-size: 0.8rem; }
-    .date-cell { white-space: nowrap; color: #78716c; font-size: 0.83rem; }
-    .actions { display: flex; gap: 0.4rem; align-items: center; }
+    .author-cell { font-size: 0.85rem; color: var(--clr-text-muted); font-weight: 600; white-space: nowrap; }
+    .no-access { color: var(--clr-text-faint); font-size: 0.8rem; }
+    .date-cell { white-space: nowrap; color: var(--clr-text-muted); font-size: 0.83rem; }
+    .actions { display: flex; gap: var(--space-2); align-items: center; }
     .btn-small {
-      padding: 0.375rem 0.75rem;
+      padding: var(--space-2) var(--space-3);
       border-radius: var(--radius-xs);
       font-size: 0.78rem;
       font-weight: 600;
       cursor: pointer;
       text-decoration: none;
-      border: 1.5px solid rgba(0,0,0,0.12);
-      background: #fafaf9;
-      color: #1c1917;
+      border: 1.5px solid var(--clr-border);
+      background: var(--clr-surface-alt);
+      color: var(--clr-text);
       transition: background 0.18s, border-color 0.18s;
       touch-action: manipulation;
       white-space: nowrap;
@@ -295,10 +291,10 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
       display: inline-flex;
       align-items: center;
     }
-    .btn-small:hover { background: #f0ede8; border-color: rgba(0,0,0,0.18); }
-    .btn-danger { color: #b91c1c; border-color: #fca5a5; background: #fff; }
-    .btn-danger:hover { background: #fef2f2; border-color: #f87171; }
-    .empty { text-align: center; color: #78716c; padding: 3rem 2rem; font-size: 0.9rem; }
+    .btn-small:hover { background: var(--clr-surface-hover); border-color: var(--clr-border-strong); }
+    .btn-danger { color: var(--clr-error); border-color: color-mix(in oklch, var(--clr-error) 40%, transparent); background: var(--clr-surface); }
+    .btn-danger:hover { background: var(--clr-error-bg); border-color: color-mix(in oklch, var(--clr-error) 60%, transparent); }
+    .empty { text-align: center; color: var(--clr-text-muted); padding: var(--space-9) var(--space-7); font-size: 0.9rem; }
 
     @media (max-width: 768px) {
       .dashboard-recipes { padding: 1.5rem 1rem 2.5rem; }

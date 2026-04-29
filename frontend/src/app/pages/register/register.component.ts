@@ -412,7 +412,7 @@ import { SeoService } from '../../services/seo.service';
       gap: 0.5rem;
       margin-top: 0.75rem;
       padding: 0.9rem;
-      background: linear-gradient(135deg, var(--clr-brand), var(--clr-brand-dark));
+      background: var(--clr-brand);
       color: oklch(100% 0 0);
       border: none;
       border-radius: var(--radius-sm);
@@ -420,15 +420,13 @@ import { SeoService } from '../../services/seo.service';
       font-size: 0.95rem;
       cursor: pointer;
       letter-spacing: 0.02em;
-      transition: opacity 0.2s var(--ease-out-expo), transform 0.15s var(--ease-out-expo), box-shadow 0.2s var(--ease-out-expo);
-      box-shadow: 0 2px 8px color-mix(in oklch, var(--clr-brand) 35%, transparent);
+      transition: background 0.18s var(--ease-out-expo), transform 0.15s var(--ease-out-expo);
       touch-action: manipulation;
     }
     .submit-btn svg { width: 1.1rem; height: 1.1rem; }
     .submit-btn:hover:not(:disabled) {
-      opacity: 0.92;
+      background: var(--clr-brand-dark);
       transform: translateY(-1px);
-      box-shadow: 0 4px 16px color-mix(in oklch, var(--clr-brand) 40%, transparent);
     }
     .submit-btn:active:not(:disabled) { transform: translateY(0); }
     .submit-btn:disabled { opacity: 0.55; cursor: not-allowed; }

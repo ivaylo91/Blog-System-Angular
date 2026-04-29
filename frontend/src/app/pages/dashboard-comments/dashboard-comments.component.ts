@@ -115,22 +115,23 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
       flex-wrap: wrap;
     }
     h1 {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 1.75rem;
-      color: #1c1917;
-      margin: 0 0 0.2rem;
-      letter-spacing: -0.02em;
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 2.5vw, 1.75rem);
+      font-weight: 800;
+      color: var(--clr-text);
+      margin: 0 0 var(--space-1);
+      letter-spacing: -0.025em;
     }
-    .subtitle { color: #57534e; font-size: 0.85rem; margin: 0; }
+    .subtitle { color: var(--clr-text-muted); font-size: 0.85rem; margin: 0; }
 
     .btn-bulk-delete {
       display: inline-flex;
       align-items: center;
-      gap: 0.4rem;
-      padding: 0.6rem 1.1rem;
-      background: #fef2f2;
-      color: #b91c1c;
-      border: 1.5px solid #fca5a5;
+      gap: var(--space-2);
+      padding: var(--space-3) var(--space-4);
+      background: var(--clr-error-bg);
+      color: var(--clr-error);
+      border: 1.5px solid color-mix(in oklch, var(--clr-error) 40%, transparent);
       border-radius: var(--radius-sm);
       font-weight: 600;
       font-size: 0.875rem;
@@ -140,25 +141,19 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
       white-space: nowrap;
     }
     .btn-bulk-delete svg { width: 0.875rem; height: 0.875rem; flex-shrink: 0; }
-    .btn-bulk-delete:hover { background: #fee2e2; border-color: #f87171; color: #991b1b; }
+    .btn-bulk-delete:hover { background: color-mix(in oklch, var(--clr-error-bg) 70%, var(--clr-error)); border-color: color-mix(in oklch, var(--clr-error) 60%, transparent); }
 
-    /* Table wrap — scroll-shadow pattern: warm-tinted shadows on left/right
-       edges that fade out when scrolled to that end (Lea Verou technique).
-       Inner top highlight stacks on the box-shadow chain to read as a
-       machined enclosure edge. */
     .table-wrap {
       border-radius: var(--radius-lg);
-      border: 1px solid rgba(0,0,0,0.09);
+      border: 1px solid var(--clr-border-faint);
       overflow-x: auto;
-      box-shadow:
-        0 2px 12px rgba(28,25,23,0.06),
-        inset 0 1px 0 rgba(255, 255, 255, 0.55);
+      box-shadow: var(--shadow-sm), inset 0 1px 0 rgba(255, 255, 255, 0.55);
       background:
-        linear-gradient(to right, #ffffff, #ffffff) left center / 40px 100% no-repeat local,
-        linear-gradient(to right, #ffffff, #ffffff) right center / 40px 100% no-repeat local,
-        linear-gradient(to right, rgba(28,25,23,0.16), transparent) left center / 14px 100% no-repeat scroll,
-        linear-gradient(to left,  rgba(28,25,23,0.16), transparent) right center / 14px 100% no-repeat scroll,
-        #ffffff;
+        linear-gradient(to right, var(--clr-surface), var(--clr-surface)) left center / 40px 100% no-repeat local,
+        linear-gradient(to right, var(--clr-surface), var(--clr-surface)) right center / 40px 100% no-repeat local,
+        linear-gradient(to right, rgba(28,25,23,0.1), transparent) left center / 14px 100% no-repeat scroll,
+        linear-gradient(to left,  rgba(28,25,23,0.1), transparent) right center / 14px 100% no-repeat scroll,
+        var(--clr-surface);
     }
 
     /* Empty state */
@@ -166,41 +161,41 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0.5rem;
-      padding: 4rem 2rem;
-      color: #a8a29e;
+      gap: var(--space-2);
+      padding: var(--space-10) var(--space-7);
+      color: var(--clr-text-faint);
       text-align: center;
     }
-    .empty-state svg { width: 3rem; height: 3rem; margin-bottom: 0.25rem; }
-    .empty-state p { font-size: 1rem; font-weight: 600; color: #44403c; margin: 0; }
+    .empty-state svg { width: 3rem; height: 3rem; margin-bottom: var(--space-1); }
+    .empty-state p { font-size: 1rem; font-weight: 600; color: var(--clr-text); margin: 0; }
     .empty-state span { font-size: 0.875rem; }
 
     /* Table */
     table { width: 100%; border-collapse: collapse; }
     th {
       text-align: left;
-      padding: 0.7rem 1rem;
+      padding: var(--space-3) var(--space-4);
       font-size: 0.75rem;
       text-transform: uppercase;
       letter-spacing: 0.06em;
-      color: #57534e;
+      color: var(--clr-text-muted);
       font-weight: 700;
-      border-bottom: 2px solid rgba(0,0,0,0.08);
-      background: #f5f0e8;
+      border-bottom: 2px solid var(--clr-border-faint);
+      background: var(--clr-surface-alt);
       white-space: nowrap;
     }
-    .th-check { width: 2.5rem; padding: 0.7rem 0.75rem; }
+    .th-check { width: 2.5rem; padding: var(--space-3) var(--space-3); }
     td {
-      padding: 0.75rem 1rem;
-      border-bottom: 1px solid rgba(0,0,0,0.06);
+      padding: var(--space-3) var(--space-4);
+      border-bottom: 1px solid var(--clr-border-faint);
       font-size: 0.875rem;
-      color: #1c1917;
+      color: var(--clr-text);
       vertical-align: middle;
     }
-    .td-check { padding: 0.75rem 0.75rem; }
+    .td-check { padding: var(--space-3) var(--space-3); }
     tbody tr { transition: background 0.15s; }
-    tbody tr:hover { background: #faf7f4; }
-    tbody tr.selected-row { background: #fef9f0; }
+    tbody tr:hover { background: var(--clr-surface-hover); }
+    tbody tr.selected-row { background: color-mix(in oklch, var(--clr-amber-bg) 60%, var(--clr-surface)); }
     tbody tr:last-child td { border-bottom: none; }
 
     /* Cells */
@@ -208,14 +203,14 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
     .author-wrap {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: var(--space-2);
     }
     .author-avatar {
       width: 1.75rem;
       height: 1.75rem;
       border-radius: var(--radius-circle);
-      background: #4a7c59;
-      color: #fff;
+      background: var(--clr-green);
+      color: oklch(100% 0 0);
       font-size: 0.68rem;
       font-weight: 700;
       display: flex;
@@ -224,11 +219,11 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
       flex-shrink: 0;
       text-transform: uppercase;
     }
-    .author-wrap span { font-weight: 600; font-size: 0.85rem; color: #1c1917; }
+    .author-wrap span { font-weight: 600; font-size: 0.85rem; color: var(--clr-text); }
 
     .recipe-cell { max-width: 160px; }
     .recipe-link {
-      color: #78350f;
+      color: var(--clr-brand);
       text-decoration: none;
       font-weight: 600;
       font-size: 0.83rem;
@@ -241,7 +236,7 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
 
     .content-cell {
       max-width: 280px;
-      color: #44403c;
+      color: var(--clr-text-muted);
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
@@ -252,40 +247,40 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
 
     .rating-badge {
       display: inline-block;
-      padding: 0.15rem 0.5rem;
-      background: #fef3c7;
-      color: #92400e;
+      padding: 2px var(--space-2);
+      background: var(--clr-amber-bg);
+      color: var(--clr-amber-text);
       border-radius: var(--radius-pill);
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 700;
     }
-    .no-val { color: #c4b49a; }
-    .date-cell { white-space: nowrap; color: #78716c; font-size: 0.82rem; }
+    .no-val { color: var(--clr-text-faint); }
+    .date-cell { white-space: nowrap; color: var(--clr-text-muted); font-size: 0.82rem; }
     .actions-cell { white-space: nowrap; }
 
     .btn-delete {
       display: inline-flex;
       align-items: center;
-      gap: 0.35rem;
-      padding: 0.35rem 0.65rem;
+      gap: var(--space-1);
+      padding: var(--space-2) var(--space-3);
       border-radius: var(--radius-xs);
       font-size: 0.78rem;
       font-weight: 600;
       cursor: pointer;
-      border: 1.5px solid #fca5a5;
-      background: #fff;
-      color: #b91c1c;
+      border: 1.5px solid color-mix(in oklch, var(--clr-error) 40%, transparent);
+      background: var(--clr-surface);
+      color: var(--clr-error);
       transition: background 0.18s, border-color 0.18s;
       touch-action: manipulation;
     }
     .btn-delete svg { width: 0.8rem; height: 0.8rem; flex-shrink: 0; }
-    .btn-delete:hover { background: #fef2f2; border-color: #f87171; color: #991b1b; }
+    .btn-delete:hover { background: var(--clr-error-bg); border-color: color-mix(in oklch, var(--clr-error) 60%, transparent); }
 
     input[type="checkbox"] {
       width: 1rem;
       height: 1rem;
       cursor: pointer;
-      accent-color: #78350f;
+      accent-color: var(--clr-brand);
     }
 
     @media (max-width: 768px) {
