@@ -76,30 +76,30 @@ import { SeoService } from '../../services/seo.service';
               }
             </div>
 
-            <!-- Share bar — native share on touch, direct links on desktop -->
+            <!-- Share bar -->
             <div class="share-bar">
               <span class="share-label">Сподели:</span>
-              @if (canNativeShare) {
-                <button class="share-btn share-native" (click)="nativeShare()" title="Сподели">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-                </button>
-              } @else {
-                <a class="share-btn share-fb" [href]="'https://www.facebook.com/sharer/sharer.php?u=' + encodedUrl()" target="_blank" rel="noopener" title="Facebook">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-                </a>
-                <a class="share-btn share-wa" [href]="'https://wa.me/?text=' + encodedTitle() + '%20' + encodedUrl()" target="_blank" rel="noopener" title="WhatsApp">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.121 1.531 5.855L.057 23.885l6.196-1.452A11.942 11.942 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.882a9.88 9.88 0 0 1-5.031-1.37l-.361-.214-3.735.875.892-3.653-.235-.374A9.867 9.867 0 0 1 2.118 12C2.118 6.52 6.52 2.118 12 2.118S21.882 6.52 21.882 12 17.48 21.882 12 21.882z"/></svg>
-                </a>
-              }
+              <a class="share-btn share-fb" [href]="'https://www.facebook.com/sharer/sharer.php?u=' + encodedUrl()" target="_blank" rel="noopener" title="Facebook">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+              </a>
+              <a class="share-btn share-x" [href]="'https://twitter.com/intent/tweet?text=' + encodedTitle() + '&url=' + encodedUrl()" target="_blank" rel="noopener" title="X (Twitter)">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L2.25 2.25h6.988l4.26 5.631zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+              </a>
+              <a class="share-btn share-wa" [href]="'https://wa.me/?text=' + encodedTitle() + '%20' + encodedUrl()" target="_blank" rel="noopener" title="WhatsApp">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.121 1.531 5.855L.057 23.885l6.196-1.452A11.942 11.942 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.882a9.88 9.88 0 0 1-5.031-1.37l-.361-.214-3.735.875.892-3.653-.235-.374A9.867 9.867 0 0 1 2.118 12C2.118 6.52 6.52 2.118 12 2.118S21.882 6.52 21.882 12 17.48 21.882 12 21.882z"/></svg>
+              </a>
+              <a class="share-btn share-tg" [href]="'https://t.me/share/url?url=' + encodedUrl() + '&text=' + encodedTitle()" target="_blank" rel="noopener" title="Telegram">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-1.97 9.289c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.932z"/></svg>
+              </a>
+              <a class="share-btn share-vb" [href]="'viber://forward?text=' + encodedTitle() + '%20' + encodedUrl()" target="_blank" rel="noopener" title="Viber">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.4 0C8.48.03 2.64.5 1.04 8.16.28 11.85.13 15.6 1.95 19.1c.84 1.6 2.16 2.74 3.67 3.6.7.39 1.05 1.06 1 1.84l-.14 2.38 2.7-1.47c.54-.3 1.06-.5 1.68-.5.35 0 .7.05 1.05.15 1.07.3 2.16.49 3.27.49 3.2 0 7.74-.77 10.06-5.41.5-1 .76-2.06.76-3.17V14.9c.01-3.09-.1-6.19-.8-8.93C23.32.42 16.7-.06 11.4 0zm5.1 16.5c-.5.55-1.13 1-1.82 1.29-.27.11-.54.07-.8-.05-.7-.32-1.37-.7-2.02-1.1-1.9-1.22-3.56-2.76-4.73-4.7-.52-.86-.93-1.77-1.1-2.77-.12-.7.12-1.33.62-1.85.37-.38.8-.58 1.27-.58.18 0 .36.04.53.12.4.18.72.48.99.82.48.6.9 1.24 1.23 1.93.18.38.1.8-.18 1.1l-.6.6c-.1.1-.12.22-.07.34.43 1 1.12 1.82 1.94 2.49.36.3.76.55 1.17.77.14.07.27.05.38-.05l.55-.57c.3-.31.7-.43 1.1-.3.65.2 1.27.5 1.86.85.3.18.6.37.84.62.3.3.35.75.11 1.1l-.17.28z"/></svg>
+              </a>
               <button class="share-btn share-copy" (click)="copyLink()" [title]="copied() ? 'Копирано!' : 'Копирай връзка'">
                 @if (copied()) {
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
                 } @else {
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
                 }
-              </button>
-              <button class="share-btn share-print" (click)="printRecipe()" title="Принтирай">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
               </button>
             </div>
           </div>
@@ -609,10 +609,12 @@ import { SeoService } from '../../services/seo.service';
       .share-btn { width: 2.75rem; height: 2.75rem; }
       .share-btn svg { width: 1rem; height: 1rem; }
     }
-    .share-fb:hover    { background: #1877f2; border-color: #1877f2; }
-    .share-wa:hover    { background: #25d366; border-color: #25d366; }
-    .share-copy:hover, .share-native:hover { background: rgba(255,255,255,0.3); }
-    .share-print:hover { background: color-mix(in oklch, var(--clr-brand) 28%, transparent); border-color: color-mix(in oklch, var(--clr-brand) 55%, rgba(255,255,255,0.3)); }
+    .share-fb:hover   { background: oklch(52% 0.19 260); border-color: oklch(52% 0.19 260); }
+    .share-x:hover    { background: oklch(20% 0 0); border-color: oklch(20% 0 0); }
+    .share-wa:hover   { background: oklch(70% 0.20 152); border-color: oklch(70% 0.20 152); }
+    .share-tg:hover   { background: oklch(60% 0.18 238); border-color: oklch(60% 0.18 238); }
+    .share-vb:hover   { background: oklch(55% 0.19 303); border-color: oklch(55% 0.19 303); }
+    .share-copy:hover { background: rgba(255,255,255,0.3); }
 
     /* ===== BODY ===== */
     .body-wrap { max-width: 1200px; margin: 0 auto; padding: 2.5rem clamp(1rem, 4vw, 1.5rem); }
@@ -1220,7 +1222,6 @@ export class RecipeDetailComponent {
   replyingToId = signal<number | null>(null);
   replyBody = signal('');
   copied = signal(false);
-  canNativeShare = typeof navigator !== 'undefined' && !!navigator.share;
   favoriting = signal(false);
   heartPulse = signal(false);
   submittingComment = signal(false);
@@ -1277,11 +1278,6 @@ export class RecipeDetailComponent {
       },
       () => this.toast.error('Неуспешно копиране.'),
     );
-  }
-
-  nativeShare(): void {
-    const r = this.recipe();
-    navigator.share({ title: r?.title || '', text: r?.excerpt || '', url: this.currentUrl }).catch(() => {});
   }
 
   loadRecipe(slug: string): void {
@@ -1359,10 +1355,6 @@ export class RecipeDetailComponent {
 
   scrollTo(id: string): void {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-
-  printRecipe(): void {
-    window.print();
   }
 
   toggleFavorite(): void {
