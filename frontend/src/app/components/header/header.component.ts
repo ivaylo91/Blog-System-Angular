@@ -140,14 +140,11 @@ import { ThemeService } from '../../services/theme.service';
       position: sticky;
       top: 0;
       z-index: var(--z-sticky);
-      background: color-mix(in oklch, var(--clr-surface) 90%, transparent);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
+      background: var(--clr-surface);
       border-bottom: 1px solid var(--clr-border-faint);
-      transition: box-shadow 0.28s var(--ease-out-expo), border-color 0.28s var(--ease-out-expo), background 0.28s var(--ease-out-expo);
+      transition: box-shadow 0.28s var(--ease-out-expo), border-color 0.28s var(--ease-out-expo);
     }
     .site-header.scrolled {
-      background: color-mix(in oklch, var(--clr-surface) 96%, transparent);
       box-shadow: 0 1px 0 var(--clr-border-faint), 0 4px 20px rgba(26,20,14,0.06);
       border-bottom-color: var(--clr-border);
     }

@@ -161,11 +161,11 @@
   --space-10: 4rem;
   --space-11: 6rem;
 
-  /* Shadows — flat offset lines for wireframe depth */
-  --shadow-sm: 0 0 0 1px rgba(0,0,0,0.10), 2px 2px 0 rgba(0,0,0,0.06);
-  --shadow-md: 0 0 0 1px rgba(0,0,0,0.14), 3px 3px 0 rgba(0,0,0,0.08);
-  --shadow-lg: 0 0 0 1.5px rgba(0,0,0,0.18), 4px 4px 0 rgba(0,0,0,0.10);
-  --shadow-xl: 0 0 0 2px rgba(0,0,0,0.22), 5px 5px 0 rgba(0,0,0,0.12);
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.06);
+  --shadow-md: 0 2px 8px rgba(0,0,0,0.10), 0 8px 24px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 20px rgba(0,0,0,0.12), 0 20px 40px rgba(0,0,0,0.10);
+  --shadow-xl: 0 16px 40px rgba(0,0,0,0.14), 0 32px 64px rgba(0,0,0,0.12);
 
   /* Skeleton */
   --clr-skeleton:       oklch(91% 0 0);
