@@ -249,7 +249,7 @@ import { PerfService } from '../../services/perf.service';
       width: 72%;
       height: 140%;
       background: transparent;
-      border: 2px dashed rgba(0,0,0,0.15);
+      border: 2px dashed color-mix(in oklch, var(--clr-brand) 40%, transparent);
       border-radius: 38% 62% 68% 32% / 44% 48% 52% 56%;
       z-index: 0;
     }
@@ -262,7 +262,7 @@ import { PerfService } from '../../services/perf.service';
       width: 34%;
       height: 70%;
       background: transparent;
-      border: 1.5px dashed rgba(0,0,0,0.10);
+      border: 1.5px dashed color-mix(in oklch, var(--clr-brand) 25%, transparent);
       border-radius: 50%;
       z-index: 0;
     }
@@ -293,7 +293,7 @@ import { PerfService } from '../../services/perf.service';
       width: calc(clamp(200px, 70vw, 460px) + 32px);
       height: calc(clamp(200px, 70vw, 460px) + 32px);
       border-radius: var(--radius-circle);
-      border: 1.5px dashed rgba(0,0,0,0.12);
+      border: 1.5px dashed color-mix(in oklch, var(--clr-brand) 35%, transparent);
       z-index: 0;
     }
 
@@ -781,7 +781,7 @@ import { PerfService } from '../../services/perf.service';
       width: 68%;
       height: 68%;
       background: transparent;
-      border: 1.5px dashed rgba(0,0,0,0.12);
+      border: 1.5px dashed color-mix(in oklch, var(--clr-brand) 30%, transparent);
       border-radius: 50%;
       z-index: 0;
     }

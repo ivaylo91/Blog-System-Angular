@@ -103,10 +103,10 @@
   --font-display: 'Spectral', Georgia, 'Times New Roman', serif;
   --font-body:    'Nunito Sans', system-ui, -apple-system, sans-serif;
 
-  /* Brand — wireframe charcoal */
-  --clr-brand:       oklch(18% 0 0);
-  --clr-brand-dark:  oklch(8% 0 0);
-  --clr-brand-hover: oklch(30% 0 0);
+  /* Brand — vivid orange */
+  --clr-brand:       oklch(63% 0.22 42);
+  --clr-brand-dark:  oklch(55% 0.22 42);
+  --clr-brand-hover: oklch(70% 0.20 42);
 
   /* Surfaces — pure white */
   --clr-bg:            oklch(100% 0 0);
@@ -172,7 +172,7 @@
   --clr-skeleton-shine: rgba(255, 255, 255, 0.6);
 
   /* Focus */
-  --clr-focus: oklch(18% 0 0);
+  --clr-focus: oklch(63% 0.22 42);
 
   /* Border radius scale */
   --radius-xs:     0.375rem;
