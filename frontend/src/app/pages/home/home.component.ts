@@ -522,17 +522,17 @@ import { PerfService } from '../../services/perf.service';
 
     .pop-btn {
       display: inline-block;
-      padding: var(--space-2) var(--space-5);
+      padding: var(--space-3) var(--space-6);
       background: var(--clr-brand);
       color: oklch(100% 0 0);
       border-radius: var(--radius-pill);
       font-size: 0.78rem;
       font-weight: 700;
       letter-spacing: 0.02em;
-      transition: background 0.18s var(--ease-out-expo);
-      margin-top: auto;
+      transition: background 0.18s var(--ease-out-expo), transform 0.18s var(--ease-out-expo);
+      margin-top: var(--space-6);
     }
-    .pop-card:hover .pop-btn { background: var(--clr-brand-dark); }
+    .pop-card:hover .pop-btn { background: var(--clr-brand-dark); transform: translateY(-2px); }
 
     /* Skeleton */
     .pop-sk {
