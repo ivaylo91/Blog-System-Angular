@@ -104,16 +104,16 @@
   --font-body:    'Nunito Sans', system-ui, -apple-system, sans-serif;
 
   /* Brand */
-  --clr-brand:       oklch(36% 0.10 54);   /* deep olive-brown */
-  --clr-brand-dark:  oklch(30% 0.09 52);
-  --clr-brand-hover: oklch(42% 0.11 56);
+  --clr-brand:       oklch(63% 0.22 42);   /* vivid orange */
+  --clr-brand-dark:  oklch(55% 0.22 42);
+  --clr-brand-hover: oklch(70% 0.20 42);
 
   /* Surfaces */
-  --clr-bg:            oklch(93.5% 0.018 72);  /* warm parchment */
-  --clr-surface:       oklch(99%   0.005 72);  /* warm paper white */
-  --clr-surface-alt:   oklch(96%   0.012 72);  /* off-white */
-  --clr-surface-hover: oklch(94%   0.018 72);  /* hover wash */
-  --clr-surface-active:oklch(95%   0.048 68);  /* active bg */
+  --clr-bg:            oklch(97% 0.006 55);   /* near-white */
+  --clr-surface:       oklch(100% 0 0);        /* pure white */
+  --clr-surface-alt:   oklch(97.5% 0.006 55); /* off-white */
+  --clr-surface-hover: oklch(95.5% 0.010 50); /* hover wash */
+  --clr-surface-active:oklch(94%   0.035 48); /* active bg */
 
   /* Text */
   --clr-text:       oklch(15% 0.012 52);  /* near-black warm */
@@ -172,7 +172,7 @@
   --clr-skeleton-shine: rgba(255, 255, 255, 0.6);
 
   /* Focus */
-  --clr-focus: oklch(50% 0.09 152);
+  --clr-focus: oklch(63% 0.22 42);
 
   /* Border radius scale */
   --radius-xs:     0.375rem;
