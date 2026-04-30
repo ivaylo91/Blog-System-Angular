@@ -288,8 +288,8 @@ import { PerfService } from '../../services/perf.service';
 
     .hero-ring {
       position: absolute;
-      width: calc(clamp(240px, 40vw, 460px) + 32px);
-      height: calc(clamp(240px, 40vw, 460px) + 32px);
+      width: calc(clamp(200px, 70vw, 460px) + 32px);
+      height: calc(clamp(200px, 70vw, 460px) + 32px);
       border-radius: var(--radius-circle);
       border: 2.5px solid oklch(100% 0 0 / 0.45);
       z-index: 0;
@@ -298,8 +298,8 @@ import { PerfService } from '../../services/perf.service';
     .hero-circle {
       position: relative;
       z-index: 1;
-      width: clamp(240px, 40vw, 460px);
-      height: clamp(240px, 40vw, 460px);
+      width: clamp(200px, 70vw, 460px);
+      height: clamp(200px, 70vw, 460px);
       border-radius: var(--radius-circle);
       overflow: hidden;
       border: 7px solid oklch(100% 0 0);
@@ -785,8 +785,8 @@ import { PerfService } from '../../services/perf.service';
     .about-circle {
       position: relative;
       z-index: 1;
-      width: clamp(260px, 38vw, 480px);
-      height: clamp(260px, 38vw, 480px);
+      width: clamp(200px, 72vw, 480px);
+      height: clamp(200px, 72vw, 480px);
       border-radius: var(--radius-circle);
       overflow: hidden;
       box-shadow: var(--shadow-xl);
@@ -953,8 +953,9 @@ import { PerfService } from '../../services/perf.service';
     }
 
     @media (max-width: 640px) {
-      .pop-grid { grid-template-columns: 1fr; max-width: 340px; margin-inline: auto; }
+      .pop-grid { grid-template-columns: 1fr; max-width: 380px; margin-inline: auto; }
       .cats-row { gap: var(--space-6); }
+      .hero-inner { padding-left: clamp(1rem, 5vw, 1.5rem); padding-right: clamp(1rem, 5vw, 1.5rem); }
       .col-strip { grid-template-columns: 3.5rem 1fr auto; gap: var(--space-4); padding: var(--space-5) var(--space-3); margin: 0 calc(-1 * var(--space-3)); }
       .col-num  { font-size: clamp(2rem, 7vw, 2.6rem); }
       .col-name { font-size: clamp(1.15rem, 4.5vw, 1.45rem); }

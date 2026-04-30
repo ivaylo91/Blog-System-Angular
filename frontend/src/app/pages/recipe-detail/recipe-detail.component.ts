@@ -596,20 +596,26 @@ import { SeoService } from '../../services/seo.service';
       border: 1.5px solid rgba(255,255,255,0.3);
       background: rgba(255,255,255,0.12);
       backdrop-filter: blur(6px);
-      color: #fff;
+      color: oklch(100% 0 0);
       cursor: pointer;
       text-decoration: none;
       transition: background 0.2s, transform 0.2s;
+      touch-action: manipulation;
     }
     .share-btn svg { width: 0.9rem; height: 0.9rem; }
     .share-btn:hover { transform: translateY(-2px); }
+    /* Minimum 44px touch target on coarse-pointer devices */
+    @media (pointer: coarse) {
+      .share-btn { width: 2.75rem; height: 2.75rem; }
+      .share-btn svg { width: 1rem; height: 1rem; }
+    }
     .share-fb:hover    { background: #1877f2; border-color: #1877f2; }
     .share-wa:hover    { background: #25d366; border-color: #25d366; }
     .share-copy:hover, .share-native:hover { background: rgba(255,255,255,0.3); }
     .share-print:hover { background: color-mix(in oklch, var(--clr-brand) 28%, transparent); border-color: color-mix(in oklch, var(--clr-brand) 55%, rgba(255,255,255,0.3)); }
 
     /* ===== BODY ===== */
-    .body-wrap { max-width: 1200px; margin: 0 auto; padding: 2.5rem 1.5rem; }
+    .body-wrap { max-width: 1200px; margin: 0 auto; padding: 2.5rem clamp(1rem, 4vw, 1.5rem); }
     .content-grid {
       display: grid;
       grid-template-columns: 1fr 340px;
@@ -1164,6 +1170,14 @@ import { SeoService } from '../../services/seo.service';
       .jump-nav { gap: 0; justify-content: stretch; }
       .jump-link { flex: 1; justify-content: center; padding: 0.75rem 0.5rem; font-size: 0.72rem; gap: 0.3rem; }
       .jump-sep { display: none; }
+      .hero-content { padding: 2rem 1rem 1.75rem; }
+      .hero-excerpt { font-size: 0.95rem; }
+      .body-wrap { padding: 1.5rem 1rem; }
+      .stat-pills { gap: 0.4rem; }
+    }
+    @media (max-width: 380px) {
+      h1 { font-size: 1.55rem; }
+      .share-bar { gap: 0.3rem; }
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,

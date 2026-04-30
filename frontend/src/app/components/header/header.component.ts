@@ -482,6 +482,19 @@ import { ThemeService } from '../../services/theme.service';
     }
     .drawer-register:hover { background: var(--clr-brand-dark); }
 
+    /* Desktop: reveal main nav, hide hamburger */
+    @media (min-width: 900px) {
+      .mobile-toggle { display: none; }
+      .nav-main {
+        display: flex;
+        align-items: center;
+        gap: 0.15rem;
+        margin-right: 0.5rem;
+      }
+      .nav-auth { display: flex; }
+    }
+
+    @media (max-width: 899px) and (max-width: 640px) { .nav-auth { display: none; } }
     @media (max-width: 640px) { .nav-auth { display: none; } }
     @media (max-width: 400px) {
       .brand-text { font-size: 0.88rem; }

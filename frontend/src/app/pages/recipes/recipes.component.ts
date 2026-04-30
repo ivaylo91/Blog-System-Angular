@@ -151,7 +151,7 @@ import { PerfService } from '../../services/perf.service';
     </div>
   `,
   styles: [`
-    .page { padding: var(--space-9) var(--space-6) var(--space-10); background-color: var(--clr-bg, #faf7f4); background-image: url('/backgrounds/cooking-pattern.svg'); background-size: 500px; background-repeat: repeat; min-height: 100dvh; }
+    .page { padding: var(--space-9) clamp(var(--space-4), 4vw, var(--space-6)) var(--space-10); background-color: var(--clr-bg, #faf7f4); background-image: url('/backgrounds/cooking-pattern.svg'); background-size: 500px; background-repeat: repeat; min-height: 100dvh; }
     .page-inner { max-width: 1200px; margin: 0 auto; }
     .page-header {
       text-align: left;
@@ -501,9 +501,22 @@ import { PerfService } from '../../services/perf.service';
       .recipe-grid { grid-template-columns: 1fr; }
       .btn-text { display: none; }
       .search-btn { padding: var(--space-3) var(--space-4); }
+      .search-bar { max-width: 100%; }
       .pill { min-height: 2.75rem; }
       .pill-sm { min-height: 2.75rem; }
       .page-btn { min-width: 2.75rem; height: 2.75rem; }
+      /* Scroll pill rows on very narrow screens instead of wrapping many lines */
+      .pill-filters {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding-bottom: var(--space-1);
+        -ms-overflow-style: none;
+      }
+      .pill-filters::-webkit-scrollbar { display: none; }
+      .pill-filters .pill { scroll-snap-align: start; flex-shrink: 0; }
     }
     @media (max-width: 420px) {
       .page-btn:not([aria-label]) { display: none; }
