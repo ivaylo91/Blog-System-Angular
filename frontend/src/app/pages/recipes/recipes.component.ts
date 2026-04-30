@@ -151,7 +151,7 @@ import { PerfService } from '../../services/perf.service';
     </div>
   `,
   styles: [`
-    .page { padding: var(--space-9) clamp(var(--space-4), 4vw, var(--space-6)) var(--space-10); background-color: var(--clr-bg, #faf7f4); background-image: url('/backgrounds/cooking-pattern.svg'); background-size: 500px; background-repeat: repeat; min-height: 100dvh; }
+    .page { padding: var(--space-9) clamp(var(--space-4), 4vw, var(--space-6)) var(--space-10); background-color: var(--clr-bg); background-image: url('/backgrounds/cooking-pattern.svg'); background-size: 500px; background-repeat: repeat; min-height: 100dvh; }
     .page-inner { max-width: 1200px; margin: 0 auto; }
     .page-header {
       text-align: left;
@@ -171,7 +171,7 @@ import { PerfService } from '../../services/perf.service';
       margin-bottom: var(--space-4);
     }
     .page-header h1 {
-      font-family: var(--font-display, 'Alegreya', Georgia, serif);
+      font-family: var(--font-display);
       font-size: clamp(2rem, 4vw, 3rem);
       color: var(--clr-text);
       margin: 0 0 var(--space-2);

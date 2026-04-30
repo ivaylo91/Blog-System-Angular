@@ -398,7 +398,7 @@ import { SeoService } from '../../services/seo.service';
     }
   `,
   styles: [`
-    .detail-page { min-height: 100dvh; background-color: var(--clr-bg, #faf7f4); background-image: url('/backgrounds/cooking-pattern.svg'); background-size: 500px; background-repeat: repeat; }
+    .detail-page { min-height: 100dvh; background-color: var(--clr-bg); background-image: url('/backgrounds/cooking-pattern.svg'); background-size: 500px; background-repeat: repeat; }
 
     /* Load error — editorial, matches home .featured-error */
     .detail-load-error {
@@ -531,7 +531,7 @@ import { SeoService } from '../../services/seo.service';
       margin-bottom: 0.75rem;
     }
     h1 {
-      font-family: var(--font-display, 'Alegreya', Georgia, serif);
+      font-family: var(--font-display);
       font-size: clamp(1.8rem, 4vw, 3rem);
       color: oklch(100% 0 0);
       margin: 0 0 0.75rem;
@@ -562,7 +562,7 @@ import { SeoService } from '../../services/seo.service';
       backdrop-filter: blur(8px);
       border: 1px solid rgba(255,255,255,0.25);
       border-radius: var(--radius-pill);
-      color: #fff;
+      color: oklch(100% 0 0);
       font-size: 0.82rem;
       font-weight: 500;
       font-variant-numeric: tabular-nums;
@@ -687,7 +687,7 @@ import { SeoService } from '../../services/seo.service';
     }
     .section-heading svg { width: 1.1rem; height: 1.1rem; color: var(--clr-green); flex-shrink: 0; }
     h2 {
-      font-family: var(--font-display, 'Alegreya', Georgia, serif);
+      font-family: var(--font-display);
       font-size: 1.25rem;
       color: var(--clr-text);
       margin: 0;
@@ -964,7 +964,7 @@ import { SeoService } from '../../services/seo.service';
     /* Rating */
     .avg-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem; }
     .avg-num {
-      font-family: var(--font-display, 'Alegreya', Georgia, serif);
+      font-family: var(--font-display);
       font-size: 3rem;
       font-weight: 700;
       color: var(--clr-text);
@@ -1084,7 +1084,7 @@ import { SeoService } from '../../services/seo.service';
       margin-bottom: 1.5rem;
     }
     .related-header h2 {
-      font-family: var(--font-display, 'Alegreya', Georgia, serif);
+      font-family: var(--font-display);
       font-size: 1.5rem;
       color: var(--clr-text);
       margin: 0;
@@ -1127,7 +1127,7 @@ import { SeoService } from '../../services/seo.service';
       background: var(--clr-surface-alt);
       color: var(--clr-text);
     }
-    .reply-form textarea:focus { outline: none; border-color: var(--clr-green); }
+    .reply-form textarea:focus { outline: none; border-color: var(--clr-green); box-shadow: 0 0 0 3px color-mix(in oklch, var(--clr-green) 12%, transparent); }
     .replies { margin-top: 0.5rem; padding-left: 1rem; border-left: 1px solid var(--clr-border-faint); display: flex; flex-direction: column; gap: 0.6rem; }
     .reply { padding: 0.5rem 0; }
     .reply-avatar { width: 1.5rem !important; height: 1.5rem !important; font-size: 0.65rem !important; }
@@ -1232,8 +1232,8 @@ export class RecipeDetailComponent {
   encodedTitle = computed(() => encodeURIComponent(this.recipe()?.title || ''));
   heroGradient = computed(() => {
     const r = this.recipe();
-    if (!r) return '#1c1917';
-    return `linear-gradient(135deg, ${r.hero_palette_from || '#3a3028'}, ${r.hero_palette_to || '#1c1917'})`;
+    if (!r) return 'oklch(22% 0.01 55)';
+    return `linear-gradient(135deg, ${r.hero_palette_from || 'oklch(28% 0.015 55)'}, ${r.hero_palette_to || 'oklch(22% 0.01 55)'})`;
   });
 
   constructor() {
