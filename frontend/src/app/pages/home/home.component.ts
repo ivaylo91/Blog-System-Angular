@@ -241,26 +241,28 @@ import { PerfService } from '../../services/perf.service';
       min-height: clamp(500px, 68dvh, 760px);
     }
 
-    /* Large orange organic blob — top-left */
+    /* Large blob — wireframe outlined shape */
     .blob-main {
       position: absolute;
       top: -12%;
       left: -12%;
       width: 72%;
       height: 140%;
-      background: var(--clr-brand);
+      background: transparent;
+      border: 2px dashed rgba(0,0,0,0.15);
       border-radius: 38% 62% 68% 32% / 44% 48% 52% 56%;
       z-index: 0;
     }
 
-    /* Small peach accent — bottom-right */
+    /* Small blob — wireframe outlined circle */
     .blob-sm {
       position: absolute;
       bottom: -22%;
       right: -6%;
       width: 34%;
       height: 70%;
-      background: oklch(96% 0.035 45);
+      background: transparent;
+      border: 1.5px dashed rgba(0,0,0,0.10);
       border-radius: 50%;
       z-index: 0;
     }
@@ -291,7 +293,7 @@ import { PerfService } from '../../services/perf.service';
       width: calc(clamp(200px, 70vw, 460px) + 32px);
       height: calc(clamp(200px, 70vw, 460px) + 32px);
       border-radius: var(--radius-circle);
-      border: 2.5px solid oklch(100% 0 0 / 0.45);
+      border: 1.5px dashed rgba(0,0,0,0.12);
       z-index: 0;
     }
 
@@ -302,10 +304,8 @@ import { PerfService } from '../../services/perf.service';
       height: clamp(200px, 70vw, 460px);
       border-radius: var(--radius-circle);
       overflow: hidden;
-      border: 7px solid oklch(100% 0 0);
-      box-shadow:
-        0 0 0 3px color-mix(in oklch, var(--clr-brand) 30%, transparent),
-        var(--shadow-xl);
+      border: 2px solid var(--clr-border-strong);
+      box-shadow: var(--shadow-xl);
     }
 
     .hero-circle img {
@@ -620,10 +620,12 @@ import { PerfService } from '../../services/perf.service';
     .pop-cta:hover { background: var(--clr-brand); transform: translateY(-2px); }
     .pop-cta:active { transform: translateY(0) scale(0.98); }
 
-    /* ─── DARK CATEGORIES ──────────────────────────────────────── */
+    /* ─── CATEGORIES ───────────────────────────────────────────── */
     .cats-dark {
       padding: clamp(4rem, 7vw, 6rem) var(--space-6);
-      background: var(--clr-text);
+      background: var(--clr-surface-alt);
+      border-top: 1.5px solid var(--clr-border);
+      border-bottom: 1.5px solid var(--clr-border);
       text-align: center;
     }
 
@@ -632,7 +634,7 @@ import { PerfService } from '../../services/perf.service';
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.2em;
-      color: var(--clr-brand);
+      color: var(--clr-text-muted);
       margin: 0 0 var(--space-3);
     }
 
@@ -640,7 +642,7 @@ import { PerfService } from '../../services/perf.service';
       font-family: var(--font-display);
       font-size: clamp(1.7rem, 3vw, 2.5rem);
       font-weight: 800;
-      color: oklch(97% 0.006 55);
+      color: var(--clr-text);
       margin: 0 0 var(--space-2);
       letter-spacing: -0.025em;
       line-height: 1.15;
@@ -648,7 +650,7 @@ import { PerfService } from '../../services/perf.service';
 
     .cats-sub {
       font-size: 0.9rem;
-      color: oklch(60% 0.010 52);
+      color: var(--clr-text-muted);
       margin: 0;
       line-height: 1.6;
     }
@@ -667,13 +669,14 @@ import { PerfService } from '../../services/perf.service';
       align-items: center;
       gap: var(--space-3);
       text-decoration: none;
-      color: oklch(88% 0.006 60);
+      color: var(--clr-text);
       transition: transform 0.22s var(--ease-out-expo);
     }
     .cat-item:hover { transform: translateY(-5px); }
     .cat-item:hover .cat-icon {
       background: var(--clr-brand);
       color: oklch(100% 0 0);
+      border-color: var(--clr-brand);
     }
 
     .cat-icon {
@@ -681,12 +684,12 @@ import { PerfService } from '../../services/perf.service';
       height: 5rem;
       background: oklch(100% 0 0);
       border-radius: var(--radius-circle);
+      border: 1.5px solid var(--clr-border-strong);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--clr-brand);
-      transition: background 0.22s var(--ease-out-expo), color 0.22s var(--ease-out-expo);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      color: var(--clr-text);
+      transition: background 0.22s var(--ease-out-expo), color 0.22s var(--ease-out-expo), border-color 0.22s var(--ease-out-expo);
     }
     .cat-icon svg { width: 1.75rem; height: 1.75rem; }
 
@@ -777,7 +780,8 @@ import { PerfService } from '../../services/perf.service';
       right: -14%;
       width: 68%;
       height: 68%;
-      background: oklch(96% 0.035 45);
+      background: transparent;
+      border: 1.5px dashed rgba(0,0,0,0.12);
       border-radius: 50%;
       z-index: 0;
     }
@@ -790,9 +794,7 @@ import { PerfService } from '../../services/perf.service';
       border-radius: var(--radius-circle);
       overflow: hidden;
       box-shadow: var(--shadow-xl);
-      border: 6px solid var(--clr-surface);
-      outline: 3px solid var(--clr-brand);
-      outline-offset: 3px;
+      border: 2px solid var(--clr-border-strong);
     }
 
     .about-circle img {
