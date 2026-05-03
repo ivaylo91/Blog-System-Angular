@@ -228,7 +228,7 @@ import { SeoService } from '../../services/seo.service';
               <!-- Notes / description -->
               @if (recipe.description) {
                 <div class="notes-section">
-                  <h3 class="notes-label">Бележки :</h3>
+                  <h3 class="notes-label">Бележки</h3>
                   <p>{{ recipe.description }}</p>
                 </div>
               }
@@ -403,6 +403,34 @@ import { SeoService } from '../../services/seo.service';
     }
   `,
   styles: [`
+    /* ── TERRACOTTA TOKENS — adapt to dark mode ───────────────── */
+    :host {
+      --tc:       oklch(42% 0.10 52);  /* text / accent */
+      --tc-bg:    oklch(92% 0.038 70); /* warm beige surface */
+      --tc-mid:   oklch(50% 0.12 52);  /* interactive elements */
+      --tc-soft:  oklch(82% 0.05 60);  /* dividers & borders */
+      --tc-hover: oklch(88% 0.045 68); /* hover surface */
+      --tc-ring:  oklch(60% 0.08 52);  /* unchecked circle border */
+    }
+    @media (prefers-color-scheme: dark) {
+      :host {
+        --tc:       oklch(72% 0.08 52);
+        --tc-bg:    oklch(18% 0.028 55);
+        --tc-mid:   oklch(65% 0.10 52);
+        --tc-soft:  oklch(30% 0.04 55);
+        --tc-hover: oklch(24% 0.03 55);
+        --tc-ring:  oklch(52% 0.07 52);
+      }
+    }
+    :host-context(html.dark) {
+      --tc:       oklch(72% 0.08 52);
+      --tc-bg:    oklch(18% 0.028 55);
+      --tc-mid:   oklch(65% 0.10 52);
+      --tc-soft:  oklch(30% 0.04 55);
+      --tc-hover: oklch(24% 0.03 55);
+      --tc-ring:  oklch(52% 0.07 52);
+    }
+
     .detail-page { min-height: 100dvh; background-color: var(--clr-bg); }
 
     /* ── LOAD ERROR ───────────────────────────────────────────── */
@@ -620,7 +648,7 @@ import { SeoService } from '../../services/seo.service';
       display: flex;
       align-items: stretch;
       justify-content: center;
-      border: 1.5px solid oklch(74% 0.04 55);
+      border: 1.5px solid var(--tc-soft);
       border-radius: 0.65rem;
       max-width: 680px;
       margin: 0 auto;
@@ -636,7 +664,7 @@ import { SeoService } from '../../services/seo.service';
     }
     .meta-sep {
       width: 1px;
-      background: oklch(82% 0.03 55);
+      background: var(--tc-soft);
       align-self: stretch;
       flex-shrink: 0;
     }
@@ -651,7 +679,7 @@ import { SeoService } from '../../services/seo.service';
       font-family: var(--font-display);
       font-size: 0.95rem;
       font-weight: 700;
-      color: oklch(40% 0.09 52);
+      color: var(--tc);
     }
 
     /* ── JUMP NAV ─────────────────────────────────────────────── */
@@ -748,26 +776,26 @@ import { SeoService } from '../../services/seo.service';
       font-weight: 800;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: oklch(42% 0.10 52);
+      color: var(--tc);
       margin: 0 0 1.25rem;
       padding-bottom: 0.6rem;
-      border-bottom: 1.5px solid oklch(82% 0.05 60);
+      border-bottom: 1.5px solid var(--tc-soft);
     }
 
     /* ── INGREDIENTS COLUMN ───────────────────────────────────── */
     .ingredients-col {
-      background: oklch(92% 0.038 70);
+      background: var(--tc-bg);
       border-radius: 1.25rem;
       padding: 1.5rem;
       scroll-margin-top: 8rem;
     }
     .ingredients-col .col-heading {
-      border-bottom-color: oklch(78% 0.06 65);
+      border-bottom-color: var(--tc-soft);
     }
 
     .ing-progress {
       height: 3px;
-      background: oklch(82% 0.05 65);
+      background: var(--tc-soft);
       border-radius: var(--radius-pill);
       margin-bottom: 1rem;
       overflow: hidden;
@@ -775,7 +803,7 @@ import { SeoService } from '../../services/seo.service';
     .ing-progress-bar {
       height: 100%;
       width: 100%;
-      background: oklch(50% 0.12 52);
+      background: var(--tc-mid);
       border-radius: var(--radius-pill);
       transform-origin: left;
       transform: scaleX(0);
@@ -792,7 +820,7 @@ import { SeoService } from '../../services/seo.service';
       align-items: center;
       gap: 0.75rem;
       padding: 0.6rem 0.35rem;
-      border-bottom: 1px solid oklch(85% 0.04 65);
+      border-bottom: 1px solid var(--tc-soft);
       font-size: 0.9rem;
       cursor: pointer;
       border-radius: var(--radius-xs);
@@ -801,8 +829,8 @@ import { SeoService } from '../../services/seo.service';
       user-select: none;
     }
     .ingredients-list li:last-child { border-bottom: none; }
-    .ingredients-list li:hover { background: oklch(88% 0.045 68); }
-    .ingredients-list li:focus-visible { outline: 2px solid oklch(50% 0.12 52); outline-offset: 1px; }
+    .ingredients-list li:hover { background: var(--tc-hover); }
+    .ingredients-list li:focus-visible { outline: 2px solid var(--tc-mid); outline-offset: 1px; }
     .ingredients-list li.checked { opacity: 0.45; }
     .ingredients-list li.checked .ing-name,
     .ingredients-list li.checked .ing-amount { text-decoration: line-through; }
@@ -811,7 +839,7 @@ import { SeoService } from '../../services/seo.service';
       width: 1.1rem;
       height: 1.1rem;
       border-radius: 50%;
-      border: 1.5px solid oklch(60% 0.08 52);
+      border: 1.5px solid var(--tc-ring);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -819,7 +847,7 @@ import { SeoService } from '../../services/seo.service';
       transition: background 0.2s, border-color 0.2s;
     }
     .ing-check svg { width: 0.6rem; height: 0.6rem; display: none; }
-    li.checked .ing-check { background: oklch(50% 0.12 52); border-color: oklch(50% 0.12 52); }
+    li.checked .ing-check { background: var(--tc-mid); border-color: var(--tc-mid); }
     li.checked .ing-check svg { display: block; stroke: #fff; }
 
     .ing-amount { font-weight: 700; color: var(--clr-text); min-width: 68px; }
@@ -830,7 +858,7 @@ import { SeoService } from '../../services/seo.service';
       border: none;
       font-size: 0.78rem;
       font-weight: 600;
-      color: oklch(50% 0.10 52);
+      color: var(--tc-mid);
       cursor: pointer;
       padding: 0;
       text-decoration: underline;
@@ -849,7 +877,7 @@ import { SeoService } from '../../services/seo.service';
       width: 2rem;
       height: 2rem;
       border-radius: 50%;
-      background: oklch(42% 0.10 52);
+      background: var(--tc);
       color: #fff;
       font-weight: 700;
       font-size: 0.82rem;
@@ -882,12 +910,12 @@ import { SeoService } from '../../services/seo.service';
     .tags-row svg { width: 0.9rem; height: 0.9rem; color: var(--clr-text-muted); flex-shrink: 0; }
     .tag {
       padding: 0.3rem 0.85rem;
-      background: oklch(93% 0.03 70);
+      background: var(--tc-bg);
       border-radius: var(--radius-pill);
       font-size: 0.78rem;
-      color: oklch(38% 0.08 52);
+      color: var(--tc);
       font-weight: 500;
-      border: 1px solid oklch(82% 0.04 65);
+      border: 1px solid var(--tc-soft);
     }
 
     /* Notes */
@@ -902,7 +930,7 @@ import { SeoService } from '../../services/seo.service';
       font-weight: 800;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: oklch(42% 0.10 52);
+      color: var(--tc);
       margin: 0 0 0.6rem;
     }
     .notes-section p {
@@ -937,12 +965,12 @@ import { SeoService } from '../../services/seo.service';
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      color: oklch(42% 0.10 52);
+      color: var(--tc);
       margin-bottom: 1rem;
     }
     .card-label svg { width: 0.9rem; height: 0.9rem; }
     .star-icon { fill: oklch(72% 0.19 70); color: oklch(72% 0.19 70); }
-    .count-badge { font-size: 0.72rem; font-weight: 700; color: oklch(42% 0.10 52); background: oklch(92% 0.038 70); padding: 0.2rem 0.6rem; border-radius: var(--radius-pill); }
+    .count-badge { font-size: 0.72rem; font-weight: 700; color: var(--tc); background: var(--tc-bg); padding: 0.2rem 0.6rem; border-radius: var(--radius-pill); }
     .count-badge.ml { margin-left: 0.5rem; }
 
     /* Rating */
@@ -1003,7 +1031,7 @@ import { SeoService } from '../../services/seo.service';
     .comment-avatar {
       width: 2rem; height: 2rem;
       border-radius: 50%;
-      background: oklch(42% 0.10 52);
+      background: var(--tc);
       color: #fff;
       font-size: 0.8rem; font-weight: 700;
       display: flex; align-items: center; justify-content: center;

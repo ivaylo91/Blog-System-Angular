@@ -15,7 +15,7 @@ import { SeoService } from '../../services/seo.service';
       <aside class="auth-aside" aria-hidden="true">
         <div class="aside-blob"></div>
         <div class="aside-content">
-          <a routerLink="/" class="aside-logo">
+          <a routerLink="/" class="aside-logo" tabindex="-1">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
                  stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M3 11l1.5-7.5A2 2 0 0 1 6.46 2h11.08a2 2 0 0 1 1.96 1.5L21 11"/>
@@ -62,7 +62,7 @@ import { SeoService } from '../../services/seo.service';
                   </svg>
                 </span>
                 <input id="signin-email" type="email" [(ngModel)]="email" name="email" required
-                       placeholder="Имейл адрес" autocomplete="email"
+                       placeholder="Имейл адрес" autocomplete="email" aria-label="Имейл адрес"
                        [attr.aria-invalid]="error ? 'true' : null"
                        #emailInput="ngModel" />
               </div>
@@ -77,7 +77,7 @@ import { SeoService } from '../../services/seo.service';
                 </span>
                 <input id="signin-password" [type]="showPassword ? 'text' : 'password'"
                        [(ngModel)]="password" name="password" required minlength="8"
-                       placeholder="Парола" autocomplete="current-password"
+                       placeholder="Парола" autocomplete="current-password" aria-label="Парола"
                        [attr.aria-invalid]="error ? 'true' : null" />
                 <button type="button" class="toggle-btn"
                         [attr.aria-label]="showPassword ? 'Скрий паролата' : 'Покажи паролата'"
@@ -183,6 +183,11 @@ import { SeoService } from '../../services/seo.service';
       justify-content: center;
       padding: clamp(2rem, 5vw, 4rem) clamp(1.5rem, 4vw, 3.5rem);
       background: oklch(100% 0 0);
+      color-scheme: light;
+      /* Force light-mode error tokens so they stay readable against white bg */
+      --clr-error-bg:   oklch(95% 0.005 25);
+      --clr-error:      oklch(40% 0.18 25);
+      --clr-error-dark: oklch(28% 0.12 25);
     }
     .auth-form-inner {
       width: 100%;
@@ -267,7 +272,7 @@ import { SeoService } from '../../services/seo.service';
 
     .toggle-btn {
       position: absolute;
-      right: 0.9rem;
+      right: 0.45rem;
       top: 50%;
       transform: translateY(-50%);
       background: none;
@@ -277,7 +282,9 @@ import { SeoService } from '../../services/seo.service';
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 0.25rem;
+      padding: 0.7rem;
+      min-width: 2.75rem;
+      min-height: 2.75rem;
       border-radius: 50%;
       transition: color 0.15s;
     }
@@ -334,6 +341,13 @@ import { SeoService } from '../../services/seo.service';
       text-decoration: none;
     }
     .alt-link a:hover { text-decoration: underline; }
+
+    /* ===== REDUCED MOTION ===== */
+    @media (prefers-reduced-motion: reduce) {
+      .error-msg { animation: none; }
+      .submit-btn { transition: none; }
+      .input-wrap input { transition: none; }
+    }
 
     /* ===== RESPONSIVE ===== */
     @media (max-width: 860px) {

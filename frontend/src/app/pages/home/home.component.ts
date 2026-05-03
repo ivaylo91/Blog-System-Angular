@@ -348,7 +348,7 @@ import { PerfService } from '../../services/perf.service';
       bottom: 14%;
       left: 2%;
       z-index: 4;
-      background: #fff;
+      background: var(--clr-surface);
       border-radius: 9999px;
       padding: 0.45rem 1rem;
       display: flex;
@@ -363,7 +363,7 @@ import { PerfService } from '../../services/perf.service';
     /* ─── POPULAR RECIPES ─────────────────────────────────────── */
     .popular-sec {
       padding: clamp(4rem, 7vw, 5.5rem) 0;
-      background: oklch(100% 0 0);
+      background: var(--clr-surface);
     }
     .cards-grid {
       display: grid;
@@ -371,7 +371,7 @@ import { PerfService } from '../../services/perf.service';
       gap: 1.25rem;
     }
     .recipe-card {
-      background: #fff;
+      background: var(--clr-surface);
       border-radius: 1.25rem;
       overflow: hidden;
       box-shadow: 0 2px 14px rgba(0,0,0,0.07);
@@ -472,7 +472,7 @@ import { PerfService } from '../../services/perf.service';
     /* ─── CATEGORIES ──────────────────────────────────────────── */
     .cat-sec {
       padding: clamp(4rem, 7vw, 5.5rem) 0;
-      background: oklch(97% 0.022 58);
+      background: var(--clr-surface-alt);
     }
     .cat-grid {
       display: grid;
@@ -486,7 +486,7 @@ import { PerfService } from '../../services/perf.service';
       gap: 0.6rem;
       padding: 1.35rem 0.75rem;
       border-radius: 1rem;
-      background: #fff;
+      background: var(--clr-surface);
       text-decoration: none;
       color: var(--clr-text);
       font-size: 0.8rem;
@@ -504,6 +504,18 @@ import { PerfService } from '../../services/perf.service';
     .cat-icon { width: 2.5rem; height: 2.5rem; color: var(--clr-brand); transition: color 0.2s; }
     .cat-item:hover .cat-icon { color: #fff; }
     .cat-icon svg { width: 100%; height: 100%; }
+
+    /* ─── DARK MODE ───────────────────────────────────────────── */
+    @media (prefers-color-scheme: dark) {
+      .hero { background: oklch(16% 0.025 55); }
+      .hero-bg-circle { background: oklch(21% 0.04 55); }
+      .btn-play { background: oklch(24% 0.04 55); }
+      .hero-badge { box-shadow: 0 4px 20px rgba(0,0,0,0.45); }
+    }
+    html.dark .hero { background: oklch(16% 0.025 55); }
+    html.dark .hero-bg-circle { background: oklch(21% 0.04 55); }
+    html.dark .btn-play { background: oklch(24% 0.04 55); }
+    html.dark .hero-badge { box-shadow: 0 4px 20px rgba(0,0,0,0.45); }
 
     /* ─── RESPONSIVE ──────────────────────────────────────────── */
     @media (max-width: 1024px) {
