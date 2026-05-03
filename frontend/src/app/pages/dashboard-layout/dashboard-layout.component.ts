@@ -589,7 +589,7 @@ export class DashboardLayoutComponent {
     if (url.includes('/recipes')) return 'Рецепти';
     if (url.includes('/comments')) return 'Коментари';
     if (url.includes('/favorites')) return 'Любими';
-    return 'Преглед';
+    return '';
   }
 
   todayLabel(): string {
