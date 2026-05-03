@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/services/perf.service.ts"],
+  "sourcesContent": ["import { Injectable } from '@angular/core';\n\n/**\n * Thin wrapper around the User Timing API (performance.mark / performance.measure).\n * Produces named marks and measures that appear in:\n *  - Chrome DevTools → Performance panel → Timings lane\n *  - Lighthouse → \"User Timing marks and measures\" audit\n *  - web-vitals tooling\n *\n * All calls are no-ops when the API is unavailable (SSR / old browsers).\n */\n@Injectable({ providedIn: 'root' })\nexport class PerfService {\n  private supported = typeof performance !== 'undefined' && typeof performance.mark === 'function';\n\n  mark(name: string): void {\n    if (!this.supported) return;\n    try { performance.mark(name); } catch { /* ignore */ }\n  }\n\n  measure(name: string, startMark: string, endMark?: string): void {\n    if (!this.supported) return;\n    try {\n      performance.measure(name, startMark, endMark);\n    } catch {\n      // startMark may not exist on repeat navigations — safe to ignore\n    }\n  }\n}\n"],
+  "mappings": ";;;;;;;AAYM,IAAO,cAAP,MAAO,aAAW;EACd,YAAY,OAAO,gBAAgB,eAAe,OAAO,YAAY,SAAS;EAEtF,KAAK,MAAY;AACf,QAAI,CAAC,KAAK;AAAW;AACrB,QAAI;AAAE,kBAAY,KAAK,IAAI;IAAG,QAAQ;IAAe;EACvD;EAEA,QAAQ,MAAc,WAAmB,SAAgB;AACvD,QAAI,CAAC,KAAK;AAAW;AACrB,QAAI;AACF,kBAAY,QAAQ,MAAM,WAAW,OAAO;IAC9C,QAAQ;IAER;EACF;;qCAfW,cAAW;EAAA;4EAAX,cAAW,SAAX,aAAW,WAAA,YADE,OAAM,CAAA;;;sEACnB,aAAW,CAAA;UADvB;WAAW,EAAE,YAAY,OAAM,CAAE;;;",
+  "names": []
+}
