@@ -37,7 +37,7 @@ import { SeoService } from '../../services/seo.service';
           <div class="read-progress-bar" [style.transform]="'scaleX(' + readProgress() + ')'"></div>
         </div>
 
-        <!-- Full-bleed hero image -->
+        <!-- ══ HERO ══════════════════════════════════════════════════ -->
         <div class="hero-banner" [style.background]="heroGradient()">
           @if (recipe.hero_image) {
             <img [src]="recipe.hero_image" [alt]="recipe.title" class="hero-img" fetchpriority="high" loading="eager" />
@@ -51,30 +51,8 @@ import { SeoService } from '../../services/seo.service';
             @if (recipe.category) {
               <span class="hero-badge">{{ recipe.category.name }}</span>
             }
-            <h1>{{ recipe.title }}</h1>
-            <p class="hero-excerpt">{{ recipe.excerpt }}</p>
-
-            <!-- Stat pills -->
-            <div class="stat-pills">
-              <div class="stat-pill">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                <span>{{ recipe.prep_minutes + recipe.cook_minutes }} мин</span>
-              </div>
-              <div class="stat-pill">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                <span>{{ recipe.servings }} порции</span>
-              </div>
-              <div class="stat-pill">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                <span>{{ recipe.difficulty }}</span>
-              </div>
-              @if (averageRating()) {
-                <div class="stat-pill stat-pill-gold">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                  <span>{{ averageRating()!.toFixed(1) }}</span>
-                </div>
-              }
-            </div>
+            <h1 class="hero-title-script">{{ recipe.title }}</h1>
+            <p class="hero-made-with">Приготвено с любов ♥</p>
 
             <!-- Share bar -->
             <div class="share-bar">
@@ -103,9 +81,43 @@ import { SeoService } from '../../services/seo.service';
               </button>
             </div>
           </div>
+
+          <!-- torn paper wave -->
+          <div class="hero-wave" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 72" preserveAspectRatio="none">
+              <path d="M0,45 L18,30 L36,42 L54,24 L72,38 L90,20 L108,34 L126,16 L144,30 L162,12 L180,26 L198,8 L216,22 L234,5 L252,18 L270,2 L288,15 L306,0 L324,13 L342,1 L360,11 L378,0 L396,9 L414,0 L432,7 L450,0 L468,6 L486,0 L504,7 L522,1 L540,10 L558,2 L576,12 L594,3 L612,14 L630,5 L648,17 L666,8 L684,20 L702,11 L720,24 L738,14 L756,28 L774,18 L792,33 L810,22 L828,37 L846,27 L864,40 L882,30 L900,43 L918,32 L936,45 L954,34 L972,47 L990,36 L1008,50 L1026,40 L1044,53 L1062,42 L1080,56 L1098,45 L1116,58 L1134,48 L1152,61 L1170,50 L1188,63 L1206,52 L1224,64 L1242,54 L1260,66 L1278,56 L1296,68 L1314,58 L1332,69 L1350,60 L1368,71 L1386,62 L1404,72 L1440,72 L0,72 Z"/>
+            </svg>
+          </div>
         </div>
 
-        <!-- Jump-to nav -->
+        <!-- ══ META BAR ══════════════════════════════════════════════ -->
+        <div class="recipe-meta-wrap">
+          <div class="recipe-meta-bar">
+            <div class="meta-item">
+              <span class="meta-label">Подготовка</span>
+              <span class="meta-val">{{ recipe.prep_minutes }} мин</span>
+            </div>
+            <div class="meta-sep"></div>
+            <div class="meta-item">
+              <span class="meta-label">Готвене</span>
+              <span class="meta-val">{{ recipe.cook_minutes }} мин</span>
+            </div>
+            <div class="meta-sep"></div>
+            <div class="meta-item">
+              <span class="meta-label">Порции</span>
+              <span class="meta-val">{{ recipe.servings }}</span>
+            </div>
+            @if (recipe.difficulty) {
+              <div class="meta-sep"></div>
+              <div class="meta-item">
+                <span class="meta-label">Трудност</span>
+                <span class="meta-val">{{ recipe.difficulty }}</span>
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- ══ JUMP NAV ══════════════════════════════════════════════ -->
         <nav class="jump-nav" aria-label="Навигация в рецептата">
           <button type="button" class="jump-link" (click)="scrollTo('ingredients')">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg>
@@ -123,106 +135,85 @@ import { SeoService } from '../../services/seo.service';
           </button>
         </nav>
 
-        <!-- Main body -->
+        <!-- ══ BODY ═════════════════════════════════════════════════ -->
         <div class="body-wrap">
-          <div class="content-grid">
 
-            <!-- RIGHT on desktop, TOP on mobile: sticky ingredients + favorite -->
-            <aside class="sidebar">
+          <!-- Favorite button -->
+          @if (auth.isAuthenticated()) {
+            <div class="fav-wrap">
+              <button class="favorite-btn"
+                [class.favorited]="favoriteStatus()?.isFavorite"
+                [class.pulse]="heartPulse()"
+                [disabled]="favoriting()"
+                [attr.aria-pressed]="!!favoriteStatus()?.isFavorite"
+                [attr.aria-label]="favoriteStatus()?.isFavorite ? 'Премахни от любими' : 'Добави в любими'"
+                (click)="toggleFavorite()">
+                @if (favoriting()) {
+                  <svg class="spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-dasharray="32" stroke-dashoffset="24"/></svg>
+                } @else if (favoriteStatus()?.isFavorite) {
+                  <svg viewBox="0 0 24 24" fill="var(--clr-error)" stroke="var(--clr-error)" stroke-width="2" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                } @else {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                }
+                @if (favoriteStatus()?.isFavorite) {
+                  Запазено · {{ favoriteStatus()?.favoriteCount }}
+                } @else {
+                  Запази · {{ favoriteStatus()?.favoriteCount || 0 }}
+                }
+              </button>
+            </div>
+          }
 
-              <!-- Favorite -->
-              @if (auth.isAuthenticated()) {
-                <button class="favorite-btn"
-                  [class.favorited]="favoriteStatus()?.isFavorite"
-                  [class.pulse]="heartPulse()"
-                  [disabled]="favoriting()"
-                  [attr.aria-pressed]="!!favoriteStatus()?.isFavorite"
-                  [attr.aria-label]="favoriteStatus()?.isFavorite ? 'Премахни от любими' : 'Добави в любими'"
-                  (click)="toggleFavorite()">
-                  @if (favoriting()) {
-                    <svg class="spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-dasharray="32" stroke-dashoffset="24"/></svg>
-                  } @else if (favoriteStatus()?.isFavorite) {
-                    <svg viewBox="0 0 24 24" fill="var(--clr-error)" stroke="var(--clr-error)" stroke-width="2" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                  } @else {
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                  }
-                  @if (favoriteStatus()?.isFavorite) {
-                    Запазено · {{ favoriteStatus()?.favoriteCount }}
-                  } @else {
-                    Запази · {{ favoriteStatus()?.favoriteCount || 0 }}
-                  }
-                </button>
-              }
+          <!-- ── RECIPE CARD GRID: ingredients | procedure ─────── -->
+          <div class="recipe-card-grid">
 
-              <!-- Ingredients (sticky) -->
-              <div class="section-card" id="ingredients">
-                <div class="section-heading">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg>
-                  <h2>Съставки</h2>
-                  <span class="count-badge">{{ recipe.ingredients?.length || 0 }}</span>
+            <!-- INGREDIENTS -->
+            <div class="ingredients-col" id="ingredients">
+              <h2 class="col-heading">Съставки</h2>
+              @if (checkedIngredients().size > 0) {
+                <div class="ing-progress">
+                  <div class="ing-progress-bar" [style.transform]="'scaleX(' + (checkedIngredients().size / (recipe.ingredients?.length || 1)) + ')'"></div>
                 </div>
-                @if (checkedIngredients().size > 0) {
-                  <div class="ing-progress">
-                    <div class="ing-progress-bar" [style.transform]="'scaleX(' + (checkedIngredients().size / (recipe.ingredients?.length || 1)) + ')'"></div>
+              }
+              <ul class="ingredients-list">
+                @for (ing of recipe.ingredients; track ing.id) {
+                  <li [class.checked]="checkedIngredients().has(ing.id)"
+                      (click)="toggleIngredient(ing.id)"
+                      role="checkbox"
+                      [attr.aria-checked]="checkedIngredients().has(ing.id)"
+                      tabindex="0"
+                      (keydown.space)="$event.preventDefault(); toggleIngredient(ing.id)"
+                      (keydown.enter)="toggleIngredient(ing.id)">
+                    <span class="ing-check" aria-hidden="true">
+                      @if (checkedIngredients().has(ing.id)) {
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                      }
+                    </span>
+                    <span class="ing-amount">{{ ing.amount }}</span>
+                    <span class="ing-name">{{ ing.name }}</span>
+                  </li>
+                }
+              </ul>
+              @if (checkedIngredients().size > 0) {
+                <button class="ing-reset" (click)="clearIngredients()">Изчисти всички</button>
+              }
+            </div>
+
+            <!-- PROCEDURE -->
+            <div class="procedure-col" id="steps">
+              <h2 class="col-heading">Приготвяне</h2>
+              <div class="steps-list">
+                @for (step of recipe.steps; track step.id; let i = $index) {
+                  <div class="step-item">
+                    <div class="step-num">{{ i + 1 }}</div>
+                    <div class="step-body">
+                      @if (step.title && step.title !== 'Стъпка ' + (i + 1)) {
+                        <h3>{{ step.title }}</h3>
+                      }
+                      <p>{{ step.description }}</p>
+                    </div>
                   </div>
                 }
-                <ul class="ingredients-list">
-                  @for (ing of recipe.ingredients; track ing.id) {
-                    <li [class.checked]="checkedIngredients().has(ing.id)"
-                        (click)="toggleIngredient(ing.id)"
-                        role="checkbox"
-                        [attr.aria-checked]="checkedIngredients().has(ing.id)"
-                        tabindex="0"
-                        (keydown.space)="$event.preventDefault(); toggleIngredient(ing.id)"
-                        (keydown.enter)="toggleIngredient(ing.id)">
-                      <span class="ing-check" aria-hidden="true">
-                        @if (checkedIngredients().has(ing.id)) {
-                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                        }
-                      </span>
-                      <span class="ing-amount">{{ ing.amount }}</span>
-                      <span class="ing-name">{{ ing.name }}</span>
-                    </li>
-                  }
-                </ul>
-                @if (checkedIngredients().size > 0) {
-                  <button class="ing-reset" (click)="clearIngredients()">
-                    Изчисти всички
-                  </button>
-                }
-              </div>
-
-            </aside>
-
-            <!-- LEFT on desktop, BELOW on mobile: intro + steps + rating + comments -->
-            <main class="main-content">
-
-              @if (recipe.description) {
-                <div class="prose-card">
-                  <p>{{ recipe.description }}</p>
-                </div>
-              }
-
-              <!-- Steps -->
-              <div class="section-card" id="steps">
-                <div class="section-heading">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-                  <h2>Приготвяне</h2>
-                  <span class="count-badge">{{ recipe.steps?.length || 0 }} стъпки</span>
-                </div>
-                <div class="steps-list">
-                  @for (step of recipe.steps; track step.id; let i = $index) {
-                    <div class="step-item">
-                      <div class="step-num">{{ i + 1 }}</div>
-                      <div class="step-body">
-                        @if (step.title && step.title !== 'Стъпка ' + (i + 1)) {
-                          <h3>{{ step.title }}</h3>
-                        }
-                        <p>{{ step.description }}</p>
-                      </div>
-                    </div>
-                  }
-                </div>
               </div>
 
               @if (recipe.tags && recipe.tags.length) {
@@ -233,144 +224,158 @@ import { SeoService } from '../../services/seo.service';
                   }
                 </div>
               }
-              <!-- Rating -->
-              <div class="panel-card">
-                <div class="card-label">
-                  <svg viewBox="0 0 24 24" fill="currentColor" class="star-icon"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                  Оценка
-                </div>
-                <div class="avg-row">
-                  <span class="avg-num">{{ averageRating() ? averageRating()!.toFixed(1) : '—' }}</span>
-                  <div class="avg-meta">
-                    <app-star-rating [value]="Math.round(averageRating() || 0)" [interactive]="false" />
-                    <span class="rating-count">{{ ratingsCount() > 0 ? ratingsCount() + ' оценки' : 'Все още няма' }}</span>
-                  </div>
-                </div>
-                @if (auth.isAuthenticated()) {
-                  <div class="user-rating">
-                    <p>Твоята оценка:</p>
-                    <app-star-rating [value]="userRating()" (rated)="onRate($event)" />
-                  </div>
-                }
-              </div>
 
-              <!-- Comment form -->
-              @if (auth.isAuthenticated()) {
-                <div class="panel-card">
-                  <div class="card-label">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                    Остави коментар
-                  </div>
-                  <form (submit)="onComment($event)">
-                    <textarea [ngModel]="commentBody()" (ngModelChange)="commentBody.set($event)" name="body"
-                              placeholder="Напиши мнението си..." rows="4"
-                              class="comment-textarea"
-                              [disabled]="submittingComment()"
-                              maxlength="2000"></textarea>
-                    <button type="submit" class="submit-btn"
-                            [disabled]="submittingComment() || !commentBody().trim()">
-                      @if (submittingComment()) {
-                        <svg class="spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-dasharray="32" stroke-dashoffset="24"/></svg>
-                        Изпращане...
-                      } @else {
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-                        Публикувай
-                      }
-                    </button>
-                  </form>
-                </div>
-              } @else {
-                <div class="panel-card login-prompt">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
-                  <p>За оценка или коментар <a routerLink="/signin">влез в профила си</a>.</p>
+              <!-- Notes / description -->
+              @if (recipe.description) {
+                <div class="notes-section">
+                  <h3 class="notes-label">Бележки :</h3>
+                  <p>{{ recipe.description }}</p>
                 </div>
               }
+            </div>
 
-              <!-- Comments -->
-              <div class="panel-card" id="comments">
+          </div>
+
+          <!-- ── LOWER: rating + comments ──────────────────────── -->
+          <div class="lower-panels">
+
+            <!-- Rating -->
+            <div class="panel-card">
+              <div class="card-label">
+                <svg viewBox="0 0 24 24" fill="currentColor" class="star-icon"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                Оценка
+              </div>
+              <div class="avg-row">
+                <span class="avg-num">{{ averageRating() ? averageRating()!.toFixed(1) : '—' }}</span>
+                <div class="avg-meta">
+                  <app-star-rating [value]="Math.round(averageRating() || 0)" [interactive]="false" />
+                  <span class="rating-count">{{ ratingsCount() > 0 ? ratingsCount() + ' оценки' : 'Все още няма' }}</span>
+                </div>
+              </div>
+              @if (auth.isAuthenticated()) {
+                <div class="user-rating">
+                  <p>Твоята оценка:</p>
+                  <app-star-rating [value]="userRating()" (rated)="onRate($event)" />
+                </div>
+              }
+            </div>
+
+            <!-- Comment form -->
+            @if (auth.isAuthenticated()) {
+              <div class="panel-card">
                 <div class="card-label">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                  Коментари
-                  @if (comments().length > 0) {
-                    <span class="count-badge ml">{{ comments().length }}</span>
-                  }
+                  Остави коментар
                 </div>
-                @for (comment of comments(); track comment.id) {
-                  <div class="comment">
-                    <div class="comment-header">
-                      <div class="comment-avatar">{{ (comment.author?.name || comment.author?.email || 'Ч')[0].toUpperCase() }}</div>
-                      <div class="comment-meta">
-                        <strong>{{ comment.author?.name || comment.author?.email || 'Читател' }}</strong>
-                        <span class="comment-date">{{ comment.created_at | date:'dd MMM yyyy' }}</span>
-                      </div>
-                      @if (canDeleteComment(comment)) {
-                        <button class="delete-comment-btn" (click)="confirmDelete(comment.id)" aria-label="Изтрий коментар">
-                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
-                        </button>
-                      }
-                    </div>
-                    @if (comment.rating) {
-                      <div class="comment-rating">
-                        <app-star-rating [value]="comment.rating" [interactive]="false" />
-                      </div>
+                <form (submit)="onComment($event)">
+                  <textarea [ngModel]="commentBody()" (ngModelChange)="commentBody.set($event)" name="body"
+                            placeholder="Напиши мнението си..." rows="4"
+                            class="comment-textarea"
+                            [disabled]="submittingComment()"
+                            maxlength="2000"></textarea>
+                  <button type="submit" class="submit-btn"
+                          [disabled]="submittingComment() || !commentBody().trim()">
+                    @if (submittingComment()) {
+                      <svg class="spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-dasharray="32" stroke-dashoffset="24"/></svg>
+                      Изпращане...
+                    } @else {
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                      Публикувай
                     }
-                    @if (comment.body?.trim()) {
-                      <p class="comment-body">{{ comment.body }}</p>
-                    }
-                    @if (auth.isAuthenticated()) {
-                      <button class="reply-btn"
-                        [attr.aria-expanded]="replyingToId() === comment.id"
-                        (click)="startReply(comment.id)">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="9 17 4 12 9 7"/><path d="M20 18v-2a4 4 0 0 0-4-4H4"/></svg>
-                        {{ replyingToId() === comment.id ? 'Отказ' : 'Отговори' }}
-                      </button>
-                    }
-                    @if (replyingToId() === comment.id) {
-                      <form class="reply-form" (submit)="submitReply($event, comment.id)">
-                        <textarea [ngModel]="replyBody()" (ngModelChange)="replyBody.set($event)" [name]="'reply-' + comment.id" rows="2"
-                                  placeholder="Напиши отговор..."
-                                  aria-label="Напиши отговор"
-                                  [disabled]="submittingReply()"
-                                  maxlength="1000"></textarea>
-                        <button type="submit" class="submit-btn"
-                                [disabled]="submittingReply() || !replyBody().trim()">
-                          @if (submittingReply()) {
-                            <svg class="spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-dasharray="32" stroke-dashoffset="24"/></svg>
-                            Изпращане...
-                          } @else {
-                            Изпрати
-                          }
-                        </button>
-                      </form>
-                    }
-                    @if (comment.replies && comment.replies.length > 0) {
-                      <div class="replies">
-                        @for (reply of comment.replies; track reply.id) {
-                          <div class="reply">
-                            <div class="comment-header">
-                              <div class="comment-avatar reply-avatar">{{ (reply.author?.name || 'Ч')[0].toUpperCase() }}</div>
-                              <div class="comment-meta">
-                                <strong>{{ reply.author?.name || 'Читател' }}</strong>
-                                <span class="comment-date">{{ reply.created_at | date:'dd MMM yyyy' }}</span>
-                              </div>
-                              @if (canDeleteComment(reply)) {
-                                <button class="delete-comment-btn" (click)="confirmDelete(reply.id)" aria-label="Изтрий отговор">
-                                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
-                                </button>
-                              }
-                            </div>
-                            <p class="comment-body">{{ reply.body }}</p>
-                          </div>
-                        }
-                      </div>
-                    }
-                  </div>
-                } @empty {
-                  <p class="no-comments">Все още няма коментари. Бъди първи!</p>
+                  </button>
+                </form>
+              </div>
+            } @else {
+              <div class="panel-card login-prompt">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+                <p>За оценка или коментар <a routerLink="/signin">влез в профила си</a>.</p>
+              </div>
+            }
+
+            <!-- Comments -->
+            <div class="panel-card" id="comments">
+              <div class="card-label">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                Коментари
+                @if (comments().length > 0) {
+                  <span class="count-badge ml">{{ comments().length }}</span>
                 }
               </div>
+              @for (comment of comments(); track comment.id) {
+                <div class="comment">
+                  <div class="comment-header">
+                    <div class="comment-avatar">{{ (comment.author?.name || comment.author?.email || 'Ч')[0].toUpperCase() }}</div>
+                    <div class="comment-meta">
+                      <strong>{{ comment.author?.name || comment.author?.email || 'Читател' }}</strong>
+                      <span class="comment-date">{{ comment.created_at | date:'dd MMM yyyy' }}</span>
+                    </div>
+                    @if (canDeleteComment(comment)) {
+                      <button class="delete-comment-btn" (click)="confirmDelete(comment.id)" aria-label="Изтрий коментар">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                      </button>
+                    }
+                  </div>
+                  @if (comment.rating) {
+                    <div class="comment-rating">
+                      <app-star-rating [value]="comment.rating" [interactive]="false" />
+                    </div>
+                  }
+                  @if (comment.body?.trim()) {
+                    <p class="comment-body">{{ comment.body }}</p>
+                  }
+                  @if (auth.isAuthenticated()) {
+                    <button class="reply-btn"
+                      [attr.aria-expanded]="replyingToId() === comment.id"
+                      (click)="startReply(comment.id)">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="9 17 4 12 9 7"/><path d="M20 18v-2a4 4 0 0 0-4-4H4"/></svg>
+                      {{ replyingToId() === comment.id ? 'Отказ' : 'Отговори' }}
+                    </button>
+                  }
+                  @if (replyingToId() === comment.id) {
+                    <form class="reply-form" (submit)="submitReply($event, comment.id)">
+                      <textarea [ngModel]="replyBody()" (ngModelChange)="replyBody.set($event)" [name]="'reply-' + comment.id" rows="2"
+                                placeholder="Напиши отговор..."
+                                aria-label="Напиши отговор"
+                                [disabled]="submittingReply()"
+                                maxlength="1000"></textarea>
+                      <button type="submit" class="submit-btn"
+                              [disabled]="submittingReply() || !replyBody().trim()">
+                        @if (submittingReply()) {
+                          <svg class="spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-dasharray="32" stroke-dashoffset="24"/></svg>
+                          Изпращане...
+                        } @else {
+                          Изпрати
+                        }
+                      </button>
+                    </form>
+                  }
+                  @if (comment.replies && comment.replies.length > 0) {
+                    <div class="replies">
+                      @for (reply of comment.replies; track reply.id) {
+                        <div class="reply">
+                          <div class="comment-header">
+                            <div class="comment-avatar reply-avatar">{{ (reply.author?.name || 'Ч')[0].toUpperCase() }}</div>
+                            <div class="comment-meta">
+                              <strong>{{ reply.author?.name || 'Читател' }}</strong>
+                              <span class="comment-date">{{ reply.created_at | date:'dd MMM yyyy' }}</span>
+                            </div>
+                            @if (canDeleteComment(reply)) {
+                              <button class="delete-comment-btn" (click)="confirmDelete(reply.id)" aria-label="Изтрий отговор">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                              </button>
+                            }
+                          </div>
+                          <p class="comment-body">{{ reply.body }}</p>
+                        </div>
+                      }
+                    </div>
+                  }
+                </div>
+              } @empty {
+                <p class="no-comments">Все още няма коментари. Бъди първи!</p>
+              }
+            </div>
 
-            </main>
           </div>
         </div>
 
@@ -398,9 +403,9 @@ import { SeoService } from '../../services/seo.service';
     }
   `,
   styles: [`
-    .detail-page { min-height: 100dvh; background-color: var(--clr-bg); background-image: url('/backgrounds/cooking-pattern.svg'); background-size: 500px; background-repeat: repeat; }
+    .detail-page { min-height: 100dvh; background-color: var(--clr-bg); }
 
-    /* Load error — editorial, matches home .featured-error */
+    /* ── LOAD ERROR ───────────────────────────────────────────── */
     .detail-load-error {
       min-height: 60dvh;
       display: flex;
@@ -429,40 +434,31 @@ import { SeoService } from '../../services/seo.service';
       font-size: 0.9rem;
       font-weight: 600;
       text-decoration: none;
-      transition: background 0.2s var(--ease-out-expo), border-color 0.2s var(--ease-out-expo), transform 0.15s var(--ease-out-expo);
+      transition: background 0.2s, border-color 0.2s, transform 0.15s;
     }
-    .detail-load-error-btn:hover {
-      background: var(--clr-surface-hover);
-      border-color: var(--clr-border-strong);
-      transform: translateY(-1px);
-    }
+    .detail-load-error-btn:hover { background: var(--clr-surface-hover); border-color: var(--clr-border-strong); transform: translateY(-1px); }
     .detail-load-error-btn:active { transform: translateY(0); }
 
-    /* ===== READING PROGRESS ===== */
+    /* ── READING PROGRESS ─────────────────────────────────────── */
     .read-progress {
       position: fixed;
       top: 0; left: 0; right: 0;
-      height: 2px;
+      height: 3px;
       z-index: 51;
       pointer-events: none;
-      background: transparent;
     }
     .read-progress-bar {
       height: 100%;
-      background: linear-gradient(90deg, var(--clr-brand), var(--clr-amber));
+      background: linear-gradient(90deg, var(--clr-brand), oklch(72% 0.19 70));
       transform-origin: left;
       transform: scaleX(0);
       will-change: transform;
-      box-shadow: 0 0 8px color-mix(in oklch, var(--clr-brand) 45%, transparent);
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .read-progress-bar { transition: none; }
     }
 
-    /* ===== HERO ===== */
+    /* ── HERO ─────────────────────────────────────────────────── */
     .hero-banner {
       position: relative;
-      min-height: 520px;
+      min-height: 500px;
       display: flex;
       align-items: flex-end;
       overflow: hidden;
@@ -477,99 +473,82 @@ import { SeoService } from '../../services/seo.service';
     .hero-overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.90) 0%, rgba(0,0,0,0.5) 40%, rgba(0,0,0,0.1) 75%, rgba(0,0,0,0.0) 100%);
+      background: linear-gradient(
+        to top,
+        rgba(0,0,0,0.82) 0%,
+        rgba(0,0,0,0.48) 38%,
+        rgba(0,0,0,0.12) 70%,
+        rgba(0,0,0,0.0) 100%
+      );
     }
     .hero-content {
       position: relative;
       z-index: 2;
-      max-width: 800px;
-      margin: 0 auto;
       width: 100%;
-      padding: 3rem 1.5rem 2.5rem;
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
     }
     @keyframes hero-rise {
       from { opacity: 0; transform: translateY(14px); }
       to   { opacity: 1; transform: translateY(0); }
     }
-    .hero-content > * {
-      animation: hero-rise 640ms var(--ease-out-expo) both;
-    }
+    .hero-content > * { animation: hero-rise 640ms var(--ease-out-expo) both; }
     .hero-content > *:nth-child(1) { animation-delay:   0ms; }
     .hero-content > *:nth-child(2) { animation-delay:  80ms; }
-    .hero-content > *:nth-child(3) { animation-delay: 160ms; }
-    .hero-content > *:nth-child(4) { animation-delay: 260ms; }
-    .hero-content > *:nth-child(5) { animation-delay: 360ms; }
-    .hero-content > *:nth-child(6) { animation-delay: 460ms; }
+    .hero-content > *:nth-child(3) { animation-delay: 180ms; }
+    .hero-content > *:nth-child(4) { animation-delay: 280ms; }
+    .hero-content > *:nth-child(5) { animation-delay: 380ms; }
     @media (prefers-reduced-motion: reduce) {
       .hero-content > * { animation: none; }
     }
+
     .back-link {
       display: inline-flex;
       align-items: center;
       gap: 0.35rem;
-      color: rgba(255,255,255,0.85);
+      color: rgba(255,255,255,0.8);
       text-decoration: none;
       font-size: 0.82rem;
       font-weight: 600;
-      margin-bottom: 1rem;
-      margin-right: 0.5rem;
+      margin-bottom: 0.75rem;
       transition: color 0.2s;
     }
     .back-link svg { width: 1rem; height: 1rem; }
-    .back-link:hover { color: oklch(100% 0 0); }
+    .back-link:hover { color: #fff; }
+
     .hero-badge {
       display: inline-block;
-      margin-left: 0.75rem;
       font-size: 0.68rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      color: var(--clr-green-text);
-      background: var(--clr-green-bg);
-      padding: 0.25rem 0.75rem;
+      color: #fff;
+      background: var(--clr-brand);
+      padding: 0.22rem 0.8rem;
       border-radius: var(--radius-pill);
       margin-bottom: 0.75rem;
     }
-    h1 {
+
+    /* Script-style title — Spectral italic feels handwritten */
+    .hero-title-script {
       font-family: var(--font-display);
-      font-size: clamp(1.8rem, 4vw, 3rem);
-      color: oklch(100% 0 0);
-      margin: 0 0 0.75rem;
-      line-height: 1.1;
-      letter-spacing: -0.02em;
-      text-shadow: 0 2px 12px rgba(0,0,0,0.3);
+      font-style: italic;
+      font-size: clamp(2.2rem, 6vw, 4rem);
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.08;
+      letter-spacing: -0.01em;
+      margin: 0 0 0.3rem;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.35);
     }
-    .hero-excerpt {
-      color: rgba(255,255,255,0.88);
-      font-size: 1.05rem;
-      line-height: 1.7;
-      margin: 0 0 1.5rem;
-      font-weight: 300;
-      max-width: 600px;
-    }
-    .stat-pills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-bottom: 1.5rem;
-    }
-    .stat-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      padding: 0.4rem 0.9rem;
-      background: rgba(255,255,255,0.15);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(255,255,255,0.25);
-      border-radius: var(--radius-pill);
-      color: oklch(100% 0 0);
-      font-size: 0.82rem;
+
+    .hero-made-with {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.82);
       font-weight: 500;
-      font-variant-numeric: tabular-nums;
+      margin: 0 0 1.5rem;
     }
-    .stat-pill svg { width: 0.9rem; height: 0.9rem; }
-    .stat-pill-gold { background: color-mix(in oklch, var(--clr-amber) 20%, transparent); border-color: color-mix(in oklch, var(--clr-amber) 50%, transparent); color: var(--clr-amber); }
-    .stat-pill-gold svg { fill: var(--clr-amber); width: 0.85rem; height: 0.85rem; }
 
     /* Share bar */
     .share-bar {
@@ -579,32 +558,31 @@ import { SeoService } from '../../services/seo.service';
       flex-wrap: wrap;
     }
     .share-label {
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       font-weight: 600;
-      color: rgba(255,255,255,0.6);
+      color: rgba(255,255,255,0.55);
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      margin-right: 0.25rem;
+      margin-right: 0.2rem;
     }
     .share-btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 2.1rem;
-      height: 2.1rem;
-      border-radius: var(--radius-circle);
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
       border: 1.5px solid rgba(255,255,255,0.3);
       background: rgba(255,255,255,0.12);
       backdrop-filter: blur(6px);
-      color: oklch(100% 0 0);
+      color: #fff;
       cursor: pointer;
       text-decoration: none;
       transition: background 0.2s, transform 0.2s;
       touch-action: manipulation;
     }
-    .share-btn svg { width: 0.9rem; height: 0.9rem; }
+    .share-btn svg { width: 0.85rem; height: 0.85rem; }
     .share-btn:hover { transform: translateY(-2px); }
-    /* Minimum 44px touch target on coarse-pointer devices */
     @media (pointer: coarse) {
       .share-btn { width: 2.75rem; height: 2.75rem; }
       .share-btn svg { width: 1rem; height: 1rem; }
@@ -614,244 +592,80 @@ import { SeoService } from '../../services/seo.service';
     .share-wa:hover   { background: oklch(70% 0.20 152); border-color: oklch(70% 0.20 152); }
     .share-tg:hover   { background: oklch(60% 0.18 238); border-color: oklch(60% 0.18 238); }
     .share-vb:hover   { background: oklch(55% 0.19 303); border-color: oklch(55% 0.19 303); }
-    .share-copy:hover { background: rgba(255,255,255,0.3); }
+    .share-copy:hover { background: rgba(255,255,255,0.28); }
 
-    /* ===== BODY ===== */
-    .body-wrap { max-width: 1200px; margin: 0 auto; padding: 2.5rem clamp(1rem, 4vw, 1.5rem); }
-    .content-grid {
-      display: grid;
-      grid-template-columns: 1fr 340px;
-      grid-template-areas: "main aside";
-      gap: 2rem;
-      align-items: start;
-    }
-    .main-content { grid-area: main; min-width: 0; display: flex; flex-direction: column; gap: 1.5rem; }
-    .sidebar { grid-area: aside; }
-
-    /* Prose card — editorial intro with drop cap */
-    .prose-card {
-      background: var(--clr-surface);
-      border-radius: var(--radius-lg);
-      padding: 1.75rem 1.75rem 1.6rem;
-      border: 1px solid var(--clr-border-faint);
-      box-shadow: var(--shadow-sm);
-    }
-    .prose-card p {
-      color: var(--clr-text);
-      line-height: 1.8;
-      margin: 0;
-      font-size: 1.08rem;
-      font-family: var(--font-display);
-      font-weight: 400;
-    }
-    .prose-card p::first-letter {
-      font-family: var(--font-display);
-      font-style: italic;
-      font-weight: 800;
-      font-size: 4.2em;
-      line-height: 0.85;
-      float: left;
-      color: var(--clr-brand);
-      padding: 0.4rem 0.7rem 0 0;
-      margin-top: 0.15rem;
-    }
-    .prose-card p::first-line {
-      font-variant-caps: small-caps;
-      letter-spacing: 0.04em;
-      color: var(--clr-text);
-    }
-
-    @media (max-width: 640px) {
-      .prose-card { padding: 1.5rem 1.4rem 1.4rem; }
-      .prose-card p { font-size: 1rem; }
-      .prose-card p::first-letter { font-size: 3.6em; padding-right: 0.55rem; }
-    }
-
-    /* Section cards — polished bezel via layered shadows: ambient drop +
-       hairline outer ring + 1px inner top highlight (reads like light catching
-       a machined edge). Hairline border drops in favor of the box-shadow ring
-       so the inner highlight registers cleanly against the surface. */
-    .section-card {
-      background: var(--clr-surface);
-      border-radius: var(--radius-lg);
-      padding: 1.5rem;
-      box-shadow:
-        var(--shadow-sm),
-        0 0 0 1px var(--clr-border-faint),
-        inset 0 1px 0 rgba(255, 255, 255, 0.55);
-      scroll-margin-top: 8rem;
-    }
-    .section-heading {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 1.25rem;
-    }
-    .section-heading svg { width: 1.1rem; height: 1.1rem; color: var(--clr-green); flex-shrink: 0; }
-    h2 {
-      font-family: var(--font-display);
-      font-size: 1.25rem;
-      color: var(--clr-text);
-      margin: 0;
-    }
-    .count-badge {
-      margin-left: auto;
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: var(--clr-green-text);
-      background: var(--clr-green-bg);
-      padding: 0.2rem 0.6rem;
-      border-radius: var(--radius-pill);
-    }
-    .count-badge.ml { margin-left: 0.5rem; }
-
-    /* Ingredients progress */
-    .ing-progress {
-      height: 3px;
-      background: var(--clr-border-faint);
-      border-radius: var(--radius-pill);
-      margin-bottom: 1rem;
+    /* Torn paper wave */
+    .hero-wave {
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      z-index: 3;
       overflow: hidden;
     }
-    .ing-progress-bar {
-      height: 100%;
+    .hero-wave svg {
+      display: block;
       width: 100%;
-      background: var(--clr-green);
-      border-radius: var(--radius-pill);
-      transform-origin: left;
-      transform: scaleX(0);
-      transition: transform 0.4s var(--ease-out-expo, cubic-bezier(0.16,1,0.3,1));
+      height: 72px;
+      fill: var(--clr-bg);
     }
 
-    /* Ingredients */
-    .ingredients-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
+    /* ── META BAR ─────────────────────────────────────────────── */
+    .recipe-meta-wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem clamp(1rem, 4vw, 1.5rem) 0;
     }
-    .ingredients-list li {
+    .recipe-meta-bar {
       display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 0.65rem 0.4rem;
-      border-bottom: 1px solid var(--clr-border-faint);
-      font-size: 0.925rem;
-      cursor: pointer;
-      border-radius: var(--radius-xs);
-      transition: background 0.15s, opacity 0.25s;
-      -webkit-user-select: none;
-      user-select: none;
-    }
-    .ingredients-list li:last-child { border-bottom: none; }
-    .ingredients-list li:hover { background: var(--clr-surface-hover); }
-    .ingredients-list li:focus-visible { outline: 2px solid var(--clr-green); outline-offset: 1px; }
-    .ingredients-list li.checked {
-      opacity: 0.45;
-    }
-    .ingredients-list li.checked .ing-name,
-    .ingredients-list li.checked .ing-amount {
-      text-decoration: line-through;
-    }
-    .ing-check {
-      width: 1.1rem;
-      height: 1.1rem;
-      border-radius: var(--radius-circle);
-      border: 1.5px solid var(--clr-border-strong);
-      display: flex;
-      align-items: center;
+      align-items: stretch;
       justify-content: center;
+      border: 1.5px solid oklch(74% 0.04 55);
+      border-radius: 0.65rem;
+      max-width: 680px;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+    .meta-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.18rem;
+      padding: 0.9rem 1rem;
+    }
+    .meta-sep {
+      width: 1px;
+      background: oklch(82% 0.03 55);
+      align-self: stretch;
       flex-shrink: 0;
-      transition: background 0.2s, border-color 0.2s;
     }
-    .ing-check svg { width: 0.6rem; height: 0.6rem; display: none; }
-    li.checked .ing-check {
-      background: var(--clr-green);
-      border-color: var(--clr-green);
-    }
-    li.checked .ing-check svg { display: block; stroke: oklch(100% 0 0); }
-    .ing-amount { font-weight: 700; color: var(--clr-text); min-width: 70px; }
-    .ing-name { color: var(--clr-text-muted); }
-    .ing-reset {
-      margin-top: 0.75rem;
-      background: none;
-      border: none;
-      font-size: 0.78rem;
+    .meta-label {
+      font-size: 0.68rem;
       font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
       color: var(--clr-text-muted);
-      cursor: pointer;
-      padding: 0.25rem 0;
-      text-decoration: underline;
-      text-underline-offset: 2px;
-      transition: color 0.15s var(--ease-out-expo);
     }
-    .ing-reset:hover { color: var(--clr-green); }
-
-    /* Steps */
-    .steps-list { display: flex; flex-direction: column; gap: 1.25rem; }
-    .step-item {
-      display: flex;
-      gap: 1rem;
-    }
-    .step-num {
-      flex-shrink: 0;
-      width: 2.25rem;
-      height: 2.25rem;
-      border-radius: var(--radius-circle);
-      background: var(--clr-green);
-      color: oklch(100% 0 0);
-      font-weight: 700;
-      font-size: 0.85rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-top: 2px;
-    }
-    .step-body h3 {
+    .meta-val {
+      font-family: var(--font-display);
       font-size: 0.95rem;
       font-weight: 700;
-      color: var(--clr-text);
-      margin: 0 0 0.3rem;
-    }
-    .step-body p {
-      margin: 0;
-      color: var(--clr-text-muted);
-      line-height: 1.75;
-      font-size: 0.925rem;
+      color: oklch(40% 0.09 52);
     }
 
-    /* Tags */
-    .tags-row {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-    .tags-row svg { width: 0.9rem; height: 0.9rem; color: var(--clr-text-muted); flex-shrink: 0; }
-    .tag {
-      padding: 0.3rem 0.85rem;
-      background: var(--clr-amber-bg);
-      border-radius: var(--radius-pill);
-      font-size: 0.78rem;
-      color: var(--clr-amber-text);
-      font-weight: 500;
-    }
-
-    /* ===== JUMP-TO NAV =====
-       Sticks below the scrolled header. Jump-nav is only revealed after
-       scrolling past the hero, by which point the header is always in
-       its compact scrolled state (3.25rem desktop / 3.5rem mobile). */
+    /* ── JUMP NAV ─────────────────────────────────────────────── */
     .jump-nav {
-      background: var(--clr-surface, #fff);
-      border-bottom: 1px solid var(--clr-border-faint, rgba(0,0,0,0.06));
+      background: var(--clr-surface);
+      border-bottom: 1px solid var(--clr-border-faint);
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 0;
       position: sticky;
       top: 3.25rem;
       z-index: 10;
-      padding: 0;
       box-shadow: 0 1px 8px rgba(28,25,23,0.06);
+      margin-top: 1.5rem;
     }
     .jump-link {
       display: inline-flex;
@@ -861,12 +675,11 @@ import { SeoService } from '../../services/seo.service';
       font-size: 0.82rem;
       font-weight: 600;
       color: var(--clr-text-muted);
-      text-decoration: none;
       background: none;
       border: none;
       cursor: pointer;
       font-family: inherit;
-      transition: color 0.2s var(--ease-out-expo), background 0.2s var(--ease-out-expo);
+      transition: color 0.2s, background 0.2s;
       position: relative;
       white-space: nowrap;
     }
@@ -874,57 +687,41 @@ import { SeoService } from '../../services/seo.service';
     .jump-link::after {
       content: '';
       position: absolute;
-      bottom: 0;
-      left: 1rem;
-      right: 1rem;
+      bottom: 0; left: 1rem; right: 1rem;
       height: 2px;
-      background: var(--clr-green);
+      background: var(--clr-brand);
       border-radius: 2px;
       transform: scaleX(0);
-      transition: transform 0.2s var(--ease-out-expo, cubic-bezier(0.16,1,0.3,1));
+      transition: transform 0.2s var(--ease-out-expo);
     }
     .jump-link:hover { color: var(--clr-text); background: var(--clr-surface-hover); }
     .jump-link:hover::after { transform: scaleX(1); }
-    .jump-sep {
-      width: 1px;
-      height: 1.2rem;
-      background: var(--clr-border);
-      flex-shrink: 0;
+    .jump-sep { width: 1px; height: 1.2rem; background: var(--clr-border); flex-shrink: 0; }
+
+    /* ── BODY ─────────────────────────────────────────────────── */
+    .body-wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem clamp(1rem, 4vw, 1.5rem) 3rem;
     }
 
-    /* ===== SIDEBAR ===== */
-    .sidebar {
-      display: flex;
-      flex-direction: column;
-      gap: 1.25rem;
-      position: sticky;
-      top: calc(4rem + 3.25rem);
-      max-height: calc(100dvh - 8rem);
-      overflow-y: auto;
-      scrollbar-width: thin;
-      scrollbar-color: rgba(0,0,0,0.12) transparent;
-      padding-right: 2px;
-    }
-    .sidebar::-webkit-scrollbar { width: 4px; }
-    .sidebar::-webkit-scrollbar-track { background: transparent; }
-    .sidebar::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 4px; }
+    /* Favorite */
+    .fav-wrap { margin-bottom: 1.5rem; }
     .favorite-btn {
-      width: 100%;
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      justify-content: center;
       gap: 0.5rem;
-      padding: 0.85rem;
-      border-radius: 1rem;
+      padding: 0.7rem 1.5rem;
+      border-radius: var(--radius-pill);
       border: 1.5px solid var(--clr-border);
       background: var(--clr-surface);
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       font-weight: 600;
       cursor: pointer;
-      transition: box-shadow 0.2s var(--ease-out-expo), background 0.18s var(--ease-out-expo), color 0.18s var(--ease-out-expo), border-color 0.18s var(--ease-out-expo), transform 0.12s var(--ease-out-expo);
       color: var(--clr-text-muted);
+      transition: box-shadow 0.2s, background 0.18s, color 0.18s, border-color 0.18s, transform 0.12s;
     }
-    .favorite-btn svg { width: 1.1rem; height: 1.1rem; transform-origin: center; }
+    .favorite-btn svg { width: 1rem; height: 1rem; transform-origin: center; }
     .favorite-btn.favorited { background: var(--clr-error-bg); border-color: var(--clr-error); color: var(--clr-error); }
     .favorite-btn.pulse svg { animation: heart-pop 360ms var(--ease-out-expo) both; }
     .favorite-btn:hover:not(:disabled) { box-shadow: var(--shadow-md); }
@@ -935,12 +732,195 @@ import { SeoService } from '../../services/seo.service';
       45%  { transform: scale(1.28); }
       100% { transform: scale(1); }
     }
-    @media (prefers-reduced-motion: reduce) {
-      .favorite-btn { transition: box-shadow 0.2s, background 0.18s, color 0.18s, border-color 0.18s; }
-      .favorite-btn:active:not(:disabled) { transform: none; }
-      .favorite-btn.pulse svg { animation: none; }
+
+    /* ── RECIPE CARD GRID ─────────────────────────────────────── */
+    .recipe-card-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.55fr;
+      gap: 2.5rem;
+      align-items: start;
     }
-    .sidebar-card,
+
+    /* Column heading — UPPERCASE SPACED label */
+    .col-heading {
+      font-family: var(--font-body);
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: oklch(42% 0.10 52);
+      margin: 0 0 1.25rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1.5px solid oklch(82% 0.05 60);
+    }
+
+    /* ── INGREDIENTS COLUMN ───────────────────────────────────── */
+    .ingredients-col {
+      background: oklch(92% 0.038 70);
+      border-radius: 1.25rem;
+      padding: 1.5rem;
+      scroll-margin-top: 8rem;
+    }
+    .ingredients-col .col-heading {
+      border-bottom-color: oklch(78% 0.06 65);
+    }
+
+    .ing-progress {
+      height: 3px;
+      background: oklch(82% 0.05 65);
+      border-radius: var(--radius-pill);
+      margin-bottom: 1rem;
+      overflow: hidden;
+    }
+    .ing-progress-bar {
+      height: 100%;
+      width: 100%;
+      background: oklch(50% 0.12 52);
+      border-radius: var(--radius-pill);
+      transform-origin: left;
+      transform: scaleX(0);
+      transition: transform 0.4s var(--ease-out-expo);
+    }
+
+    .ingredients-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .ingredients-list li {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.6rem 0.35rem;
+      border-bottom: 1px solid oklch(85% 0.04 65);
+      font-size: 0.9rem;
+      cursor: pointer;
+      border-radius: var(--radius-xs);
+      transition: background 0.15s, opacity 0.25s;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    .ingredients-list li:last-child { border-bottom: none; }
+    .ingredients-list li:hover { background: oklch(88% 0.045 68); }
+    .ingredients-list li:focus-visible { outline: 2px solid oklch(50% 0.12 52); outline-offset: 1px; }
+    .ingredients-list li.checked { opacity: 0.45; }
+    .ingredients-list li.checked .ing-name,
+    .ingredients-list li.checked .ing-amount { text-decoration: line-through; }
+
+    .ing-check {
+      width: 1.1rem;
+      height: 1.1rem;
+      border-radius: 50%;
+      border: 1.5px solid oklch(60% 0.08 52);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .ing-check svg { width: 0.6rem; height: 0.6rem; display: none; }
+    li.checked .ing-check { background: oklch(50% 0.12 52); border-color: oklch(50% 0.12 52); }
+    li.checked .ing-check svg { display: block; stroke: #fff; }
+
+    .ing-amount { font-weight: 700; color: var(--clr-text); min-width: 68px; }
+    .ing-name   { color: var(--clr-text-muted); }
+    .ing-reset {
+      margin-top: 0.9rem;
+      background: none;
+      border: none;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: oklch(50% 0.10 52);
+      cursor: pointer;
+      padding: 0;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .ing-reset:hover { color: var(--clr-brand); }
+
+    /* ── PROCEDURE COLUMN ─────────────────────────────────────── */
+    .procedure-col {
+      scroll-margin-top: 8rem;
+    }
+    .steps-list { display: flex; flex-direction: column; gap: 1.25rem; }
+    .step-item { display: flex; gap: 1rem; }
+    .step-num {
+      flex-shrink: 0;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      background: oklch(42% 0.10 52);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.82rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2px;
+    }
+    .step-body h3 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--clr-text);
+      margin: 0 0 0.25rem;
+    }
+    .step-body p {
+      margin: 0;
+      color: var(--clr-text-muted);
+      line-height: 1.75;
+      font-size: 0.9rem;
+    }
+
+    /* Tags */
+    .tags-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1.75rem;
+    }
+    .tags-row svg { width: 0.9rem; height: 0.9rem; color: var(--clr-text-muted); flex-shrink: 0; }
+    .tag {
+      padding: 0.3rem 0.85rem;
+      background: oklch(93% 0.03 70);
+      border-radius: var(--radius-pill);
+      font-size: 0.78rem;
+      color: oklch(38% 0.08 52);
+      font-weight: 500;
+      border: 1px solid oklch(82% 0.04 65);
+    }
+
+    /* Notes */
+    .notes-section {
+      margin-top: 2rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--clr-border-faint);
+    }
+    .notes-label {
+      font-family: var(--font-body);
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: oklch(42% 0.10 52);
+      margin: 0 0 0.6rem;
+    }
+    .notes-section p {
+      font-size: 0.875rem;
+      color: var(--clr-text-muted);
+      line-height: 1.7;
+      margin: 0;
+    }
+
+    /* ── LOWER PANELS ─────────────────────────────────────────── */
+    .lower-panels {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+      padding-top: 2rem;
+      border-top: 1.5px solid var(--clr-border-faint);
+    }
     .panel-card {
       background: var(--clr-surface);
       border-radius: var(--radius-lg);
@@ -957,28 +937,20 @@ import { SeoService } from '../../services/seo.service';
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      color: var(--clr-green);
+      color: oklch(42% 0.10 52);
       margin-bottom: 1rem;
     }
     .card-label svg { width: 0.9rem; height: 0.9rem; }
-    .star-icon { fill: var(--clr-amber); color: var(--clr-amber); }
+    .star-icon { fill: oklch(72% 0.19 70); color: oklch(72% 0.19 70); }
+    .count-badge { font-size: 0.72rem; font-weight: 700; color: oklch(42% 0.10 52); background: oklch(92% 0.038 70); padding: 0.2rem 0.6rem; border-radius: var(--radius-pill); }
+    .count-badge.ml { margin-left: 0.5rem; }
 
     /* Rating */
     .avg-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem; }
-    .avg-num {
-      font-family: var(--font-display);
-      font-size: 3rem;
-      font-weight: 700;
-      color: var(--clr-text);
-      line-height: 1;
-    }
+    .avg-num { font-family: var(--font-display); font-size: 3rem; font-weight: 700; color: var(--clr-text); line-height: 1; }
     .avg-meta { display: flex; flex-direction: column; gap: 0.3rem; }
     .rating-count { font-size: 0.78rem; color: var(--clr-text-muted); }
-    .user-rating {
-      margin-top: 1rem;
-      padding-top: 1rem;
-      border-top: 1px solid var(--clr-border-faint);
-    }
+    .user-rating { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--clr-border-faint); }
     .user-rating p { font-size: 0.82rem; color: var(--clr-text-muted); margin: 0 0 0.4rem; font-weight: 600; }
 
     /* Comment form */
@@ -994,64 +966,47 @@ import { SeoService } from '../../services/seo.service';
       color: var(--clr-text);
       font-family: inherit;
       background: var(--clr-surface-alt);
-      transition: border-color 0.2s var(--ease-out-expo), box-shadow 0.2s var(--ease-out-expo), background 0.2s var(--ease-out-expo);
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
-    .comment-textarea:focus { border-color: var(--clr-green); box-shadow: 0 0 0 3px color-mix(in oklch, var(--clr-green) 12%, transparent); background: var(--clr-surface); }
+    .comment-textarea:focus { border-color: var(--clr-brand); box-shadow: 0 0 0 3px color-mix(in oklch, var(--clr-brand) 12%, transparent); background: var(--clr-surface); }
     .submit-btn {
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
       margin-top: 0.75rem;
       padding: 0.6rem 1.25rem;
-      background: var(--clr-green);
-      color: oklch(100% 0 0);
+      background: var(--clr-brand);
+      color: #fff;
       border: none;
       border-radius: var(--radius-pill);
       font-weight: 700;
       cursor: pointer;
       font-size: 0.85rem;
-      transition: background 0.18s var(--ease-out-expo);
+      transition: background 0.18s;
     }
     .submit-btn svg { width: 0.85rem; height: 0.85rem; }
-    .submit-btn:hover:not(:disabled) { background: var(--clr-green-dark); }
+    .submit-btn:hover:not(:disabled) { background: var(--clr-brand-dark); }
     .submit-btn:disabled { opacity: 0.55; cursor: not-allowed; }
     .spin { animation: spin 0.75s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* Login prompt */
-    .login-prompt {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-    }
+    .login-prompt { display: flex; align-items: center; gap: 0.6rem; }
     .login-prompt svg { width: 1.1rem; height: 1.1rem; color: var(--clr-text-muted); flex-shrink: 0; }
     .login-prompt p { font-size: 0.875rem; color: var(--clr-text-muted); margin: 0; }
-    .login-prompt a { color: var(--clr-green); font-weight: 700; text-decoration: none; }
+    .login-prompt a { color: var(--clr-brand); font-weight: 700; text-decoration: none; }
     .login-prompt a:hover { text-decoration: underline; }
 
-    /* Comments list */
-    .comment {
-      padding: 1rem 0;
-      border-bottom: 1px solid var(--clr-border-faint);
-    }
+    /* Comments */
+    .comment { padding: 1rem 0; border-bottom: 1px solid var(--clr-border-faint); }
     .comment:last-child { border-bottom: none; }
-    .comment-header {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      margin-bottom: 0.5rem;
-    }
+    .comment-header { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem; }
     .comment-avatar {
-      width: 2rem;
-      height: 2rem;
-      border-radius: var(--radius-circle);
-      background: var(--clr-green);
-      color: oklch(100% 0 0);
-      font-size: 0.8rem;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 2rem; height: 2rem;
+      border-radius: 50%;
+      background: oklch(42% 0.10 52);
+      color: #fff;
+      font-size: 0.8rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
     }
     .comment-meta { flex: 1; }
@@ -1060,126 +1015,80 @@ import { SeoService } from '../../services/seo.service';
     .comment-rating { margin-bottom: 0.4rem; }
     .comment-body { color: var(--clr-text-muted); font-size: 0.875rem; line-height: 1.65; margin: 0; }
     .delete-comment-btn {
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: var(--clr-text-muted);
-      padding: 0.25rem;
-      border-radius: 0.4rem;
-      display: flex;
-      transition: color 0.18s var(--ease-out-expo), background 0.18s var(--ease-out-expo);
+      background: none; border: none; cursor: pointer;
+      color: var(--clr-text-muted); padding: 0.25rem; border-radius: 0.4rem;
+      display: flex; transition: color 0.18s, background 0.18s;
     }
     .delete-comment-btn svg { width: 0.9rem; height: 0.9rem; }
     .delete-comment-btn:hover { color: var(--clr-error); background: var(--clr-error-bg); }
     .no-comments { font-size: 0.875rem; color: var(--clr-text-muted); text-align: center; padding: 1rem 0; margin: 0; }
 
-    /* ===== RELATED ===== */
-    .related-section {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 1.5rem 4rem;
-    }
-    .related-header {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      margin-bottom: 1.5rem;
-    }
-    .related-header h2 {
-      font-family: var(--font-display);
-      font-size: 1.5rem;
-      color: var(--clr-text);
-      margin: 0;
-    }
-    .related-link { font-size: 0.875rem; font-weight: 600; color: var(--clr-green); text-decoration: none; }
-    .related-link:hover { text-decoration: underline; }
-    .related-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1.5rem;
-    }
-
     .reply-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.3rem;
-      margin-top: 0.4rem;
-      padding: 0.25rem 0.6rem;
-      background: none;
-      border: none;
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: var(--clr-text-muted);
-      cursor: pointer;
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      margin-top: 0.4rem; padding: 0.25rem 0.6rem;
+      background: none; border: none; font-size: 0.78rem; font-weight: 600;
+      color: var(--clr-text-muted); cursor: pointer;
       border-radius: var(--radius-xs);
-      transition: background 0.15s var(--ease-out-expo), color 0.15s var(--ease-out-expo);
+      transition: background 0.15s, color 0.15s;
     }
     .reply-btn svg { width: 0.75rem; height: 0.75rem; }
     .reply-btn:hover { background: var(--clr-surface-hover); color: var(--clr-brand); }
     .reply-form { margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.4rem; }
     .reply-form textarea {
-      width: 100%;
-      box-sizing: border-box;
+      width: 100%; box-sizing: border-box;
       padding: 0.5rem 0.75rem;
       border: 1.5px solid var(--clr-border);
       border-radius: 0.625rem;
-      font-size: 0.85rem;
-      font-family: inherit;
+      font-size: 0.85rem; font-family: inherit;
       resize: vertical;
-      background: var(--clr-surface-alt);
-      color: var(--clr-text);
+      background: var(--clr-surface-alt); color: var(--clr-text);
     }
-    .reply-form textarea:focus { outline: none; border-color: var(--clr-green); box-shadow: 0 0 0 3px color-mix(in oklch, var(--clr-green) 12%, transparent); }
+    .reply-form textarea:focus { outline: none; border-color: var(--clr-brand); box-shadow: 0 0 0 3px color-mix(in oklch, var(--clr-brand) 12%, transparent); }
     .replies { margin-top: 0.5rem; padding-left: 1rem; border-left: 1px solid var(--clr-border-faint); display: flex; flex-direction: column; gap: 0.6rem; }
     .reply { padding: 0.5rem 0; }
     .reply-avatar { width: 1.5rem !important; height: 1.5rem !important; font-size: 0.65rem !important; }
 
+    /* ── RELATED ──────────────────────────────────────────────── */
+    .related-section { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem 4rem; }
+    .related-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 1.5rem; }
+    .related-header h2 { font-family: var(--font-display); font-size: 1.5rem; color: var(--clr-text); margin: 0; }
+    .related-link { font-size: 0.875rem; font-weight: 600; color: var(--clr-brand); text-decoration: none; }
+    .related-link:hover { text-decoration: underline; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+
+    /* ── RESPONSIVE ───────────────────────────────────────────── */
     @media print {
-      app-header, app-footer, .share-bar, .related-section, .back-link, .hero-overlay, .read-progress, .favorite-btn { display: none !important; }
+      app-header, app-footer, .share-bar, .related-section, .back-link, .hero-overlay, .read-progress, .fav-wrap { display: none !important; }
       .hero-banner { min-height: auto !important; }
-      .hero-img { position: static !important; width: 100% !important; height: 300px !important; object-fit: cover; }
-      .content-grid {
-        grid-template-columns: 1fr !important;
-        grid-template-areas: "aside" "main" !important;
-      }
-      .sidebar { position: static !important; max-height: none !important; overflow: visible !important; }
+      .hero-img { position: static !important; width: 100% !important; height: 260px !important; object-fit: cover; }
+      .recipe-card-grid { grid-template-columns: 1fr 1fr !important; }
       .body-wrap { padding: 1rem !important; }
     }
-
     @media (max-width: 900px) {
-      .content-grid {
-        grid-template-columns: 1fr;
-        grid-template-areas:
-          "aside"
-          "main";
-      }
-      h1 { font-size: 2.2rem; }
-      .hero-banner { min-height: 420px; }
-      .sidebar {
-        position: static;
-        max-height: none;
-        overflow-y: visible;
-      }
+      .recipe-card-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+      .hero-title-script { font-size: 2.6rem; }
       .jump-link { padding: 0.75rem 1rem; font-size: 0.78rem; }
     }
     @media (max-width: 768px) {
       .jump-nav { top: 3.5rem; }
+      .recipe-meta-bar { flex-wrap: wrap; }
     }
     @media (max-width: 640px) {
-      h1 { font-size: 1.8rem; }
-      .related-grid { grid-template-columns: 1fr; }
-      .hero-banner { min-height: 360px; }
-      .jump-nav { gap: 0; justify-content: stretch; }
-      .jump-link { flex: 1; justify-content: center; padding: 0.75rem 0.5rem; font-size: 0.72rem; gap: 0.3rem; }
+      .hero-banner { min-height: 380px; }
+      .hero-title-script { font-size: 2rem; }
+      .hero-content { padding: 2rem 1rem 4rem; }
+      .jump-nav { justify-content: stretch; }
+      .jump-link { flex: 1; justify-content: center; padding: 0.75rem 0.4rem; font-size: 0.72rem; gap: 0.25rem; }
       .jump-sep { display: none; }
-      .hero-content { padding: 2rem 1rem 1.75rem; }
-      .hero-excerpt { font-size: 0.95rem; }
-      .body-wrap { padding: 1.5rem 1rem; }
-      .stat-pills { gap: 0.4rem; }
+      .related-grid { grid-template-columns: 1fr; }
+      .meta-item { padding: 0.75rem 0.5rem; }
     }
     @media (max-width: 380px) {
-      h1 { font-size: 1.55rem; }
-      .share-bar { gap: 0.3rem; }
+      .hero-title-script { font-size: 1.8rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .favorite-btn, .share-btn, .submit-btn { transition: none; }
+      .favorite-btn.pulse svg, .spin { animation: none; }
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
