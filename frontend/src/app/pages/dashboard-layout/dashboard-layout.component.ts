@@ -105,25 +105,6 @@ import { AuthService } from '../../services/auth.service';
       <!-- ── Main area ───────────────────────────────────────────── -->
       <div class="main-wrap">
 
-        <!-- Desktop topbar -->
-        <div class="desktop-topbar">
-          <span class="dt-title">{{ pageTitle() }}</span>
-          <div class="dt-right">
-            <span class="dt-date">{{ todayLabel() }}</span>
-            <button class="dt-bell" aria-label="Известия">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-                <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-              </svg>
-            </button>
-            <div class="dt-user">
-              <div class="dt-avatar" aria-hidden="true">{{ userInitial() }}</div>
-              <span class="dt-name">{{ auth.user()?.name }}</span>
-            </div>
-          </div>
-        </div>
-
         <!-- Mobile topbar -->
         <div class="mobile-topbar">
           <button class="menu-btn" (click)="sidebarOpen.set(true)" aria-label="Отвори навигацията">
@@ -360,81 +341,6 @@ import { AuthService } from '../../services/auth.service';
       backdrop-filter: blur(2px);
     }
 
-    /* ── Desktop topbar ─────────────────────────────────────────────── */
-    .desktop-topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 var(--space-7);
-      height: 3.25rem;
-      background: var(--clr-surface);
-      border-bottom: 1px solid var(--clr-border-faint);
-      position: sticky;
-      top: 3.75rem;
-      z-index: 20;
-      gap: var(--space-4);
-      flex-shrink: 0;
-    }
-    .dt-title {
-      font-family: var(--font-display);
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--clr-text);
-      letter-spacing: -0.015em;
-    }
-    .dt-right {
-      display: flex;
-      align-items: center;
-      gap: var(--space-4);
-    }
-    .dt-date {
-      font-size: 0.8rem;
-      color: var(--clr-text-muted);
-      white-space: nowrap;
-      letter-spacing: 0.01em;
-    }
-    .dt-bell {
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: var(--clr-text-muted);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: var(--space-2);
-      border-radius: var(--radius-sm);
-      transition: color 0.15s, background 0.15s;
-      min-width: 2.5rem;
-      min-height: 2.5rem;
-    }
-    .dt-bell svg { width: 1.05rem; height: 1.05rem; }
-    .dt-bell:hover { color: var(--clr-text); background: var(--clr-surface-alt); }
-    .dt-user {
-      display: flex;
-      align-items: center;
-      gap: var(--space-2);
-    }
-    .dt-avatar {
-      width: 1.85rem;
-      height: 1.85rem;
-      border-radius: var(--radius-circle);
-      background: var(--clr-brand);
-      color: oklch(100% 0 0);
-      font-size: 0.75rem;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-transform: uppercase;
-      flex-shrink: 0;
-    }
-    .dt-name {
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--clr-text);
-      white-space: nowrap;
-    }
-
     /* ── Mobile topbar ──────────────────────────────────────────────── */
     .mobile-topbar {
       display: none;
@@ -503,7 +409,6 @@ import { AuthService } from '../../services/auth.service';
       .shell { display: block; min-height: calc(100vh - 3.75rem); }
       .sidebar { display: none; }
       .sidebar-overlay { display: none; }
-      .desktop-topbar { display: none; }
       .mobile-topbar { display: flex; }
 
       .page-content {
@@ -592,7 +497,4 @@ export class DashboardLayoutComponent {
     return '';
   }
 
-  todayLabel(): string {
-    return new Date().toLocaleDateString('bg-BG', { weekday: 'long', day: 'numeric', month: 'long' });
-  }
 }
