@@ -13,68 +13,95 @@ import { PerfService } from '../../services/perf.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
 
-    <!-- ══════════════════ HERO ══════════════════════════════════════ -->
+    <!-- ════════════════════ HERO ═══════════════════════════════════════ -->
     <section class="hero">
-      <div class="hero-blob-tl" aria-hidden="true"></div>
-      <div class="hero-blob-br" aria-hidden="true"></div>
 
-      <div class="hero-inner">
+      <div class="hero-bg" aria-hidden="true">
+        @if (featured().length && featured()[0].hero_image) {
+          <img [src]="featured()[0].hero_image" [alt]="''"
+               fetchpriority="high" loading="eager" />
+        } @else {
+          <div class="hero-bg-ph"></div>
+        }
+        <div class="hero-shade"></div>
+      </div>
 
-        <div class="hero-text">
-          <span class="hero-tag">Домашна Кухня</span>
-          <h1 class="hero-h1">
-            Нещо<br>за всеки<br><span class="hero-green">вкус</span>
-          </h1>
-          <svg class="hero-squiggle" viewBox="0 0 220 20" fill="none"
-               xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M3 10 Q28 2 55 10 T107 10 T159 10 T217 10"
-                  stroke="#f97316" stroke-width="3.5" stroke-linecap="round"/>
+      <!-- Doodle sparkles -->
+      <svg class="hero-sparkle hero-sparkle-1" viewBox="0 0 40 40" aria-hidden="true">
+        <path d="M20 4 L23 17 L36 20 L23 23 L20 36 L17 23 L4 20 L17 17 Z"
+              fill="#fbbf24" stroke="#f97316" stroke-width="1.5" stroke-linejoin="round"/>
+      </svg>
+      <svg class="hero-sparkle hero-sparkle-2" viewBox="0 0 40 40" aria-hidden="true">
+        <path d="M20 6 L22.5 17.5 L34 20 L22.5 22.5 L20 34 L17.5 22.5 L6 20 L17.5 17.5 Z"
+              fill="#fde68a"/>
+      </svg>
+
+      <div class="hero-content">
+        <span class="hero-eyebrow">— ДОМАШНА КУХНЯ —</span>
+        <h1 class="hero-title">
+          Нещо<br>за всеки <span class="title-script">вкус</span>
+        </h1>
+        <a routerLink="/recipes" class="hero-cta">
+          Разгледай рецептите
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 12h14M13 6l6 6-6 6"/>
           </svg>
-          <p class="hero-desc">
-            Традиционни ястия, приготвени с любов и внимание към всеки детайл. Открий вкусни рецепти за всеки повод.
-          </p>
-          <div class="hero-btns">
-            <a routerLink="/recipes" class="btn-green">Разгледай рецептите</a>
-            <a routerLink="/recipes" class="btn-link">
-              Научи повече
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
-            </a>
-          </div>
-        </div>
+        </a>
+      </div>
 
-        <div class="hero-visual">
-          <div class="hero-dots" aria-hidden="true"></div>
-          <div class="hero-frame">
-            @if (featured().length && featured()[0].hero_image) {
-              <img class="hero-img" [src]="featured()[0].hero_image" [alt]="featured()[0].title"
-                   fetchpriority="high" loading="eager" />
-            } @else {
-              <div class="hero-img hero-ph"></div>
-            }
-          </div>
-          <div class="hero-badge">
-            <span class="hb-star">★</span>
-            <div>
-              <div class="hb-num">4.8</div>
-              <div class="hb-lbl">Оценка</div>
-            </div>
-          </div>
+      <!-- White starburst sticker, like in the reference -->
+      <div class="hero-sticker" aria-hidden="true">
+        <svg viewBox="0 0 100 100">
+          <path d="M50 2 L57 18 L74 12 L72 30 L88 32 L78 46 L92 56 L76 62 L84 78 L66 76 L62 92 L50 80 L38 92 L34 76 L16 78 L24 62 L8 56 L22 46 L12 32 L28 30 L26 12 L43 18 Z"
+                fill="#fff"/>
+        </svg>
+        <div class="sticker-text">
+          <span class="sticker-num">4.8</span>
+          <span class="sticker-lbl">оценка</span>
         </div>
-
       </div>
     </section>
 
-    <!-- ══════════════════ OUR FAVORITES ════════════════════════════ -->
+    <!-- ════════════════════ OUR FAVORITES ═══════════════════════════════ -->
     <section class="favs">
+
+      <!-- Hand-drawn doodles on the sides -->
+      <svg class="doodle doodle-tl" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M10 50 Q25 20, 45 35 T80 30" stroke="#f97316" stroke-width="2.5"
+              fill="none" stroke-linecap="round"/>
+        <circle cx="85" cy="45" r="2" fill="#f97316"/>
+        <circle cx="92" cy="55" r="1.5" fill="#f97316"/>
+      </svg>
+
+      <svg class="doodle doodle-tr" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M20 30 Q40 10, 60 25 Q80 40, 70 60" stroke="#f97316" stroke-width="2.5"
+              fill="none" stroke-linecap="round"/>
+        <path d="M65 65 L75 70 M70 60 L72 75" stroke="#f97316" stroke-width="2"
+              fill="none" stroke-linecap="round"/>
+      </svg>
+
+      <svg class="doodle doodle-bl" viewBox="0 0 100 100" aria-hidden="true">
+        <circle cx="20" cy="20" r="15" stroke="#16a34a" stroke-width="2.5"
+                fill="none" stroke-dasharray="4 6"/>
+        <path d="M50 60 Q60 50, 70 60 T90 60" stroke="#16a34a" stroke-width="2.5"
+              fill="none" stroke-linecap="round"/>
+      </svg>
+
+      <svg class="doodle doodle-br" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M30 30 L70 70 M50 25 L50 75 M25 50 L75 50" stroke="#f97316"
+              stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+
       <div class="favs-inner">
 
-        <div class="favs-hdr">
-          <p class="sec-eyebrow light">Нашите любими</p>
-          <h2 class="sec-h2 light">Избрани рецепти</h2>
-        </div>
+        <header class="favs-head">
+          <h2 class="favs-title">Нашите Любими</h2>
+          <svg class="favs-underline" viewBox="0 0 200 16" aria-hidden="true">
+            <path d="M5 10 Q40 2, 75 8 T145 8 T195 6" stroke="#f97316" stroke-width="3.5"
+                  fill="none" stroke-linecap="round"/>
+          </svg>
+        </header>
 
         @if (loading()) {
           <div class="favs-grid">
@@ -83,608 +110,609 @@ import { PerfService } from '../../services/perf.service';
             }
           </div>
         } @else if (errored()) {
-          <p class="grid-err">Рецептите не могат да се заредят в момента.</p>
+          <p class="favs-err">Рецептите не могат да се заредят в момента.</p>
         } @else {
           <div class="favs-grid">
-            @for (r of featured().slice(0, 3); track r.id) {
+            @for (r of featured().slice(0, 3); track r.id; let i = $index) {
               <a class="fav-card" [routerLink]="['/recipes', r.slug]">
-                <div class="fav-img-wrap">
+
+                <!-- White speech bubble badge top-left -->
+                <div class="card-badge" aria-hidden="true">
+                  <svg viewBox="0 0 60 60">
+                    <path d="M30 2 L36 12 L48 8 L46 20 L58 22 L50 32 L60 40 L48 42 L52 54 L40 50 L38 60 L30 52 L22 60 L20 50 L8 54 L12 42 L0 40 L10 32 L2 22 L14 20 L12 8 L24 12 Z"
+                          fill="#fff"/>
+                  </svg>
+                  <span>{{ ['Нов', 'Топ', 'Вкус'][i] }}</span>
+                </div>
+
+                <!-- Orange circle top-right -->
+                <div class="card-circle" aria-hidden="true">
+                  <span>{{ i + 1 }}</span>
+                </div>
+
+                <!-- Round food image overlapping top -->
+                <div class="card-photo">
+                  <div class="photo-plate" aria-hidden="true"></div>
                   @if (r.hero_image) {
                     <img [src]="r.hero_image" [alt]="r.title" loading="lazy" />
                   } @else {
-                    <div class="fav-ph"></div>
+                    <div class="photo-ph"></div>
                   }
                 </div>
-                <div class="fav-body">
-                  @if (r.category?.name) {
-                    <span class="fav-cat">{{ r.category!.name }}</span>
-                  } @else {
-                    <span class="fav-cat">Рецепта</span>
-                  }
-                  <h3 class="fav-title">{{ r.title }}</h3>
-                  @if (r.excerpt) {
-                    <p class="fav-excerpt">{{ r.excerpt }}</p>
-                  }
-                  <span class="fav-cta">Виж рецептата →</span>
-                </div>
+
+                <h3 class="card-title">{{ r.title }}</h3>
+                @if (r.excerpt) {
+                  <p class="card-text">{{ r.excerpt }}</p>
+                }
+                <span class="card-link">Виж рецептата →</span>
+
               </a>
             }
           </div>
         }
-
-        <div class="favs-foot">
-          <a routerLink="/recipes" class="btn-cream">Всички рецепти</a>
-        </div>
-
       </div>
     </section>
 
-    <!-- ══════════════════ PHOTO GRID ════════════════════════════════ -->
+    <!-- ════════════════════ PHOTO GRID ══════════════════════════════════ -->
     @if (!loading() && featured().length >= 3) {
       <section class="photos">
         <div class="photos-inner">
-          <p class="sec-eyebrow dark">Галерия</p>
-          <h2 class="sec-h2 dark">Погледни по-отблизо</h2>
-
           <div class="photos-grid">
-            @for (r of featured().slice(0, 6); track r.id) {
-              <a class="photo-cell" [routerLink]="['/recipes', r.slug]">
-                @if (r.hero_image) {
-                  <img [src]="r.hero_image" [alt]="r.title" loading="lazy" />
-                } @else {
-                  <div class="photo-ph"></div>
-                }
-                <div class="photo-hover">
-                  <span>{{ r.title }}</span>
+            @for (r of featured().slice(0, 3); track r.id; let i = $index) {
+              <a class="photo-cell" [routerLink]="['/recipes', r.slug]"
+                 [attr.data-bg]="i">
+                <div class="photo-frame">
+                  @if (r.hero_image) {
+                    <img [src]="r.hero_image" [alt]="r.title" loading="lazy" />
+                  }
+                  @if (i === 1) {
+                    <div class="photo-play" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="currentColor">
+                        <polygon points="6,3 22,12 6,21"/>
+                      </svg>
+                    </div>
+                  }
                 </div>
+                <div class="photo-caption">{{ r.title }}</div>
               </a>
             }
+          </div>
+
+          <div class="photos-cta">
+            <a routerLink="/recipes" class="cta-pill">Виж всички рецепти →</a>
           </div>
         </div>
       </section>
     }
 
-    <!-- ══════════════════ CATEGORIES ════════════════════════════════ -->
-    <section class="cats">
-      <div class="cats-inner">
-        <p class="sec-eyebrow light">Разгледай</p>
-        <h2 class="sec-h2 light">По категории</h2>
-
-        <div class="cats-grid">
-
-          <a class="cat-tile" routerLink="/recipes" [queryParams]="{q:'супа'}">
-            <div class="ct-icon">
-              <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8"
-                   stroke-linecap="round" stroke-linejoin="round">
-                <path d="M6 14h20M8 14c0 5.5 3.5 9 8 9s8-3.5 8-9"/>
-                <path d="M12 10c0-2.2 1.8-4 4-4s4 1.8 4 4"/>
-                <path d="M5 23h22"/>
-              </svg>
-            </div>
-            <span>Супи</span>
-          </a>
-
-          <a class="cat-tile" routerLink="/recipes" [queryParams]="{q:'десерт'}">
-            <div class="ct-icon">
-              <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8"
-                   stroke-linecap="round" stroke-linejoin="round">
-                <rect x="6" y="16" width="20" height="10" rx="2"/>
-                <path d="M6 16c0-5.5 20-5.5 20 0"/>
-                <path d="M16 8v8M12 10l4-4 4 4"/>
-              </svg>
-            </div>
-            <span>Десерти</span>
-          </a>
-
-          <a class="cat-tile" routerLink="/recipes" [queryParams]="{q:'основно'}">
-            <div class="ct-icon">
-              <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8"
-                   stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="16" cy="16" r="11"/>
-                <path d="M9 20c2-6 12-6 14 0"/>
-                <circle cx="16" cy="12" r="2.5"/>
-              </svg>
-            </div>
-            <span>Основни</span>
-          </a>
-
-          <a class="cat-tile" routerLink="/recipes" [queryParams]="{q:'салата'}">
-            <div class="ct-icon">
-              <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8"
-                   stroke-linecap="round" stroke-linejoin="round">
-                <path d="M7 22s2-12 9-14c7-2 11 4 11 14"/>
-                <path d="M10 16c2-4 5-5 8-3"/>
-                <path d="M6 22h20"/>
-              </svg>
-            </div>
-            <span>Салати</span>
-          </a>
-
-          <a class="cat-tile" routerLink="/recipes" [queryParams]="{q:'закуска'}">
-            <div class="ct-icon">
-              <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8"
-                   stroke-linecap="round" stroke-linejoin="round">
-                <rect x="6" y="10" width="20" height="12" rx="4"/>
-                <path d="M8 14h16M8 18h16"/>
-              </svg>
-            </div>
-            <span>Закуски</span>
-          </a>
-
-          <a class="cat-tile" routerLink="/recipes" [queryParams]="{q:'паста'}">
-            <div class="ct-icon">
-              <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8"
-                   stroke-linecap="round" stroke-linejoin="round">
-                <path d="M5 18c0 0 3 6 11 6s11-6 11-6"/>
-                <path d="M5 18c0-6 4-10 11-10s11 4 11 10"/>
-                <path d="M13 8c0-2 1.3-3.5 3-3.5"/>
-              </svg>
-            </div>
-            <span>Паста</span>
-          </a>
-
-        </div>
-
-        <div class="cats-cta">
-          <a routerLink="/recipes" class="btn-cream">Виж всички рецепти</a>
-        </div>
-
-      </div>
-    </section>
-
   `,
   styles: [`
+    @import url('https://fonts.googleapis.com/css2?family=Lilita+One&display=swap');
+
     :host {
-      --g950: oklch(14% 0.06 155);
-      --g900: oklch(20% 0.08 155);
-      --g800: oklch(28% 0.10 155);
-      --g600: oklch(44% 0.13 155);
-      --g400: oklch(60% 0.14 155);
-      --g200: oklch(83% 0.09 155);
-      --g100: oklch(93% 0.04 155);
-      --g50:  oklch(97% 0.015 155);
-      --orn:  oklch(70% 0.20 52);
-      --orn-lt: oklch(95% 0.04 55);
-      --cream: oklch(97% 0.012 88);
-      --cream-dk: oklch(92% 0.02 88);
-      --txt: oklch(13% 0.01 155);
-      --txt-mid: oklch(40% 0.04 155);
-      --f-brand: var(--font-display);
-      --f-body:  var(--font-body);
+      /* Painterly green palette */
+      --g-deep:   oklch(28% 0.09 158);
+      --g-card:   oklch(46% 0.13 158);
+      --g-card-2: oklch(40% 0.12 158);
+      --g-mid:    oklch(60% 0.13 158);
+      --g-soft:   oklch(85% 0.07 158);
+
+      /* Warm orange */
+      --orn:      oklch(70% 0.20 52);
+      --orn-deep: oklch(58% 0.20 42);
+      --orn-soft: oklch(94% 0.05 60);
+
+      /* Cream + earth */
+      --cream:    oklch(96% 0.022 88);
+      --cream-2:  oklch(93% 0.030 85);
+      --txt-dark: oklch(20% 0.04 50);
+
+      --f-display: 'Lilita One', 'Comic Sans MS', cursive;
+      --f-body:    var(--font-body);
+
       display: block;
-    }
-
-    /* ─── SHARED ─────────────────────────────────────────────────── */
-    .sec-eyebrow {
-      font-family: var(--f-body);
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      margin: 0 0 0.5rem;
-    }
-    .sec-eyebrow.light { color: var(--orn); }
-    .sec-eyebrow.dark  { color: var(--g600); }
-
-    .sec-h2 {
-      font-family: var(--f-brand);
-      font-size: clamp(1.75rem, 3.5vw, 2.5rem);
-      letter-spacing: -0.01em;
-      margin: 0 0 2.25rem;
-    }
-    .sec-h2.light { color: #fff; }
-    .sec-h2.dark  { color: var(--txt); }
-
-    .btn-green {
-      display: inline-flex;
-      align-items: center;
-      padding: 0.85rem 2rem;
-      background: var(--g600);
-      color: #fff;
-      border-radius: 9999px;
-      font-family: var(--f-body);
-      font-weight: 800;
-      font-size: 0.9rem;
-      text-decoration: none;
-      transition: background 0.2s, transform 0.15s;
-      touch-action: manipulation;
-    }
-    .btn-green:hover  { background: var(--g800); transform: translateY(-2px); }
-    .btn-green:active { transform: translateY(0); }
-
-    .btn-cream {
-      display: inline-flex;
-      align-items: center;
-      padding: 0.85rem 2.2rem;
       background: var(--cream);
-      color: var(--g900);
-      border-radius: 9999px;
-      font-family: var(--f-body);
-      font-weight: 800;
-      font-size: 0.9rem;
-      text-decoration: none;
-      transition: background 0.18s, transform 0.15s;
     }
-    .btn-cream:hover  { background: #fff; transform: translateY(-2px); }
-    .btn-cream:active { transform: translateY(0); }
 
-    /* ─── HERO ───────────────────────────────────────────────────── */
+    /* ═══════ HERO ════════════════════════════════════════════════ */
     .hero {
       position: relative;
-      background: var(--cream);
-      overflow: hidden;
-      padding: clamp(4.5rem, 9vw, 7rem) 0 clamp(3.5rem, 7vw, 6rem);
-    }
-    .hero-blob-tl {
-      position: absolute;
-      top: -140px;
-      right: -80px;
-      width: 500px;
-      height: 500px;
-      border-radius: 50%;
-      background: radial-gradient(ellipse at center, var(--g100) 0%, transparent 68%);
-      pointer-events: none;
-    }
-    .hero-blob-br {
-      position: absolute;
-      bottom: -90px;
-      left: -50px;
-      width: 340px;
-      height: 340px;
-      border-radius: 50%;
-      background: radial-gradient(ellipse at center, var(--orn-lt) 0%, transparent 68%);
-      pointer-events: none;
-    }
-    .hero-inner {
-      position: relative;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 clamp(1.5rem, 5vw, 3rem);
+      min-height: clamp(560px, 88vh, 780px);
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      align-items: center;
-      gap: clamp(2rem, 5vw, 4rem);
+      place-items: center;
+      overflow: hidden;
+      isolation: isolate;
     }
-    .hero-tag {
-      display: inline-block;
-      font-family: var(--f-body);
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--g600);
-      margin-bottom: 1.1rem;
-    }
-    .hero-h1 {
-      font-family: var(--f-brand);
-      font-size: clamp(3rem, 6.5vw, 5rem);
-      line-height: 1.0;
-      letter-spacing: -0.01em;
-      color: var(--txt);
-      margin: 0 0 0.35rem;
-    }
-    .hero-green { color: var(--g600); }
-    .hero-squiggle {
-      display: block;
-      width: clamp(120px, 18vw, 200px);
-      margin-bottom: 1.5rem;
-    }
-    .hero-desc {
-      font-family: var(--f-body);
-      font-size: 1rem;
-      color: var(--txt-mid);
-      line-height: 1.75;
-      max-width: 38ch;
-      margin: 0 0 2.25rem;
-    }
-    .hero-btns {
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
-      flex-wrap: wrap;
-    }
-    .btn-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.45rem;
-      font-family: var(--f-body);
-      font-weight: 700;
-      font-size: 0.9rem;
-      color: var(--txt);
-      text-decoration: none;
-      transition: color 0.18s;
-    }
-    .btn-link svg { width: 1rem; height: 1rem; transition: transform 0.18s; }
-    .btn-link:hover { color: var(--g600); }
-    .btn-link:hover svg { transform: translateX(3px); }
-
-    /* Hero visual */
-    .hero-visual {
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .hero-dots {
+    .hero-bg {
       position: absolute;
-      top: -1rem;
-      right: -1rem;
-      width: 110px;
-      height: 110px;
-      background-image: radial-gradient(circle, var(--g400) 1.5px, transparent 1.5px);
-      background-size: 11px 11px;
-      opacity: 0.4;
-      pointer-events: none;
+      inset: 0;
       z-index: 0;
     }
-    .hero-frame {
-      position: relative;
-      z-index: 1;
-      width: 88%;
-      aspect-ratio: 4/5;
-      border-radius: 2rem;
-      overflow: hidden;
-      background: var(--cream-dk);
-      box-shadow: 0 32px 80px oklch(14% 0.07 155 / 0.22), 0 8px 24px oklch(14% 0.07 155 / 0.1);
-    }
-    .hero-img {
+    .hero-bg img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
     }
-    .hero-ph { background: var(--cream-dk); }
-    .hero-badge {
+    .hero-bg-ph {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, var(--g-card) 0%, var(--g-deep) 100%);
+    }
+    .hero-shade {
       position: absolute;
-      bottom: 2rem;
-      left: -0.75rem;
-      z-index: 2;
-      background: #fff;
-      border-radius: 1rem;
-      padding: 0.7rem 1.1rem;
-      display: flex;
-      align-items: center;
-      gap: 0.65rem;
-      box-shadow: 0 8px 32px oklch(14% 0.07 155 / 0.18);
+      inset: 0;
+      background:
+        radial-gradient(ellipse at center, oklch(15% 0.04 155 / 0.20) 0%, oklch(15% 0.04 155 / 0.55) 100%),
+        linear-gradient(180deg, oklch(15% 0.04 155 / 0.10) 0%, oklch(15% 0.04 155 / 0.45) 100%);
     }
-    .hb-star { font-size: 1.5rem; color: var(--orn); line-height: 1; }
-    .hb-num  { font-family: var(--f-brand); font-size: 1.1rem; color: var(--txt); line-height: 1.1; }
-    .hb-lbl  { font-family: var(--f-body); font-size: 0.68rem; color: var(--txt-mid); font-weight: 600; }
 
-    /* ─── OUR FAVORITES ──────────────────────────────────────────── */
-    .favs {
-      background: var(--g900);
-      padding: clamp(4.5rem, 8vw, 6.5rem) 0;
+    /* Sparkle decorations */
+    .hero-sparkle {
+      position: absolute;
+      z-index: 2;
+      filter: drop-shadow(0 4px 12px oklch(0% 0 0 / 0.3));
     }
+    .hero-sparkle-1 {
+      width: 56px;
+      height: 56px;
+      top: 18%;
+      left: 8%;
+      animation: spin 20s linear infinite;
+    }
+    .hero-sparkle-2 {
+      width: 36px;
+      height: 36px;
+      top: 30%;
+      right: 12%;
+      animation: spin 16s linear infinite reverse;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .hero-content {
+      position: relative;
+      z-index: 3;
+      text-align: center;
+      padding: 0 1.5rem;
+      max-width: 880px;
+    }
+    .hero-eyebrow {
+      display: inline-block;
+      font-family: var(--f-body);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      color: oklch(98% 0 0);
+      margin-bottom: 1.5rem;
+      text-shadow: 0 2px 8px oklch(0% 0 0 / 0.4);
+    }
+    .hero-title {
+      font-family: var(--f-display);
+      font-size: clamp(3.5rem, 9vw, 7rem);
+      line-height: 0.95;
+      letter-spacing: 0.005em;
+      color: oklch(99% 0 0);
+      margin: 0 0 2.25rem;
+      text-shadow:
+        0 4px 0 oklch(15% 0.04 155 / 0.25),
+        0 8px 32px oklch(0% 0 0 / 0.5);
+      font-weight: 400;
+    }
+    .title-script {
+      color: var(--orn);
+      display: inline-block;
+      transform: rotate(-3deg);
+    }
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      padding: 1.1rem 2.6rem;
+      background: var(--orn);
+      color: #fff;
+      border-radius: 9999px;
+      font-family: var(--f-body);
+      font-weight: 800;
+      font-size: 0.95rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      text-decoration: none;
+      box-shadow:
+        0 12px 32px oklch(0% 0 0 / 0.35),
+        0 4px 12px oklch(58% 0.20 42 / 0.4),
+        inset 0 -3px 0 oklch(48% 0.18 42 / 0.5);
+      transition: transform 0.18s, box-shadow 0.2s;
+      touch-action: manipulation;
+    }
+    .hero-cta svg { width: 1.05rem; height: 1.05rem; }
+    .hero-cta:hover {
+      transform: translateY(-3px);
+      box-shadow:
+        0 16px 38px oklch(0% 0 0 / 0.4),
+        0 6px 16px oklch(58% 0.20 42 / 0.5),
+        inset 0 -3px 0 oklch(48% 0.18 42 / 0.5);
+    }
+    .hero-cta:active { transform: translateY(-1px); }
+
+    .hero-sticker {
+      position: absolute;
+      bottom: 14%;
+      right: 8%;
+      width: 110px;
+      height: 110px;
+      z-index: 4;
+      transform: rotate(8deg);
+      filter: drop-shadow(0 8px 24px oklch(0% 0 0 / 0.35));
+      animation: wiggle 4s ease-in-out infinite;
+    }
+    .hero-sticker svg { width: 100%; height: 100%; display: block; }
+    .sticker-text {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+    .sticker-num {
+      font-family: var(--f-display);
+      font-size: 1.55rem;
+      color: var(--orn-deep);
+      line-height: 1;
+    }
+    .sticker-lbl {
+      font-family: var(--f-body);
+      font-size: 0.6rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--txt-dark);
+      letter-spacing: 0.08em;
+      margin-top: 2px;
+    }
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(8deg); }
+      50%      { transform: rotate(2deg); }
+    }
+
+    /* ═══════ OUR FAVORITES ═══════════════════════════════════════ */
+    .favs {
+      position: relative;
+      background: var(--cream);
+      padding: clamp(4.5rem, 10vw, 8rem) 0 clamp(4.5rem, 10vw, 8rem);
+      overflow: hidden;
+    }
+    .doodle {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      opacity: 0.55;
+      pointer-events: none;
+    }
+    .doodle-tl { top: 6%;  left: 4%; }
+    .doodle-tr { top: 8%;  right: 5%; }
+    .doodle-bl { bottom: 8%; left: 6%; }
+    .doodle-br { bottom: 6%; right: 4%; }
+
     .favs-inner {
+      position: relative;
       max-width: 1200px;
       margin: 0 auto;
       padding: 0 clamp(1.5rem, 5vw, 3rem);
+      z-index: 1;
     }
-    .favs-hdr { margin-bottom: 2.5rem; }
+
+    .favs-head {
+      text-align: center;
+      margin-bottom: clamp(3rem, 6vw, 4.5rem);
+    }
+    .favs-title {
+      font-family: var(--f-display);
+      font-size: clamp(2.25rem, 5vw, 3.5rem);
+      color: var(--orn);
+      margin: 0;
+      letter-spacing: 0.005em;
+      font-weight: 400;
+    }
+    .favs-underline {
+      display: block;
+      width: clamp(140px, 22vw, 220px);
+      margin: 0.6rem auto 0;
+    }
+
     .favs-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
+      gap: clamp(1.5rem, 3vw, 2.5rem);
+      align-items: start;
+      padding-top: 4rem;
     }
+
+    /* Painterly green card */
     .fav-card {
-      border-radius: 1.25rem;
-      overflow: hidden;
-      background: var(--g800);
+      position: relative;
+      padding: 5rem 1.75rem 2.25rem;
+      background-color: var(--g-card);
+      background-image:
+        radial-gradient(ellipse at 25% 20%, oklch(58% 0.14 158 / 0.45) 0%, transparent 55%),
+        radial-gradient(ellipse at 80% 75%, oklch(28% 0.09 158 / 0.45) 0%, transparent 60%),
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="220" height="220"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.15 0"/></filter><rect width="220" height="220" filter="url(%23n)"/></svg>');
+      background-blend-mode: normal, normal, overlay;
+      background-size: cover, cover, 220px;
+      border-radius: 28px 36px 26px 32px / 32px 28px 34px 26px;
+      box-shadow:
+        0 20px 48px oklch(28% 0.09 158 / 0.30),
+        inset 0 -4px 0 oklch(28% 0.09 158 / 0.4),
+        inset 0 1px 0 oklch(80% 0.08 158 / 0.3);
+      text-align: center;
       text-decoration: none;
-      color: inherit;
+      color: oklch(98% 0.01 158);
+      transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
       display: flex;
       flex-direction: column;
-      transition: transform 0.22s, box-shadow 0.22s;
+      align-items: center;
+    }
+    .fav-card:nth-child(2) {
+      background-color: var(--g-card-2);
+      border-radius: 32px 28px 36px 26px / 28px 34px 26px 32px;
+      transform: translateY(1rem);
+    }
+    .fav-card:nth-child(3) {
+      border-radius: 26px 32px 30px 36px / 30px 26px 32px 28px;
     }
     .fav-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 24px 56px oklch(0% 0 0 / 0.45);
+      transform: translateY(-8px);
     }
-    .fav-img-wrap {
-      aspect-ratio: 16/10;
-      overflow: hidden;
-      flex-shrink: 0;
+    .fav-card:nth-child(2):hover {
+      transform: translateY(calc(1rem - 8px));
     }
-    .fav-img-wrap img {
+
+    /* White starburst sticker */
+    .card-badge {
+      position: absolute;
+      top: -1rem;
+      left: -0.5rem;
+      width: 70px;
+      height: 70px;
+      transform: rotate(-12deg);
+      z-index: 3;
+      filter: drop-shadow(0 4px 8px oklch(0% 0 0 / 0.2));
+    }
+    .card-badge svg { width: 100%; height: 100%; display: block; }
+    .card-badge span {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      font-family: var(--f-display);
+      font-size: 0.85rem;
+      color: var(--orn-deep);
+    }
+
+    /* Orange number circle */
+    .card-circle {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--orn);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-family: var(--f-display);
+      font-size: 1.1rem;
+      box-shadow: 0 4px 10px oklch(58% 0.20 42 / 0.5);
+      z-index: 3;
+    }
+
+    /* Round food image overlapping the card top */
+    .card-photo {
+      position: relative;
+      width: 78%;
+      aspect-ratio: 1;
+      margin: -7rem auto 1rem;
+      z-index: 2;
+    }
+    .photo-plate {
+      position: absolute;
+      inset: -8% -6% -4% -10%;
+      background: oklch(85% 0.04 350);
+      border-radius: 50%;
+      transform: rotate(-6deg);
+      z-index: 0;
+      box-shadow: 0 8px 20px oklch(0% 0 0 / 0.15);
+    }
+    .fav-card:nth-child(2) .photo-plate { background: oklch(82% 0.06 220); transform: rotate(4deg); }
+    .fav-card:nth-child(3) .photo-plate { background: oklch(82% 0.07 60); transform: rotate(-3deg); }
+    .card-photo img {
+      position: relative;
       width: 100%;
       height: 100%;
       object-fit: cover;
-      display: block;
-      transition: transform 0.45s;
+      border-radius: 50%;
+      z-index: 1;
+      box-shadow: 0 12px 28px oklch(0% 0 0 / 0.3);
+      border: 4px solid #fff;
     }
-    .fav-card:hover .fav-img-wrap img { transform: scale(1.07); }
-    .fav-ph { width: 100%; height: 100%; background: var(--g800); }
-    .fav-body {
-      padding: 1.25rem 1.5rem 1.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.45rem;
-      flex: 1;
+    .photo-ph {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: var(--g-deep);
     }
-    .fav-cat {
-      font-family: var(--f-body);
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--orn);
-    }
-    .fav-title {
-      font-family: var(--f-brand);
-      font-size: 1.05rem;
+
+    .card-title {
+      font-family: var(--f-display);
+      font-size: 1.55rem;
       color: #fff;
-      margin: 0;
-      line-height: 1.35;
+      margin: 0 0 0.5rem;
+      line-height: 1.1;
+      letter-spacing: 0.005em;
+      font-weight: 400;
     }
-    .fav-excerpt {
+    .card-text {
       font-family: var(--f-body);
-      font-size: 0.82rem;
-      color: var(--g200);
-      line-height: 1.55;
-      margin: 0;
+      font-size: 0.85rem;
+      color: oklch(92% 0.04 158);
+      line-height: 1.5;
+      margin: 0 0 1.25rem;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
+      text-align: center;
     }
-    .fav-cta {
+    .card-link {
       font-family: var(--f-body);
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: var(--g200);
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: oklch(96% 0.04 60);
       margin-top: auto;
       padding-top: 0.5rem;
-      transition: color 0.18s;
+      transition: color 0.2s;
     }
-    .fav-card:hover .fav-cta { color: #fff; }
+    .fav-card:hover .card-link { color: var(--orn); }
 
-    /* Skeletons */
+    /* Skeleton */
     .fav-sk {
-      border-radius: 1.25rem;
-      aspect-ratio: 0.82;
-      background: var(--g800);
-      animation: pulse 1.8s ease-in-out infinite;
+      height: 380px;
+      border-radius: 28px;
+      background: oklch(48% 0.10 158);
+      animation: pulse 1.6s ease-in-out infinite;
     }
-    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.55; } }
 
-    .grid-err {
+    .favs-err {
       text-align: center;
-      color: var(--g200);
+      color: var(--txt-dark);
       padding: 3rem;
       font-family: var(--f-body);
     }
-    .favs-foot {
-      display: flex;
-      justify-content: center;
-      margin-top: 3.5rem;
-    }
 
-    /* ─── PHOTO GRID ─────────────────────────────────────────────── */
+    /* ═══════ PHOTO GRID ═══════════════════════════════════════════ */
     .photos {
       background: var(--cream);
-      padding: clamp(4.5rem, 8vw, 6.5rem) 0;
+      padding: 0 0 clamp(4.5rem, 10vw, 8rem);
     }
     .photos-inner {
-      max-width: 1200px;
+      max-width: 1100px;
       margin: 0 auto;
       padding: 0 clamp(1.5rem, 5vw, 3rem);
     }
     .photos-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 0.75rem;
+      gap: clamp(1.25rem, 3vw, 2rem);
     }
     .photo-cell {
-      border-radius: 1rem;
-      overflow: hidden;
-      display: block;
-      aspect-ratio: 4/3;
-      background: var(--cream-dk);
-      position: relative;
       text-decoration: none;
+      color: var(--txt-dark);
+      display: block;
     }
-    .photo-cell img {
+    .photo-frame {
+      position: relative;
+      aspect-ratio: 1;
+      border-radius: 22px 28px 24px 26px / 26px 22px 28px 24px;
+      overflow: hidden;
+      padding: 0.75rem;
+      transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .photo-cell[data-bg="0"] .photo-frame { background: oklch(82% 0.07 200); }
+    .photo-cell[data-bg="1"] .photo-frame { background: oklch(78% 0.10 50); }
+    .photo-cell[data-bg="2"] .photo-frame { background: oklch(82% 0.07 350); }
+    .photo-frame img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      border-radius: 16px 22px 18px 20px / 20px 16px 22px 18px;
       display: block;
-      transition: transform 0.45s;
     }
-    .photo-cell:hover img { transform: scale(1.06); }
-    .photo-ph { width: 100%; height: 100%; background: var(--cream-dk); }
-    .photo-hover {
-      position: absolute;
-      inset: 0;
-      background: oklch(14% 0.07 155 / 0.58);
-      display: flex;
-      align-items: flex-end;
-      padding: 1rem 1.1rem;
-      opacity: 0;
-      transition: opacity 0.25s;
-    }
-    .photo-hover span {
-      font-family: var(--f-body);
-      font-size: 0.82rem;
-      font-weight: 700;
-      color: #fff;
-      line-height: 1.3;
-    }
-    .photo-cell:hover .photo-hover { opacity: 1; }
+    .photo-cell:hover .photo-frame { transform: translateY(-5px) rotate(-1deg); }
 
-    /* ─── CATEGORIES ─────────────────────────────────────────────── */
-    .cats {
-      background: var(--g900);
-      padding: clamp(4.5rem, 8vw, 6.5rem) 0;
-    }
-    .cats-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 clamp(1.5rem, 5vw, 3rem);
-    }
-    .cats-grid {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 1rem;
-    }
-    .cat-tile {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.65rem;
-      padding: 1.5rem 0.75rem;
-      border-radius: 1.25rem;
-      background: var(--g800);
-      text-decoration: none;
+    .photo-play {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--orn);
       color: #fff;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 8px 20px oklch(0% 0 0 / 0.4);
+    }
+    .photo-play svg { width: 1.5rem; height: 1.5rem; margin-left: 0.2rem; }
+
+    .photo-caption {
       font-family: var(--f-body);
-      font-size: 0.82rem;
+      font-size: 0.85rem;
       font-weight: 700;
-      transition: background 0.2s, transform 0.18s, box-shadow 0.2s;
+      color: var(--txt-dark);
+      text-align: center;
+      margin-top: 0.85rem;
+      line-height: 1.35;
     }
-    .cat-tile:hover {
-      background: var(--g600);
-      transform: translateY(-4px);
-      box-shadow: 0 12px 32px oklch(0% 0 0 / 0.3);
-    }
-    .ct-icon {
-      width: 2.5rem;
-      height: 2.5rem;
-      color: var(--orn);
-      transition: color 0.2s;
-    }
-    .cat-tile:hover .ct-icon { color: #fff; }
-    .ct-icon svg { width: 100%; height: 100%; }
-    .cats-cta {
+
+    .photos-cta {
       display: flex;
       justify-content: center;
-      margin-top: 3rem;
+      margin-top: clamp(2.5rem, 5vw, 4rem);
+    }
+    .cta-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 1rem 2.4rem;
+      background: var(--g-card);
+      color: #fff;
+      border-radius: 9999px;
+      font-family: var(--f-body);
+      font-weight: 800;
+      font-size: 0.85rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-decoration: none;
+      box-shadow:
+        0 10px 24px oklch(28% 0.09 158 / 0.35),
+        inset 0 -3px 0 oklch(28% 0.09 158 / 0.5);
+      transition: transform 0.18s, box-shadow 0.2s;
+    }
+    .cta-pill:hover {
+      transform: translateY(-2px);
+      background: var(--g-deep);
     }
 
-    /* ─── RESPONSIVE ─────────────────────────────────────────────── */
-    @media (max-width: 1024px) {
-      .cats-grid { grid-template-columns: repeat(3, 1fr); }
-    }
+    /* ═══════ RESPONSIVE ═══════════════════════════════════════════ */
     @media (max-width: 900px) {
-      .hero-inner { grid-template-columns: 1fr; }
-      .hero-visual { order: -1; }
-      .hero-frame { width: 72%; }
-      .hero-desc { max-width: none; }
       .favs-grid { grid-template-columns: 1fr 1fr; }
+      .fav-card:nth-child(3) { grid-column: span 2; max-width: 480px; margin-left: auto; margin-right: auto; width: 100%; }
+      .photos-grid { grid-template-columns: 1fr 1fr; }
+      .photo-cell:nth-child(3) { grid-column: span 2; max-width: 480px; margin: 0 auto; width: 100%; }
+      .hero-sticker { width: 90px; height: 90px; right: 5%; }
+      .doodle { width: 70px; height: 70px; }
     }
     @media (max-width: 640px) {
-      .hero-frame { width: 100%; }
-      .hero-h1 { font-size: clamp(2.5rem, 9vw, 3.5rem); }
-      .favs-grid { grid-template-columns: 1fr; }
-      .photos-grid { grid-template-columns: 1fr 1fr; }
-      .cats-grid { grid-template-columns: repeat(2, 1fr); }
+      .favs-grid { grid-template-columns: 1fr; padding-top: 5rem; }
+      .fav-card:nth-child(2) { transform: none; }
+      .fav-card:nth-child(2):hover { transform: translateY(-8px); }
+      .fav-card:nth-child(3) { grid-column: auto; }
+      .photos-grid { grid-template-columns: 1fr; }
+      .photo-cell:nth-child(3) { grid-column: auto; }
+      .hero-sticker { width: 78px; height: 78px; bottom: 8%; right: 4%; }
+      .sticker-num { font-size: 1.25rem; }
+      .sticker-lbl { font-size: 0.55rem; }
+      .doodle-tl, .doodle-bl { left: 0; }
+      .doodle-tr, .doodle-br { right: 0; }
     }
-    @media (max-width: 400px) {
-      .cats-grid { grid-template-columns: 1fr 1fr; }
-    }
+
     @media (prefers-reduced-motion: reduce) {
-      .btn-green, .btn-cream, .btn-link, .fav-card,
-      .photo-cell img, .cat-tile { transition: none; }
+      .hero-sparkle, .hero-sticker { animation: none; }
+      .fav-card, .photo-frame, .hero-cta, .cta-pill { transition: none; }
       .fav-sk { animation: none; }
     }
   `],
