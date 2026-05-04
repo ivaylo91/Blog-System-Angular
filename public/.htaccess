@@ -6,7 +6,7 @@
     RewriteEngine On
 
     # Force HTTPS
-    RewriteCond %{HTTPS} off
+    RewriteCond %{HTTPS} On
     RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
     # Handle Authorization Header
