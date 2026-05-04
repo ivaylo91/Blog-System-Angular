@@ -43,7 +43,7 @@ import { AuthService } from '../../services/auth.service';
               <ellipse cx="50" cy="109" rx="41" ry="7" fill="#b8721a"/>
             </svg>
           </div>
-          <a routerLink="/" class="brand-name">Иво Кук</a>
+          <a routerLink="/" class="brand-name">Кулинарният блог на Иво</a>
           <p class="brand-tagline">Традиционни рецепти с любов</p>
         </div>
 
@@ -65,7 +65,7 @@ import { AuthService } from '../../services/auth.service';
           <div class="nav-col">
             <span class="nav-title">Информация</span>
             <a routerLink="/privacy">Поверителност</a>
-            <span class="nav-copy">© {{ currentYear }} Иво Кук</span>
+            <span class="nav-copy">© {{ currentYear }} Кулинарният блог на Иво</span>
           </div>
         </nav>
 
@@ -154,7 +154,7 @@ import { AuthService } from '../../services/auth.service';
 
     .brand-name {
       font-family: var(--f-display);
-      font-size: 1.5rem;
+      font-size: clamp(1rem, 2.5vw, 1.35rem);
       color: var(--fg);
       text-decoration: none;
       letter-spacing: 0.01em;
