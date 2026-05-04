@@ -108,40 +108,40 @@
   --clr-brand-dark:  oklch(55% 0.22 42);
   --clr-brand-hover: oklch(70% 0.20 42);
 
-  /* Surfaces — warm white base */
+  /* Surfaces — warm white base, tinted toward brand hue */
   --clr-bg:            oklch(97% 0.015 58);
-  --clr-surface:       oklch(100% 0 0);
+  --clr-surface:       oklch(99.8% 0.004 58);
   --clr-surface-alt:   oklch(96% 0.012 58);
-  --clr-surface-hover: oklch(93% 0 0);
-  --clr-surface-active:oklch(90% 0 0);
+  --clr-surface-hover: oklch(93% 0.006 58);
+  --clr-surface-active:oklch(90% 0.010 58);
 
-  /* Text — near-black */
-  --clr-text:       oklch(10% 0 0);
-  --clr-text-muted: oklch(45% 0 0);
-  --clr-text-faint: oklch(68% 0 0);
+  /* Text — near-black, tinted toward brand hue 52 */
+  --clr-text:       oklch(10% 0.008 52);
+  --clr-text-muted: oklch(45% 0.010 52);
+  --clr-text-faint: oklch(68% 0.006 52);
 
-  /* Sage green → charcoal */
-  --clr-green:        oklch(28% 0 0);
-  --clr-green-dark:   oklch(15% 0 0);
-  --clr-green-bg:     oklch(93% 0 0);
-  --clr-green-text:   oklch(20% 0 0);
+  /* Sage green — easy / success */
+  --clr-green:        oklch(42% 0.13 153);
+  --clr-green-dark:   oklch(28% 0.09 153);
+  --clr-green-bg:     oklch(96% 0.05 153);
+  --clr-green-text:   oklch(30% 0.11 153);
 
-  /* Amber → medium gray */
-  --clr-amber:        oklch(52% 0 0);
-  --clr-amber-dark:   oklch(38% 0 0);
-  --clr-amber-bg:     oklch(93% 0 0);
-  --clr-amber-text:   oklch(28% 0 0);
-  --clr-amber-border: oklch(72% 0 0);
+  /* Amber — medium difficulty / warning */
+  --clr-amber:        oklch(64% 0.16 70);
+  --clr-amber-dark:   oklch(50% 0.14 70);
+  --clr-amber-bg:     oklch(97% 0.05 78);
+  --clr-amber-text:   oklch(38% 0.13 70);
+  --clr-amber-border: oklch(76% 0.11 70);
 
-  /* Rust → light gray */
-  --clr-rust-bg:     oklch(93% 0 0);
-  --clr-rust-text:   oklch(22% 0 0);
-  --clr-rust-border: oklch(72% 0 0);
+  /* Rust — hard / danger */
+  --clr-rust-bg:     oklch(97% 0.04 22);
+  --clr-rust-text:   oklch(36% 0.17 22);
+  --clr-rust-border: oklch(72% 0.12 22);
 
-  /* Semantic */
-  --clr-error:      oklch(28% 0 0);
-  --clr-error-bg:   oklch(95% 0 0);
-  --clr-error-dark: oklch(15% 0 0);
+  /* Semantic error — actual red */
+  --clr-error:      oklch(44% 0.22 22);
+  --clr-error-bg:   oklch(97% 0.04 22);
+  --clr-error-dark: oklch(32% 0.18 22);
 
   /* Borders — defined, visible */
   --clr-border:        rgba(0, 0, 0, 0.14);
@@ -161,11 +161,11 @@
   --space-10: 4rem;
   --space-11: 6rem;
 
-  /* Shadows */
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.06);
-  --shadow-md: 0 2px 8px rgba(0,0,0,0.10), 0 8px 24px rgba(0,0,0,0.08);
-  --shadow-lg: 0 8px 20px rgba(0,0,0,0.12), 0 20px 40px rgba(0,0,0,0.10);
-  --shadow-xl: 0 16px 40px rgba(0,0,0,0.14), 0 32px 64px rgba(0,0,0,0.12);
+  /* Shadows — tinted toward brand hue for depth and cohesion */
+  --shadow-sm: 0 1px 3px oklch(36% 0.12 42 / 0.08), 0 4px 12px oklch(36% 0.12 42 / 0.06);
+  --shadow-md: 0 2px 8px oklch(36% 0.12 42 / 0.10), 0 8px 24px oklch(36% 0.12 42 / 0.07);
+  --shadow-lg: 0 8px 20px oklch(36% 0.12 42 / 0.12), 0 20px 40px oklch(36% 0.12 42 / 0.09);
+  --shadow-xl: 0 16px 40px oklch(36% 0.12 42 / 0.14), 0 32px 64px oklch(36% 0.12 42 / 0.11);
 
   /* Skeleton */
   --clr-skeleton:       oklch(91% 0 0);

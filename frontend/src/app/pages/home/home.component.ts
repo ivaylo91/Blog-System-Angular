@@ -234,8 +234,6 @@ import { PerfService } from '../../services/perf.service';
 
   `,
   styles: [`
-    @import url('https://fonts.googleapis.com/css2?family=Righteous&family=Nunito:wght@400;600;700;800&display=swap');
-
     :host {
       --g950: oklch(14% 0.06 155);
       --g900: oklch(20% 0.08 155);
@@ -251,8 +249,8 @@ import { PerfService } from '../../services/perf.service';
       --cream-dk: oklch(92% 0.02 88);
       --txt: oklch(13% 0.01 155);
       --txt-mid: oklch(40% 0.04 155);
-      --f-brand: 'Righteous', Georgia, serif;
-      --f-body:  'Nunito', system-ui, sans-serif;
+      --f-brand: var(--font-display);
+      --f-body:  var(--font-body);
       display: block;
     }
 
