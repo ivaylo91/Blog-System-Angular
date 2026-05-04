@@ -11,111 +11,119 @@ import { Recipe } from '../../models/models';
   standalone: true,
   imports: [RouterLink],
   template: `
-    <div class="dashboard-page">
+    <div class="page">
 
-      <!-- Welcome banner -->
-      <div class="welcome-banner">
-        <div class="welcome-text">
-          <h1 class="welcome-heading">Здравей, {{ firstName() }}!</h1>
-          <p class="welcome-sub">Добре дошъл в таблото. Следи рецептите и активността на блога.</p>
-          <a routerLink="/dashboard/recipes/new" class="welcome-cta">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
-              <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-            </svg>
-            Нова рецепта
-          </a>
-        </div>
-        <div class="welcome-art" aria-hidden="true">
-          <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- Pot body -->
-            <ellipse cx="60" cy="80" rx="38" ry="14" fill="oklch(82% 0.10 58)"/>
-            <path d="M22 80 Q22 106 60 106 Q98 106 98 80" fill="oklch(74% 0.13 55)"/>
-            <!-- Pot rim -->
-            <ellipse cx="60" cy="74" rx="38" ry="10" fill="oklch(86% 0.09 60)"/>
-            <!-- Handles -->
-            <path d="M22 74 Q12 74 12 66 Q12 58 22 62" stroke="oklch(68% 0.12 52)" stroke-width="4" stroke-linecap="round" fill="none"/>
-            <path d="M98 74 Q108 74 108 66 Q108 58 98 62" stroke="oklch(68% 0.12 52)" stroke-width="4" stroke-linecap="round" fill="none"/>
-            <!-- Steam lines -->
-            <path d="M44 58 Q40 50 44 42 Q48 34 44 26" stroke="oklch(68% 0.09 65)" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.7"/>
-            <path d="M60 55 Q56 47 60 39 Q64 31 60 23" stroke="oklch(68% 0.09 65)" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.7"/>
-            <path d="M76 58 Q72 50 76 42 Q80 34 76 26" stroke="oklch(68% 0.09 65)" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.7"/>
-            <!-- Lid -->
-            <ellipse cx="60" cy="68" rx="34" ry="9" fill="oklch(80% 0.12 60)"/>
-            <ellipse cx="60" cy="67" rx="34" ry="7" fill="oklch(84% 0.10 62)"/>
-            <ellipse cx="60" cy="62" rx="10" ry="4" fill="oklch(74% 0.12 58)"/>
-          </svg>
-        </div>
-      </div>
+      <!-- ── Main column ──────────────────────────────────────────── -->
+      <div class="main-col">
 
-      <!-- Stat tiles -->
-      <div class="tiles-row">
-        <div class="tile tile-amber">
-          <span class="tile-num">{{ stats()?.publishedRecipes ?? '—' }}</span>
-          <span class="tile-label">Публикувани</span>
-        </div>
-        <div class="tile tile-orange">
-          <span class="tile-num">{{ stats()?.draftRecipes ?? '—' }}</span>
-          <span class="tile-label">Чернови</span>
-        </div>
-        <div class="tile tile-rose">
-          <span class="tile-num">{{ stats()?.totalComments ?? '—' }}</span>
-          <span class="tile-label">Коментари</span>
-        </div>
-        <div class="tile tile-lavender">
-          <span class="tile-num">{{ stats()?.totalFavorites ?? '—' }}</span>
-          <span class="tile-label">Запазвания</span>
-        </div>
-      </div>
-
-      <!-- Recent recipes -->
-      <div class="section">
-        <div class="section-head">
-          <h2 class="section-title">Последни рецепти</h2>
-          <a routerLink="/dashboard/recipes" class="view-all">Виж всички →</a>
-        </div>
-
-        @if (!recentRecipes().length) {
-          <div class="empty-state">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-              <polyline points="14 2 14 8 20 8"/>
-            </svg>
-            <span>Нямаш рецепти все още.</span>
-            <a routerLink="/dashboard/recipes/new" class="empty-cta">Създай първата рецепта →</a>
+        <!-- Welcome card -->
+        <div class="welcome-card">
+          <div class="welcome-body">
+            <h1 class="welcome-heading">Здравей, {{ firstName() }}!</h1>
+            <p class="welcome-text">
+              Имаш {{ stats()?.publishedRecipes ?? 0 }} публикувани рецепти.<br>
+              Управлявай блога и следи активността.
+            </p>
+            <a routerLink="/dashboard/recipes/new" class="welcome-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                   stroke-linecap="round" aria-hidden="true">
+                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+              Нова рецепта
+            </a>
           </div>
-        } @else {
-          <div class="recipe-list">
+          <div class="welcome-art" aria-hidden="true">
+            <svg viewBox="0 0 200 175" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Bowl shadow -->
+              <ellipse cx="100" cy="162" rx="55" ry="10" fill="oklch(72% 0.13 72)" opacity="0.35"/>
+              <!-- Bowl body -->
+              <path d="M42 110 Q42 148 100 148 Q158 148 158 110" fill="oklch(70% 0.16 66)"/>
+              <!-- Bowl rim -->
+              <ellipse cx="100" cy="110" rx="58" ry="16" fill="oklch(82% 0.13 74)"/>
+              <!-- Inner rim -->
+              <ellipse cx="100" cy="108" rx="50" ry="11" fill="oklch(78% 0.14 72)"/>
+              <!-- Steam lines -->
+              <path d="M68 88 Q64 78 68 68 Q72 58 68 48" stroke="oklch(68% 0.10 68)"
+                    stroke-width="3" stroke-linecap="round" fill="none" opacity="0.55"/>
+              <path d="M100 83 Q96 73 100 63 Q104 53 100 43" stroke="oklch(68% 0.10 68)"
+                    stroke-width="3" stroke-linecap="round" fill="none" opacity="0.55"/>
+              <path d="M132 88 Q128 78 132 68 Q136 58 132 48" stroke="oklch(68% 0.10 68)"
+                    stroke-width="3" stroke-linecap="round" fill="none" opacity="0.55"/>
+              <!-- Spoon -->
+              <rect x="148" y="75" width="7" height="52" rx="3.5" fill="oklch(58% 0.12 60)"/>
+              <ellipse cx="151.5" cy="73" rx="7" ry="11" fill="oklch(62% 0.13 62)"/>
+              <!-- Floating ingredients -->
+              <circle cx="24" cy="80" r="9" fill="oklch(80% 0.14 80)" opacity="0.75"/>
+              <circle cx="176" cy="65" r="7" fill="oklch(76% 0.16 70)" opacity="0.75"/>
+              <circle cx="18" cy="118" r="6" fill="oklch(78% 0.13 76)" opacity="0.6"/>
+              <circle cx="182" cy="112" r="5" fill="oklch(80% 0.12 78)" opacity="0.6"/>
+              <!-- Star accents -->
+              <path d="M158 22 L160 16 L162 22 L168 22 L163 26 L165 32 L160 28 L155 32 L157 26 L152 22 Z"
+                    fill="oklch(72% 0.18 80)" opacity="0.85"/>
+              <path d="M36 38 L37.5 33 L39 38 L44 38 L40 41 L41.5 46 L37.5 43 L33.5 46 L35 41 L31 38 Z"
+                    fill="oklch(72% 0.18 80)" opacity="0.7"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Recent recipes table -->
+        <div class="section-card">
+          <div class="section-head">
+            <h2 class="section-title">Последни рецепти</h2>
+            <a routerLink="/dashboard/recipes" class="view-btn">Виж всички</a>
+          </div>
+
+          <div class="tbl-labels" aria-hidden="true">
+            <span>Рецепта</span>
+            <span>Категория</span>
+            <span>Статус</span>
+            <span></span>
+          </div>
+
+          @if (!recentRecipes().length) {
+            <div class="empty-row">
+              Нямаш рецепти все още.
+              <a routerLink="/dashboard/recipes/new">Създай първата →</a>
+            </div>
+          } @else {
             @for (r of recentRecipes(); track r.id) {
-              <div class="recipe-row">
-                <div class="recipe-thumb">
-                  @if (r.hero_image) {
-                    <img [src]="r.hero_image" [alt]="r.title" loading="lazy" />
-                  } @else {
-                    <div class="thumb-placeholder" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                        <polyline points="14 2 14 8 20 8"/>
-                      </svg>
-                    </div>
-                  }
+              <div class="tbl-row">
+                <div class="cell-recipe">
+                  <div class="recipe-thumb">
+                    @if (r.hero_image) {
+                      <img [src]="r.hero_image" [alt]="r.title" loading="lazy" />
+                    } @else {
+                      <div class="thumb-ph" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="1.5" stroke-linecap="round">
+                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                          <polyline points="14 2 14 8 20 8"/>
+                        </svg>
+                      </div>
+                    }
+                  </div>
+                  <a [routerLink]="['/recipes', r.slug]" class="recipe-name">{{ r.title }}</a>
                 </div>
-                <div class="recipe-info">
-                  <a [routerLink]="['/recipes', r.slug]" class="recipe-title-link">{{ r.title }}</a>
+
+                <div class="cell-cat">
                   @if (r.category) {
-                    <span class="recipe-cat">{{ r.category.name }}</span>
-                  }
-                  @if (r.excerpt) {
-                    <p class="recipe-excerpt">{{ r.excerpt }}</p>
+                    <span class="cat-pill">{{ r.category.name }}</span>
+                  } @else {
+                    <span class="cat-pill cat-none">—</span>
                   }
                 </div>
-                <div class="recipe-actions">
-                  <span class="status-badge" [class.published]="r.published" [class.draft]="!r.published">
+
+                <div class="cell-status">
+                  <span class="status-dot" [class.pub]="r.published" [class.dft]="!r.published">
                     {{ r.published ? 'Публикувана' : 'Чернова' }}
                   </span>
+                </div>
+
+                <div class="cell-action">
                   <a [routerLink]="['/dashboard/recipes', r.slug, 'edit']"
-                     class="edit-btn"
-                     [attr.aria-label]="'Редактирай ' + r.title">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                     class="edit-icon" [attr.aria-label]="'Редактирай ' + r.title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                       <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
                       <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
                     </svg>
@@ -123,165 +131,178 @@ import { Recipe } from '../../models/models';
                 </div>
               </div>
             }
-          </div>
-        }
+          }
+        </div>
       </div>
 
-      <!-- Recent comments -->
-      @if (stats()?.recentComments?.length) {
-        <div class="section section-comments">
-          <div class="section-head">
-            <h2 class="section-title">Последни коментари</h2>
-            <a routerLink="/dashboard/comments" class="view-all">Виж всички →</a>
-          </div>
-          <div class="comment-list">
-            @for (c of stats()!.recentComments; track c.id) {
-              <div class="comment-row">
-                <div class="comment-avatar">{{ c.author?.name?.charAt(0) || '?' }}</div>
-                <div class="comment-body-wrap">
-                  <div class="comment-meta-row">
-                    <span class="comment-author">{{ c.author?.name || 'Анонимен' }}</span>
-                    @if (c.rating) {
-                      <span class="comment-rating">★ {{ c.rating }}</span>
-                    }
-                    <span class="comment-date">{{ formatDate(c.created_at) }}</span>
-                  </div>
-                  <p class="comment-body">{{ c.body }}</p>
-                  @if (c.recipe) {
-                    <a [routerLink]="['/recipes', c.recipe.slug]" class="comment-recipe-link">
-                      {{ c.recipe.title }}
-                    </a>
-                  }
-                </div>
-              </div>
-            }
+      <!-- ── Right column ─────────────────────────────────────────── -->
+      <aside class="right-col">
+
+        <!-- Stats -->
+        <div class="section-card">
+          <h3 class="rc-title">Статистики</h3>
+          <div class="stats-grid">
+            <div class="stat-box stat-amber">
+              <span class="stat-n">{{ stats()?.publishedRecipes ?? '—' }}</span>
+              <span class="stat-l">Публикувани</span>
+            </div>
+            <div class="stat-box stat-orange">
+              <span class="stat-n">{{ stats()?.draftRecipes ?? '—' }}</span>
+              <span class="stat-l">Чернови</span>
+            </div>
+            <div class="stat-box stat-rose">
+              <span class="stat-n">{{ stats()?.totalComments ?? '—' }}</span>
+              <span class="stat-l">Коментари</span>
+            </div>
+            <div class="stat-box stat-lavender">
+              <span class="stat-n">{{ stats()?.totalFavorites ?? '—' }}</span>
+              <span class="stat-l">Запазени</span>
+            </div>
           </div>
         </div>
-      }
 
+        <!-- Profile card -->
+        <div class="section-card profile-card">
+          <div class="profile-top">
+            <div class="profile-avatar">{{ userInitial() }}</div>
+            <div class="profile-info">
+              <div class="profile-name">{{ auth.user()?.name }}</div>
+              <div class="profile-role">
+                {{ auth.isAdmin() ? 'Администратор' : 'Потребител' }}
+              </div>
+            </div>
+          </div>
+          <div class="profile-meta">
+            <div class="meta-row">
+              <span class="meta-label">Рецепти</span>
+              <span class="meta-val">
+                {{ (stats()?.publishedRecipes ?? 0) + (stats()?.draftRecipes ?? 0) }}
+              </span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">Коментари</span>
+              <span class="meta-val">{{ stats()?.totalComments ?? 0 }}</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">Запазвания</span>
+              <span class="meta-val">{{ stats()?.totalFavorites ?? 0 }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent comments -->
+        @if (stats()?.recentComments?.length) {
+          <div class="section-card">
+            <div class="section-head">
+              <h3 class="rc-title" style="margin:0">Коментари</h3>
+              <a routerLink="/dashboard/comments" class="view-btn">Виж →</a>
+            </div>
+            <div class="comment-list">
+              @for (c of stats()!.recentComments.slice(0, 3); track c.id) {
+                <div class="comment-row">
+                  <div class="comment-av">{{ c.author?.name?.charAt(0) || '?' }}</div>
+                  <div class="comment-body-wrap">
+                    <div class="comment-author-row">
+                      <span class="comment-author">{{ c.author?.name || 'Анонимен' }}</span>
+                      @if (c.rating) {
+                        <span class="comment-rating">★{{ c.rating }}</span>
+                      }
+                    </div>
+                    <p class="comment-text">{{ c.body }}</p>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        }
+
+      </aside>
     </div>
   `,
   styles: [`
-    .dashboard-page {
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: var(--space-7) var(--space-7) var(--space-10);
+    /* ── Page layout ─────────────────────────────────────────────── */
+    .page {
+      display: grid;
+      grid-template-columns: 1fr 272px;
+      gap: var(--space-5);
+      padding: var(--space-6) var(--space-6) var(--space-10);
+      align-items: start;
     }
 
-    /* ── Welcome banner ─────────────────────────────────────────────── */
-    .welcome-banner {
+    .main-col {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-5);
+      min-width: 0;
+    }
+
+    /* ── Welcome card ────────────────────────────────────────────── */
+    .welcome-card {
+      background: oklch(93% 0.12 80);
+      border-radius: var(--radius-xl);
+      padding: var(--space-7) var(--space-8);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: oklch(97% 0.04 70);
-      border-radius: var(--radius-xl);
-      padding: var(--space-7) var(--space-8);
-      margin-bottom: var(--space-7);
       overflow: hidden;
-      gap: var(--space-6);
+      gap: var(--space-4);
+      min-height: 185px;
     }
-    .welcome-text { flex: 1; min-width: 0; }
+    .welcome-body { flex: 1; min-width: 0; }
     .welcome-heading {
       font-family: var(--font-display);
-      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-size: clamp(1.5rem, 2.8vw, 2rem);
       font-weight: 800;
-      color: oklch(26% 0.06 52);
+      color: oklch(24% 0.07 68);
       margin: 0 0 var(--space-2);
       letter-spacing: -0.03em;
       line-height: 1.1;
     }
-    .welcome-sub {
-      color: oklch(44% 0.05 55);
-      font-size: 0.9rem;
+    .welcome-text {
+      font-size: 0.875rem;
+      color: oklch(40% 0.06 66);
       margin: 0 0 var(--space-5);
-      max-width: 42ch;
-      line-height: 1.6;
+      line-height: 1.65;
+      max-width: 34ch;
     }
-    .welcome-cta {
+    .welcome-btn {
       display: inline-flex;
       align-items: center;
       gap: var(--space-2);
-      padding: var(--space-3) var(--space-5);
-      background: var(--clr-brand);
+      padding: var(--space-2) var(--space-5);
+      background: oklch(60% 0.18 66);
       color: oklch(100% 0 0);
       border-radius: var(--radius-pill);
       text-decoration: none;
       font-weight: 700;
       font-size: 0.875rem;
-      letter-spacing: 0.01em;
-      box-shadow: 0 4px 14px oklch(62% 0.22 42 / 0.3);
-      transition: background 0.18s, transform 0.15s, box-shadow 0.18s;
+      box-shadow: 0 4px 14px oklch(58% 0.18 66 / 0.35);
+      transition: background 0.18s, transform 0.15s;
       touch-action: manipulation;
     }
-    .welcome-cta svg { width: 0.85rem; height: 0.85rem; flex-shrink: 0; }
-    .welcome-cta:hover {
-      background: var(--clr-brand-dark);
-      transform: translateY(-1px);
-      box-shadow: 0 6px 18px oklch(62% 0.22 42 / 0.38);
-    }
-    .welcome-cta:active { transform: translateY(0); box-shadow: none; }
-    .welcome-art {
-      flex-shrink: 0;
-      width: 110px;
-      height: 110px;
-    }
+    .welcome-btn svg { width: 0.85rem; height: 0.85rem; flex-shrink: 0; }
+    .welcome-btn:hover { background: oklch(54% 0.18 64); transform: translateY(-1px); }
+    .welcome-btn:active { transform: translateY(0); }
+    .welcome-art { flex-shrink: 0; width: 155px; height: 155px; }
     .welcome-art svg { width: 100%; height: 100%; display: block; }
 
-    /* ── Stat tiles ─────────────────────────────────────────────────── */
-    .tiles-row {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: var(--space-4);
-      margin-bottom: var(--space-7);
-    }
-    .tile {
-      border-radius: var(--radius-lg);
-      padding: var(--space-5) var(--space-5);
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-2);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .tile:hover { transform: translateY(-2px); }
-    .tile-num {
-      font-family: var(--font-display);
-      font-size: 2.6rem;
-      font-weight: 800;
-      line-height: 1;
-      letter-spacing: -0.04em;
-    }
-    .tile-label {
-      font-size: 0.7rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      opacity: 0.72;
-    }
-    .tile-amber   { background: oklch(96% 0.05 76); color: oklch(37% 0.14 70); }
-    .tile-orange  { background: oklch(97% 0.05 50); color: oklch(44% 0.20 42); }
-    .tile-rose    { background: oklch(97% 0.025 16); color: oklch(40% 0.17 18); }
-    .tile-lavender{ background: oklch(96% 0.022 292); color: oklch(40% 0.16 290); }
-
     @media (prefers-color-scheme: dark) {
-      .tile-amber   { background: oklch(22% 0.05 72); color: oklch(80% 0.12 74); }
-      .tile-orange  { background: oklch(20% 0.05 48); color: oklch(78% 0.14 52); }
-      .tile-rose    { background: oklch(20% 0.04 18); color: oklch(78% 0.12 20); }
-      .tile-lavender{ background: oklch(20% 0.035 290); color: oklch(78% 0.10 288); }
-      .welcome-banner { background: oklch(18% 0.03 65); }
-      .welcome-heading { color: oklch(92% 0.04 70); }
-      .welcome-sub { color: oklch(68% 0.04 62); }
+      .welcome-card { background: oklch(20% 0.04 72); }
+      .welcome-heading { color: oklch(92% 0.05 76); }
+      .welcome-text { color: oklch(68% 0.04 68); }
     }
-    html.dark .tile-amber   { background: oklch(22% 0.05 72); color: oklch(80% 0.12 74); }
-    html.dark .tile-orange  { background: oklch(20% 0.05 48); color: oklch(78% 0.14 52); }
-    html.dark .tile-rose    { background: oklch(20% 0.04 18); color: oklch(78% 0.12 20); }
-    html.dark .tile-lavender{ background: oklch(20% 0.035 290); color: oklch(78% 0.10 288); }
-    html.dark .welcome-banner { background: oklch(18% 0.03 65); }
-    html.dark .welcome-heading { color: oklch(92% 0.04 70); }
-    html.dark .welcome-sub { color: oklch(68% 0.04 62); }
+    html.dark .welcome-card { background: oklch(20% 0.04 72); }
+    html.dark .welcome-heading { color: oklch(92% 0.05 76); }
+    html.dark .welcome-text { color: oklch(68% 0.04 68); }
 
-    /* ── Sections ───────────────────────────────────────────────────── */
-    .section { margin-bottom: var(--space-7); }
-    .section-comments { margin-top: var(--space-1); }
+    /* ── Section card ────────────────────────────────────────────── */
+    .section-card {
+      background: var(--clr-surface);
+      border-radius: var(--radius-xl);
+      padding: var(--space-5) var(--space-6);
+      box-shadow: 0 2px 16px rgba(0,0,0,0.055);
+    }
+
     .section-head {
       display: flex;
       align-items: center;
@@ -290,73 +311,74 @@ import { Recipe } from '../../models/models';
     }
     .section-title {
       font-family: var(--font-display);
-      font-size: 1.05rem;
+      font-size: 1rem;
       font-weight: 700;
       color: var(--clr-text);
       margin: 0;
       letter-spacing: -0.015em;
     }
-    .view-all {
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--clr-brand);
-      text-decoration: none;
-      transition: color 0.15s;
-    }
-    .view-all:hover { color: var(--clr-brand-dark); text-decoration: underline; }
-
-    /* ── Empty state ────────────────────────────────────────────────── */
-    .empty-state {
-      display: flex;
-      flex-direction: column;
+    .view-btn {
+      display: inline-flex;
       align-items: center;
-      gap: var(--space-2);
-      padding: var(--space-10) var(--space-4);
-      color: var(--clr-text-faint);
-      text-align: center;
-      background: var(--clr-surface);
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--clr-border-faint);
-    }
-    .empty-state svg { width: 2.25rem; height: 2.25rem; }
-    .empty-state span { font-size: 0.875rem; }
-    .empty-cta {
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: var(--clr-brand);
+      padding: var(--space-2) var(--space-4);
+      background: oklch(93% 0.12 80);
+      color: oklch(44% 0.16 70);
+      border-radius: var(--radius-pill);
       text-decoration: none;
-      margin-top: var(--space-1);
+      font-size: 0.78rem;
+      font-weight: 700;
+      transition: background 0.15s;
+      white-space: nowrap;
     }
-    .empty-cta:hover { text-decoration: underline; }
+    .view-btn:hover { background: oklch(88% 0.14 78); }
+    @media (prefers-color-scheme: dark) {
+      .view-btn { background: oklch(22% 0.05 72); color: oklch(76% 0.12 74); }
+      .view-btn:hover { background: oklch(26% 0.06 72); }
+    }
+    html.dark .view-btn { background: oklch(22% 0.05 72); color: oklch(76% 0.12 74); }
+    html.dark .view-btn:hover { background: oklch(26% 0.06 72); }
 
-    /* ── Recipe list ────────────────────────────────────────────────── */
-    .recipe-list {
-      background: var(--clr-surface);
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--clr-border-faint);
-      overflow: hidden;
-    }
-    .recipe-row {
-      display: flex;
-      align-items: center;
-      gap: var(--space-4);
-      padding: var(--space-4) var(--space-5);
+    /* ── Table ───────────────────────────────────────────────────── */
+    .tbl-labels {
+      display: grid;
+      grid-template-columns: 1fr 130px 120px 44px;
+      gap: var(--space-3);
+      padding: var(--space-2) var(--space-2) var(--space-2);
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--clr-text-muted);
       border-bottom: 1px solid var(--clr-border-faint);
+      margin-bottom: var(--space-1);
+    }
+    .tbl-row {
+      display: grid;
+      grid-template-columns: 1fr 130px 120px 44px;
+      gap: var(--space-3);
+      align-items: center;
+      padding: var(--space-3) var(--space-2);
+      border-radius: var(--radius-md);
       transition: background 0.15s;
     }
-    .recipe-row:last-child { border-bottom: none; }
-    .recipe-row:hover { background: var(--clr-surface-alt); }
+    .tbl-row:hover { background: var(--clr-surface-alt); }
 
+    .cell-recipe {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      min-width: 0;
+    }
     .recipe-thumb {
-      width: 3.25rem;
-      height: 3.25rem;
-      border-radius: var(--radius-md);
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: var(--radius-sm);
       overflow: hidden;
       flex-shrink: 0;
       background: var(--clr-surface-alt);
     }
     .recipe-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .thumb-placeholder {
+    .thumb-ph {
       width: 100%;
       height: 100%;
       display: flex;
@@ -364,63 +386,54 @@ import { Recipe } from '../../models/models';
       justify-content: center;
       color: var(--clr-text-faint);
     }
-    .thumb-placeholder svg { width: 1.25rem; height: 1.25rem; }
-
-    .recipe-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.2rem; }
-    .recipe-title-link {
-      font-weight: 700;
-      font-size: 0.9rem;
+    .thumb-ph svg { width: 1rem; height: 1rem; }
+    .recipe-name {
+      font-size: 0.88rem;
+      font-weight: 600;
       color: var(--clr-text);
       text-decoration: none;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      display: block;
       transition: color 0.15s;
     }
-    .recipe-title-link:hover { color: var(--clr-brand); }
-    .recipe-cat {
-      font-size: 0.7rem;
-      font-weight: 700;
-      color: var(--clr-brand);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-    }
-    .recipe-excerpt {
-      font-size: 0.8rem;
-      color: var(--clr-text-muted);
-      margin: 0;
-      overflow: hidden;
-      display: -webkit-box;
-      -webkit-line-clamp: 1;
-      -webkit-box-orient: vertical;
-    }
+    .recipe-name:hover { color: var(--clr-brand); }
 
-    .recipe-actions {
-      display: flex;
-      align-items: center;
-      gap: var(--space-3);
-      flex-shrink: 0;
-    }
-    .status-badge {
-      font-size: 0.68rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      padding: 0.28rem 0.65rem;
+    .cell-cat { display: flex; align-items: center; }
+    .cat-pill {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.22rem 0.6rem;
+      background: oklch(93% 0.04 240);
+      color: oklch(40% 0.14 240);
       border-radius: var(--radius-pill);
       white-space: nowrap;
     }
-    .status-badge.published { background: oklch(94% 0.04 148); color: oklch(32% 0.12 148); }
-    .status-badge.draft     { background: oklch(95% 0.025 76); color: oklch(48% 0.09 74); }
-    @media (prefers-color-scheme: dark) {
-      .status-badge.published { background: oklch(24% 0.07 148); color: oklch(74% 0.10 148); }
-      .status-badge.draft     { background: oklch(23% 0.05 72); color: oklch(72% 0.09 74); }
-    }
-    html.dark .status-badge.published { background: oklch(24% 0.07 148); color: oklch(74% 0.10 148); }
-    html.dark .status-badge.draft     { background: oklch(23% 0.05 72); color: oklch(72% 0.09 74); }
+    .cat-none { background: var(--clr-surface-alt); color: var(--clr-text-faint); }
 
-    .edit-btn {
+    .cell-status { display: flex; align-items: center; }
+    .status-dot {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    .status-dot::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .status-dot.pub { color: oklch(36% 0.14 148); }
+    .status-dot.pub::before { background: oklch(56% 0.18 148); }
+    .status-dot.dft { color: oklch(50% 0.10 76); }
+    .status-dot.dft::before { background: oklch(70% 0.14 78); }
+
+    .cell-action { display: flex; align-items: center; justify-content: center; }
+    .edit-icon {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -431,30 +444,142 @@ import { Recipe } from '../../models/models';
       text-decoration: none;
       transition: background 0.15s, color 0.15s;
     }
-    .edit-btn svg { width: 0.875rem; height: 0.875rem; }
-    .edit-btn:hover { background: color-mix(in oklch, var(--clr-brand) 10%, transparent); color: var(--clr-brand); }
+    .edit-icon svg { width: 0.9rem; height: 0.9rem; }
+    .edit-icon:hover {
+      background: color-mix(in oklch, var(--clr-brand) 10%, transparent);
+      color: var(--clr-brand);
+    }
 
-    /* ── Comment list ───────────────────────────────────────────────── */
-    .comment-list {
-      background: var(--clr-surface);
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--clr-border-faint);
-      overflow: hidden;
-    }
-    .comment-row {
+    .empty-row {
+      padding: var(--space-8) var(--space-4);
+      text-align: center;
+      font-size: 0.875rem;
+      color: var(--clr-text-muted);
       display: flex;
-      gap: var(--space-3);
-      padding: var(--space-4) var(--space-5);
-      border-bottom: 1px solid var(--clr-border-faint);
+      flex-direction: column;
+      gap: var(--space-2);
+      align-items: center;
     }
-    .comment-row:last-child { border-bottom: none; }
-    .comment-avatar {
-      width: 2rem;
-      height: 2rem;
+    .empty-row a { color: var(--clr-brand); text-decoration: none; font-weight: 600; }
+    .empty-row a:hover { text-decoration: underline; }
+
+    /* ── Right column ────────────────────────────────────────────── */
+    .right-col {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-5);
+    }
+
+    .rc-title {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--clr-text);
+      margin: 0 0 var(--space-4);
+      letter-spacing: -0.01em;
+    }
+
+    /* Stats */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-3);
+    }
+    .stat-box {
+      border-radius: var(--radius-lg);
+      padding: var(--space-4) var(--space-4);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-1);
+    }
+    .stat-n {
+      font-family: var(--font-display);
+      font-size: 1.9rem;
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.04em;
+    }
+    .stat-l {
+      font-size: 0.62rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      opacity: 0.7;
+    }
+    .stat-amber   { background: oklch(95% 0.05 76); color: oklch(37% 0.14 70); }
+    .stat-orange  { background: oklch(96% 0.05 50); color: oklch(44% 0.20 42); }
+    .stat-rose    { background: oklch(96% 0.025 16); color: oklch(40% 0.17 18); }
+    .stat-lavender{ background: oklch(96% 0.022 292); color: oklch(40% 0.16 290); }
+    @media (prefers-color-scheme: dark) {
+      .stat-amber   { background: oklch(22% 0.05 72); color: oklch(80% 0.12 74); }
+      .stat-orange  { background: oklch(20% 0.05 48); color: oklch(78% 0.14 52); }
+      .stat-rose    { background: oklch(20% 0.04 18); color: oklch(78% 0.12 20); }
+      .stat-lavender{ background: oklch(20% 0.035 290); color: oklch(78% 0.10 288); }
+    }
+    html.dark .stat-amber   { background: oklch(22% 0.05 72); color: oklch(80% 0.12 74); }
+    html.dark .stat-orange  { background: oklch(20% 0.05 48); color: oklch(78% 0.14 52); }
+    html.dark .stat-rose    { background: oklch(20% 0.04 18); color: oklch(78% 0.12 20); }
+    html.dark .stat-lavender{ background: oklch(20% 0.035 290); color: oklch(78% 0.10 288); }
+
+    /* Profile */
+    .profile-top {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding-bottom: var(--space-4);
+      border-bottom: 1px solid var(--clr-border-faint);
+      margin-bottom: var(--space-4);
+    }
+    .profile-avatar {
+      width: 2.75rem;
+      height: 2.75rem;
       border-radius: var(--radius-circle);
       background: var(--clr-brand);
       color: oklch(100% 0 0);
-      font-size: 0.75rem;
+      font-size: 1rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      text-transform: uppercase;
+    }
+    .profile-info { min-width: 0; }
+    .profile-name {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--clr-text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .profile-role {
+      font-size: 0.7rem;
+      color: var(--clr-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-top: 0.1rem;
+    }
+    .profile-meta { display: flex; flex-direction: column; gap: var(--space-2); }
+    .meta-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.82rem;
+    }
+    .meta-label { color: var(--clr-text-muted); }
+    .meta-val { font-weight: 700; color: var(--clr-text); }
+
+    /* Comments panel */
+    .comment-list { display: flex; flex-direction: column; gap: var(--space-3); margin-top: var(--space-3); }
+    .comment-row { display: flex; gap: var(--space-2); align-items: flex-start; }
+    .comment-av {
+      width: 1.75rem;
+      height: 1.75rem;
+      border-radius: var(--radius-circle);
+      background: var(--clr-brand);
+      color: oklch(100% 0 0);
+      font-size: 0.7rem;
       font-weight: 700;
       display: flex;
       align-items: center;
@@ -463,60 +588,47 @@ import { Recipe } from '../../models/models';
       text-transform: uppercase;
     }
     .comment-body-wrap { flex: 1; min-width: 0; }
-    .comment-meta-row {
-      display: flex;
-      align-items: center;
-      gap: var(--space-2);
-      margin-bottom: 0.25rem;
-    }
-    .comment-author { font-weight: 700; font-size: 0.82rem; color: var(--clr-text); }
-    .comment-rating { font-size: 0.75rem; color: oklch(58% 0.14 74); font-weight: 700; }
-    .comment-date { font-size: 0.72rem; color: var(--clr-text-muted); margin-left: auto; }
-    .comment-body {
-      font-size: 0.83rem;
+    .comment-author-row { display: flex; align-items: center; gap: var(--space-1); margin-bottom: 0.15rem; }
+    .comment-author { font-size: 0.78rem; font-weight: 700; color: var(--clr-text); }
+    .comment-rating { font-size: 0.68rem; color: oklch(58% 0.14 74); font-weight: 700; }
+    .comment-text {
+      font-size: 0.78rem;
       color: var(--clr-text-muted);
-      margin: 0 0 var(--space-1);
-      line-height: 1.5;
+      margin: 0;
+      overflow: hidden;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
-      overflow: hidden;
+      line-height: 1.5;
     }
-    .comment-recipe-link {
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: var(--clr-brand);
-      text-decoration: none;
-      transition: color 0.15s;
-    }
-    .comment-recipe-link:hover { color: var(--clr-brand-dark); text-decoration: underline; }
 
-    /* ── Responsive ─────────────────────────────────────────────────── */
+    /* ── Responsive ──────────────────────────────────────────────── */
+    @media (max-width: 1080px) {
+      .page { grid-template-columns: 1fr 240px; }
+    }
     @media (max-width: 900px) {
-      .tiles-row { grid-template-columns: repeat(2, 1fr); }
+      .page { grid-template-columns: 1fr; }
+      .right-col { display: grid; grid-template-columns: 1fr 1fr; }
     }
     @media (max-width: 640px) {
-      .dashboard-page { padding: var(--space-5) var(--space-4) var(--space-9); }
-      .welcome-banner { padding: var(--space-6) var(--space-5); gap: var(--space-4); }
+      .page { padding: var(--space-4) var(--space-4) var(--space-10); gap: var(--space-4); }
+      .right-col { grid-template-columns: 1fr; }
       .welcome-art { display: none; }
-      .welcome-heading { font-size: 1.5rem; }
-      .tiles-row { gap: var(--space-3); }
-      .tile { padding: var(--space-4) var(--space-4); }
-      .tile-num { font-size: 2rem; }
-      .recipe-row { gap: var(--space-3); padding: var(--space-3) var(--space-4); }
-      .status-badge { display: none; }
+      .welcome-card { padding: var(--space-6) var(--space-5); }
+      .tbl-labels { display: none; }
+      .tbl-row { grid-template-columns: 1fr 100px 40px; }
+      .cell-cat { display: none; }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .tile,
-      .welcome-cta { transition: none; }
+      .welcome-btn, .tbl-row { transition: none; }
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardComponent {
   private dashboardService = inject(DashboardService);
-  private auth = inject(AuthService);
+  auth = inject(AuthService);
   private seo = inject(SeoService);
 
   stats = toSignal(this.dashboardService.getStats());
@@ -529,15 +641,14 @@ export class DashboardComponent {
 
   recentRecipes = computed(() => this.recipes().slice(0, 5));
 
+  userInitial(): string {
+    return this.auth.user()?.name?.charAt(0).toUpperCase() || '?';
+  }
+
   constructor() {
     this.seo.set({
       title: 'Табло',
       description: 'Управлявай рецептите, коментарите и любимите си в таблото на кулинарния блог.',
     });
-  }
-
-  formatDate(date: string): string {
-    if (!date) return '';
-    return new Date(date).toLocaleDateString('bg-BG', { day: 'numeric', month: 'short' });
   }
 }
