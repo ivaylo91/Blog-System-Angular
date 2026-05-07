@@ -163,7 +163,7 @@ class RecipeController extends Controller
             'published'                => 'boolean',
             'category_id'              => 'nullable|exists:categories,id',
             'ingredients'              => 'array|max:100',
-            'ingredients.*.amount'     => 'required|string|max:50',
+            'ingredients.*.amount'     => 'nullable|string|max:50',
             'ingredients.*.name'       => 'required|string|max:200',
             'steps'                    => 'array|max:50',
             'steps.*.title'            => 'required|string|max:255',
@@ -229,7 +229,7 @@ class RecipeController extends Controller
             'published'                => 'boolean',
             'category_id'              => 'nullable|exists:categories,id',
             'ingredients'              => 'array|max:100',
-            'ingredients.*.amount'     => 'required|string|max:50',
+            'ingredients.*.amount'     => 'nullable|string|max:50',
             'ingredients.*.name'       => 'required|string|max:200',
             'steps'                    => 'array|max:50',
             'steps.*.title'            => 'required|string|max:255',
@@ -303,7 +303,11 @@ class RecipeController extends Controller
     private function syncIngredients(Recipe $recipe, array $ingredients): void
     {
         foreach ($ingredients as $i => $ing) {
-            $recipe->ingredients()->create([...$ing, 'position' => $i]);
+            $recipe->ingredients()->create([
+                'name'     => $ing['name'],
+                'amount'   => $ing['amount'] ?? '',
+                'position' => $i,
+            ]);
         }
     }
 
