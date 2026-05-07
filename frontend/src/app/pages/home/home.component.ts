@@ -697,12 +697,20 @@ import { PerfService } from '../../services/perf.service';
       .doodle { width: 70px; height: 70px; }
     }
     @media (max-width: 640px) {
-      .favs-grid { grid-template-columns: 1fr; padding-top: 5rem; }
+      /* Hero: hide spinning sparkles (battery + CPU drain on mobile) */
+      .hero-sparkle { display: none; }
+
+      /* Favs: less wasted space before first card */
+      .favs-grid { grid-template-columns: 1fr; padding-top: 3.5rem; }
       .fav-card:nth-child(2) { transform: none; }
       .fav-card:nth-child(2):hover { transform: translateY(-8px); }
       .fav-card:nth-child(3) { grid-column: auto; }
-      .photos-grid { grid-template-columns: 1fr; }
+
+      /* Photos: keep 2-column (3 stacked full-width squares is too long) */
+      .photos-grid { grid-template-columns: 1fr 1fr; gap: 0.875rem; }
       .photo-cell:nth-child(3) { grid-column: auto; }
+      .photo-caption { font-size: 0.78rem; }
+
       .hero-sticker { width: 78px; height: 78px; bottom: 8%; right: 4%; }
       .sticker-num { font-size: 1.25rem; }
       .sticker-lbl { font-size: 0.55rem; }

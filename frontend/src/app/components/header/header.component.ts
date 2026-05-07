@@ -491,11 +491,18 @@ import { ThemeService } from '../../services/theme.service';
       .nav-auth { display: flex; }
     }
 
-    @media (max-width: 899px) and (max-width: 640px) { .nav-auth { display: none; } }
-    @media (max-width: 640px) { .nav-auth { display: none; } }
+    /* Mobile: keep theme toggle visible in the header bar; hide auth links */
+    @media (max-width: 640px) {
+      .nav-auth .signin-link,
+      .nav-auth .register-btn,
+      .nav-auth .logout-btn { display: none; }
+    }
     @media (max-width: 400px) {
-      .brand-text { font-size: 0.88rem; }
+      .brand-text { font-size: 0.88rem; max-width: 150px; overflow: hidden; text-overflow: ellipsis; }
       .header-inner { padding: 0 1rem; }
+    }
+    @media (max-width: 360px) {
+      .brand-text { display: none; }
     }
     @media (prefers-reduced-motion: reduce) {
       .mobile-drawer, .drawer-overlay { transition: none; }

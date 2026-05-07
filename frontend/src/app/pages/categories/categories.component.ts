@@ -94,6 +94,14 @@ import { Category } from '../../models/models';
       grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
       gap: 1.25rem;
     }
+    @media (max-width: 640px) {
+      .tiles { grid-template-columns: repeat(2, 1fr); gap: 0.875rem; }
+      .tile { min-height: 170px; padding: 1.25rem 1.1rem 1rem; }
+      .tile-title { font-size: clamp(1.1rem, 5vw, 1.5rem); }
+    }
+    @media (max-width: 360px) {
+      .tiles { grid-template-columns: 1fr; }
+    }
     .tile {
       position: relative;
       display: flex;
