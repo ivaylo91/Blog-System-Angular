@@ -22,141 +22,180 @@ import { PerfService } from '../../services/perf.service';
           <p>Открий традиционни български рецепти за всеки повод.</p>
         </header>
 
-        <!-- Search bar -->
-        <form class="search-bar" (submit)="search($event)">
-          <input
-            type="text"
-            [ngModel]="q()" (ngModelChange)="q.set($event)"
-            name="q"
-            placeholder="Търси по заглавие или съставка..."
-            aria-label="Търси рецепти"
-            class="search-input"
-            (input)="onSearchInput()"
-          />
-          <button type="submit" class="search-btn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <span class="btn-text">Търси</span>
-          </button>
-        </form>
+        <div class="recipes-layout">
 
-        <!-- Pill filters: categories -->
-        @if (categories().length > 0) {
-          <div class="pill-filters" role="group" aria-label="Категории">
-            <button class="pill" [class.active]="!category()" [attr.aria-pressed]="!category()" (click)="selectCategory('')">Всички</button>
-            @for (cat of categories(); track cat.id) {
-              <button class="pill" [class.active]="category() === cat.slug" [attr.aria-pressed]="category() === cat.slug"
-                      (click)="selectCategory(cat.slug)">{{ cat.name }}</button>
-            }
-          </div>
-        }
+          <!-- ── Sidebar ─────────────────────────────────── -->
+          <aside class="sidebar">
 
-        <!-- Pill filters: difficulty + sort -->
-        <div class="pill-filters pill-filters-secondary" role="group" aria-label="Филтри">
-          <button class="pill pill-sm" [class.active]="!difficulty()" [attr.aria-pressed]="!difficulty()" (click)="selectDifficulty('')">Всяка трудност</button>
-          <button class="pill pill-sm pill-easy" [class.active]="difficulty() === 'Лесно'" [attr.aria-pressed]="difficulty() === 'Лесно'" (click)="selectDifficulty('Лесно')">Лесно</button>
-          <button class="pill pill-sm pill-medium" [class.active]="difficulty() === 'Средно'" [attr.aria-pressed]="difficulty() === 'Средно'" (click)="selectDifficulty('Средно')">Средно</button>
-          <button class="pill pill-sm pill-hard" [class.active]="difficulty() === 'За напреднали'" [attr.aria-pressed]="difficulty() === 'За напреднали'" (click)="selectDifficulty('За напреднали')">За напреднали</button>
-          <span class="sort-divider" aria-hidden="true"></span>
-          <button class="pill pill-sm" [class.active]="sort() === 'newest'" [attr.aria-pressed]="sort() === 'newest'" (click)="selectSort('newest')">Най-нови</button>
-          <button class="pill pill-sm" [class.active]="sort() === 'fastest'" [attr.aria-pressed]="sort() === 'fastest'" (click)="selectSort('fastest')">Най-бързи</button>
-          <button class="pill pill-sm" [class.active]="sort() === 'easiest'" [attr.aria-pressed]="sort() === 'easiest'" (click)="selectSort('easiest')">Най-лесни</button>
-        </div>
+            <form class="search-wrap" (submit)="search($event)">
+              <span class="search-ico" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              </span>
+              <input type="text" [ngModel]="q()" (ngModelChange)="q.set($event)" name="q"
+                     placeholder="Търси рецепти..." aria-label="Търси рецепти"
+                     class="search-input" (input)="onSearchInput()" />
+              @if (q()) {
+                <button type="button" class="search-clear" (click)="clearSearch()" aria-label="Изчисти">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+              }
+            </form>
 
-        <!-- Active filter chips -->
-        @if (category() || difficulty() || (sort() && sort() !== 'newest') || q()) {
-          <div class="active-filters" aria-label="Активни филтри">
-            <span class="filters-label">Филтри:</span>
-            @if (q()) {
-              <button class="active-chip" (click)="clearSearch()" aria-label="Премахни търсенето">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                "{{ q() }}"
-                <svg class="chip-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-              </button>
-            }
-            @if (category()) {
-              <button class="active-chip" (click)="selectCategory('')" aria-label="Премахни категория">
-                {{ getCategoryName(category()) }}
-                <svg class="chip-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-              </button>
-            }
-            @if (difficulty()) {
-              <button class="active-chip" (click)="selectDifficulty('')" aria-label="Премахни трудност">
-                {{ difficulty() }}
-                <svg class="chip-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-              </button>
-            }
-            @if (sort() && sort() !== 'newest') {
-              <button class="active-chip" (click)="selectSort('newest')" aria-label="Премахни сортиране">
-                {{ sort() === 'fastest' ? 'Най-бързи' : 'Най-лесни' }}
-                <svg class="chip-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-              </button>
-            }
-            <button class="clear-all" (click)="clearAll()">Изчисти всички</button>
-          </div>
-        }
-
-        <!-- Recipe grid / skeleton -->
-        @if (loading()) {
-          <div class="recipe-grid">
-            @for (s of skeletons; track s) {
-              <div class="skeleton-card">
-                <div class="sk-img"></div>
-                <div class="sk-body">
-                  <div class="sk-line sk-short"></div>
-                  <div class="sk-line sk-long"></div>
-                  <div class="sk-line sk-medium"></div>
-                  <div class="sk-meta">
-                    <div class="sk-line sk-sm"></div>
-                    <div class="sk-line sk-sm"></div>
-                    <div class="sk-line sk-sm"></div>
-                  </div>
+            @if (categories().length > 0) {
+              <div class="filter-group">
+                <span class="filter-label">Категории</span>
+                <div class="filter-list" role="group" aria-label="Категории">
+                  <button class="filter-btn" [class.active]="!category()"
+                          [attr.aria-pressed]="!category()" (click)="selectCategory('')">Всички</button>
+                  @for (cat of categories(); track cat.id) {
+                    <button class="filter-btn" [class.active]="category() === cat.slug"
+                            [attr.aria-pressed]="category() === cat.slug"
+                            (click)="selectCategory(cat.slug)">{{ cat.name }}</button>
+                  }
                 </div>
               </div>
             }
-          </div>
-        } @else {
-          <div class="recipe-grid">
-            @for (recipe of recipes(); track recipe.id; let i = $index) {
-              <app-recipe-card [recipe]="recipe" [priority]="i === 0" [index]="i" />
-            } @empty {
-              <div class="no-results">
-                <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="28" cy="28" r="18"/><line x1="41" y1="41" x2="56" y2="56"/><line x1="20" y1="28" x2="36" y2="28"/></svg>
-                <p>Няма намерени рецепти.</p>
-                <span>Опитай с друга дума или смени филтрите.</span>
+
+            <div class="filter-group">
+              <span class="filter-label">Трудност</span>
+              <div class="filter-list" role="group" aria-label="Трудност">
+                <button class="filter-btn" [class.active]="!difficulty()"
+                        [attr.aria-pressed]="!difficulty()" (click)="selectDifficulty('')">Всяка трудност</button>
+                <button class="filter-btn filter-easy" [class.active]="difficulty() === 'Лесно'"
+                        [attr.aria-pressed]="difficulty() === 'Лесно'" (click)="selectDifficulty('Лесно')">Лесно</button>
+                <button class="filter-btn filter-medium" [class.active]="difficulty() === 'Средно'"
+                        [attr.aria-pressed]="difficulty() === 'Средно'" (click)="selectDifficulty('Средно')">Средно</button>
+                <button class="filter-btn filter-hard" [class.active]="difficulty() === 'За напреднали'"
+                        [attr.aria-pressed]="difficulty() === 'За напреднали'" (click)="selectDifficulty('За напреднали')">За напреднали</button>
+              </div>
+            </div>
+
+            <div class="filter-group">
+              <span class="filter-label">Сортиране</span>
+              <div class="filter-list" role="group" aria-label="Сортиране">
+                <button class="filter-btn" [class.active]="sort() === 'newest'"
+                        [attr.aria-pressed]="sort() === 'newest'" (click)="selectSort('newest')">Най-нови</button>
+                <button class="filter-btn" [class.active]="sort() === 'fastest'"
+                        [attr.aria-pressed]="sort() === 'fastest'" (click)="selectSort('fastest')">Най-бързи</button>
+                <button class="filter-btn" [class.active]="sort() === 'easiest'"
+                        [attr.aria-pressed]="sort() === 'easiest'" (click)="selectSort('easiest')">Най-лесни</button>
+              </div>
+            </div>
+
+            @if (category() || difficulty() || (sort() && sort() !== 'newest') || q()) {
+              <div class="filter-group filter-group-clear">
+                <button class="clear-all-btn" (click)="clearAll()">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                  Изчисти всички филтри
+                </button>
               </div>
             }
-          </div>
-        }
 
-        @if (lastPage() > 1) {
-          <div class="pagination">
-            <button class="page-btn" [disabled]="currentPage() === 1" (click)="goToPage(currentPage() - 1)" aria-label="Предишна страница">‹</button>
-            <span class="page-counter">{{ currentPage() }} / {{ lastPage() }}</span>
-            @for (p of pageNumbers(); track $index) {
-              @if (p === null) {
-                <span class="page-ellipsis" aria-hidden="true">…</span>
-              } @else {
-                <button
-                  class="page-btn"
-                  [class.active]="p === currentPage()"
-                  [attr.aria-current]="p === currentPage() ? 'page' : null"
-                  (click)="goToPage(p)"
-                >{{ p }}</button>
-              }
+          </aside>
+
+          <!-- ── Main content ─────────────────────────────── -->
+          <div class="recipes-main">
+
+            @if (category() || difficulty() || (sort() && sort() !== 'newest') || q()) {
+              <div class="active-bar" aria-label="Активни филтри">
+                @if (q()) {
+                  <button class="a-chip" (click)="clearSearch()" aria-label="Премахни търсенето">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    "{{ q() }}"
+                    <svg class="chip-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                  </button>
+                }
+                @if (category()) {
+                  <button class="a-chip" (click)="selectCategory('')" aria-label="Премахни категория">
+                    {{ getCategoryName(category()) }}
+                    <svg class="chip-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                  </button>
+                }
+                @if (difficulty()) {
+                  <button class="a-chip" (click)="selectDifficulty('')" aria-label="Премахни трудност">
+                    {{ difficulty() }}
+                    <svg class="chip-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                  </button>
+                }
+                @if (sort() && sort() !== 'newest') {
+                  <button class="a-chip" (click)="selectSort('newest')" aria-label="Премахни сортиране">
+                    {{ sort() === 'fastest' ? 'Най-бързи' : 'Най-лесни' }}
+                    <svg class="chip-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                  </button>
+                }
+              </div>
             }
-            <button class="page-btn" [disabled]="currentPage() === lastPage()" (click)="goToPage(currentPage() + 1)" aria-label="Следваща страница">›</button>
+
+            @if (loading()) {
+              <div class="recipe-grid">
+                @for (s of skeletons; track s) {
+                  <div class="skeleton-card">
+                    <div class="sk-img"></div>
+                    <div class="sk-body">
+                      <div class="sk-line sk-short"></div>
+                      <div class="sk-line sk-long"></div>
+                      <div class="sk-line sk-medium"></div>
+                      <div class="sk-meta">
+                        <div class="sk-line sk-sm"></div>
+                        <div class="sk-line sk-sm"></div>
+                        <div class="sk-line sk-sm"></div>
+                      </div>
+                    </div>
+                  </div>
+                }
+              </div>
+            } @else {
+              <div class="recipe-grid">
+                @for (recipe of recipes(); track recipe.id; let i = $index) {
+                  <app-recipe-card [recipe]="recipe" [priority]="i === 0" [index]="i" />
+                } @empty {
+                  <div class="no-results">
+                    <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="28" cy="28" r="18"/><line x1="41" y1="41" x2="56" y2="56"/><line x1="20" y1="28" x2="36" y2="28"/></svg>
+                    <p>Няма намерени рецепти.</p>
+                    <span>Опитай с друга дума или смени филтрите.</span>
+                  </div>
+                }
+              </div>
+            }
+
+            @if (lastPage() > 1) {
+              <div class="pagination">
+                <button class="page-btn" [disabled]="currentPage() === 1"
+                        (click)="goToPage(currentPage() - 1)" aria-label="Предишна страница">‹</button>
+                <span class="page-counter">{{ currentPage() }} / {{ lastPage() }}</span>
+                @for (p of pageNumbers(); track $index) {
+                  @if (p === null) {
+                    <span class="page-ellipsis" aria-hidden="true">…</span>
+                  } @else {
+                    <button class="page-btn" [class.active]="p === currentPage()"
+                            [attr.aria-current]="p === currentPage() ? 'page' : null"
+                            (click)="goToPage(p)">{{ p }}</button>
+                  }
+                }
+                <button class="page-btn" [disabled]="currentPage() === lastPage()"
+                        (click)="goToPage(currentPage() + 1)" aria-label="Следваща страница">›</button>
+              </div>
+            }
+
           </div>
-        }
+        </div>
       </div>
     </div>
   `,
   styles: [`
-    .page { padding: var(--space-9) clamp(var(--space-4), 4vw, var(--space-6)) var(--space-10); background-color: var(--clr-bg); background-image: url('/backgrounds/cooking-pattern.svg'); background-size: 500px; background-repeat: repeat; min-height: 100dvh; }
-    .page-inner { max-width: 1200px; margin: 0 auto; }
-    .page-header {
-      text-align: left;
-      margin-bottom: var(--space-7);
+    /* ── Page ─────────────────────────────────────── */
+    .page {
+      padding: var(--space-9) clamp(var(--space-4), 4vw, var(--space-6)) var(--space-10);
+      background-color: var(--clr-bg);
+      background-image: url('/backgrounds/cooking-pattern.svg');
+      background-size: 500px;
+      background-repeat: repeat;
+      min-height: 100dvh;
     }
+    .page-inner { max-width: 1280px; margin: 0 auto; }
+
+    /* ── Header ──────────────────────────────────── */
+    .page-header { margin-bottom: var(--space-8); }
     .page-eyebrow {
       display: inline-flex;
       align-items: center;
@@ -185,124 +224,177 @@ import { PerfService } from '../../services/perf.service';
       max-width: 55ch;
     }
 
-    /* Search bar */
-    .search-bar {
-      display: flex;
-      border-radius: var(--radius-md);
-      overflow: hidden;
-      box-shadow: var(--shadow-sm);
-      border: 1.5px solid var(--clr-border);
-      max-width: 560px;
-      margin: 0 0 var(--space-6);
-      background: var(--clr-surface);
-    }
-    .search-input {
-      flex: 1;
-      padding: var(--space-3) var(--space-5);
-      border: none;
-      font-size: 0.95rem;
-      outline: none;
-      background: transparent;
-      color: var(--clr-text);
-    }
-    .search-btn {
-      display: flex;
-      align-items: center;
-      gap: var(--space-2);
-      padding: var(--space-3) var(--space-6);
-      background: var(--clr-brand);
-      color: oklch(100% 0 0);
-      border: none;
-      font-weight: 600;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: background 0.18s var(--ease-out-expo);
-      touch-action: manipulation;
-    }
-    .search-btn svg { width: 1rem; height: 1rem; flex-shrink: 0; }
-    .search-btn:hover { background: var(--clr-brand-dark); }
-
-    /* Pill filters */
-    .pill-filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: var(--space-2);
-      margin-bottom: var(--space-3);
-      justify-content: flex-start;
-    }
-    .pill-filters-secondary {
-      margin-bottom: var(--space-8);
-      align-items: center;
-      justify-content: flex-start;
-    }
-    .pill {
-      padding: var(--space-2) var(--space-4);
-      border-radius: var(--radius-pill);
-      border: 1.5px solid var(--clr-border);
-      background: var(--clr-surface);
-      color: var(--clr-text-muted);
-      font-size: 0.875rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background 0.18s var(--ease-out-expo), border-color 0.18s var(--ease-out-expo), color 0.18s var(--ease-out-expo);
-      white-space: nowrap;
-      min-height: 2.75rem;
-      touch-action: manipulation;
-    }
-    .pill:hover {
-      background: var(--clr-surface-hover);
-      border-color: var(--clr-border-strong);
-      color: var(--clr-text);
-    }
-    .pill.active {
-      background: var(--clr-brand);
-      border-color: var(--clr-brand);
-      color: var(--clr-surface);
-      font-weight: 600;
-    }
-    .pill-easy.active   { background: var(--clr-green-bg);  color: var(--clr-green-text);  border-color: var(--clr-green); }
-    .pill-medium.active { background: var(--clr-amber-bg);  color: var(--clr-amber-text);  border-color: var(--clr-amber-border); }
-    .pill-hard.active   { background: var(--clr-rust-bg);   color: var(--clr-rust-text);   border-color: var(--clr-rust-border); }
-    .pill:focus-visible {
-      outline: 2.5px solid var(--clr-focus);
-      outline-offset: 2px;
-    }
-    .pill-sm {
-      padding: var(--space-2) var(--space-3);
-      font-size: 0.8rem;
-      min-height: 2.75rem;
-    }
-    .sort-divider {
-      width: 1px;
-      height: var(--space-5);
-      background: var(--clr-border-strong);
-      flex-shrink: 0;
-      align-self: center;
-      margin: 0 var(--space-1);
+    /* ── Two-column layout ───────────────────────── */
+    .recipes-layout {
+      display: grid;
+      grid-template-columns: 252px 1fr;
+      gap: clamp(1.5rem, 2.5vw, 2.5rem);
+      align-items: start;
     }
 
-    /* Active filter chips */
-    .active-filters {
+    /* ── Sidebar ─────────────────────────────────── */
+    .sidebar {
+      position: sticky;
+      top: 5.5rem;
+      max-height: calc(100dvh - 7rem);
+      overflow-y: auto;
+      scrollbar-width: none;
       display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: var(--space-2);
-      margin-bottom: var(--space-6);
-      padding: var(--space-3) var(--space-4);
-      background: var(--clr-surface-alt);
-      border-radius: var(--radius-md);
+      flex-direction: column;
+      background: var(--clr-surface);
       border: 1px solid var(--clr-border-faint);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      padding: var(--space-5) var(--space-3);
     }
-    .filters-label {
-      font-size: 0.72rem;
+    .sidebar::-webkit-scrollbar { display: none; }
+
+    /* Search */
+    .search-wrap {
+      position: relative;
+      margin-bottom: var(--space-5);
+    }
+    .search-ico {
+      position: absolute;
+      left: var(--space-3);
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--clr-text-faint);
+      display: flex;
+      pointer-events: none;
+    }
+    .search-ico svg { width: 0.88rem; height: 0.88rem; }
+    .search-input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: var(--space-3) var(--space-7) var(--space-3) 2.35rem;
+      border-radius: var(--radius-md);
+      border: 1.5px solid var(--clr-border);
+      background: var(--clr-bg);
+      font-size: 0.875rem;
+      color: var(--clr-text);
+      font-family: var(--font-body);
+      outline: none;
+      transition: border-color 0.18s;
+    }
+    .search-input:focus { border-color: var(--clr-brand); }
+    .search-input::placeholder { color: var(--clr-text-faint); }
+    .search-clear {
+      position: absolute;
+      right: var(--space-2);
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--clr-text-muted);
+      padding: var(--space-1);
+      display: flex;
+      border-radius: 50%;
+      transition: color 0.14s;
+      touch-action: manipulation;
+    }
+    .search-clear svg { width: 0.82rem; height: 0.82rem; }
+    .search-clear:hover { color: var(--clr-text); }
+
+    /* Filter groups */
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      padding-top: var(--space-4);
+      margin-top: var(--space-1);
+    }
+    .filter-group + .filter-group {
+      border-top: 1px solid var(--clr-border-faint);
+    }
+    .filter-label {
+      font-size: 0.62rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.14em;
       color: var(--clr-text-faint);
-      margin-right: var(--space-1);
-      flex-shrink: 0;
+      padding: 0 var(--space-2) var(--space-2);
     }
-    .active-chip {
+    .filter-list { display: flex; flex-direction: column; gap: 1px; }
+
+    .filter-btn {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      width: 100%;
+      padding: 0.42rem var(--space-3);
+      border-radius: var(--radius-sm);
+      border: none;
+      background: transparent;
+      color: var(--clr-text-muted);
+      font-size: 0.875rem;
+      font-weight: 400;
+      font-family: var(--font-body);
+      text-align: left;
+      cursor: pointer;
+      transition: background 0.14s, color 0.14s;
+      touch-action: manipulation;
+    }
+    .filter-btn::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      border: 1.5px solid var(--clr-border-strong);
+      flex-shrink: 0;
+      transition: background 0.14s, border-color 0.14s;
+    }
+    .filter-btn:hover { background: var(--clr-surface-alt); color: var(--clr-text); }
+    .filter-btn:focus-visible { outline: 2px solid var(--clr-focus); outline-offset: 1px; }
+
+    .filter-btn.active {
+      color: var(--clr-text);
+      font-weight: 600;
+      background: oklch(97.5% 0.022 52);
+    }
+    .filter-btn.active::before { background: var(--clr-brand); border-color: var(--clr-brand); }
+
+    .filter-easy.active   { background: var(--clr-green-bg); color: var(--clr-green-text); }
+    .filter-easy.active::before   { background: var(--clr-green); border-color: var(--clr-green); }
+    .filter-medium.active { background: var(--clr-amber-bg); color: var(--clr-amber-text); }
+    .filter-medium.active::before { background: var(--clr-amber); border-color: var(--clr-amber); }
+    .filter-hard.active   { background: var(--clr-rust-bg);  color: var(--clr-rust-text); }
+    .filter-hard.active::before   { background: oklch(62% 0.16 22); border-color: oklch(62% 0.16 22); }
+
+    /* Clear all */
+    .filter-group-clear { margin-top: var(--space-2); }
+    .clear-all-btn {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      background: none;
+      border: 1.5px solid var(--clr-border);
+      border-radius: var(--radius-md);
+      padding: var(--space-2) var(--space-3);
+      font-size: 0.8rem;
+      font-weight: 600;
+      font-family: var(--font-body);
+      color: var(--clr-text-muted);
+      cursor: pointer;
+      width: 100%;
+      transition: border-color 0.15s, color 0.15s;
+      touch-action: manipulation;
+    }
+    .clear-all-btn svg { width: 0.78rem; height: 0.78rem; flex-shrink: 0; }
+    .clear-all-btn:hover { color: var(--clr-text); border-color: var(--clr-text-muted); }
+
+    /* ── Main ────────────────────────────────────── */
+    .recipes-main { min-width: 0; }
+
+    /* Active chips */
+    .active-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      margin-bottom: var(--space-5);
+    }
+    .a-chip {
       display: inline-flex;
       align-items: center;
       gap: var(--space-1);
@@ -313,51 +405,26 @@ import { PerfService } from '../../services/perf.service';
       border-radius: var(--radius-pill);
       font-size: 0.78rem;
       font-weight: 600;
+      font-family: var(--font-body);
       cursor: pointer;
-      transition: background 0.15s var(--ease-out-expo), transform 0.15s var(--ease-out-expo);
+      transition: background 0.15s, transform 0.15s;
       touch-action: manipulation;
     }
-    .active-chip:hover { background: var(--clr-text-muted); }
-    .active-chip:active { transform: scale(0.97); }
-    .active-chip > svg:first-child { width: 0.7rem; height: 0.7rem; opacity: 0.7; }
-    .chip-x {
-      width: 0.7rem;
-      height: 0.7rem;
-      opacity: 0.6;
-      flex-shrink: 0;
-    }
-    .clear-all {
-      margin-left: auto;
-      background: none;
-      border: none;
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: var(--clr-text-muted);
-      cursor: pointer;
-      text-decoration: underline;
-      text-underline-offset: 2px;
-      padding: var(--space-1);
-      transition: color 0.15s var(--ease-out-expo);
-      touch-action: manipulation;
-    }
-    .clear-all:hover { color: var(--clr-text); }
+    .a-chip > svg:first-child { width: 0.7rem; height: 0.7rem; opacity: 0.65; }
+    .chip-x { width: 0.65rem; height: 0.65rem; opacity: 0.6; flex-shrink: 0; }
+    .a-chip:hover { background: var(--clr-text-muted); }
+    .a-chip:active { transform: scale(0.97); }
 
-    /* Bento 2.0: anti-3-col-uniform grid.
-       Base is 3 fractional tracks (not equal). First card spans 2 cols as
-       "editorial hero". Every 7th card after that spans 2 cols for rhythm.
-       Every 11th spans 2 rows for masonry-ish variance. */
+    /* ── Recipe grid ─────────────────────────────── */
     .recipe-grid {
       display: grid;
-      grid-template-columns: 1.4fr 1fr 1fr;
-      grid-auto-rows: minmax(0, auto);
-      gap: var(--space-6);
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-5);
     }
     .recipe-grid > app-recipe-card { min-width: 0; }
-    .recipe-grid > app-recipe-card:nth-child(9n + 1) { grid-column: span 2; }
-    .recipe-grid > app-recipe-card:nth-child(11n + 4) { grid-row: span 2; }
 
-    /* Cascade reveal — full coverage, not just first 6. Overrides card's JS delay. */
-    .recipe-grid > app-recipe-card { --card-i: 0; animation-delay: calc(var(--card-i) * 45ms) !important; }
+    /* Stagger animation */
+    .recipe-grid > app-recipe-card { animation-delay: calc(var(--card-i, 0) * 45ms) !important; }
     .recipe-grid > app-recipe-card:nth-child(1)  { --card-i: 0; }
     .recipe-grid > app-recipe-card:nth-child(2)  { --card-i: 1; }
     .recipe-grid > app-recipe-card:nth-child(3)  { --card-i: 2; }
@@ -367,20 +434,9 @@ import { PerfService } from '../../services/perf.service';
     .recipe-grid > app-recipe-card:nth-child(7)  { --card-i: 6; }
     .recipe-grid > app-recipe-card:nth-child(8)  { --card-i: 7; }
     .recipe-grid > app-recipe-card:nth-child(9)  { --card-i: 8; }
-    .recipe-grid > app-recipe-card:nth-child(10) { --card-i: 9; }
-    .recipe-grid > app-recipe-card:nth-child(11) { --card-i: 10; }
-    .recipe-grid > app-recipe-card:nth-child(12) { --card-i: 11; }
-    .recipe-grid > app-recipe-card:nth-child(n + 13) { --card-i: 12; }
+    .recipe-grid > app-recipe-card:nth-child(n+10) { --card-i: 9; }
 
-    @media (min-width: 1280px) {
-      .recipe-grid { grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: var(--space-7); }
-      .recipe-grid > app-recipe-card:nth-child(9n + 1) { grid-column: span 2; }
-    }
-    @media (max-width: 900px) {
-      .recipe-grid { grid-template-columns: 1fr 1fr; gap: var(--space-5); }
-      .recipe-grid > app-recipe-card:nth-child(9n + 1),
-      .recipe-grid > app-recipe-card:nth-child(11n + 4) { grid-column: auto; grid-row: auto; }
-    }
+    /* ── No results ──────────────────────────────── */
     .no-results {
       grid-column: 1 / -1;
       display: flex;
@@ -391,71 +447,33 @@ import { PerfService } from '../../services/perf.service';
       color: var(--clr-text-muted);
       text-align: center;
     }
-    .no-results svg {
-      width: 3rem;
-      height: 3rem;
-      color: var(--clr-text-faint);
-      margin-bottom: var(--space-2);
-    }
-    .no-results p {
-      font-size: 1.05rem;
-      font-weight: 600;
-      color: var(--clr-text);
-      margin: 0;
-    }
-    .no-results span {
-      font-size: 0.875rem;
-      color: var(--clr-text-faint);
-    }
+    .no-results svg { width: 3rem; height: 3rem; color: var(--clr-text-faint); margin-bottom: var(--space-2); }
+    .no-results p { font-size: 1.05rem; font-weight: 600; color: var(--clr-text); margin: 0; }
+    .no-results span { font-size: 0.875rem; color: var(--clr-text-faint); }
 
-    /* Skeleton — shimmer uses transform:translateX (composited, no repaint) */
-    .skeleton-card {
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      background: var(--clr-surface);
-      box-shadow: var(--shadow-sm);
-    }
-    .sk-img {
-      aspect-ratio: 4/3;
-      background: var(--clr-skeleton);
-      position: relative;
-      overflow: hidden;
-    }
+    /* ── Skeleton ────────────────────────────────── */
+    .skeleton-card { border-radius: var(--radius-lg); overflow: hidden; background: var(--clr-surface); box-shadow: var(--shadow-sm); }
+    .sk-img { aspect-ratio: 4/3; background: var(--clr-skeleton); position: relative; overflow: hidden; }
     .sk-img::after {
-      content: '';
-      position: absolute;
-      inset: 0;
+      content: ''; position: absolute; inset: 0;
       background: linear-gradient(90deg, transparent 0%, var(--clr-skeleton-shine) 50%, transparent 100%);
-      transform: translateX(-100%);
-      animation: shimmer 1.5s linear infinite;
+      transform: translateX(-100%); animation: shimmer 1.5s linear infinite;
     }
     .sk-body { padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-2); }
     .sk-meta { display: flex; gap: var(--space-3); margin-top: var(--space-1); }
     .sk-line {
-      height: 0.8rem;
-      border-radius: var(--radius-pill);
-      background: var(--clr-skeleton);
-      position: relative;
-      overflow: hidden;
+      height: 0.8rem; border-radius: var(--radius-pill); background: var(--clr-skeleton);
+      position: relative; overflow: hidden;
     }
     .sk-line::after {
-      content: '';
-      position: absolute;
-      inset: 0;
+      content: ''; position: absolute; inset: 0;
       background: linear-gradient(90deg, transparent 0%, var(--clr-skeleton-shine) 50%, transparent 100%);
-      transform: translateX(-100%);
-      animation: shimmer 1.5s linear infinite;
+      transform: translateX(-100%); animation: shimmer 1.5s linear infinite;
     }
-    .sk-short  { width: 30%; }
-    .sk-long   { width: 75%; }
-    .sk-medium { width: 50%; }
-    .sk-sm     { width: 22%; }
-    @keyframes shimmer {
-      from { transform: translateX(-100%); }
-      to   { transform: translateX(100%); }
-    }
+    .sk-short { width: 30%; } .sk-long { width: 75%; } .sk-medium { width: 50%; } .sk-sm { width: 22%; }
+    @keyframes shimmer { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
 
-    /* Pagination */
+    /* ── Pagination ──────────────────────────────── */
     .pagination {
       display: flex;
       align-items: center;
@@ -465,71 +483,113 @@ import { PerfService } from '../../services/perf.service';
       margin-top: var(--space-9);
     }
     .page-btn {
-      min-width: 2.75rem;
-      height: 2.75rem;
+      min-width: 2.75rem; height: 2.75rem;
       padding: 0 var(--space-3);
       border-radius: var(--radius-sm);
       border: 1.5px solid var(--clr-border);
       background: var(--clr-surface);
       cursor: pointer;
-      font-weight: 600;
-      font-size: 0.9rem;
-      transition: background 0.18s var(--ease-out-expo), border-color 0.18s var(--ease-out-expo), color 0.18s var(--ease-out-expo);
+      font-weight: 600; font-size: 0.9rem;
+      transition: background 0.18s, border-color 0.18s, color 0.18s;
       color: var(--clr-text);
       touch-action: manipulation;
     }
     .page-btn:disabled { opacity: 0.35; cursor: not-allowed; }
-    .page-btn.active {
-      background: var(--clr-text);
-      color: var(--clr-bg);
-      border-color: var(--clr-text);
-    }
+    .page-btn.active { background: var(--clr-text); color: var(--clr-bg); border-color: var(--clr-text); }
     .page-btn:hover:not(.active):not(:disabled) { background: var(--clr-surface-hover); border-color: var(--clr-border-strong); }
-    .page-ellipsis {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 2rem;
-      height: 2.75rem;
-      font-size: 0.9rem;
-      color: var(--clr-text-faint);
-      user-select: none;
-    }
+    .page-ellipsis { display: flex; align-items: center; justify-content: center; min-width: 2rem; height: 2.75rem; font-size: 0.9rem; color: var(--clr-text-faint); }
     .page-counter { display: none; }
 
+    /* ── Wide (4-col grid) ───────────────────────── */
+    @media (min-width: 1440px) {
+      .recipes-layout { grid-template-columns: 272px 1fr; gap: 3rem; }
+      .recipe-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    /* ── Tablet: collapse sidebar to horizontal pills ── */
+    @media (max-width: 960px) {
+      .recipes-layout { grid-template-columns: 1fr; gap: var(--space-4); }
+
+      .sidebar {
+        position: static;
+        max-height: none;
+        overflow: visible;
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-3);
+      }
+
+      .search-wrap { margin-bottom: 0; }
+      .search-input { background: var(--clr-surface); }
+
+      .filter-group {
+        flex-direction: row;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: var(--space-2);
+        padding-top: 0;
+        margin-top: 0;
+      }
+      .filter-group + .filter-group { border-top: none; }
+      .filter-label { display: none; }
+      .filter-list { flex-direction: row; flex-wrap: wrap; gap: var(--space-2); }
+
+      .filter-btn {
+        width: auto;
+        padding: var(--space-2) var(--space-4);
+        border-radius: var(--radius-pill);
+        border: 1.5px solid var(--clr-border);
+        min-height: 2.5rem;
+        font-size: 0.85rem;
+      }
+      .filter-btn::before { display: none; }
+      .filter-btn.active { background: var(--clr-brand); border-color: var(--clr-brand); color: var(--clr-surface); }
+      .filter-easy.active   { background: var(--clr-green-bg); color: var(--clr-green-text); border-color: var(--clr-green); }
+      .filter-medium.active { background: var(--clr-amber-bg); color: var(--clr-amber-text); border-color: var(--clr-amber); }
+      .filter-hard.active   { background: var(--clr-rust-bg);  color: var(--clr-rust-text);  border-color: oklch(72% 0.14 22); }
+
+      .filter-group-clear { margin-top: 0; border-top: none; padding-top: 0; }
+      .clear-all-btn { width: auto; padding: var(--space-2) var(--space-4); border-radius: var(--radius-pill); }
+
+      .recipe-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* ── Mobile ──────────────────────────────────── */
     @media (max-width: 640px) {
       .recipe-grid { grid-template-columns: 1fr; }
-      .btn-text { display: none; }
-      .search-btn { padding: var(--space-3) var(--space-4); }
-      .search-bar { max-width: 100%; }
-      .pill { min-height: 2.75rem; }
-      .pill-sm { min-height: 2.75rem; }
-      .page-btn { min-width: 2.75rem; height: 2.75rem; }
-      /* Scroll pill rows on very narrow screens instead of wrapping many lines */
-      .pill-filters {
+
+      .filter-list {
         flex-wrap: nowrap;
         overflow-x: auto;
         scroll-snap-type: x mandatory;
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
         padding-bottom: var(--space-1);
-        -ms-overflow-style: none;
       }
-      .pill-filters::-webkit-scrollbar { display: none; }
-      .pill-filters .pill { scroll-snap-align: start; flex-shrink: 0; }
+      .filter-list::-webkit-scrollbar { display: none; }
+      .filter-btn { scroll-snap-align: start; flex-shrink: 0; min-height: 2.75rem; }
+      .search-input { font-size: 1rem; }
     }
+
     @media (max-width: 420px) {
       .page-btn:not([aria-label]) { display: none; }
       .page-ellipsis { display: none; }
       .page-counter {
-        display: flex;
-        align-items: center;
-        font-size: 0.9rem;
-        font-weight: 600;
+        display: flex; align-items: center;
+        font-size: 0.9rem; font-weight: 600;
         color: var(--clr-text);
         padding: 0 var(--space-3);
         font-variant-numeric: tabular-nums;
       }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .sk-img::after, .sk-line::after { animation: none; }
+      .a-chip { transition: none; }
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -609,12 +669,8 @@ export class RecipesComponent {
     this.loading.set(true);
     this.perf.mark('recipes_fetch_start');
     this.recipeService.getRecipes({
-      q: this.q(),
-      category: this.category(),
-      difficulty: this.difficulty(),
-      sort: this.sort(),
-      page: this.currentPage(),
-      per_page: 6,
+      q: this.q(), category: this.category(), difficulty: this.difficulty(),
+      sort: this.sort(), page: this.currentPage(), per_page: 6,
     }).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(res => {
       this.recipes.set(res.data);
       this.currentPage.set(res.current_page);
@@ -626,52 +682,20 @@ export class RecipesComponent {
   }
 
   selectCategory(slug: string): void {
-    this.router.navigate(['/recipes'], {
-      queryParams: {
-        q: this.q() || undefined,
-        category: slug || undefined,
-        difficulty: this.difficulty() || undefined,
-        sort: this.sort() !== 'newest' ? this.sort() : undefined,
-        page: undefined,
-      },
-    });
+    this.router.navigate(['/recipes'], { queryParams: { q: this.q() || undefined, category: slug || undefined, difficulty: this.difficulty() || undefined, sort: this.sort() !== 'newest' ? this.sort() : undefined, page: undefined } });
   }
 
   selectDifficulty(d: string): void {
-    this.router.navigate(['/recipes'], {
-      queryParams: {
-        q: this.q() || undefined,
-        category: this.category() || undefined,
-        difficulty: d || undefined,
-        sort: this.sort() !== 'newest' ? this.sort() : undefined,
-        page: undefined,
-      },
-    });
+    this.router.navigate(['/recipes'], { queryParams: { q: this.q() || undefined, category: this.category() || undefined, difficulty: d || undefined, sort: this.sort() !== 'newest' ? this.sort() : undefined, page: undefined } });
   }
 
   selectSort(s: string): void {
-    this.router.navigate(['/recipes'], {
-      queryParams: {
-        q: this.q() || undefined,
-        category: this.category() || undefined,
-        difficulty: this.difficulty() || undefined,
-        sort: s !== 'newest' ? s : undefined,
-        page: undefined,
-      },
-    });
+    this.router.navigate(['/recipes'], { queryParams: { q: this.q() || undefined, category: this.category() || undefined, difficulty: this.difficulty() || undefined, sort: s !== 'newest' ? s : undefined, page: undefined } });
   }
 
   search(e: Event): void {
     e.preventDefault();
-    this.router.navigate(['/recipes'], {
-      queryParams: {
-        q: this.q() || undefined,
-        category: this.category() || undefined,
-        difficulty: this.difficulty() || undefined,
-        sort: this.sort() !== 'newest' ? this.sort() : undefined,
-        page: undefined,
-      },
-    });
+    this.router.navigate(['/recipes'], { queryParams: { q: this.q() || undefined, category: this.category() || undefined, difficulty: this.difficulty() || undefined, sort: this.sort() !== 'newest' ? this.sort() : undefined, page: undefined } });
   }
 
   getCategoryName(slug: string): string {
@@ -680,9 +704,7 @@ export class RecipesComponent {
 
   clearSearch(): void {
     this.q.set('');
-    this.router.navigate(['/recipes'], {
-      queryParams: { category: this.category() || undefined, difficulty: this.difficulty() || undefined, sort: this.sort() !== 'newest' ? this.sort() : undefined },
-    });
+    this.router.navigate(['/recipes'], { queryParams: { category: this.category() || undefined, difficulty: this.difficulty() || undefined, sort: this.sort() !== 'newest' ? this.sort() : undefined } });
   }
 
   clearAll(): void {
@@ -691,8 +713,6 @@ export class RecipesComponent {
   }
 
   goToPage(page: number): void {
-    this.router.navigate(['/recipes'], {
-      queryParams: { ...this.route.snapshot.queryParams, page },
-    });
+    this.router.navigate(['/recipes'], { queryParams: { ...this.route.snapshot.queryParams, page } });
   }
 }
