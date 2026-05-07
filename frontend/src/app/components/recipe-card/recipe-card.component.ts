@@ -376,7 +376,7 @@ import { Recipe } from '../../models/models';
         min-height: 0;
       }
       .card:not(.overlay):not(.compact) .card-image {
-        width: 128px;
+        width: 140px;
         aspect-ratio: unset;
         min-height: 100%;
         flex-shrink: 0;

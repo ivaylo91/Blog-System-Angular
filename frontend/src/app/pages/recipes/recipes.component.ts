@@ -580,11 +580,25 @@ import { PerfService } from '../../services/perf.service';
       .page-header { margin-bottom: var(--space-5); }
       .search-input { font-size: 1rem; }
 
-      /* Each filter group is its own independent horizontal scroll row.
-         overflow-x lives on filter-list (a block-level flex container)
-         so buttons overflow it naturally; the group wrapper is invisible. */
-      .filters-row { flex-direction: column; overflow: visible; gap: var(--space-2); }
-      .filter-group { overflow: visible; width: 100%; flex-wrap: wrap; }
+      /* Each filter group is label + independent horizontal scroll row */
+      .filters-row { flex-direction: column; overflow: visible; gap: var(--space-3); }
+      .filter-group {
+        overflow: visible;
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        flex-wrap: nowrap;
+        gap: 0.4rem;
+      }
+      .filter-label {
+        display: block;
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--clr-text-faint);
+        padding-left: 0.25rem;
+      }
       .filter-list {
         overflow-x: auto;
         scrollbar-width: none;
