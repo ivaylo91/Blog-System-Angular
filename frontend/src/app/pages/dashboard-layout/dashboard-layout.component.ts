@@ -105,22 +105,7 @@ import { AuthService } from '../../services/auth.service';
       <!-- ── Main area ───────────────────────────────────────────── -->
       <div class="main-wrap">
 
-        <!-- Mobile topbar -->
-        <div class="mobile-topbar">
-          <button class="menu-btn" (click)="sidebarOpen.set(true)" aria-label="Отвори навигацията">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-              <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
-            </svg>
-          </button>
-          <span class="topbar-label">{{ pageTitle() }}</span>
-          <a routerLink="/dashboard/recipes/new" class="topbar-new" aria-label="Нова рецепта">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-              <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-            </svg>
-          </a>
-        </div>
-
-        <div class="page-content">
+<div class="page-content">
           <router-outlet />
         </div>
       </div>
@@ -341,57 +326,6 @@ import { AuthService } from '../../services/auth.service';
       backdrop-filter: blur(2px);
     }
 
-    /* ── Mobile topbar ──────────────────────────────────────────────── */
-    .mobile-topbar {
-      display: none;
-      align-items: center;
-      justify-content: space-between;
-      padding: var(--space-3) var(--space-4);
-      background: var(--clr-surface);
-      border-bottom: 1px solid var(--clr-border-faint);
-      position: sticky;
-      top: 3.75rem;
-      z-index: 30;
-      flex-shrink: 0;
-    }
-    .menu-btn {
-      background: none;
-      border: none;
-      color: var(--clr-text);
-      cursor: pointer;
-      padding: var(--space-2);
-      border-radius: var(--radius-xs);
-      transition: background 0.15s;
-      min-width: 2.75rem;
-      min-height: 2.75rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      touch-action: manipulation;
-    }
-    .menu-btn svg { width: 1.25rem; height: 1.25rem; }
-    .menu-btn:hover { background: var(--clr-surface-alt); }
-    .topbar-label {
-      font-family: var(--font-display);
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--clr-text);
-    }
-    .topbar-new {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 2.75rem;
-      height: 2.75rem;
-      background: var(--clr-brand);
-      color: oklch(100% 0 0);
-      border-radius: var(--radius-sm);
-      text-decoration: none;
-      transition: background 0.15s;
-      touch-action: manipulation;
-    }
-    .topbar-new svg { width: 1.1rem; height: 1.1rem; }
-    .topbar-new:hover { background: var(--clr-brand-dark); }
 
     /* ── Main content ───────────────────────────────────────────────── */
     .main-wrap {
@@ -409,9 +343,7 @@ import { AuthService } from '../../services/auth.service';
       .shell { display: block; min-height: calc(100vh - 3.75rem); }
       .sidebar { display: none; }
       .sidebar-overlay { display: none; }
-      .mobile-topbar { display: flex; }
-
-      .page-content {
+.page-content {
         min-height: calc(100vh - 3.75rem - 4rem);
         padding-bottom: 4rem;
       }
