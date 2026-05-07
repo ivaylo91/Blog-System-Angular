@@ -570,39 +570,32 @@ import { PerfService } from '../../services/perf.service';
       .recipe-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
-    /* ── Mobile: one unified horizontal scroll row ── */
+    /* ── Mobile ─────────────────────────────────────── */
     @media (max-width: 640px) {
-      .recipe-grid { grid-template-columns: 1fr; }
+      /* Tighter page padding */
+      .page {
+        padding-top: clamp(1.5rem, 6vw, 2.5rem);
+        padding-bottom: clamp(3rem, 8vw, 4rem);
+      }
+      .page-header { margin-bottom: var(--space-5); }
       .search-input { font-size: 1rem; }
 
-      /* All three filter groups merge into a single scrollable strip */
-      .filters-row {
-        flex-direction: row;
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        scroll-snap-type: x mandatory;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-        gap: 0;
-        padding-bottom: var(--space-1);
-      }
-      .filters-row::-webkit-scrollbar { display: none; }
+      /* Each filter group is its own independent horizontal scroll row.
+         Keeps categories / difficulty / sort discoverable without one
+         giant strip where later groups are invisible off-screen. */
+      .filters-row { flex-direction: column; overflow: visible; gap: var(--space-2); }
+      .filter-group { overflow-x: auto; scrollbar-width: none; flex-wrap: nowrap; width: 100%; flex-shrink: 1; }
+      .filter-group::-webkit-scrollbar { display: none; }
+      .filter-list { flex-wrap: nowrap; min-width: max-content; }
+      .filter-btn { flex-shrink: 0; min-height: 2.75rem; }
 
-      .filter-group {
-        flex-direction: row;
-        flex-wrap: nowrap;
-        flex-shrink: 0;
-        gap: var(--space-2);
-        padding-right: var(--space-3);
-        align-items: center;
-      }
-      .filter-group + .filter-group {
-        padding-left: var(--space-3);
-        border-left: 1px solid var(--clr-border);
-      }
+      /* 2-column card grid — shows more recipes without making each card too tall */
+      .recipe-grid { grid-template-columns: repeat(2, 1fr); gap: var(--space-3); }
+    }
 
-      .filter-list { flex-wrap: nowrap; overflow: visible; gap: var(--space-2); }
-      .filter-btn { scroll-snap-align: start; flex-shrink: 0; min-height: 2.75rem; }
+    @media (max-width: 380px) {
+      /* Very narrow phones: single column is easier to read */
+      .recipe-grid { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 420px) {
