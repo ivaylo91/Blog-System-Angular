@@ -5,8 +5,10 @@
 
     RewriteEngine On
 
-    # Force HTTPS
+    # Force HTTPS — works for direct SSL and reverse-proxy hosts (cPanel, Nginx, Cloudflare)
+    # Both conditions must be true to redirect: not direct HTTPS AND not forwarded as HTTPS
     RewriteCond %{HTTPS} off
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
     RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
     # Handle Authorization Header
