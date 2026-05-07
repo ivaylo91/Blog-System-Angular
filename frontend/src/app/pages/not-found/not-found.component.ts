@@ -1,5 +1,7 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { SeoService } from '../../services/seo.service';
+import { Meta } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-not-found',
@@ -92,4 +94,15 @@ import { RouterLink } from '@angular/router';
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NotFoundComponent {}
+export class NotFoundComponent implements OnInit {
+  private seo = inject(SeoService);
+  private meta = inject(Meta);
+
+  ngOnInit(): void {
+    this.seo.set({
+      title: '404 — Страницата не е намерена',
+      description: 'Тази страница не съществува.',
+    });
+    this.meta.updateTag({ name: 'robots', content: 'noindex, nofollow' });
+  }
+}

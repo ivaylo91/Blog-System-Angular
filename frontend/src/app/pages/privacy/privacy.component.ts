@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { SeoService } from '../../services/seo.service';
 
 @Component({
   selector: 'app-privacy',
@@ -121,4 +122,13 @@ import { RouterLink } from '@angular/router';
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PrivacyComponent {}
+export class PrivacyComponent implements OnInit {
+  private seo = inject(SeoService);
+
+  ngOnInit(): void {
+    this.seo.set({
+      title: 'Политика за поверителност',
+      description: 'Прочети политиката за поверителност на Кулинарният блог на Иво — какви данни събираме, защо и как ги пазим.',
+    });
+  }
+}
