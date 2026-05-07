@@ -851,8 +851,8 @@ import { SeoService } from '../../services/seo.service';
     li.checked .ing-check { background: var(--tc-mid); border-color: var(--tc-mid); }
     li.checked .ing-check svg { display: block; stroke: #fff; }
 
-    .ing-amount { font-weight: 700; color: var(--clr-text); min-width: 68px; }
-    .ing-name   { color: var(--clr-text-muted); }
+    .ing-amount { font-weight: 700; color: oklch(100% 0 0); min-width: 68px; }
+    .ing-name   { color: oklch(100% 0 0 / 0.85); }
     .ing-reset {
       margin-top: 0.9rem;
       background: none;
