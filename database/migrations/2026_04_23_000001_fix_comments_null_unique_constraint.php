@@ -19,10 +19,17 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('comments', function (Blueprint $table): void {
-            $table->dropUnique('top_level_comment_unique');
-        });
+        $existing = collect(Schema::getIndexes('comments'))->pluck('name');
 
+        if ($existing->contains('top_level_comment_unique')) {
+            Schema::table('comments', function (Blueprint $table): void {
+                $table->dropUnique('top_level_comment_unique');
+            });
+        }
+
+        // Also drop the functional index if it was already applied (idempotent re-run).
+        // MySQL won't error on ADD UNIQUE for an existing name, but it will fail on a
+        // duplicate column combination — so drop first if the functional one exists.
         DB::statement(
             'ALTER TABLE comments ADD UNIQUE `top_level_comment_unique`'
             . ' (user_id, recipe_id, (COALESCE(parent_id, 0)))'
