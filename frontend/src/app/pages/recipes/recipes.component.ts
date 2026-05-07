@@ -589,12 +589,6 @@ import { PerfService } from '../../services/perf.service';
       .filter-list { flex-wrap: nowrap; min-width: max-content; }
       .filter-btn { flex-shrink: 0; min-height: 2.75rem; }
 
-      /* 2-column card grid — shows more recipes without making each card too tall */
-      .recipe-grid { grid-template-columns: repeat(2, 1fr); gap: var(--space-3); }
-    }
-
-    @media (max-width: 380px) {
-      /* Very narrow phones: single column is easier to read */
       .recipe-grid { grid-template-columns: 1fr; }
     }
 
