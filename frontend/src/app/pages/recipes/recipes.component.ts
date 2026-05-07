@@ -580,7 +580,7 @@ import { PerfService } from '../../services/perf.service';
       .page-header { margin-bottom: var(--space-5); }
       .search-input { font-size: 1rem; }
 
-      /* Each filter group is label + independent horizontal scroll row */
+      /* Each filter group is label + wrapping pill row */
       .filters-row { flex-direction: column; overflow: visible; gap: var(--space-3); }
       .filter-group {
         overflow: visible;
@@ -599,15 +599,8 @@ import { PerfService } from '../../services/perf.service';
         color: var(--clr-text-faint);
         padding-left: 0.25rem;
       }
-      .filter-list {
-        overflow-x: auto;
-        scrollbar-width: none;
-        flex-wrap: nowrap;
-        width: 100%;
-        padding-bottom: 2px;
-      }
-      .filter-list::-webkit-scrollbar { display: none; }
-      .filter-btn { flex-shrink: 0; min-height: 2.5rem; }
+      .filter-list { flex-wrap: wrap; width: 100%; overflow-x: visible; }
+      .filter-btn { min-height: 2.5rem; }
 
       .recipe-grid { grid-template-columns: 1fr; }
     }
