@@ -41,45 +41,49 @@ import { PerfService } from '../../services/perf.service';
               }
             </form>
 
-            @if (categories().length > 0) {
+            <div class="filters-row">
+
+              @if (categories().length > 0) {
+                <div class="filter-group">
+                  <span class="filter-label">Категории</span>
+                  <div class="filter-list" role="group" aria-label="Категории">
+                    <button class="filter-btn" [class.active]="!category()"
+                            [attr.aria-pressed]="!category()" (click)="selectCategory('')">Всички</button>
+                    @for (cat of categories(); track cat.id) {
+                      <button class="filter-btn" [class.active]="category() === cat.slug"
+                              [attr.aria-pressed]="category() === cat.slug"
+                              (click)="selectCategory(cat.slug)">{{ cat.name }}</button>
+                    }
+                  </div>
+                </div>
+              }
+
               <div class="filter-group">
-                <span class="filter-label">Категории</span>
-                <div class="filter-list" role="group" aria-label="Категории">
-                  <button class="filter-btn" [class.active]="!category()"
-                          [attr.aria-pressed]="!category()" (click)="selectCategory('')">Всички</button>
-                  @for (cat of categories(); track cat.id) {
-                    <button class="filter-btn" [class.active]="category() === cat.slug"
-                            [attr.aria-pressed]="category() === cat.slug"
-                            (click)="selectCategory(cat.slug)">{{ cat.name }}</button>
-                  }
+                <span class="filter-label">Трудност</span>
+                <div class="filter-list" role="group" aria-label="Трудност">
+                  <button class="filter-btn" [class.active]="!difficulty()"
+                          [attr.aria-pressed]="!difficulty()" (click)="selectDifficulty('')">Всяка трудност</button>
+                  <button class="filter-btn filter-easy" [class.active]="difficulty() === 'Лесно'"
+                          [attr.aria-pressed]="difficulty() === 'Лесно'" (click)="selectDifficulty('Лесно')">Лесно</button>
+                  <button class="filter-btn filter-medium" [class.active]="difficulty() === 'Средно'"
+                          [attr.aria-pressed]="difficulty() === 'Средно'" (click)="selectDifficulty('Средно')">Средно</button>
+                  <button class="filter-btn filter-hard" [class.active]="difficulty() === 'За напреднали'"
+                          [attr.aria-pressed]="difficulty() === 'За напреднали'" (click)="selectDifficulty('За напреднали')">За напреднали</button>
                 </div>
               </div>
-            }
 
-            <div class="filter-group">
-              <span class="filter-label">Трудност</span>
-              <div class="filter-list" role="group" aria-label="Трудност">
-                <button class="filter-btn" [class.active]="!difficulty()"
-                        [attr.aria-pressed]="!difficulty()" (click)="selectDifficulty('')">Всяка трудност</button>
-                <button class="filter-btn filter-easy" [class.active]="difficulty() === 'Лесно'"
-                        [attr.aria-pressed]="difficulty() === 'Лесно'" (click)="selectDifficulty('Лесно')">Лесно</button>
-                <button class="filter-btn filter-medium" [class.active]="difficulty() === 'Средно'"
-                        [attr.aria-pressed]="difficulty() === 'Средно'" (click)="selectDifficulty('Средно')">Средно</button>
-                <button class="filter-btn filter-hard" [class.active]="difficulty() === 'За напреднали'"
-                        [attr.aria-pressed]="difficulty() === 'За напреднали'" (click)="selectDifficulty('За напреднали')">За напреднали</button>
+              <div class="filter-group">
+                <span class="filter-label">Сортиране</span>
+                <div class="filter-list" role="group" aria-label="Сортиране">
+                  <button class="filter-btn" [class.active]="sort() === 'newest'"
+                          [attr.aria-pressed]="sort() === 'newest'" (click)="selectSort('newest')">Най-нови</button>
+                  <button class="filter-btn" [class.active]="sort() === 'fastest'"
+                          [attr.aria-pressed]="sort() === 'fastest'" (click)="selectSort('fastest')">Най-бързи</button>
+                  <button class="filter-btn" [class.active]="sort() === 'easiest'"
+                          [attr.aria-pressed]="sort() === 'easiest'" (click)="selectSort('easiest')">Най-лесни</button>
+                </div>
               </div>
-            </div>
 
-            <div class="filter-group">
-              <span class="filter-label">Сортиране</span>
-              <div class="filter-list" role="group" aria-label="Сортиране">
-                <button class="filter-btn" [class.active]="sort() === 'newest'"
-                        [attr.aria-pressed]="sort() === 'newest'" (click)="selectSort('newest')">Най-нови</button>
-                <button class="filter-btn" [class.active]="sort() === 'fastest'"
-                        [attr.aria-pressed]="sort() === 'fastest'" (click)="selectSort('fastest')">Най-бързи</button>
-                <button class="filter-btn" [class.active]="sort() === 'easiest'"
-                        [attr.aria-pressed]="sort() === 'easiest'" (click)="selectSort('easiest')">Най-лесни</button>
-              </div>
             </div>
 
             @if (category() || difficulty() || (sort() && sort() !== 'newest') || q()) {
@@ -297,6 +301,9 @@ import { PerfService } from '../../services/perf.service';
     .search-clear svg { width: 0.82rem; height: 0.82rem; }
     .search-clear:hover { color: var(--clr-text); }
 
+    /* filters-row: transparent on desktop so groups flow directly in sidebar flex */
+    .filters-row { display: contents; }
+
     /* Filter groups */
     .filter-group {
       display: flex;
@@ -506,7 +513,7 @@ import { PerfService } from '../../services/perf.service';
       .recipe-grid { grid-template-columns: repeat(4, 1fr); }
     }
 
-    /* ── Tablet: collapse sidebar to horizontal pills ── */
+    /* ── Tablet: sidebar → stacked pill rows ────────── */
     @media (max-width: 960px) {
       .recipes-layout { grid-template-columns: 1fr; gap: var(--space-4); }
 
@@ -518,6 +525,11 @@ import { PerfService } from '../../services/perf.service';
         border: none;
         box-shadow: none;
         padding: 0;
+        flex-direction: column;
+        gap: var(--space-3);
+      }
+
+      .filters-row {
         display: flex;
         flex-direction: column;
         gap: var(--space-3);
@@ -558,21 +570,39 @@ import { PerfService } from '../../services/perf.service';
       .recipe-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
-    /* ── Mobile ──────────────────────────────────── */
+    /* ── Mobile: one unified horizontal scroll row ── */
     @media (max-width: 640px) {
       .recipe-grid { grid-template-columns: 1fr; }
+      .search-input { font-size: 1rem; }
 
-      .filter-list {
+      /* All three filter groups merge into a single scrollable strip */
+      .filters-row {
+        flex-direction: row;
         flex-wrap: nowrap;
         overflow-x: auto;
         scroll-snap-type: x mandatory;
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
+        gap: 0;
         padding-bottom: var(--space-1);
       }
-      .filter-list::-webkit-scrollbar { display: none; }
+      .filters-row::-webkit-scrollbar { display: none; }
+
+      .filter-group {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        flex-shrink: 0;
+        gap: var(--space-2);
+        padding-right: var(--space-3);
+        align-items: center;
+      }
+      .filter-group + .filter-group {
+        padding-left: var(--space-3);
+        border-left: 1px solid var(--clr-border);
+      }
+
+      .filter-list { flex-wrap: nowrap; overflow: visible; gap: var(--space-2); }
       .filter-btn { scroll-snap-align: start; flex-shrink: 0; min-height: 2.75rem; }
-      .search-input { font-size: 1rem; }
     }
 
     @media (max-width: 420px) {
