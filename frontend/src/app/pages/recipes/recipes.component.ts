@@ -581,13 +581,19 @@ import { PerfService } from '../../services/perf.service';
       .search-input { font-size: 1rem; }
 
       /* Each filter group is its own independent horizontal scroll row.
-         Keeps categories / difficulty / sort discoverable without one
-         giant strip where later groups are invisible off-screen. */
+         overflow-x lives on filter-list (a block-level flex container)
+         so buttons overflow it naturally; the group wrapper is invisible. */
       .filters-row { flex-direction: column; overflow: visible; gap: var(--space-2); }
-      .filter-group { overflow-x: auto; scrollbar-width: none; flex-wrap: nowrap; width: 100%; flex-shrink: 1; }
-      .filter-group::-webkit-scrollbar { display: none; }
-      .filter-list { flex-wrap: nowrap; min-width: max-content; }
-      .filter-btn { flex-shrink: 0; min-height: 2.75rem; }
+      .filter-group { overflow: visible; width: 100%; flex-wrap: wrap; }
+      .filter-list {
+        overflow-x: auto;
+        scrollbar-width: none;
+        flex-wrap: nowrap;
+        width: 100%;
+        padding-bottom: 2px;
+      }
+      .filter-list::-webkit-scrollbar { display: none; }
+      .filter-btn { flex-shrink: 0; min-height: 2.5rem; }
 
       .recipe-grid { grid-template-columns: 1fr; }
     }

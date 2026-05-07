@@ -367,6 +367,46 @@ import { Recipe } from '../../models/models';
       .card.compact .card-body { padding: var(--space-3); }
       .card.compact .title { font-size: 0.875rem; }
     }
+
+    /* Mobile: horizontal row card — compact, shows more cards above the fold */
+    @media (max-width: 640px) {
+      .card:not(.overlay):not(.compact) {
+        display: flex;
+        flex-direction: row;
+        min-height: 0;
+      }
+      .card:not(.overlay):not(.compact) .card-image {
+        width: 128px;
+        aspect-ratio: unset;
+        min-height: 100%;
+        flex-shrink: 0;
+      }
+      .card:not(.overlay):not(.compact) .card-body {
+        padding: var(--space-3) var(--space-4);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-width: 0;
+      }
+      .card:not(.overlay):not(.compact) .title {
+        font-size: 1rem;
+        margin-bottom: var(--space-1);
+        -webkit-line-clamp: 2;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      .card:not(.overlay):not(.compact) .excerpt { display: none; }
+      .card:not(.overlay):not(.compact) .meta {
+        margin-top: var(--space-2);
+        padding-top: var(--space-2);
+        font-size: 0.72rem;
+        gap: var(--space-2);
+        flex-wrap: wrap;
+      }
+      .card:not(.overlay):not(.compact) .card-overlay,
+      .card:not(.overlay):not(.compact) .mobile-label { display: none; }
+    }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
