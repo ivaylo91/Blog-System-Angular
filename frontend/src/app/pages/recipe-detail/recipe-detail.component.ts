@@ -784,6 +784,10 @@ import { SeoService } from '../../services/seo.service';
 
     /* ── INGREDIENTS COLUMN ───────────────────────────────────── */
     .ingredients-col {
+      --tc-bg:    oklch(24% 0.07 42);
+      --tc-soft:  oklch(36% 0.06 42);
+      --tc-hover: oklch(30% 0.08 42);
+      --tc-ring:  oklch(52% 0.09 52);
       background: var(--tc-bg);
       border-radius: 1.25rem;
       padding: 1.5rem;
@@ -1100,7 +1104,6 @@ import { SeoService } from '../../services/seo.service';
     }
     @media (max-width: 768px) {
       .jump-nav { top: 3.5rem; }
-      .recipe-meta-bar { flex-wrap: wrap; }
     }
     @media (max-width: 640px) {
       .hero-banner { min-height: 380px; }
@@ -1110,7 +1113,22 @@ import { SeoService } from '../../services/seo.service';
       .jump-link { flex: 1; justify-content: center; padding: 0.75rem 0.4rem; font-size: 0.72rem; gap: 0.25rem; }
       .jump-sep { display: none; }
       .related-grid { grid-template-columns: 1fr; }
-      .meta-item { padding: 0.75rem 0.5rem; }
+      /* Share bar: hide label so 6 buttons fit in one row */
+      .share-label { display: none; }
+      /* Meta bar: switch to 2-column grid — separators in DOM can't wrap cleanly */
+      .meta-sep { display: none; }
+      .recipe-meta-bar { display: grid; grid-template-columns: 1fr 1fr; }
+      .meta-item { padding: 0.85rem 0.5rem; }
+      /* Grid dividers: right border on col-1 cells (DOM pos 1 & 5), bottom border on row-1 cells (pos 1 & 3) */
+      .meta-item:nth-child(1),
+      .meta-item:nth-child(5) { border-right: 1px solid var(--tc-soft); }
+      .meta-item:nth-child(1),
+      .meta-item:nth-child(3) { border-bottom: 1px solid var(--tc-soft); }
+    }
+    @media (max-width: 380px) {
+      .hero-title-script { font-size: 1.8rem; }
+      .share-btn { width: 2.25rem; height: 2.25rem; }
+      .share-bar { gap: 0.3rem; }
     }
     @media (max-width: 380px) {
       .hero-title-script { font-size: 1.8rem; }
