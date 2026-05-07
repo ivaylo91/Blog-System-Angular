@@ -129,6 +129,7 @@ import { ThemeService } from '../../services/theme.service';
             Изход
           </button>
         } @else {
+          <a routerLink="/signin" class="drawer-signin" (click)="close()">Вход</a>
           <a routerLink="/register" class="drawer-register" (click)="close()">Регистрация</a>
         }
       </div>
