@@ -790,6 +790,7 @@ import { SeoService } from '../../services/seo.service';
       scroll-margin-top: 8rem;
     }
     .ingredients-col .col-heading {
+      color: oklch(100% 0 0);
       border-bottom-color: var(--tc-soft);
     }
 
