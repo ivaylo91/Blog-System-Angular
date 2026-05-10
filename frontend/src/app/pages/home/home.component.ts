@@ -373,6 +373,14 @@ import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.co
       .hero-visual { display: none; }
       .recipe-grid { grid-template-columns: repeat(2, 1fr); }
     }
+    @media (max-width: 640px) {
+      .cat-pill {
+        padding: 0.55rem 1rem;
+        min-height: 2.75rem;
+        display: inline-flex;
+        align-items: center;
+      }
+    }
     @media (max-width: 580px) {
       .recipe-grid { grid-template-columns: 1fr; }
     }

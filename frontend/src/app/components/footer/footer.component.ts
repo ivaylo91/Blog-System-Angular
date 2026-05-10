@@ -251,6 +251,8 @@ import { AuthService } from '../../services/auth.service';
       .footer-nav    { grid-column: 1; grid-row: auto; gap: 2rem; flex-wrap: wrap; }
       .footer-social { grid-column: 1; grid-row: auto; flex-direction: row; align-items: center; gap: 1rem; }
       .social-list   { flex-direction: row; }
+      /* Touch-friendly social buttons */
+      .social-btn { width: 2.75rem; height: 2.75rem; }
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,

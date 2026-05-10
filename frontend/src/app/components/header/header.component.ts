@@ -561,22 +561,23 @@ import { ThemeService } from '../../services/theme.service';
       .masthead { display: grid; }
     }
 
-    /* ── Mobile: collapse masthead ── */
+    /* ── Mobile: compact header — drawer handles nav + auth ── */
     @media (max-width: 899px) {
       .masthead {
         grid-template-columns: 1fr;
         justify-items: center;
-        padding: 3rem 1.5rem 0.6rem;
-        gap: 0.5rem;
+        padding: 0.75rem 1.5rem 0.625rem;
+        gap: 0.1rem;
       }
-      .stamp { display: none; }
-      .masthead-right {
-        justify-content: center;
-        margin-top: 0.25rem;
-      }
+      .stamp         { display: none; }
+      .masthead-right { display: none; }   /* drawer handles auth */
+      .nav-rail       { display: none; }   /* drawer handles nav */
+      .wordmark-by   { font-size: 0.7rem; margin-bottom: 0; }
+      .wordmark-name { font-size: 1.85rem; }
+      .wordmark-rule { display: none; }
     }
-    @media (max-width: 640px) {
-      .nav-rail ul { gap: 1rem; padding: 0.5rem 1rem; font-size: 0.65rem; }
+    @media (max-width: 480px) {
+      .wordmark-name { font-size: 1.65rem; }
     }
 
     @media (prefers-reduced-motion: reduce) {

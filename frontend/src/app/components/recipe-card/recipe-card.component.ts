@@ -320,6 +320,10 @@ import { Recipe } from '../../models/models';
       .overlay-btn { transition: opacity 0.15s; transform: none !important; }
     }
 
+    @media (max-width: 640px) {
+      .meta { font-size: 0.72rem; gap: 0.6rem; }
+      .meta-item svg { width: 0.75rem; height: 0.75rem; }
+    }
     @media (max-width: 500px) {
       .card.compact .card-image { width: 80px; }
       .card.compact .card-body { padding-left: 0.75rem; }
