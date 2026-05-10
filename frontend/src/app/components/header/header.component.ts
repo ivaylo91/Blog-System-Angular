@@ -48,7 +48,7 @@ import { ThemeService } from '../../services/theme.service';
             </button>
           } @else {
             <a routerLink="/signin" class="signin-link">вход</a>
-            <a routerLink="/register" class="register-btn">тефтер</a>
+            <a routerLink="/register" class="register-btn">регистрация</a>
           }
         </div>
       </div>
