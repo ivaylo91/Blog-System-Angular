@@ -8,51 +8,63 @@ import { ThemeService } from '../../services/theme.service';
   standalone: true,
   imports: [RouterLink, RouterLinkActive],
   template: `
-    <header class="site-header" [class.scrolled]="scrolled()">
-      <div class="header-inner">
+    <header class="site-header">
 
-        <button class="mobile-toggle" (click)="openDrawer()"
-                aria-label="Отвори менюто" [attr.aria-expanded]="drawerOpen()">
-          <span class="hamburger"></span>
-        </button>
+      <!-- Mobile hamburger (only shown on small screens) -->
+      <button class="mobile-toggle" (click)="openDrawer()"
+              aria-label="Отвори менюто" [attr.aria-expanded]="drawerOpen()">
+        <span class="hamburger"></span>
+      </button>
 
-        <a routerLink="/" class="brand">
-          <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l1.5-7.5A2 2 0 0 1 6.46 2h11.08a2 2 0 0 1 1.96 1.5L21 11"/><path d="M3 11h18v2a7 7 0 0 1-14 0H3z"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="17" x2="12" y2="20"/></svg>
-          <span class="brand-text">Кулинарният блог на Иво</span>
+      <!-- ── Masthead: three-column newspaper layout ── -->
+      <div class="masthead">
+
+        <!-- Left: typewriter date stamp -->
+        <div class="stamp" aria-hidden="true">
+          <div>том III · стр. 247</div>
+          <div>всекидневна кухня</div>
+        </div>
+
+        <!-- Center: wordmark -->
+        <a routerLink="/" class="wordmark">
+          <span class="wordmark-by">Кулинарният блог на</span>
+          <span class="wordmark-name">Иво</span>
+          <span class="wordmark-rule">
+            <span class="rule-line"></span>
+            всекидневна кухня
+            <span class="rule-line"></span>
+          </span>
         </a>
 
-        <nav class="nav-links">
-          <div class="nav-main">
-            <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Начало</a>
-            <a routerLink="/recipes" routerLinkActive="active">Рецепти</a>
-            <a routerLink="/categories" routerLinkActive="active">Категории</a>
-            @if (auth.isAuthenticated()) {
-              <a routerLink="/dashboard" routerLinkActive="active">Табло</a>
-              <a routerLink="/profile" routerLinkActive="active">Профил</a>
-            }
-          </div>
-          <div class="nav-auth">
-            <button class="theme-toggle" (click)="theme.toggle()"
-                    [attr.aria-label]="theme.isDark() ? 'Включи светъл режим' : 'Включи тъмен режим'"
-                    [attr.aria-pressed]="theme.isDark()">
-              @if (theme.isDark()) {
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-              } @else {
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-              }
+        <!-- Right: auth -->
+        <div class="masthead-right">
+          @if (auth.isAuthenticated()) {
+            <button class="avatar-btn" routerLink="/dashboard" [title]="auth.user()?.email || ''">
+              {{ userInitial() }}
             </button>
-            @if (auth.isAuthenticated()) {
-              <button class="logout-btn" (click)="auth.logout()">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-                Изход
-              </button>
-            } @else {
-              <a routerLink="/signin" routerLinkActive="active" class="signin-link">Вход</a>
-              <a routerLink="/register" routerLinkActive="active" class="register-btn">Регистрация</a>
-            }
-          </div>
-        </nav>
+            <button class="logout-btn" (click)="auth.logout()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              Изход
+            </button>
+          } @else {
+            <a routerLink="/signin" class="signin-link">вход</a>
+            <a routerLink="/register" class="register-btn">тефтер</a>
+          }
+        </div>
       </div>
+
+      <!-- ── Navigation rail ── -->
+      <nav class="nav-rail" aria-label="Основна навигация">
+        <ul>
+          <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Начало</a></li>
+          <li><a routerLink="/recipes" routerLinkActive="active">Рецепти</a></li>
+          <li><a routerLink="/categories" routerLinkActive="active">Категории</a></li>
+          @if (auth.isAuthenticated()) {
+            <li><a routerLink="/dashboard" routerLinkActive="active">Табло</a></li>
+            <li><a routerLink="/profile" routerLinkActive="active">Профил</a></li>
+          }
+        </ul>
+      </nav>
     </header>
 
     <div class="drawer-overlay" [class.visible]="drawerOpen()" (click)="close()" aria-hidden="true"></div>
@@ -136,147 +148,37 @@ import { ThemeService } from '../../services/theme.service';
     </div>
   `,
   styles: [`
+    /* ── Site header — warm paper with red margin line ── */
     .site-header {
       position: sticky;
       top: 0;
       z-index: var(--z-sticky);
-      background: var(--clr-surface);
-      border-bottom: 1px solid var(--clr-border-faint);
-      transition: box-shadow 0.28s var(--ease-out-expo), border-color 0.28s var(--ease-out-expo);
+      background: var(--paper);
+      border-left: 3px solid var(--pencil-red);
     }
-    .site-header.scrolled {
-      box-shadow: 0 1px 0 var(--clr-border-faint), 0 4px 20px rgba(26,20,14,0.06);
-      border-bottom-color: var(--clr-border);
-    }
-    .header-inner {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 0 1.5rem;
-      height: 3.75rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-    }
-    .site-header.scrolled .header-inner { height: 3.25rem; }
 
-    /* Brand */
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      text-decoration: none;
-      flex-shrink: 0;
-    }
-    .brand-icon { width: 1.75rem; height: 1.75rem; flex-shrink: 0; color: var(--clr-brand); }
-    .brand-text {
-      font-family: var(--font-display);
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: var(--clr-text);
-      letter-spacing: -0.01em;
-      white-space: nowrap;
-      transition: color 0.2s;
-    }
-    .brand:hover .brand-text { color: var(--clr-brand); }
-
-    .nav-links { display: flex; align-items: center; gap: 0.25rem; }
-    .nav-main { display: none; }
-    .nav-auth { display: flex; align-items: center; gap: 0.35rem; }
-
-    .nav-links a:not(.register-btn) {
-      padding: 0.4rem 0.85rem;
-      border-radius: var(--radius-pill);
-      text-decoration: none;
-      font-size: 0.875rem;
-      font-weight: 500;
-      color: var(--clr-text-muted);
-      transition: background 0.16s, color 0.16s;
-      white-space: nowrap;
-      min-height: 2.25rem;
-      display: flex;
-      align-items: center;
-    }
-    .nav-links a:not(.register-btn):hover { background: var(--clr-surface-hover); color: var(--clr-text); }
-    .nav-links a:not(.register-btn).active { background: var(--clr-surface-active); color: var(--clr-brand); font-weight: 600; }
-
-    .register-btn {
-      display: flex;
-      align-items: center;
-      padding: 0.4rem 1rem;
-      border-radius: var(--radius-pill);
-      text-decoration: none;
-      white-space: nowrap;
-      min-height: 2.25rem;
-      background: var(--clr-brand);
-      color: oklch(100% 0 0);
-      font-weight: 600;
-      font-size: 0.875rem;
-      transition: background 0.18s var(--ease-out-expo), transform 0.15s var(--ease-out-expo);
-    }
-    .register-btn:hover { background: var(--clr-brand-dark); transform: translateY(-1px); }
-    .register-btn:active { transform: translateY(0); }
-    .register-btn.active { background: var(--clr-brand); }
-
-    .logout-btn {
-      display: flex;
-      align-items: center;
-      gap: 0.35rem;
-      padding: 0.4rem 0.85rem;
-      border-radius: var(--radius-pill);
-      border: none;
-      background: none;
-      font-size: 0.875rem;
-      font-weight: 500;
-      color: var(--clr-error);
-      cursor: pointer;
-      transition: background 0.16s;
-      white-space: nowrap;
-      min-height: 2.25rem;
-      touch-action: manipulation;
-    }
-    .logout-btn svg { width: 0.9rem; height: 0.9rem; }
-    .logout-btn:hover { background: var(--clr-error-bg); color: var(--clr-error-dark); }
-
-    .theme-toggle {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 2.25rem;
-      height: 2.25rem;
-      border: none;
-      background: none;
-      border-radius: var(--radius-circle);
-      color: var(--clr-text-muted);
-      cursor: pointer;
-      transition: background 0.16s, color 0.16s;
-      touch-action: manipulation;
-      flex-shrink: 0;
-    }
-    .theme-toggle svg { width: 1rem; height: 1rem; }
-    .theme-toggle:hover { background: var(--clr-surface-hover); color: var(--clr-text); }
-
+    /* ── Mobile hamburger ── */
     .mobile-toggle {
       display: flex;
+      position: absolute;
+      top: 0.75rem;
+      left: 1rem;
       background: none;
       border: none;
       padding: 0.5rem;
       cursor: pointer;
-      border-radius: var(--radius-xs);
-      transition: background 0.16s;
       min-width: 2.75rem;
       min-height: 2.75rem;
       align-items: center;
       justify-content: center;
       touch-action: manipulation;
-      order: -1;
+      z-index: 2;
     }
-    .mobile-toggle:hover { background: var(--clr-surface-hover); }
     .hamburger {
       display: block;
       width: 1.2rem;
       height: 1.5px;
-      background: var(--clr-text);
+      background: var(--ink);
       position: relative;
     }
     .hamburger::before, .hamburger::after {
@@ -285,25 +187,189 @@ import { ThemeService } from '../../services/theme.service';
       left: 0;
       width: 100%;
       height: 1.5px;
-      background: var(--clr-text);
+      background: var(--ink);
     }
     .hamburger::before { top: -5px; }
     .hamburger::after  { top: 5px; }
 
-    /* Drawer overlay */
+    /* ── Masthead (three-column) ── */
+    .masthead {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 1.5rem;
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 1.4rem 2rem 0.6rem;
+    }
+
+    /* Left stamp */
+    .stamp {
+      font-family: var(--font-type);
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      color: var(--ink-mute);
+      text-transform: uppercase;
+      line-height: 1.6;
+    }
+
+    /* Center wordmark */
+    .wordmark {
+      text-decoration: none;
+      color: inherit;
+      text-align: center;
+      display: block;
+    }
+    .wordmark-by {
+      display: block;
+      font-family: var(--font-hand);
+      font-size: 1.05rem;
+      color: var(--pencil-red);
+      transform: rotate(-2deg);
+      display: inline-block;
+      margin-bottom: 0.1rem;
+    }
+    .wordmark-name {
+      display: block;
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 700;
+      font-size: clamp(2.6rem, 5vw, 3.5rem);
+      letter-spacing: -0.01em;
+      line-height: 0.95;
+      color: var(--ink);
+    }
+    .wordmark-rule {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.625rem;
+      margin-top: 0.375rem;
+      font-family: var(--font-type);
+      font-size: 0.62rem;
+      letter-spacing: 0.3em;
+      color: var(--ink-mute);
+      text-transform: uppercase;
+    }
+    .rule-line {
+      display: inline-block;
+      height: 1px;
+      width: 2.25rem;
+      background: var(--rule-strong);
+    }
+
+    /* Right: auth */
+    .masthead-right {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 0.625rem;
+    }
+    .avatar-btn {
+      width: 2.375rem;
+      height: 2.375rem;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #c8703f, #6b7a3a);
+      color: var(--paper);
+      border: 2px solid var(--paper);
+      box-shadow: 0 0 0 1px var(--rule-strong);
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      text-transform: uppercase;
+    }
+    .signin-link {
+      background: transparent;
+      border: none;
+      font-family: var(--font-type);
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      cursor: pointer;
+      padding: 0.5rem 0.25rem;
+      text-decoration: none;
+    }
+    .signin-link:hover { color: var(--terracotta); }
+    .register-btn {
+      background: var(--ink);
+      color: var(--paper);
+      border: none;
+      padding: 0.55rem 0.875rem;
+      font-family: var(--font-type);
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.18s;
+    }
+    .register-btn:hover { background: var(--terracotta-2); }
+    .logout-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      background: transparent;
+      border: none;
+      font-family: var(--font-type);
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--pencil-red);
+      cursor: pointer;
+      padding: 0.5rem 0.25rem;
+    }
+    .logout-btn svg { width: 0.8rem; height: 0.8rem; }
+    .logout-btn:hover { color: var(--terracotta-2); }
+
+    /* ── Navigation rail ── */
+    .nav-rail {
+      border-top: 1px solid var(--rule-strong);
+      border-bottom: 2px double var(--rule-strong);
+      background: rgba(255, 245, 215, .35);
+    }
+    .nav-rail ul {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0.625rem 2rem;
+      list-style: none;
+      display: flex;
+      gap: 1.75rem;
+      justify-content: center;
+    }
+    .nav-rail a {
+      text-decoration: none;
+      font-family: var(--font-type);
+      font-size: 0.75rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      padding-bottom: 0.25rem;
+      border-bottom: 2px solid transparent;
+      transition: color 0.2s;
+    }
+    .nav-rail a:hover { color: var(--terracotta-2); }
+    .nav-rail a.active {
+      color: var(--terracotta-2);
+      border-bottom-color: var(--terracotta);
+    }
+
+    /* ── Drawer overlay ── */
     .drawer-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.45);
+      background: rgba(42, 34, 26, 0.55);
       z-index: var(--z-overlay);
-      backdrop-filter: blur(2px);
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.26s var(--ease-out-expo);
     }
     .drawer-overlay.visible { opacity: 1; pointer-events: auto; }
 
-    /* Drawer */
+    /* ── Mobile drawer ── */
     .mobile-drawer {
       display: flex;
       position: fixed;
@@ -313,12 +379,13 @@ import { ThemeService } from '../../services/theme.service';
       max-width: 85vw;
       height: 100vh;
       height: 100dvh;
-      background: var(--clr-surface);
+      background: var(--paper);
+      border-right: 3px solid var(--pencil-red);
       z-index: var(--z-drawer);
       flex-direction: column;
       transform: translateX(-100%);
       transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
-      box-shadow: 2px 0 32px rgba(26, 20, 14, 0.16);
+      box-shadow: 4px 0 32px rgba(42, 34, 26, 0.18);
       overflow-y: auto;
     }
     .mobile-drawer.open { transform: translateX(0); }
@@ -328,7 +395,7 @@ import { ThemeService } from '../../services/theme.service';
       align-items: center;
       justify-content: space-between;
       padding: 1rem 0.75rem 1rem 1.25rem;
-      border-bottom: 1px solid var(--clr-border-faint);
+      border-bottom: 1px solid var(--rule-strong);
       flex-shrink: 0;
     }
     .drawer-header-actions { display: flex; align-items: center; gap: 0.25rem; }
@@ -338,19 +405,18 @@ import { ThemeService } from '../../services/theme.service';
       gap: 0.5rem;
       text-decoration: none;
       font-family: var(--font-display);
-      font-size: 0.95rem;
+      font-style: italic;
+      font-size: 1.1rem;
       font-weight: 700;
-      color: var(--clr-text);
+      color: var(--ink);
     }
-    .drawer-brand svg { width: 1.3rem; height: 1.3rem; color: var(--clr-brand); flex-shrink: 0; }
     .drawer-close {
       background: none;
       border: none;
       cursor: pointer;
       padding: 0.4rem;
-      border-radius: var(--radius-xs);
-      color: var(--clr-text-muted);
-      transition: background 0.16s, color 0.16s;
+      color: var(--ink-mute);
+      transition: color 0.16s;
       min-width: 2.25rem;
       min-height: 2.25rem;
       display: flex;
@@ -359,7 +425,7 @@ import { ThemeService } from '../../services/theme.service';
       touch-action: manipulation;
     }
     .drawer-close svg { width: 1rem; height: 1rem; }
-    .drawer-close:hover { background: var(--clr-surface-hover); color: var(--clr-text); }
+    .drawer-close:hover { color: var(--ink); }
 
     .drawer-user {
       display: flex;
@@ -368,13 +434,15 @@ import { ThemeService } from '../../services/theme.service';
       padding: 1rem 1.25rem;
     }
     .drawer-avatar {
-      width: 2.25rem;
-      height: 2.25rem;
-      border-radius: var(--radius-circle);
-      background: var(--clr-brand);
-      color: oklch(100% 0 0);
-      font-size: 0.9rem;
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #c8703f, #6b7a3a);
+      color: var(--paper);
+      font-family: var(--font-display);
+      font-style: italic;
       font-weight: 700;
+      font-size: 1.1rem;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -383,26 +451,29 @@ import { ThemeService } from '../../services/theme.service';
     }
     .drawer-user-info { display: flex; flex-direction: column; gap: 0.1rem; min-width: 0; }
     .drawer-user-name {
-      font-size: 0.875rem;
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 1rem;
       font-weight: 600;
-      color: var(--clr-text);
+      color: var(--ink);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
     .drawer-user-role {
-      font-size: 0.68rem;
-      color: var(--clr-text-faint);
+      font-family: var(--font-type);
+      font-size: 0.6rem;
+      color: var(--ink-mute);
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.15em;
     }
 
-    .drawer-sep { height: 1px; background: var(--clr-border-faint); margin: 0 1.25rem; }
+    .drawer-sep { height: 1px; background: var(--rule); margin: 0 1.25rem; }
 
     .drawer-nav {
       display: flex;
       flex-direction: column;
-      padding: 0.5rem;
+      padding: 0.75rem 0.5rem;
       flex: 1;
       gap: 0.1rem;
     }
@@ -410,24 +481,26 @@ import { ThemeService } from '../../services/theme.service';
       display: flex;
       align-items: center;
       gap: 0.75rem;
-      padding: 0.7rem 0.75rem;
-      border-radius: var(--radius-sm);
+      padding: 0.75rem 0.875rem;
       text-decoration: none;
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: var(--clr-text);
+      font-family: var(--font-type);
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
       transition: background 0.16s, color 0.16s;
       touch-action: manipulation;
       min-height: 2.75rem;
+      border-bottom: 1px dashed transparent;
     }
-    .drawer-item svg { width: 1.05rem; height: 1.05rem; flex-shrink: 0; color: var(--clr-text-muted); }
-    .drawer-item:hover { background: var(--clr-surface-hover); }
-    .drawer-item.active { background: var(--clr-surface-active); color: var(--clr-brand); font-weight: 600; }
-    .drawer-item.active svg { color: var(--clr-brand); }
+    .drawer-item svg { width: 1rem; height: 1rem; flex-shrink: 0; color: var(--ink-mute); }
+    .drawer-item:hover { background: var(--clr-surface-hover); color: var(--ink); }
+    .drawer-item.active { color: var(--terracotta-2); border-bottom-color: var(--rule); }
+    .drawer-item.active svg { color: var(--terracotta); }
 
     .drawer-footer {
-      padding: 0.75rem;
-      border-top: 1px solid var(--clr-border-faint);
+      padding: 0.875rem;
+      border-top: 1px solid var(--rule-strong);
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
@@ -437,73 +510,75 @@ import { ThemeService } from '../../services/theme.service';
       display: flex;
       align-items: center;
       gap: 0.75rem;
-      padding: 0.7rem 0.75rem;
-      border-radius: var(--radius-sm);
+      padding: 0.7rem 0.875rem;
       border: none;
       background: none;
       width: 100%;
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: var(--clr-error);
+      font-family: var(--font-type);
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--pencil-red);
       cursor: pointer;
       touch-action: manipulation;
       min-height: 2.75rem;
       transition: background 0.16s;
     }
-    .drawer-logout svg { width: 1.05rem; height: 1.05rem; flex-shrink: 0; }
+    .drawer-logout svg { width: 1rem; height: 1rem; flex-shrink: 0; }
     .drawer-logout:hover { background: var(--clr-error-bg); }
 
     .drawer-signin {
       display: block;
       padding: 0.7rem 1rem;
-      border-radius: var(--radius-sm);
       text-decoration: none;
       text-align: center;
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: var(--clr-text-muted);
-      transition: background 0.16s;
+      font-family: var(--font-type);
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      transition: color 0.16s;
     }
-    .drawer-signin:hover { background: var(--clr-surface-hover); }
+    .drawer-signin:hover { color: var(--terracotta); }
     .drawer-register {
       display: block;
       padding: 0.7rem 1rem;
-      border-radius: var(--radius-sm);
       text-decoration: none;
       text-align: center;
-      font-size: 0.9rem;
-      font-weight: 600;
-      background: var(--clr-brand);
-      color: oklch(100% 0 0);
-      transition: background 0.18s var(--ease-out-expo);
+      font-family: var(--font-type);
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      background: var(--ink);
+      color: var(--paper);
+      transition: background 0.18s;
     }
-    .drawer-register:hover { background: var(--clr-brand-dark); }
+    .drawer-register:hover { background: var(--terracotta-2); }
 
-    /* Desktop: reveal main nav, hide hamburger */
+    /* ── Desktop: hide hamburger, show masthead ── */
     @media (min-width: 900px) {
       .mobile-toggle { display: none; }
-      .nav-main {
-        display: flex;
-        align-items: center;
-        gap: 0.15rem;
-        margin-right: 0.5rem;
-      }
-      .nav-auth { display: flex; }
+      .masthead { display: grid; }
     }
 
-    /* Mobile: keep theme toggle visible in the header bar; hide auth links */
+    /* ── Mobile: collapse masthead ── */
+    @media (max-width: 899px) {
+      .masthead {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        padding: 3rem 1.5rem 0.6rem;
+        gap: 0.5rem;
+      }
+      .stamp { display: none; }
+      .masthead-right {
+        justify-content: center;
+        margin-top: 0.25rem;
+      }
+    }
     @media (max-width: 640px) {
-      .nav-auth .signin-link,
-      .nav-auth .register-btn,
-      .nav-auth .logout-btn { display: none; }
+      .nav-rail ul { gap: 1rem; padding: 0.5rem 1rem; font-size: 0.65rem; }
     }
-    @media (max-width: 400px) {
-      .brand-text { font-size: 0.88rem; max-width: 150px; overflow: hidden; text-overflow: ellipsis; }
-      .header-inner { padding: 0 1rem; }
-    }
-    @media (max-width: 360px) {
-      .brand-text { display: none; }
-    }
+
     @media (prefers-reduced-motion: reduce) {
       .mobile-drawer, .drawer-overlay { transition: none; }
     }

@@ -403,32 +403,14 @@ import { SeoService } from '../../services/seo.service';
     }
   `,
   styles: [`
-    /* ── TERRACOTTA TOKENS — adapt to dark mode ───────────────── */
+    /* ── TERRACOTTA TOKENS ─────────────────────────────────────── */
     :host {
-      --tc:       oklch(42% 0.10 52);  /* text / accent */
-      --tc-bg:    oklch(92% 0.038 70); /* warm beige surface */
-      --tc-mid:   oklch(50% 0.12 52);  /* interactive elements */
-      --tc-soft:  oklch(82% 0.05 60);  /* dividers & borders */
-      --tc-hover: oklch(88% 0.045 68); /* hover surface */
-      --tc-ring:  oklch(60% 0.08 52);  /* unchecked circle border */
-    }
-    @media (prefers-color-scheme: dark) {
-      :host {
-        --tc:       oklch(72% 0.08 52);
-        --tc-bg:    oklch(18% 0.028 55);
-        --tc-mid:   oklch(65% 0.10 52);
-        --tc-soft:  oklch(30% 0.04 55);
-        --tc-hover: oklch(24% 0.03 55);
-        --tc-ring:  oklch(52% 0.07 52);
-      }
-    }
-    :host-context(html.dark) {
-      --tc:       oklch(72% 0.08 52);
-      --tc-bg:    oklch(18% 0.028 55);
-      --tc-mid:   oklch(65% 0.10 52);
-      --tc-soft:  oklch(30% 0.04 55);
-      --tc-hover: oklch(24% 0.03 55);
-      --tc-ring:  oklch(52% 0.07 52);
+      --tc:       var(--terracotta);
+      --tc-bg:    var(--paper-2);
+      --tc-mid:   var(--terracotta);
+      --tc-soft:  var(--rule);
+      --tc-hover: var(--clr-surface-hover);
+      --tc-ring:  var(--rule-strong);
     }
 
     .detail-page { min-height: 100dvh; background-color: var(--clr-bg); }
@@ -477,7 +459,7 @@ import { SeoService } from '../../services/seo.service';
     }
     .read-progress-bar {
       height: 100%;
-      background: linear-gradient(90deg, var(--clr-brand), oklch(72% 0.19 70));
+      background: linear-gradient(90deg, var(--clr-brand), var(--mustard));
       transform-origin: left;
       transform: scaleX(0);
       will-change: transform;
@@ -615,11 +597,11 @@ import { SeoService } from '../../services/seo.service';
       .share-btn { width: 2.75rem; height: 2.75rem; }
       .share-btn svg { width: 1rem; height: 1rem; }
     }
-    .share-fb:hover   { background: oklch(52% 0.19 260); border-color: oklch(52% 0.19 260); }
-    .share-x:hover    { background: oklch(20% 0 0); border-color: oklch(20% 0 0); }
-    .share-wa:hover   { background: oklch(70% 0.20 152); border-color: oklch(70% 0.20 152); }
-    .share-tg:hover   { background: oklch(60% 0.18 238); border-color: oklch(60% 0.18 238); }
-    .share-vb:hover   { background: oklch(55% 0.19 303); border-color: oklch(55% 0.19 303); }
+    .share-fb:hover   { background: #1877f2; border-color: #1877f2; }
+    .share-x:hover    { background: #000;    border-color: #000; }
+    .share-wa:hover   { background: #25d366; border-color: #25d366; }
+    .share-tg:hover   { background: #0088cc; border-color: #0088cc; }
+    .share-vb:hover   { background: #7360f2; border-color: #7360f2; }
     .share-copy:hover { background: rgba(255,255,255,0.28); }
 
     /* Torn paper wave */
@@ -784,17 +766,17 @@ import { SeoService } from '../../services/seo.service';
 
     /* ── INGREDIENTS COLUMN ───────────────────────────────────── */
     .ingredients-col {
-      --tc-bg:    oklch(24% 0.07 42);
-      --tc-soft:  oklch(36% 0.06 42);
-      --tc-hover: oklch(30% 0.08 42);
-      --tc-ring:  oklch(52% 0.09 52);
+      --tc-bg:    #2a1e14;
+      --tc-soft:  #4b3322;
+      --tc-hover: #3a2a1c;
+      --tc-ring:  #7a6458;
       background: var(--tc-bg);
       border-radius: 1.25rem;
       padding: 1.5rem;
       scroll-margin-top: 8rem;
     }
     .ingredients-col .col-heading {
-      color: oklch(100% 0 0);
+      color: var(--paper);
       border-bottom-color: var(--tc-soft);
     }
 
@@ -855,8 +837,8 @@ import { SeoService } from '../../services/seo.service';
     li.checked .ing-check { background: var(--tc-mid); border-color: var(--tc-mid); }
     li.checked .ing-check svg { display: block; stroke: #fff; }
 
-    .ing-amount { font-weight: 700; color: oklch(100% 0 0); min-width: 68px; }
-    .ing-name   { color: oklch(100% 0 0 / 0.85); }
+    .ing-amount { font-weight: 700; color: var(--paper); min-width: 68px; }
+    .ing-name   { color: rgba(243, 234, 214, 0.85); }
     .ing-reset {
       margin-top: 0.9rem;
       background: none;
@@ -974,7 +956,7 @@ import { SeoService } from '../../services/seo.service';
       margin-bottom: 1rem;
     }
     .card-label svg { width: 0.9rem; height: 0.9rem; }
-    .star-icon { fill: oklch(72% 0.19 70); color: oklch(72% 0.19 70); }
+    .star-icon { fill: var(--mustard); color: var(--mustard); }
     .count-badge { font-size: 0.72rem; font-weight: 700; color: var(--tc); background: var(--tc-bg); padding: 0.2rem 0.6rem; border-radius: var(--radius-pill); }
     .count-badge.ml { margin-left: 0.5rem; }
 
@@ -1001,7 +983,7 @@ import { SeoService } from '../../services/seo.service';
       background: var(--clr-surface-alt);
       transition: border-color 0.2s, box-shadow 0.2s;
     }
-    .comment-textarea:focus { border-color: var(--clr-brand); box-shadow: 0 0 0 3px color-mix(in oklch, var(--clr-brand) 12%, transparent); background: var(--clr-surface); }
+    .comment-textarea:focus { border-color: var(--clr-brand); box-shadow: 0 0 0 3px rgba(177, 80, 45, 0.12); background: var(--clr-surface); }
     .submit-btn {
       display: inline-flex;
       align-items: center;
@@ -1076,7 +1058,7 @@ import { SeoService } from '../../services/seo.service';
       resize: vertical;
       background: var(--clr-surface-alt); color: var(--clr-text);
     }
-    .reply-form textarea:focus { outline: none; border-color: var(--clr-brand); box-shadow: 0 0 0 3px color-mix(in oklch, var(--clr-brand) 12%, transparent); }
+    .reply-form textarea:focus { outline: none; border-color: var(--clr-brand); box-shadow: 0 0 0 3px rgba(177, 80, 45, 0.12); }
     .replies { margin-top: 0.5rem; padding-left: 1rem; border-left: 1px solid var(--clr-border-faint); display: flex; flex-direction: column; gap: 0.6rem; }
     .reply { padding: 0.5rem 0; }
     .reply-avatar { width: 1.5rem !important; height: 1.5rem !important; font-size: 0.65rem !important; }
@@ -1189,8 +1171,8 @@ export class RecipeDetailComponent {
   encodedTitle = computed(() => encodeURIComponent(this.recipe()?.title || ''));
   heroGradient = computed(() => {
     const r = this.recipe();
-    if (!r) return 'oklch(22% 0.01 55)';
-    return `linear-gradient(135deg, ${r.hero_palette_from || 'oklch(28% 0.015 55)'}, ${r.hero_palette_to || 'oklch(22% 0.01 55)'})`;
+    if (!r) return '#2a221a';
+    return `linear-gradient(135deg, ${r.hero_palette_from || '#3a2a1c'}, ${r.hero_palette_to || '#2a221a'})`;
   });
 
   constructor() {

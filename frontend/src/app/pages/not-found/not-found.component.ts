@@ -65,7 +65,7 @@ import { Meta } from '@angular/platform-browser';
       align-items: center;
       padding: var(--space-3) var(--space-6);
       background: var(--clr-brand);
-      color: oklch(100% 0 0);
+      color: var(--paper);
       border-radius: var(--radius-pill);
       text-decoration: none;
       font-weight: 700;

@@ -131,7 +131,7 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
       padding: var(--space-3) var(--space-4);
       background: var(--clr-error-bg);
       color: var(--clr-error);
-      border: 1.5px solid color-mix(in oklch, var(--clr-error) 40%, transparent);
+      border: 1.5px solid rgba(168, 58, 44, 0.4);
       border-radius: var(--radius-sm);
       font-weight: 600;
       font-size: 0.875rem;
@@ -141,7 +141,7 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
       white-space: nowrap;
     }
     .btn-bulk-delete svg { width: 0.875rem; height: 0.875rem; flex-shrink: 0; }
-    .btn-bulk-delete:hover { background: color-mix(in oklch, var(--clr-error-bg) 70%, var(--clr-error)); border-color: color-mix(in oklch, var(--clr-error) 60%, transparent); }
+    .btn-bulk-delete:hover { background: var(--clr-error-bg); border-color: rgba(168, 58, 44, 0.6); }
 
     .table-wrap {
       border-radius: var(--radius-lg);
@@ -195,7 +195,7 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
     .td-check { padding: var(--space-3) var(--space-3); }
     tbody tr { transition: background 0.15s; }
     tbody tr:hover { background: var(--clr-surface-hover); }
-    tbody tr.selected-row { background: color-mix(in oklch, var(--clr-amber-bg) 60%, var(--clr-surface)); }
+    tbody tr.selected-row { background: var(--clr-amber-bg); }
     tbody tr:last-child td { border-bottom: none; }
 
     /* Cells */
@@ -210,7 +210,7 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
       height: 1.75rem;
       border-radius: var(--radius-circle);
       background: var(--clr-green);
-      color: oklch(100% 0 0);
+      color: var(--paper);
       font-size: 0.68rem;
       font-weight: 700;
       display: flex;
@@ -267,14 +267,14 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
       font-size: 0.78rem;
       font-weight: 600;
       cursor: pointer;
-      border: 1.5px solid color-mix(in oklch, var(--clr-error) 40%, transparent);
+      border: 1.5px solid rgba(168, 58, 44, 0.4);
       background: var(--clr-surface);
       color: var(--clr-error);
       transition: background 0.18s, border-color 0.18s;
       touch-action: manipulation;
     }
     .btn-delete svg { width: 0.8rem; height: 0.8rem; flex-shrink: 0; }
-    .btn-delete:hover { background: var(--clr-error-bg); border-color: color-mix(in oklch, var(--clr-error) 60%, transparent); }
+    .btn-delete:hover { background: var(--clr-error-bg); border-color: rgba(168, 58, 44, 0.6); }
 
     input[type="checkbox"] {
       width: 1rem;

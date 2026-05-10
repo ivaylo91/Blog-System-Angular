@@ -55,39 +55,38 @@ import { Recipe } from '../../models/models';
     </a>
   `,
   styles: [`
-    /* Clean paper card — warm surface, soft shadow, no outer bezel padding. */
+    /* ── Polaroid / notebook recipe card ── */
     .card {
       display: block;
       position: relative;
-      border-radius: var(--radius-lg);
-      background: var(--clr-surface);
-      border: 1px solid var(--clr-border-faint);
-      box-shadow: var(--shadow-sm);
+      background: #f8efd8;
+      padding: 1rem 1rem 1.125rem;
+      box-shadow: var(--shadow-md);
       text-decoration: none;
       color: inherit;
-      overflow: hidden;
-      transition: transform 0.32s var(--ease-out-expo), box-shadow 0.32s var(--ease-out-expo);
+      transition: transform 0.35s var(--ease-out-expo), box-shadow 0.35s var(--ease-out-expo);
       animation: fadeInUp 0.48s var(--ease-out-expo) both;
       touch-action: manipulation;
       cursor: pointer;
     }
     @media (hover: hover) and (pointer: fine) {
       .card:hover {
-        transform: translateY(-4px);
+        transform: translateY(-3px) rotate(-0.3deg);
         box-shadow: var(--shadow-lg);
       }
     }
     .card:active {
-      transform: translateY(-1px) scale(0.99);
+      transform: translateY(-1px);
       box-shadow: var(--shadow-sm);
       transition-duration: 0.1s;
     }
 
-    /* --- Image --- */
+    /* --- Image area (polaroid photo frame) --- */
     .card-image {
       aspect-ratio: 4 / 3;
       position: relative;
       overflow: hidden;
+      background: linear-gradient(135deg, #d9c9a3, #c8b482);
     }
     .card.featured .card-image { aspect-ratio: 16 / 9; }
     .card-image img {
@@ -99,59 +98,51 @@ import { Recipe } from '../../models/models';
     }
     .card-image.img-loaded img { opacity: 1; }
     @media (hover: hover) and (pointer: fine) {
-      .card:hover .card-image img { transform: scale(1.05); }
+      .card:hover .card-image img { transform: scale(1.04); }
     }
 
     /* skeleton shimmer */
-    .card-image:not(.img-loaded)::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: var(--clr-skeleton);
-      z-index: 1;
-    }
     .card-image:not(.img-loaded)::after {
       content: '';
       position: absolute;
       inset: 0;
       z-index: 2;
-      background: linear-gradient(90deg, transparent 0%, var(--clr-skeleton-shine) 50%, transparent 100%);
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%);
       transform: translateX(-100%);
-      animation: img-shimmer 1.4s linear infinite;
+      animation: img-shimmer 1.6s linear infinite;
     }
     @keyframes img-shimmer {
       from { transform: translateX(-100%); }
       to   { transform: translateX(100%); }
     }
 
-    /* --- Hover overlay --- */
+    /* hover "view" label on image */
     .card-overlay {
       position: absolute;
       inset: 0;
-      background: rgba(20, 15, 10, 0);
+      background: rgba(42, 34, 26, 0);
       display: flex;
       align-items: center;
       justify-content: center;
       transition: background 0.32s var(--ease-out-expo);
     }
     @media (hover: hover) and (pointer: fine) {
-      .card:hover .card-overlay { background: rgba(20, 15, 10, 0.44); }
+      .card:hover .card-overlay { background: rgba(42, 34, 26, 0.4); }
     }
     .overlay-btn {
-      color: oklch(100% 0 0);
-      font-family: var(--font-body);
-      font-weight: 600;
-      font-size: 0.85rem;
-      letter-spacing: 0.04em;
-      padding: var(--space-2) var(--space-5);
-      border: 1.5px solid oklch(100% 0 0 / 0.7);
-      border-radius: var(--radius-pill);
+      color: var(--paper);
+      font-family: var(--font-type);
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 0.4rem 1rem;
+      border: 1px solid rgba(243, 234, 214, 0.7);
       opacity: 0;
-      transform: translateY(8px) scale(0.96);
+      transform: translateY(6px);
       transition: opacity 0.25s var(--ease-out-expo), transform 0.25s var(--ease-out-expo);
     }
     @media (hover: hover) and (pointer: fine) {
-      .card:hover .overlay-btn { opacity: 1; transform: translateY(0) scale(1); }
+      .card:hover .overlay-btn { opacity: 1; transform: translateY(0); }
     }
 
     /* mobile label */
@@ -160,50 +151,50 @@ import { Recipe } from '../../models/models';
       .mobile-label {
         display: block;
         position: absolute;
-        bottom: var(--space-2);
-        right: var(--space-3);
-        font-size: 0.68rem;
-        font-weight: 700;
-        letter-spacing: 0.06em;
+        bottom: 0.5rem;
+        right: 0.75rem;
+        font-family: var(--font-type);
+        font-size: 0.6rem;
+        letter-spacing: 0.1em;
         text-transform: uppercase;
-        color: oklch(100% 0 0);
-        background: rgba(20,15,10,0.52);
-        padding: var(--space-1) var(--space-2);
-        border-radius: var(--radius-pill);
+        color: var(--paper);
+        background: rgba(42,34,26,0.52);
+        padding: 2px 0.4rem;
         z-index: 2;
         pointer-events: none;
       }
     }
 
-    /* --- Body --- */
+    /* --- Body (polaroid caption area) --- */
     .card-body {
-      padding: var(--space-5) var(--space-5) var(--space-6);
+      padding: 0.875rem 0.25rem 0.25rem;
+      border-top: 1px dashed rgba(120,90,40,0.4);
+      margin-top: 0.875rem;
     }
     .category {
       display: inline-block;
-      font-size: 0.62rem;
-      font-weight: 700;
+      font-family: var(--font-type);
+      font-size: 0.58rem;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: oklch(100% 0 0);
-      background: var(--clr-brand);
-      padding: 2px var(--space-3);
-      border-radius: var(--radius-pill);
-      margin-bottom: var(--space-2);
+      color: var(--terracotta-2);
+      margin-bottom: 0.375rem;
     }
     .title {
       font-family: var(--font-display);
+      font-style: italic;
       font-size: 1.2rem;
-      font-weight: 700;
-      color: var(--clr-text);
-      margin: 0 0 var(--space-2);
-      line-height: 1.22;
+      font-weight: 600;
+      color: var(--ink);
+      margin: 0 0 0.25rem;
+      line-height: 1.15;
     }
-    .card.featured .title { font-size: 1.55rem; font-weight: 800; line-height: 1.12; }
+    .card.featured .title { font-size: 1.5rem; font-weight: 700; }
     .excerpt {
-      font-size: 0.865rem;
-      color: var(--clr-text-muted);
-      line-height: 1.65;
+      font-family: var(--font-hand);
+      font-size: 1.1rem;
+      color: var(--ink-mute);
+      line-height: 1.3;
       margin: 0;
       display: -webkit-box;
       -webkit-line-clamp: 2;
@@ -213,66 +204,56 @@ import { Recipe } from '../../models/models';
     .card.featured .excerpt { -webkit-line-clamp: 3; }
     .meta {
       display: flex;
-      gap: var(--space-3);
-      margin-top: var(--space-4);
-      padding-top: var(--space-3);
-      border-top: 1px solid var(--clr-border-faint);
-      font-size: 0.775rem;
-      color: var(--clr-text-muted);
+      gap: 0.75rem;
+      margin-top: 0.625rem;
+      padding-top: 0.5rem;
+      border-top: 1px dotted var(--rule);
+      font-family: var(--font-type);
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-mute);
       align-items: center;
-      font-variant-numeric: tabular-nums;
     }
-    .meta-item { display: flex; align-items: center; gap: var(--space-1); }
-    .meta-item svg { width: 0.8rem; height: 0.8rem; flex-shrink: 0; }
+    .meta-item { display: flex; align-items: center; gap: 0.2rem; }
+    .meta-item svg { width: 0.7rem; height: 0.7rem; flex-shrink: 0; }
     .difficulty {
       margin-left: auto;
-      font-size: 0.68rem;
-      font-weight: 700;
-      padding: 2px var(--space-2);
-      border-radius: var(--radius-pill);
-      background: var(--clr-surface-alt);
-      color: var(--clr-text-muted);
+      font-size: 0.6rem;
+      padding: 1px 0.4rem;
+      border: 1px dashed var(--rule-strong);
+      color: var(--ink-mute);
+      background: transparent;
     }
-    .diff-easy   { background: var(--clr-green-bg);  color: var(--clr-green-text); }
-    .diff-medium { background: var(--clr-amber-bg);  color: var(--clr-amber-text); }
-    .diff-hard   { background: var(--clr-rust-bg);   color: var(--clr-rust-text); }
+    .diff-easy   { border-color: var(--olive);       color: var(--olive-2); }
+    .diff-medium { border-color: var(--mustard);      color: #7a5210; }
+    .diff-hard   { border-color: var(--terracotta);   color: var(--terracotta-2); }
 
     /* --- Numbered badge --- */
     .card-num {
       position: absolute;
-      top: var(--space-3);
-      left: var(--space-4);
+      top: 0.75rem;
+      left: 1rem;
       font-family: var(--font-display);
-      font-size: 0.9rem;
-      font-weight: 800;
+      font-style: italic;
+      font-size: 0.85rem;
+      font-weight: 700;
       letter-spacing: 0.06em;
-      color: rgba(255, 255, 255, 0.92);
+      color: rgba(243, 234, 214, 0.92);
       z-index: 3;
-      text-shadow: 0 1px 10px rgba(0, 0, 0, 0.45);
+      text-shadow: 0 1px 8px rgba(0,0,0,0.45);
       pointer-events: none;
     }
-    .card-num::before {
-      content: '';
-      display: inline-block;
-      width: 1.2rem;
-      height: 1px;
-      background: rgba(255, 255, 255, 0.65);
-      vertical-align: middle;
-      margin-right: var(--space-2);
-      transform: translateY(-1px);
-    }
-    .card.featured .card-num { font-size: 1.1rem; top: var(--space-4); left: var(--space-5); }
+    .card.featured .card-num { font-size: 1rem; }
 
-    /* --- Overlay variant (bento tile) --- */
+    /* --- Overlay variant --- */
     .card.overlay {
       position: relative;
       height: 100%;
       display: block;
       isolation: isolate;
       padding: 0;
-      background: transparent;
-      border: none;
-      border-radius: var(--radius-lg);
+      background: #f8efd8;
       overflow: hidden;
     }
     .card.overlay .card-image {
@@ -284,73 +265,51 @@ import { Recipe } from '../../models/models';
     .card.overlay .card-body {
       position: absolute;
       inset: auto 0 0 0;
-      padding: var(--space-4) var(--space-5);
-      background: linear-gradient(180deg, transparent 0%, rgba(10, 8, 5, 0.3) 35%, rgba(10, 8, 5, 0.84) 100%);
-      color: oklch(100% 0 0);
+      padding: 1rem 1.25rem;
+      margin-top: 0;
+      border-top: none;
+      background: linear-gradient(180deg, transparent 0%, rgba(26,18,10,0.3) 35%, rgba(26,18,10,0.86) 100%);
+      color: var(--paper);
       z-index: 2;
     }
-    .card.overlay .category {
-      background: rgba(0, 0, 0, 0.38);
-      color: oklch(100% 0 0);
-      border: 1px solid oklch(100% 0 0 / 0.16);
-    }
-    .card.overlay .title {
-      color: oklch(100% 0 0);
-      font-size: 1.1rem;
-      line-height: 1.18;
-      letter-spacing: -0.01em;
-    }
-    .card.overlay.featured .title {
-      font-size: clamp(1.6rem, 2.5vw, 2.25rem);
-      line-height: 1.08;
-      letter-spacing: -0.02em;
-      font-weight: 800;
-    }
-    .card.overlay .excerpt { color: oklch(100% 0 0 / 0.85); }
+    .card.overlay .category { color: rgba(243,234,214,0.75); }
+    .card.overlay .title { color: var(--paper); font-size: 1.1rem; }
+    .card.overlay.featured .title { font-size: clamp(1.5rem, 2.5vw, 2.1rem); line-height: 1.08; }
+    .card.overlay .excerpt { color: rgba(243,234,214,0.85); }
     .card.overlay .meta {
-      border-top-color: oklch(100% 0 0 / 0.2);
-      color: oklch(100% 0 0 / 0.90);
-      margin-top: var(--space-3);
-      padding-top: var(--space-3);
+      border-top-color: rgba(243,234,214,0.2);
+      color: rgba(243,234,214,0.85);
     }
-    .card.overlay .difficulty { background: oklch(100% 0 0 / 0.16); color: oklch(100% 0 0); }
-    .card.overlay .diff-easy   { background: oklch(66% 0.14 148 / 0.88); color: oklch(100% 0 0); }
-    .card.overlay .diff-medium { background: oklch(70% 0.15 62 / 0.88);  color: oklch(100% 0 0); }
-    .card.overlay .diff-hard   { background: oklch(60% 0.17 30 / 0.88);  color: oklch(100% 0 0); }
-    @media (hover: hover) and (pointer: fine) {
-      .card.overlay:hover .card-image img { transform: scale(1.06); }
-    }
+    .card.overlay .difficulty { border-color: rgba(243,234,214,0.3); color: var(--paper); }
 
     /* --- Compact (horizontal) variant --- */
     .card.compact {
       display: flex;
       flex-direction: row;
-      border-radius: var(--radius-md);
+      padding: 0.75rem;
     }
     .card.compact .card-image {
       aspect-ratio: unset;
-      width: 110px;
+      width: 100px;
       min-height: 100%;
       flex-shrink: 0;
     }
     .card.compact .card-body {
-      padding: var(--space-4);
+      padding: 0.25rem 0.25rem 0.25rem 0.875rem;
+      margin-top: 0;
+      border-top: none;
+      border-left: 1px dashed var(--rule);
       display: flex;
       flex-direction: column;
       justify-content: center;
-      gap: var(--space-1);
+      gap: 0.125rem;
     }
     .card.compact .category { margin-bottom: 0; }
-    .card.compact .title { font-size: 0.925rem; margin: 0; }
-    .card.compact .meta {
-      margin-top: var(--space-2);
-      padding-top: var(--space-2);
-      font-size: 0.72rem;
-      gap: var(--space-2);
-    }
+    .card.compact .title { font-size: 0.9rem; margin: 0; }
+    .card.compact .meta { margin-top: 0.375rem; padding-top: 0.375rem; font-size: 0.6rem; gap: 0.5rem; }
 
     @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(14px); }
+      from { opacity: 0; transform: translateY(12px); }
       to   { opacity: 1; transform: translateY(0); }
     }
 
@@ -358,16 +317,14 @@ import { Recipe } from '../../models/models';
       .card { animation: none; transition: box-shadow 0.2s; }
       .card:hover { transform: none; }
       .card-image img { transition: none; }
-      .card:hover .card-image img { transform: none; }
       .overlay-btn { transition: opacity 0.15s; transform: none !important; }
     }
 
     @media (max-width: 500px) {
-      .card.compact .card-image { width: 88px; }
-      .card.compact .card-body { padding: var(--space-3); }
-      .card.compact .title { font-size: 0.875rem; }
+      .card.compact .card-image { width: 80px; }
+      .card.compact .card-body { padding-left: 0.75rem; }
+      .card.compact .title { font-size: 0.85rem; }
     }
-
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

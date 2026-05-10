@@ -35,33 +35,33 @@ import { Recipe } from '../../models/models';
           <div class="welcome-art" aria-hidden="true">
             <svg viewBox="0 0 200 175" fill="none" xmlns="http://www.w3.org/2000/svg">
               <!-- Bowl shadow -->
-              <ellipse cx="100" cy="162" rx="55" ry="10" fill="oklch(72% 0.13 72)" opacity="0.35"/>
+              <ellipse cx="100" cy="162" rx="55" ry="10" fill="#c49640" opacity="0.35"/>
               <!-- Bowl body -->
-              <path d="M42 110 Q42 148 100 148 Q158 148 158 110" fill="oklch(70% 0.16 66)"/>
+              <path d="M42 110 Q42 148 100 148 Q158 148 158 110" fill="#c07838"/>
               <!-- Bowl rim -->
-              <ellipse cx="100" cy="110" rx="58" ry="16" fill="oklch(82% 0.13 74)"/>
+              <ellipse cx="100" cy="110" rx="58" ry="16" fill="#ddc068"/>
               <!-- Inner rim -->
-              <ellipse cx="100" cy="108" rx="50" ry="11" fill="oklch(78% 0.14 72)"/>
+              <ellipse cx="100" cy="108" rx="50" ry="11" fill="#d0ad50"/>
               <!-- Steam lines -->
-              <path d="M68 88 Q64 78 68 68 Q72 58 68 48" stroke="oklch(68% 0.10 68)"
+              <path d="M68 88 Q64 78 68 68 Q72 58 68 48" stroke="#b08838"
                     stroke-width="3" stroke-linecap="round" fill="none" opacity="0.55"/>
-              <path d="M100 83 Q96 73 100 63 Q104 53 100 43" stroke="oklch(68% 0.10 68)"
+              <path d="M100 83 Q96 73 100 63 Q104 53 100 43" stroke="#b08838"
                     stroke-width="3" stroke-linecap="round" fill="none" opacity="0.55"/>
-              <path d="M132 88 Q128 78 132 68 Q136 58 132 48" stroke="oklch(68% 0.10 68)"
+              <path d="M132 88 Q128 78 132 68 Q136 58 132 48" stroke="#b08838"
                     stroke-width="3" stroke-linecap="round" fill="none" opacity="0.55"/>
               <!-- Spoon -->
-              <rect x="148" y="75" width="7" height="52" rx="3.5" fill="oklch(58% 0.12 60)"/>
-              <ellipse cx="151.5" cy="73" rx="7" ry="11" fill="oklch(62% 0.13 62)"/>
+              <rect x="148" y="75" width="7" height="52" rx="3.5" fill="#8c6428"/>
+              <ellipse cx="151.5" cy="73" rx="7" ry="11" fill="#9c7030"/>
               <!-- Floating ingredients -->
-              <circle cx="24" cy="80" r="9" fill="oklch(80% 0.14 80)" opacity="0.75"/>
-              <circle cx="176" cy="65" r="7" fill="oklch(76% 0.16 70)" opacity="0.75"/>
-              <circle cx="18" cy="118" r="6" fill="oklch(78% 0.13 76)" opacity="0.6"/>
-              <circle cx="182" cy="112" r="5" fill="oklch(80% 0.12 78)" opacity="0.6"/>
+              <circle cx="24" cy="80" r="9" fill="#d8b858" opacity="0.75"/>
+              <circle cx="176" cy="65" r="7" fill="#cd9c48" opacity="0.75"/>
+              <circle cx="18" cy="118" r="6" fill="#d0aa50" opacity="0.6"/>
+              <circle cx="182" cy="112" r="5" fill="#d4b058" opacity="0.6"/>
               <!-- Star accents -->
               <path d="M158 22 L160 16 L162 22 L168 22 L163 26 L165 32 L160 28 L155 32 L157 26 L152 22 Z"
-                    fill="oklch(72% 0.18 80)" opacity="0.85"/>
+                    fill="#c8a038" opacity="0.85"/>
               <path d="M36 38 L37.5 33 L39 38 L44 38 L40 41 L41.5 46 L37.5 43 L33.5 46 L35 41 L31 38 Z"
-                    fill="oklch(72% 0.18 80)" opacity="0.7"/>
+                    fill="#c8a038" opacity="0.7"/>
             </svg>
           </div>
         </div>
@@ -238,7 +238,7 @@ import { Recipe } from '../../models/models';
 
     /* ── Welcome card ────────────────────────────────────────────── */
     .welcome-card {
-      background: oklch(93% 0.12 80);
+      background: var(--clr-amber-bg);
       border-radius: var(--radius-xl);
       padding: var(--space-7) var(--space-8);
       display: flex;
@@ -253,14 +253,14 @@ import { Recipe } from '../../models/models';
       font-family: var(--font-display);
       font-size: clamp(1.5rem, 2.8vw, 2rem);
       font-weight: 800;
-      color: oklch(24% 0.07 68);
+      color: var(--ink);
       margin: 0 0 var(--space-2);
       letter-spacing: -0.03em;
       line-height: 1.1;
     }
     .welcome-text {
       font-size: 0.875rem;
-      color: oklch(40% 0.06 66);
+      color: var(--ink-mute);
       margin: 0 0 var(--space-5);
       line-height: 1.65;
       max-width: 34ch;
@@ -270,30 +270,22 @@ import { Recipe } from '../../models/models';
       align-items: center;
       gap: var(--space-2);
       padding: var(--space-2) var(--space-5);
-      background: oklch(60% 0.18 66);
-      color: oklch(100% 0 0);
+      background: var(--terracotta);
+      color: var(--paper);
       border-radius: var(--radius-pill);
       text-decoration: none;
       font-weight: 700;
       font-size: 0.875rem;
-      box-shadow: 0 4px 14px oklch(58% 0.18 66 / 0.35);
+      box-shadow: 0 4px 14px rgba(177, 80, 45, 0.35);
       transition: background 0.18s, transform 0.15s;
       touch-action: manipulation;
     }
     .welcome-btn svg { width: 0.85rem; height: 0.85rem; flex-shrink: 0; }
-    .welcome-btn:hover { background: oklch(54% 0.18 64); transform: translateY(-1px); }
+    .welcome-btn:hover { background: var(--terracotta-2); transform: translateY(-1px); }
     .welcome-btn:active { transform: translateY(0); }
     .welcome-art { flex-shrink: 0; width: 155px; height: 155px; }
     .welcome-art svg { width: 100%; height: 100%; display: block; }
 
-    @media (prefers-color-scheme: dark) {
-      .welcome-card { background: oklch(20% 0.04 72); }
-      .welcome-heading { color: oklch(92% 0.05 76); }
-      .welcome-text { color: oklch(68% 0.04 68); }
-    }
-    html.dark .welcome-card { background: oklch(20% 0.04 72); }
-    html.dark .welcome-heading { color: oklch(92% 0.05 76); }
-    html.dark .welcome-text { color: oklch(68% 0.04 68); }
 
     /* ── Section card ────────────────────────────────────────────── */
     .section-card {
@@ -321,8 +313,8 @@ import { Recipe } from '../../models/models';
       display: inline-flex;
       align-items: center;
       padding: var(--space-2) var(--space-4);
-      background: oklch(93% 0.12 80);
-      color: oklch(44% 0.16 70);
+      background: var(--clr-amber-bg);
+      color: var(--clr-amber-text);
       border-radius: var(--radius-pill);
       text-decoration: none;
       font-size: 0.78rem;
@@ -330,13 +322,7 @@ import { Recipe } from '../../models/models';
       transition: background 0.15s;
       white-space: nowrap;
     }
-    .view-btn:hover { background: oklch(88% 0.14 78); }
-    @media (prefers-color-scheme: dark) {
-      .view-btn { background: oklch(22% 0.05 72); color: oklch(76% 0.12 74); }
-      .view-btn:hover { background: oklch(26% 0.06 72); }
-    }
-    html.dark .view-btn { background: oklch(22% 0.05 72); color: oklch(76% 0.12 74); }
-    html.dark .view-btn:hover { background: oklch(26% 0.06 72); }
+    .view-btn:hover { background: var(--clr-amber-bg); }
 
     /* ── Table ───────────────────────────────────────────────────── */
     .tbl-labels {
@@ -405,8 +391,8 @@ import { Recipe } from '../../models/models';
       font-size: 0.7rem;
       font-weight: 600;
       padding: 0.22rem 0.6rem;
-      background: oklch(93% 0.04 240);
-      color: oklch(40% 0.14 240);
+      background: var(--clr-surface-alt);
+      color: var(--ink-mute);
       border-radius: var(--radius-pill);
       white-space: nowrap;
     }
@@ -427,10 +413,10 @@ import { Recipe } from '../../models/models';
       border-radius: 50%;
       flex-shrink: 0;
     }
-    .status-dot.pub { color: oklch(36% 0.14 148); }
-    .status-dot.pub::before { background: oklch(56% 0.18 148); }
-    .status-dot.dft { color: oklch(50% 0.10 76); }
-    .status-dot.dft::before { background: oklch(70% 0.14 78); }
+    .status-dot.pub { color: var(--olive-2); }
+    .status-dot.pub::before { background: var(--olive); }
+    .status-dot.dft { color: var(--clr-amber-text); }
+    .status-dot.dft::before { background: var(--mustard); }
 
     .cell-action { display: flex; align-items: center; justify-content: center; }
     .edit-icon {
@@ -446,7 +432,7 @@ import { Recipe } from '../../models/models';
     }
     .edit-icon svg { width: 0.9rem; height: 0.9rem; }
     .edit-icon:hover {
-      background: color-mix(in oklch, var(--clr-brand) 10%, transparent);
+      background: rgba(177, 80, 45, 0.08);
       color: var(--clr-brand);
     }
 
@@ -506,20 +492,10 @@ import { Recipe } from '../../models/models';
       letter-spacing: 0.07em;
       opacity: 0.7;
     }
-    .stat-amber   { background: oklch(95% 0.05 76); color: oklch(37% 0.14 70); }
-    .stat-orange  { background: oklch(96% 0.05 50); color: oklch(44% 0.20 42); }
-    .stat-rose    { background: oklch(96% 0.025 16); color: oklch(40% 0.17 18); }
-    .stat-lavender{ background: oklch(96% 0.022 292); color: oklch(40% 0.16 290); }
-    @media (prefers-color-scheme: dark) {
-      .stat-amber   { background: oklch(22% 0.05 72); color: oklch(80% 0.12 74); }
-      .stat-orange  { background: oklch(20% 0.05 48); color: oklch(78% 0.14 52); }
-      .stat-rose    { background: oklch(20% 0.04 18); color: oklch(78% 0.12 20); }
-      .stat-lavender{ background: oklch(20% 0.035 290); color: oklch(78% 0.10 288); }
-    }
-    html.dark .stat-amber   { background: oklch(22% 0.05 72); color: oklch(80% 0.12 74); }
-    html.dark .stat-orange  { background: oklch(20% 0.05 48); color: oklch(78% 0.14 52); }
-    html.dark .stat-rose    { background: oklch(20% 0.04 18); color: oklch(78% 0.12 20); }
-    html.dark .stat-lavender{ background: oklch(20% 0.035 290); color: oklch(78% 0.10 288); }
+    .stat-amber   { background: var(--clr-amber-bg);  color: var(--clr-amber-text); }
+    .stat-orange  { background: var(--clr-rust-bg);   color: var(--terracotta-2); }
+    .stat-rose    { background: var(--clr-error-bg);  color: var(--clr-error); }
+    .stat-lavender{ background: var(--paper-2);        color: var(--ink-soft); }
 
     /* Profile */
     .profile-top {
@@ -535,7 +511,7 @@ import { Recipe } from '../../models/models';
       height: 2.75rem;
       border-radius: var(--radius-circle);
       background: var(--clr-brand);
-      color: oklch(100% 0 0);
+      color: var(--paper);
       font-size: 1rem;
       font-weight: 800;
       display: flex;
@@ -578,7 +554,7 @@ import { Recipe } from '../../models/models';
       height: 1.75rem;
       border-radius: var(--radius-circle);
       background: var(--clr-brand);
-      color: oklch(100% 0 0);
+      color: var(--paper);
       font-size: 0.7rem;
       font-weight: 700;
       display: flex;
@@ -590,7 +566,7 @@ import { Recipe } from '../../models/models';
     .comment-body-wrap { flex: 1; min-width: 0; }
     .comment-author-row { display: flex; align-items: center; gap: var(--space-1); margin-bottom: 0.15rem; }
     .comment-author { font-size: 0.78rem; font-weight: 700; color: var(--clr-text); }
-    .comment-rating { font-size: 0.68rem; color: oklch(58% 0.14 74); font-weight: 700; }
+    .comment-rating { font-size: 0.68rem; color: var(--mustard); font-weight: 700; }
     .comment-text {
       font-size: 0.78rem;
       color: var(--clr-text-muted);

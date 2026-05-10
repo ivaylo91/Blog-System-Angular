@@ -69,7 +69,7 @@ import { SeoService } from '../../services/seo.service';
     .success-msg {
       background: var(--clr-green-bg);
       color: var(--clr-green-text);
-      border: 1px solid color-mix(in oklch, var(--clr-green) 35%, transparent);
+      border: 1px solid rgba(107, 122, 58, 0.35);
       padding: var(--space-3) var(--space-4);
       border-radius: var(--radius-sm);
       font-size: 0.875rem;
@@ -79,7 +79,7 @@ import { SeoService } from '../../services/seo.service';
     .error-msg {
       background: var(--clr-error-bg);
       color: var(--clr-error-dark);
-      border: 1px solid color-mix(in oklch, var(--clr-error) 35%, transparent);
+      border: 1px solid rgba(168, 58, 44, 0.35);
       padding: var(--space-3) var(--space-4);
       border-radius: var(--radius-sm);
       font-size: 0.875rem;
@@ -108,7 +108,7 @@ import { SeoService } from '../../services/seo.service';
     }
     input::placeholder { color: var(--clr-text-faint); }
     input:disabled { background: var(--clr-surface-alt); color: var(--clr-text-faint); cursor: not-allowed; }
-    input:focus { border-color: var(--clr-brand); box-shadow: 0 0 0 3px color-mix(in oklch, var(--clr-brand) 14%, transparent); background: var(--clr-surface); }
+    input:focus { border-color: var(--clr-brand); box-shadow: 0 0 0 3px rgba(177, 80, 45, 0.14); background: var(--clr-surface); }
     .avatar-preview {
       width: 88px;
       height: 88px;
@@ -121,7 +121,7 @@ import { SeoService } from '../../services/seo.service';
       margin-top: var(--space-5);
       padding: 0.85rem;
       background: var(--clr-brand);
-      color: oklch(100% 0 0);
+      color: var(--paper);
       border: none;
       border-radius: var(--radius-pill);
       font-weight: 700;

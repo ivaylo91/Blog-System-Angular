@@ -358,7 +358,7 @@ import { PerfService } from '../../services/perf.service';
     .filter-btn.active {
       color: var(--clr-text);
       font-weight: 600;
-      background: oklch(97.5% 0.022 52);
+      background: var(--clr-surface-alt);
     }
     .filter-btn.active::before { background: var(--clr-brand); border-color: var(--clr-brand); }
 
@@ -367,7 +367,7 @@ import { PerfService } from '../../services/perf.service';
     .filter-medium.active { background: var(--clr-amber-bg); color: var(--clr-amber-text); }
     .filter-medium.active::before { background: var(--clr-amber); border-color: var(--clr-amber); }
     .filter-hard.active   { background: var(--clr-rust-bg);  color: var(--clr-rust-text); }
-    .filter-hard.active::before   { background: oklch(62% 0.16 22); border-color: oklch(62% 0.16 22); }
+    .filter-hard.active::before   { background: var(--clr-rust-text); border-color: var(--clr-rust-text); }
 
     /* Clear all */
     .filter-group-clear { margin-top: var(--space-2); }
@@ -562,7 +562,7 @@ import { PerfService } from '../../services/perf.service';
       .filter-btn.active { background: var(--clr-brand); border-color: var(--clr-brand); color: var(--clr-surface); }
       .filter-easy.active   { background: var(--clr-green-bg); color: var(--clr-green-text); border-color: var(--clr-green); }
       .filter-medium.active { background: var(--clr-amber-bg); color: var(--clr-amber-text); border-color: var(--clr-amber); }
-      .filter-hard.active   { background: var(--clr-rust-bg);  color: var(--clr-rust-text);  border-color: oklch(72% 0.14 22); }
+      .filter-hard.active   { background: var(--clr-rust-bg);  color: var(--clr-rust-text);  border-color: var(--clr-rust-border); }
 
       .filter-group-clear { margin-top: 0; border-top: none; padding-top: 0; }
       .clear-all-btn { width: auto; padding: var(--space-2) var(--space-4); border-radius: var(--radius-pill); }

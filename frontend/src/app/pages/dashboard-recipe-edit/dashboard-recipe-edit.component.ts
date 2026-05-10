@@ -260,7 +260,7 @@ interface StepInput { description: string; }
       gap: var(--space-3);
       padding: var(--space-3) var(--space-4);
       background: var(--clr-error-bg);
-      border: 1px solid color-mix(in oklch, var(--clr-error) 40%, transparent);
+      border: 1px solid rgba(168, 58, 44, 0.4);
       border-radius: var(--radius-md);
       color: var(--clr-error);
       font-size: 0.875rem;
@@ -330,7 +330,7 @@ interface StepInput { description: string; }
     input:focus, select:focus, textarea:focus {
       outline: none;
       border-color: var(--clr-green);
-      box-shadow: 0 0 0 3px color-mix(in oklch, var(--clr-green) 12%, transparent);
+      box-shadow: 0 0 0 3px rgba(107, 122, 58, 0.12);
       background: var(--clr-surface);
     }
     textarea { resize: vertical; }
@@ -366,7 +366,7 @@ interface StepInput { description: string; }
       height: 1.75rem;
       border-radius: var(--radius-circle);
       background: var(--clr-green);
-      color: oklch(100% 0 0);
+      color: var(--paper);
       font-size: 0.75rem;
       font-weight: 700;
       display: flex;
@@ -382,9 +382,9 @@ interface StepInput { description: string; }
       align-items: center;
       gap: var(--space-2);
       padding: var(--space-3) var(--space-4);
-      border: 1.5px dashed color-mix(in oklch, var(--clr-green) 45%, transparent);
+      border: 1.5px dashed rgba(107, 122, 58, 0.45);
       border-radius: var(--radius-sm);
-      background: color-mix(in oklch, var(--clr-green) 5%, transparent);
+      background: rgba(107, 122, 58, 0.05);
       color: var(--clr-green);
       font-size: 0.82rem;
       font-weight: 600;
@@ -397,7 +397,7 @@ interface StepInput { description: string; }
       min-height: 2.5rem;
     }
     .btn-add svg { width: 0.9rem; height: 0.9rem; }
-    .btn-add:hover { background: color-mix(in oklch, var(--clr-green) 10%, transparent); border-color: var(--clr-green); }
+    .btn-add:hover { background: rgba(107, 122, 58, 0.1); border-color: var(--clr-green); }
     .btn-remove {
       flex-shrink: 0;
       width: 2rem;
@@ -414,7 +414,7 @@ interface StepInput { description: string; }
       touch-action: manipulation;
     }
     .btn-remove svg { width: 0.85rem; height: 0.85rem; }
-    .btn-remove:hover { background: color-mix(in oklch, var(--clr-error-bg) 60%, var(--clr-error)); }
+    .btn-remove:hover { background: var(--clr-error-bg); }
 
     /* Image upload */
     .file-drop {
@@ -470,7 +470,7 @@ interface StepInput { description: string; }
       gap: var(--space-2);
       padding: var(--space-3) var(--space-6);
       background: var(--clr-green);
-      color: oklch(100% 0 0);
+      color: var(--paper);
       border: none;
       border-radius: var(--radius-pill);
       font-weight: 700;

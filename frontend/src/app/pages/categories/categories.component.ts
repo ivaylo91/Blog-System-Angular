@@ -114,7 +114,7 @@ import { Category } from '../../models/models';
       color: var(--clr-text);
       overflow: hidden;
       background:
-        radial-gradient(120% 80% at 0% 0%, color-mix(in oklch, oklch(85% 0.12 var(--tile-hue)) 55%, var(--clr-surface)) 0%, var(--clr-surface) 70%);
+        radial-gradient(120% 80% at 0% 0%, var(--clr-surface-alt) 0%, var(--clr-surface) 70%);
       border: 1px solid var(--clr-border-faint);
       box-shadow: var(--shadow-sm);
       transition: transform 0.35s var(--ease-out-expo), box-shadow 0.35s var(--ease-out-expo), border-color 0.25s;
@@ -124,7 +124,7 @@ import { Category } from '../../models/models';
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(60% 50% at 85% 90%, color-mix(in oklch, oklch(72% 0.14 var(--tile-hue)) 35%, transparent) 0%, transparent 100%);
+      background: radial-gradient(60% 50% at 85% 90%, rgba(177, 80, 45, 0.06) 0%, transparent 100%);
       opacity: 0.7;
       z-index: -1;
       transition: opacity 0.3s var(--ease-out-expo);
@@ -133,7 +133,7 @@ import { Category } from '../../models/models';
       .tile:hover {
         transform: translateY(-4px);
         box-shadow: var(--shadow-lg);
-        border-color: color-mix(in oklch, oklch(65% 0.13 var(--tile-hue)) 40%, var(--clr-border));
+        border-color: var(--clr-border);
       }
       .tile:hover::after { opacity: 1; }
       .tile:hover .arrow { transform: translateX(5px); }
@@ -145,7 +145,7 @@ import { Category } from '../../models/models';
       font-size: 0.88rem;
       font-weight: 800;
       letter-spacing: 0.12em;
-      color: color-mix(in oklch, oklch(42% 0.12 var(--tile-hue)) 90%, var(--clr-text-muted));
+      color: var(--terracotta);
     }
     .tile-num::before {
       content: '';

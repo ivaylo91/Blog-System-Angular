@@ -208,21 +208,21 @@ import { AuthService } from '../../services/auth.service';
       margin: var(--space-2) var(--space-4) var(--space-3);
       padding: var(--space-3) var(--space-4);
       background: var(--clr-brand);
-      color: oklch(100% 0 0);
+      color: var(--paper);
       border-radius: var(--radius-pill);
       text-decoration: none;
       font-weight: 700;
       font-size: 0.875rem;
       letter-spacing: 0.01em;
       transition: background 0.18s, transform 0.15s, box-shadow 0.18s;
-      box-shadow: 0 4px 14px oklch(62% 0.22 42 / 0.32);
+      box-shadow: 0 4px 14px rgba(177, 80, 45, 0.32);
       touch-action: manipulation;
     }
     .sidebar-cta svg { width: 0.875rem; height: 0.875rem; flex-shrink: 0; }
     .sidebar-cta:hover {
       background: var(--clr-brand-dark);
       transform: translateY(-1px);
-      box-shadow: 0 6px 18px oklch(62% 0.22 42 / 0.4);
+      box-shadow: 0 6px 18px rgba(177, 80, 45, 0.4);
     }
     .sidebar-cta:active { transform: translateY(0); box-shadow: none; }
 
@@ -258,16 +258,16 @@ import { AuthService } from '../../services/auth.service';
     .nav-item svg { width: 1rem; height: 1rem; flex-shrink: 0; }
     .nav-item:hover { background: var(--clr-surface-alt); color: var(--clr-text); }
     .nav-item.active {
-      background: color-mix(in oklch, var(--clr-brand) 10%, transparent);
+      background: rgba(177, 80, 45, 0.1);
       color: var(--clr-brand);
       font-weight: 700;
     }
     .nav-item-external { opacity: 0.85; }
     .nav-item-external:hover { opacity: 1; }
-    .nav-item-logout { color: oklch(40% 0.18 25); }
+    .nav-item-logout { color: var(--terracotta-2); }
     .nav-item-logout:hover {
-      background: color-mix(in oklch, oklch(55% 0.18 25) 10%, transparent);
-      color: oklch(35% 0.18 25);
+      background: rgba(168, 58, 44, 0.1);
+      color: var(--pencil-red);
     }
 
     /* Separator */
@@ -291,7 +291,7 @@ import { AuthService } from '../../services/auth.service';
       height: 2rem;
       border-radius: var(--radius-circle);
       background: var(--clr-brand);
-      color: oklch(100% 0 0);
+      color: var(--paper);
       font-size: 0.8rem;
       font-weight: 700;
       display: flex;
@@ -377,7 +377,7 @@ import { AuthService } from '../../services/auth.service';
         min-height: 4rem;
       }
       .bottom-nav-item svg { width: 1.25rem; height: 1.25rem; flex-shrink: 0; }
-      .bottom-nav-item:hover { color: var(--clr-brand); background: color-mix(in oklch, var(--clr-brand) 5%, transparent); }
+      .bottom-nav-item:hover { color: var(--clr-brand); background: rgba(177, 80, 45, 0.05); }
       .bottom-nav-item.active { color: var(--clr-brand); font-weight: 600; }
       .bottom-nav-item.active svg { stroke-width: 2.5; }
       .bottom-nav-add {
@@ -390,7 +390,7 @@ import { AuthService } from '../../services/auth.service';
         width: 2.75rem;
         height: 2.75rem;
         background: var(--clr-brand);
-        color: oklch(100% 0 0);
+        color: var(--paper);
         border-radius: var(--radius-circle);
         display: flex;
         align-items: center;

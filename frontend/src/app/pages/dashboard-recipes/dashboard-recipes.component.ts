@@ -137,7 +137,7 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
       gap: var(--space-2);
       padding: var(--space-3) var(--space-5);
       background: var(--clr-green);
-      color: oklch(100% 0 0);
+      color: var(--paper);
       border-radius: var(--radius-pill);
       text-decoration: none;
       font-weight: 700;
@@ -173,7 +173,7 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
     }
     .search-wrap:focus-within {
       border-color: var(--clr-green);
-      box-shadow: 0 0 0 3px color-mix(in oklch, var(--clr-green) 12%, transparent);
+      box-shadow: 0 0 0 3px rgba(107, 122, 58, 0.12);
     }
     .search-wrap svg { width: 1rem; height: 1rem; color: var(--clr-text-muted); flex-shrink: 0; }
     .search-wrap input {
@@ -198,7 +198,7 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
       touch-action: manipulation;
       min-height: 2.25rem;
     }
-    .pill.active { background: var(--clr-brand); color: oklch(100% 0 0); border-color: var(--clr-brand); }
+    .pill.active { background: var(--clr-brand); color: var(--paper); border-color: var(--clr-brand); }
     .pill:hover:not(.active) { background: var(--clr-surface-hover); border-color: var(--clr-border-strong); color: var(--clr-text); }
 
     .table-wrap {
@@ -264,10 +264,10 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
       white-space: nowrap;
     }
     .status-toggle svg { width: 0.75rem; height: 0.75rem; flex-shrink: 0; }
-    .status-toggle.published { background: var(--clr-green-bg); color: var(--clr-green-text); border-color: color-mix(in oklch, var(--clr-green) 40%, transparent); }
-    .status-toggle.published:hover:not(:disabled) { background: color-mix(in oklch, var(--clr-green-bg) 80%, var(--clr-green)); }
-    .status-toggle.draft { background: var(--clr-amber-bg); color: var(--clr-amber-text); border-color: color-mix(in oklch, var(--clr-amber) 40%, transparent); }
-    .status-toggle.draft:hover:not(:disabled) { background: color-mix(in oklch, var(--clr-amber-bg) 70%, var(--clr-amber)); }
+    .status-toggle.published { background: var(--clr-green-bg); color: var(--clr-green-text); border-color: rgba(107, 122, 58, 0.4); }
+    .status-toggle.published:hover:not(:disabled) { background: var(--clr-green-bg); }
+    .status-toggle.draft { background: var(--clr-amber-bg); color: var(--clr-amber-text); border-color: var(--clr-amber-border); }
+    .status-toggle.draft:hover:not(:disabled) { background: var(--clr-amber-bg); }
     .status-toggle:disabled { opacity: 0.45; cursor: default; }
 
     .author-cell { font-size: 0.85rem; color: var(--clr-text-muted); font-weight: 600; white-space: nowrap; }
@@ -292,8 +292,8 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
       align-items: center;
     }
     .btn-small:hover { background: var(--clr-surface-hover); border-color: var(--clr-border-strong); }
-    .btn-danger { color: var(--clr-error); border-color: color-mix(in oklch, var(--clr-error) 40%, transparent); background: var(--clr-surface); }
-    .btn-danger:hover { background: var(--clr-error-bg); border-color: color-mix(in oklch, var(--clr-error) 60%, transparent); }
+    .btn-danger { color: var(--clr-error); border-color: rgba(168, 58, 44, 0.4); background: var(--clr-surface); }
+    .btn-danger:hover { background: var(--clr-error-bg); border-color: rgba(168, 58, 44, 0.6); }
     .empty { text-align: center; color: var(--clr-text-muted); padding: var(--space-9) var(--space-7); font-size: 0.9rem; }
 
     @media (max-width: 768px) {

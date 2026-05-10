@@ -148,7 +148,7 @@ import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.co
       gap: var(--space-2);
       padding: var(--space-3) var(--space-6);
       background: var(--clr-brand);
-      color: oklch(100% 0 0);
+      color: var(--paper);
       border-radius: var(--radius-pill);
       text-decoration: none;
       font-weight: 700;

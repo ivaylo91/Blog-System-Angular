@@ -12,36 +12,15 @@ import { SeoService } from '../../services/seo.service';
     <div class="page">
       <div class="card">
 
-        <!-- Left blob art -->
+        <!-- Left notebook art panel -->
         <div class="art-panel" aria-hidden="true">
-          <svg class="art-svg" viewBox="0 0 280 520" fill="none"
-               xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-            <defs>
-              <linearGradient id="rg-g1" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#ff8c40"/>
-                <stop offset="42%" stop-color="#f0346b"/>
-                <stop offset="100%" stop-color="#c840e8"/>
-              </linearGradient>
-              <linearGradient id="rg-g2" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#e040c8"/>
-                <stop offset="100%" stop-color="#6a18c0"/>
-              </linearGradient>
-              <linearGradient id="rg-g3" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#ffa040"/>
-                <stop offset="100%" stop-color="#ff4d78"/>
-              </linearGradient>
-            </defs>
-            <!-- Large teardrop blob -->
-            <path d="M 0 0 C 90 -5, 262 28, 270 152 C 278 276, 146 400, 36 376 C -74 352, -28 200, 0 100 Z"
-                  fill="url(#rg-g1)"/>
-            <!-- White highlight stroke -->
-            <path d="M 22 22 C 102 10, 242 54, 248 160 C 254 266, 136 382, 50 362"
-                  stroke="white" stroke-width="13" stroke-linecap="round" fill="none" opacity="0.42"/>
-            <!-- Purple blob -->
-            <circle cx="206" cy="370" r="80" fill="url(#rg-g2)"/>
-            <!-- Orange blob -->
-            <circle cx="50" cy="475" r="56" fill="url(#rg-g3)"/>
-          </svg>
+          <div class="ruled-lines"></div>
+          <div class="art-text">
+            <span class="art-eyebrow">✎ нова страница</span>
+            <span class="art-title">присъедини<br>се.</span>
+            <span class="art-sub">напиши нова<br>история.</span>
+          </div>
+          <div class="corner-stamp">нов<br>профил</div>
         </div>
 
         <!-- Right form -->
@@ -188,43 +167,111 @@ import { SeoService } from '../../services/seo.service';
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 1.5rem;
-      background: linear-gradient(135deg, #ff7a28 0%, #f0346b 48%, #8a30e0 100%);
+      padding: clamp(1.5rem, 4vw, 3rem);
+      background: var(--paper);
     }
 
     .card {
       display: grid;
       grid-template-columns: 5fr 7fr;
       width: 100%;
-      max-width: 800px;
-      border-radius: 1.5rem;
+      max-width: 820px;
       overflow: hidden;
-      box-shadow: 0 28px 80px rgba(100, 20, 80, 0.45);
-      background: #fff;
+      box-shadow: var(--shadow-lg);
+      background: var(--clr-surface);
+      border: 1px solid var(--rule-strong);
     }
 
-    /* ── Art panel ───────────────────────────────────────────────── */
+    /* ── Notebook art panel ──────────────────────────────────────── */
     .art-panel {
       position: relative;
       overflow: hidden;
-      background: #fff;
-      min-height: 520px;
+      background: var(--paper-2);
+      border-right: 1px solid var(--rule);
+      min-height: 500px;
+      padding: 3rem 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
-    .art-svg {
+    .ruled-lines {
       position: absolute;
       inset: 0;
-      width: 100%;
-      height: 100%;
+      background-image: repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent calc(1.75rem - 1px),
+        var(--rule) calc(1.75rem - 1px),
+        var(--rule) 1.75rem
+      );
+      background-size: 100% 1.75rem;
+      background-position: 0 2rem;
+      opacity: 0.45;
+    }
+    .art-panel::before {
+      content: '';
+      position: absolute;
+      left: 2.5rem;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: var(--pencil-red);
+      opacity: 0.5;
+    }
+    .art-text {
+      position: relative;
+      z-index: 1;
+      padding-left: 3rem;
+    }
+    .art-eyebrow {
+      display: block;
+      font-family: var(--font-type);
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--terracotta-2);
+      margin-bottom: 1rem;
+    }
+    .art-title {
+      display: block;
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 700;
+      font-size: clamp(2.25rem, 5vw, 3.5rem);
+      line-height: 0.95;
+      color: var(--ink);
+      margin-bottom: 1rem;
+    }
+    .art-sub {
+      display: block;
+      font-family: var(--font-hand);
+      font-size: 1.2rem;
+      color: var(--ink-mute);
+      line-height: 1.3;
+    }
+    .corner-stamp {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      border: 1.5px solid var(--terracotta);
+      padding: 0.3rem 0.6rem;
+      font-family: var(--font-type);
+      font-size: 0.5rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--terracotta-2);
+      line-height: 1.5;
+      transform: rotate(4deg);
+      text-align: center;
     }
 
     /* ── Form panel ──────────────────────────────────────────────── */
     .form-panel {
       padding: clamp(2rem, 5vw, 3.5rem) clamp(1.75rem, 4vw, 3rem);
-      background: #fff;
+      background: var(--clr-surface);
       display: flex;
       align-items: center;
       justify-content: center;
-      color-scheme: light;
     }
     .form-inner {
       width: 100%;
@@ -235,17 +282,18 @@ import { SeoService } from '../../services/seo.service';
 
     h1 {
       font-family: var(--font-display);
-      font-size: 1.65rem;
-      font-weight: 800;
-      color: oklch(18% 0 0);
+      font-style: italic;
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--ink);
       margin: 0 0 0.3rem;
-      letter-spacing: -0.025em;
       text-align: center;
     }
     .subtitle {
-      font-size: 0.85rem;
-      color: oklch(56% 0 0);
-      margin: 0 0 1.4rem;
+      font-family: var(--font-hand);
+      font-size: 1rem;
+      color: var(--ink-mute);
+      margin: 0 0 1.5rem;
       text-align: center;
     }
 
@@ -254,13 +302,12 @@ import { SeoService } from '../../services/seo.service';
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      background: oklch(97% 0.02 10);
-      color: oklch(38% 0.22 15);
-      border: 1px solid oklch(88% 0.08 15);
+      background: var(--clr-error-bg);
+      color: var(--clr-error);
+      border-left: 3px solid var(--clr-error);
       padding: 0.65rem 1rem;
-      border-radius: 2rem;
-      font-size: 0.82rem;
-      font-weight: 500;
+      font-family: var(--font-hand);
+      font-size: 0.95rem;
       margin-bottom: 1rem;
       animation: shake 0.4s ease both;
     }
@@ -271,48 +318,46 @@ import { SeoService } from '../../services/seo.service';
     }
     .error-msg svg { width: 1rem; height: 1rem; flex-shrink: 0; }
 
-    form { display: flex; flex-direction: column; gap: 0.75rem; }
+    form { display: flex; flex-direction: column; gap: 1rem; }
     .field { width: 100%; }
     .input-wrap { position: relative; }
 
     .input-icon {
       position: absolute;
-      left: 1.1rem;
+      left: 0;
       top: 50%;
       transform: translateY(-50%);
-      color: oklch(68% 0 0);
+      color: var(--ink-mute);
       display: flex;
       pointer-events: none;
     }
-    .input-icon svg { width: 1rem; height: 1rem; }
+    .input-icon svg { width: 0.9rem; height: 0.9rem; }
 
     .input-wrap input {
       width: 100%;
       box-sizing: border-box;
-      padding: 0.82rem 2.8rem 0.82rem 2.7rem;
+      padding: 0.7rem 2.5rem 0.7rem 1.6rem;
       border: none;
-      border-radius: 3rem;
-      font-size: 0.88rem;
+      border-bottom: 1px solid var(--rule-strong);
+      border-radius: 0;
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 1rem;
       outline: none;
-      color: oklch(20% 0 0);
-      background: oklch(94% 0 0);
-      transition: box-shadow 0.2s, background 0.2s;
+      color: var(--ink);
+      background: transparent;
+      transition: border-color 0.2s;
     }
-    .input-wrap input::placeholder { color: oklch(62% 0 0); }
-    .input-wrap input:focus {
-      background: oklch(99% 0 0);
-      box-shadow: 0 0 0 2.5px rgba(240, 52, 107, 0.32);
-    }
-    .input-wrap input[aria-invalid="true"] {
-      box-shadow: 0 0 0 2px rgba(220, 40, 60, 0.4);
-    }
+    .input-wrap input::placeholder { color: var(--ink-mute); font-style: normal; font-family: var(--font-body); font-size: 0.88rem; }
+    .input-wrap input:focus { border-bottom-color: var(--terracotta); border-bottom-width: 2px; }
+    .input-wrap input[aria-invalid="true"] { border-bottom-color: var(--clr-error); }
 
     .check-icon {
       position: absolute;
-      right: 1rem;
+      right: 0;
       top: 50%;
       transform: translateY(-50%);
-      color: oklch(58% 0.20 145);
+      color: var(--olive);
       display: flex;
       pointer-events: none;
     }
@@ -320,32 +365,28 @@ import { SeoService } from '../../services/seo.service';
 
     .toggle-btn {
       position: absolute;
-      right: 0.45rem;
+      right: 0;
       top: 50%;
       transform: translateY(-50%);
       background: none;
       border: none;
       cursor: pointer;
-      color: oklch(68% 0 0);
+      color: var(--ink-mute);
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 0.7rem;
-      min-width: 2.75rem;
-      min-height: 2.75rem;
-      border-radius: 50%;
+      padding: 0.5rem;
       transition: color 0.15s;
     }
-    .toggle-btn:hover { color: oklch(35% 0 0); }
+    .toggle-btn:hover { color: var(--ink); }
     .toggle-btn svg { width: 1rem; height: 1rem; }
 
     .field-error {
       display: block;
-      font-size: 0.77rem;
-      font-weight: 600;
-      color: oklch(40% 0.22 15);
+      font-family: var(--font-hand);
+      font-size: 0.88rem;
+      color: var(--clr-error);
       margin-top: 0.3rem;
-      padding-left: 1.1rem;
     }
 
     .submit-btn {
@@ -353,48 +394,44 @@ import { SeoService } from '../../services/seo.service';
       align-items: center;
       justify-content: center;
       gap: 0.5rem;
-      margin-top: 0.4rem;
-      padding: 0.9rem;
-      background: linear-gradient(90deg, #f0346b 0%, #8a30e0 100%);
-      color: #fff;
+      margin-top: 0.75rem;
+      padding: 0.825rem 2rem;
+      background: var(--terracotta);
+      color: var(--paper);
       border: none;
-      border-radius: 3rem;
-      font-weight: 700;
-      font-size: 0.9rem;
-      letter-spacing: 0.08em;
+      font-family: var(--font-type);
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
       cursor: pointer;
-      box-shadow: 0 8px 24px rgba(138, 48, 224, 0.4);
-      transition: opacity 0.18s, transform 0.15s, box-shadow 0.18s;
+      box-shadow: var(--shadow-sm);
+      transition: background 0.18s, transform 0.15s;
       touch-action: manipulation;
       width: 100%;
     }
-    .submit-btn:hover:not(:disabled) {
-      opacity: 0.9;
-      transform: translateY(-1px);
-      box-shadow: 0 12px 30px rgba(138, 48, 224, 0.5);
-    }
+    .submit-btn:hover:not(:disabled) { background: var(--terracotta-2); transform: translateY(-1px); }
     .submit-btn:active:not(:disabled) { transform: translateY(0); }
     .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
     .spinner {
       width: 1rem;
       height: 1rem;
-      border: 2px solid rgba(255,255,255,0.4);
-      border-top-color: #fff;
+      border: 2px solid rgba(243,234,214,0.4);
+      border-top-color: var(--paper);
       border-radius: 50%;
       animation: spin 0.7s linear infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
     .alt-link {
+      font-family: var(--font-body);
       text-align: center;
       font-size: 0.85rem;
-      color: oklch(54% 0 0);
-      margin: 1.4rem 0 0;
+      color: var(--ink-mute);
+      margin: 1.5rem 0 0;
     }
-    .alt-link a { color: #8a30e0; font-weight: 700; text-decoration: none; }
-    .alt-link a:hover { text-decoration: underline; }
+    .alt-link a { color: var(--terracotta); font-weight: 600; text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.15s; }
+    .alt-link a:hover { border-bottom-color: var(--terracotta); }
 
     @media (prefers-reduced-motion: reduce) {
       .error-msg { animation: none; }

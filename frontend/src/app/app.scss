@@ -15,7 +15,7 @@
   z-index: var(--z-toast);
   padding: 0.65rem 1.25rem;
   background: var(--clr-brand);
-  color: oklch(100% 0 0);
+  color: var(--paper);
   font-weight: 700;
   font-size: 0.875rem;
   border-radius: 0 0 var(--radius-sm) var(--radius-sm);
@@ -25,6 +25,6 @@
 }
 .skip-link:focus {
   transform: translateY(0);
-  outline: 2.5px solid oklch(100% 0 0);
+  outline: 2.5px solid var(--paper);
   outline-offset: 2px;
 }
