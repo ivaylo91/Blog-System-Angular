@@ -227,6 +227,10 @@ import { Recipe } from '../../models/models';
       gap: var(--space-5);
       padding: var(--space-6) var(--space-6) var(--space-10);
       align-items: start;
+      max-width: 1380px;
+      margin: 0 auto;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     .main-col {

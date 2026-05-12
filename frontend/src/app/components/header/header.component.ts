@@ -348,14 +348,25 @@ import { ThemeService } from '../../services/theme.service';
       text-transform: uppercase;
       color: var(--ink-soft);
       padding-bottom: 0.25rem;
-      border-bottom: 2px solid transparent;
+      position: relative;
       transition: color 0.2s;
     }
-    .nav-rail a:hover { color: var(--terracotta-2); }
-    .nav-rail a.active {
-      color: var(--terracotta-2);
-      border-bottom-color: var(--terracotta);
+    .nav-rail a::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--terracotta);
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 0.22s var(--ease-out-expo);
     }
+    .nav-rail a:hover { color: var(--terracotta-2); }
+    .nav-rail a:hover::after { transform: scaleX(0.6); }
+    .nav-rail a.active { color: var(--terracotta-2); }
+    .nav-rail a.active::after { transform: scaleX(1); }
 
     /* ── Drawer overlay ── */
     .drawer-overlay {

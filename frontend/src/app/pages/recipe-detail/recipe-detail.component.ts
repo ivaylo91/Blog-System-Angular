@@ -1071,6 +1071,15 @@ import { SeoService } from '../../services/seo.service';
     .related-link:hover { text-decoration: underline; }
     .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
 
+    /* ── WIDE-SCREEN ENHANCEMENTS ────────────────────────────────────────── */
+    @media (min-width: 1400px) {
+      .body-wrap { max-width: 1340px; padding-left: 2.5rem; padding-right: 2.5rem; }
+      .recipe-meta-wrap { max-width: 1340px; }
+      .recipe-card-grid { grid-template-columns: 1fr 1.4fr; gap: 3.5rem; }
+      /* Cap procedure text to ~75ch so lines stay readable at large widths */
+      .step-body p { max-width: 72ch; }
+    }
+
     /* ── RESPONSIVE ───────────────────────────────────────────── */
     @media print {
       app-header, app-footer, .share-bar, .related-section, .back-link, .hero-overlay, .read-progress, .fav-wrap { display: none !important; }

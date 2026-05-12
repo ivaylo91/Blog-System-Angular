@@ -368,6 +368,16 @@ import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.co
     }
 
     /* ═══ RESPONSIVE ══════════════════════════════════════════════════════ */
+    /* ═══ WIDE-SCREEN ENHANCEMENTS ══════════════════════════════════════════ */
+    @media (min-width: 1100px) {
+      .hero-inner { grid-template-columns: 1fr 1.15fr; }
+      .polaroid { max-width: 400px; }
+    }
+    @media (min-width: 1400px) {
+      .polaroid { max-width: 460px; }
+      .hero-title { font-size: 5rem; }
+    }
+
     @media (max-width: 900px) {
       .hero-inner { grid-template-columns: 1fr; }
       .hero-visual { display: none; }
