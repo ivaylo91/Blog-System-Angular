@@ -5,17 +5,25 @@ import { catchError, map, of, tap } from 'rxjs';
 import { RecipeService } from '../../services/recipe.service';
 import { SeoService } from '../../services/seo.service';
 import { PerfService } from '../../services/perf.service';
-import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterLink, RecipeCardComponent],
+  imports: [RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
 
     <!-- ════════════════════ HERO ══════════════════════════════════════════ -->
     <section class="hero">
+      <svg class="blob blob-1" viewBox="0 0 560 560" aria-hidden="true">
+        <path fill="var(--terracotta)" fill-opacity=".11"
+          d="M280,85 C375,55 465,120 490,205 C515,290 480,385 405,428 C330,471 225,462 155,408 C85,354 70,250 90,165 C110,80 200,108 280,85Z"/>
+      </svg>
+      <svg class="blob blob-2" viewBox="0 0 420 420" aria-hidden="true">
+        <path fill="var(--olive)" fill-opacity=".09"
+          d="M210,65 C295,42 378,100 395,182 C412,264 368,352 285,382 C202,412 108,378 68,300 C28,222 48,118 105,76 C135,57 160,82 210,65Z"/>
+      </svg>
+
       <div class="hero-inner">
 
         <div class="hero-copy">
@@ -37,20 +45,37 @@ import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.co
         </div>
 
         <div class="hero-visual" aria-hidden="true">
-          <div class="polaroid">
+          <div class="hero-frame">
+            <svg class="frame-blob" viewBox="0 0 500 500" aria-hidden="true">
+              <path fill="var(--terracotta)" fill-opacity=".16"
+                d="M250,72 C342,46 432,114 457,202 C482,290 445,388 362,424 C279,460 175,444 112,378 C49,312 55,200 97,135 C128,85 178,93 250,72Z"/>
+            </svg>
             @if (featured().length && featured()[0].hero_image) {
               <img [src]="featured()[0].hero_image" [alt]="featured()[0].title"
-                   fetchpriority="high" loading="eager" class="polaroid-img" />
+                   fetchpriority="high" loading="eager" class="hero-img" />
             } @else {
-              <div class="polaroid-ph"></div>
+              <div class="hero-img-ph"></div>
             }
-            <span class="polaroid-cap">{{ featured()[0]?.title || 'Домашна кухня' }}</span>
+          </div>
+          <div class="hero-caption">
+            <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" class="caption-dot">
+              <circle cx="8" cy="8" r="3.5" fill="var(--terracotta)" fill-opacity=".55"/>
+            </svg>
+            <span class="caption-text">{{ featured()[0]?.title || 'Домашна кухня' }}</span>
           </div>
           <span class="hero-annotation" aria-hidden="true">~ рецепти с любов ~</span>
         </div>
 
       </div>
     </section>
+
+    <!-- ════════════════════ WAVE DIVIDER ═══════════════════════════════════ -->
+    <div class="wave-div" aria-hidden="true">
+      <svg viewBox="0 0 1440 56" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,28 C240,56 480,0 720,28 C960,56 1200,0 1440,28 L1440,56 L0,56 Z"
+              fill="var(--paper-2)"/>
+      </svg>
+    </div>
 
     <!-- ════════════════════ CATEGORY STRIP ════════════════════════════════ -->
     @if (categories().length) {
@@ -65,8 +90,13 @@ import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.co
       </nav>
     }
 
-    <!-- ════════════════════ FEATURED RECIPES ══════════════════════════════ -->
-    <section class="recipes-sec">
+    <!-- ════════════════════ EDITORIAL FEATURED ════════════════════════════ -->
+    <section class="editorial-sec">
+      <svg class="blob blob-3" viewBox="0 0 460 460" aria-hidden="true">
+        <path fill="var(--olive)" fill-opacity=".08"
+          d="M230,58 C322,34 408,104 425,192 C442,280 396,374 308,405 C220,436 118,400 68,318 C18,236 40,122 104,72 C136,50 162,78 230,58Z"/>
+      </svg>
+
       <div class="sec-inner">
 
         <header class="sec-head">
@@ -76,19 +106,81 @@ import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.co
         </header>
 
         @if (loading()) {
-          <div class="recipe-grid">
-            @for (s of [0,1,2,3,4,5]; track s) {
-              <div class="recipe-sk"></div>
+          <div class="ed-sk">
+            @for (s of [0,1,2]; track s) {
+              <div class="sk-row" [class.sk-row--rev]="s % 2 === 1">
+                <div class="sk-img"></div>
+                <div class="sk-body">
+                  <div class="sk-line sk-sm"></div>
+                  <div class="sk-line sk-xl"></div>
+                  <div class="sk-line sk-md"></div>
+                  <div class="sk-line sk-sm" style="margin-top:.5rem"></div>
+                </div>
+              </div>
             }
           </div>
         } @else if (errored()) {
           <p class="err-msg">Рецептите не могат да се заредят в момента.</p>
         } @else {
-          <div class="recipe-grid">
-            @for (r of featured(); track r.id; let i = $index) {
-              <app-recipe-card [recipe]="r" [index]="i" [priority]="i === 0" />
+          <div class="ed-list">
+            @for (r of featured().slice(0, 6); track r.id; let i = $index) {
+              <article class="feat-row" [class.feat-row--rev]="i % 2 === 1">
+
+                <div class="feat-img-wrap">
+                  <a [routerLink]="['/recipes', r.slug]" class="feat-img-link"
+                     tabindex="-1" aria-hidden="true">
+                    @if (r.hero_image) {
+                      <img [src]="r.hero_image" [alt]="r.title" class="feat-img"
+                           [loading]="i < 2 ? 'eager' : 'lazy'" />
+                    } @else {
+                      <div class="feat-img-ph"></div>
+                    }
+                  </a>
+                  <span class="feat-num" aria-hidden="true">
+                    {{ i < 9 ? '0' : '' }}{{ i + 1 }}
+                  </span>
+                </div>
+
+                <div class="feat-body">
+                  @if (r.category?.name) {
+                    <span class="feat-cat">{{ r.category!.name }}</span>
+                  }
+                  <h3 class="feat-title">
+                    <a [routerLink]="['/recipes', r.slug]" class="feat-title-link">{{ r.title }}</a>
+                  </h3>
+                  @if (r.excerpt) {
+                    <p class="feat-desc">{{ r.excerpt }}</p>
+                  }
+                  <div class="feat-meta">
+                    @if (r.prep_minutes || r.cook_minutes) {
+                      <span class="feat-meta-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             aria-hidden="true" width="12" height="12">
+                          <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                        </svg>
+                        {{ (r.prep_minutes || 0) + (r.cook_minutes || 0) }} мин.
+                      </span>
+                    }
+                    @if (r.difficulty) {
+                      <span class="feat-meta-sep" aria-hidden="true">·</span>
+                      <span class="feat-meta-item">{{ r.difficulty }}</span>
+                    }
+                  </div>
+                  <a [routerLink]="['/recipes', r.slug]" class="feat-cta">
+                    Виж рецептата
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+                         width="14" height="14">
+                      <path d="M5 12h14M13 6l6 6-6 6"/>
+                    </svg>
+                  </a>
+                </div>
+
+              </article>
             }
           </div>
+
           <div class="sec-footer">
             <a routerLink="/recipes" class="all-link">Виж всички рецепти →</a>
           </div>
@@ -101,10 +193,33 @@ import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.co
   styles: [`
     :host { display: block; background: var(--paper); }
 
+    /* ═══ BLOB DECORATIONS ══════════════════════════════════════════════ */
+    .blob {
+      position: absolute;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .blob-1 {
+      width: clamp(320px, 48vw, 640px);
+      top: -5rem;
+      right: -8rem;
+    }
+    .blob-2 {
+      width: clamp(200px, 28vw, 360px);
+      bottom: -4rem;
+      left: -6rem;
+    }
+    .blob-3 {
+      width: clamp(240px, 36vw, 500px);
+      top: 4rem;
+      right: -8rem;
+    }
+
     /* ═══ HERO ══════════════════════════════════════════════════════════ */
     .hero {
-      padding: clamp(3rem, 8vw, 5.5rem) 0 clamp(2.5rem, 6vw, 4.5rem);
-      border-bottom: 1px solid var(--rule);
+      position: relative;
+      overflow: hidden;
+      padding: clamp(3rem, 8vw, 5.5rem) 0 clamp(3rem, 7vw, 5rem);
     }
     .hero-inner {
       max-width: 1200px;
@@ -114,14 +229,12 @@ import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.co
       grid-template-columns: 1fr 1fr;
       gap: clamp(2rem, 6vw, 5rem);
       align-items: center;
+      position: relative;
+      z-index: 1;
     }
 
-    /* Copy column */
-    .hero-copy {
-      display: flex;
-      flex-direction: column;
-      gap: 1.375rem;
-    }
+    /* Copy */
+    .hero-copy { display: flex; flex-direction: column; gap: 1.375rem; }
     .eyebrow {
       font-family: var(--font-type);
       font-size: 0.68rem;
@@ -138,10 +251,7 @@ import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.co
       color: var(--ink);
       margin: 0;
     }
-    .hero-title em {
-      color: var(--terracotta);
-      font-style: italic;
-    }
+    .hero-title em { color: var(--terracotta); font-style: italic; }
     .hero-lead {
       font-family: var(--font-body);
       font-size: 1.05rem;
@@ -154,7 +264,7 @@ import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.co
       display: inline-flex;
       align-items: center;
       gap: 0.6rem;
-      padding: 0.75rem 1.75rem;
+      padding: 0.75rem 1.875rem;
       background: var(--terracotta);
       color: var(--paper);
       font-family: var(--font-type);
@@ -162,6 +272,7 @@ import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.co
       letter-spacing: 0.2em;
       text-transform: uppercase;
       text-decoration: none;
+      border-radius: 6rem;
       box-shadow: var(--shadow-sm);
       transition: background 0.2s var(--ease-out-expo), transform 0.2s var(--ease-out-expo);
       align-self: flex-start;
@@ -172,66 +283,86 @@ import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.co
     }
     .hero-btn:active { transform: translateY(0); }
 
-    /* Polaroid visual column */
+    /* Visual */
     .hero-visual {
       position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 2rem 1rem;
+      padding: 2rem 1rem 3rem;
     }
-    .polaroid {
-      background: #fff;
-      padding: 0.875rem 0.875rem 3.5rem;
-      box-shadow: var(--shadow-lg);
-      transform: rotate(-2deg);
-      max-width: 340px;
+    .hero-frame {
+      position: relative;
+      width: clamp(260px, 38vw, 380px);
+      height: clamp(260px, 38vw, 380px);
+    }
+    .frame-blob {
+      position: absolute;
+      inset: -14%;
+      width: 128%;
+      height: 128%;
+      z-index: 0;
+    }
+    .hero-img {
       width: 100%;
-      transition: transform 0.45s var(--ease-out-expo);
-    }
-    @media (hover: hover) and (pointer: fine) {
-      .hero-visual:hover .polaroid { transform: rotate(-0.5deg) translateY(-4px); }
-    }
-    .polaroid-img {
-      width: 100%;
-      aspect-ratio: 4 / 3;
+      height: 100%;
       object-fit: cover;
+      border-radius: 62% 38% 54% 46% / 48% 62% 38% 52%;
       display: block;
+      position: relative;
+      z-index: 1;
     }
-    .polaroid-ph {
+    .hero-img-ph {
       width: 100%;
-      aspect-ratio: 4 / 3;
+      height: 100%;
       background: linear-gradient(135deg, #d9c9a3 0%, #c8b482 55%, #ddd0b8 100%);
-      display: block;
+      border-radius: 62% 38% 54% 46% / 48% 62% 38% 52%;
+      position: relative;
+      z-index: 1;
     }
-    .polaroid-cap {
-      display: block;
-      padding-top: 0.75rem;
+    .hero-caption {
+      position: absolute;
+      bottom: 0.75rem;
+      left: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--paper);
+      padding: 0.45rem 0.875rem;
+      box-shadow: 0 2px 12px rgba(30,23,16,.1);
+    }
+    .caption-dot { width: 0.85rem; height: 0.85rem; flex-shrink: 0; }
+    .caption-text {
       font-family: var(--font-hand);
-      font-size: 1.05rem;
+      font-size: 0.95rem;
       color: var(--ink-mute);
-      text-align: center;
-      line-height: 1.2;
-      white-space: nowrap;
+      max-width: 20ch;
       overflow: hidden;
       text-overflow: ellipsis;
+      white-space: nowrap;
     }
     .hero-annotation {
       position: absolute;
-      bottom: 0;
-      right: 1.5rem;
+      top: 1.5rem;
+      right: 0;
       font-family: var(--font-hand);
       font-size: 0.9rem;
       color: var(--terracotta);
-      opacity: 0.65;
+      opacity: 0.6;
       transform: rotate(3deg);
       pointer-events: none;
     }
 
+    /* ═══ WAVE DIVIDER ══════════════════════════════════════════════════ */
+    .wave-div {
+      line-height: 0;
+      margin-top: -1px;
+    }
+    .wave-div svg { width: 100%; height: 56px; display: block; }
+
     /* ═══ CATEGORY STRIP ════════════════════════════════════════════════ */
     .cats {
       background: var(--paper-2);
-      border-top: 1px solid var(--rule);
       border-bottom: 1px solid var(--rule);
       padding: 0.75rem 0;
       overflow-x: auto;
@@ -253,8 +384,9 @@ import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.co
       letter-spacing: 0.16em;
       text-transform: uppercase;
       color: var(--ink-mute);
-      padding: 0.3rem 0.8rem;
+      padding: 0.3rem 0.875rem;
       border: 1px dashed var(--rule-strong);
+      border-radius: 6rem;
       text-decoration: none;
       flex-shrink: 0;
       transition: border-color 0.15s, color 0.15s, background 0.15s;
@@ -271,18 +403,24 @@ import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.co
       border-color: var(--terracotta);
     }
 
-    /* ═══ FEATURED RECIPES SECTION ══════════════════════════════════════ */
-    .recipes-sec {
-      padding: clamp(3rem, 7vw, 5rem) 0;
+    /* ═══ EDITORIAL SECTION ═════════════════════════════════════════════ */
+    .editorial-sec {
+      position: relative;
+      overflow: hidden;
+      padding: clamp(3.5rem, 8vw, 6rem) 0;
     }
     .sec-inner {
       max-width: 1200px;
       margin: 0 auto;
       padding: 0 clamp(1.5rem, 5vw, 3rem);
+      position: relative;
+      z-index: 1;
     }
+
+    /* Section header */
     .sec-head {
       text-align: center;
-      margin-bottom: clamp(2rem, 5vw, 3.5rem);
+      margin-bottom: clamp(2.5rem, 6vw, 4.5rem);
     }
     .sec-eyebrow {
       display: block;
@@ -321,22 +459,184 @@ import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.co
     .sec-rule::before { right: calc(100% + 0.625rem); }
     .sec-rule::after  { left:  calc(100% + 0.625rem); }
 
-    /* Recipe grid */
-    .recipe-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: clamp(1.25rem, 3vw, 2rem);
-      align-items: start;
+    /* Editorial list */
+    .ed-list {
+      display: flex;
+      flex-direction: column;
     }
-    .recipe-sk {
+
+    /* Feature row */
+    .feat-row {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: clamp(2rem, 5vw, 4.5rem);
+      align-items: center;
+      padding: clamp(3rem, 6vw, 5rem) 0;
+      border-bottom: 1px dashed var(--rule);
+    }
+    .feat-row:first-child { padding-top: 0; }
+    .feat-row:last-child  { border-bottom: none; }
+
+    .feat-row--rev {
+      grid-template-columns: 0.85fr 1.15fr;
+    }
+    .feat-row--rev .feat-img-wrap { order: 2; }
+    .feat-row--rev .feat-body { order: 1; }
+
+    /* Image side */
+    .feat-img-wrap { position: relative; }
+    .feat-img-link { display: block; overflow: hidden; }
+    .feat-img {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s var(--ease-out-expo);
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .feat-img-link:hover .feat-img { transform: scale(1.04); }
+    }
+    .feat-img-ph {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      background: linear-gradient(135deg, #d9c9a3 0%, #c8b482 55%, #ddd0b8 100%);
+    }
+
+    /* Ghost number */
+    .feat-num {
+      position: absolute;
+      top: -0.75rem;
+      left: -0.75rem;
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: clamp(3.5rem, 6vw, 5.5rem);
+      font-weight: 800;
+      color: var(--terracotta);
+      opacity: 0.15;
+      line-height: 1;
+      user-select: none;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .feat-row--rev .feat-num {
+      left: auto;
+      right: -0.75rem;
+    }
+
+    /* Body side */
+    .feat-body {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .feat-cat {
+      font-family: var(--font-type);
+      font-size: 0.58rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--terracotta);
+    }
+    .feat-title {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+      font-weight: 700;
+      line-height: 1.15;
+      margin: 0;
+      color: var(--ink);
+    }
+    .feat-title-link {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.18s;
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .feat-title-link:hover { color: var(--terracotta); }
+    }
+    .feat-desc {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      color: var(--ink-mute);
+      line-height: 1.7;
+      margin: 0;
+      max-width: 44ch;
+    }
+    .feat-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .feat-meta-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-family: var(--font-type);
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+    }
+    .feat-meta-sep {
+      color: var(--rule-strong);
+      font-size: 0.75rem;
+    }
+    .feat-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-type);
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--terracotta);
+      text-decoration: none;
+      padding-bottom: 2px;
+      border-bottom: 1px solid var(--terracotta);
+      transition: color 0.15s, gap 0.2s;
+      align-self: flex-start;
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .feat-cta:hover { color: var(--terracotta-2); gap: 0.75rem; }
+    }
+
+    /* ═══ SKELETON ══════════════════════════════════════════════════════ */
+    .ed-sk { display: flex; flex-direction: column; gap: 0; }
+    .sk-row {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 3.5rem;
+      align-items: center;
+      padding: 4rem 0;
+      border-bottom: 1px dashed var(--rule);
+    }
+    .sk-row:first-child { padding-top: 0; }
+    .sk-row--rev {
+      grid-template-columns: 0.85fr 1.15fr;
+    }
+    .sk-row--rev .sk-img { order: 2; }
+    .sk-row--rev .sk-body { order: 1; }
+    .sk-img {
+      aspect-ratio: 4 / 3;
       background: var(--paper-2);
-      aspect-ratio: 3 / 4;
       animation: sk-pulse 1.6s ease-in-out infinite;
     }
+    .sk-body { display: flex; flex-direction: column; gap: 0.875rem; }
+    .sk-line {
+      height: 1rem;
+      background: var(--paper-2);
+      border-radius: 2px;
+      animation: sk-pulse 1.6s ease-in-out infinite;
+    }
+    .sk-sm { width: 22%; height: 0.65rem; }
+    .sk-xl { width: 82%; height: 2.25rem; }
+    .sk-md { width: 65%; }
     @keyframes sk-pulse {
       0%, 100% { opacity: 1; }
-      50%       { opacity: 0.55; }
+      50%       { opacity: 0.5; }
     }
+
+    /* ═══ ERROR / FOOTER ════════════════════════════════════════════════ */
     .err-msg {
       text-align: center;
       font-family: var(--font-hand);
@@ -344,12 +644,10 @@ import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.co
       color: var(--ink-mute);
       padding: 3rem;
     }
-
-    /* Section footer / all-link */
     .sec-footer {
       text-align: center;
-      margin-top: clamp(2rem, 5vw, 3rem);
-      padding-top: 1.5rem;
+      margin-top: clamp(2.5rem, 5vw, 3.5rem);
+      padding-top: 1.75rem;
       border-top: 1px dashed var(--rule);
     }
     .all-link {
@@ -367,22 +665,33 @@ import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.co
       .all-link:hover { color: var(--terracotta-2); border-color: var(--terracotta-2); }
     }
 
-    /* ═══ RESPONSIVE ══════════════════════════════════════════════════════ */
-    /* ═══ WIDE-SCREEN ENHANCEMENTS ══════════════════════════════════════════ */
+    /* ═══ RESPONSIVE ════════════════════════════════════════════════════ */
     @media (min-width: 1100px) {
       .hero-inner { grid-template-columns: 1fr 1.15fr; }
-      .polaroid { max-width: 400px; }
+      .hero-frame { width: 420px; height: 420px; }
     }
     @media (min-width: 1400px) {
-      .polaroid { max-width: 460px; }
       .hero-title { font-size: 5rem; }
+      .hero-frame { width: 480px; height: 480px; }
     }
 
     @media (max-width: 900px) {
       .hero-inner { grid-template-columns: 1fr; }
       .hero-visual { display: none; }
-      .recipe-grid { grid-template-columns: repeat(2, 1fr); }
+      .feat-row {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      .feat-row--rev { grid-template-columns: 1fr; }
+      .feat-row--rev .feat-img-wrap { order: 0; }
+      .feat-row--rev .feat-body { order: 1; }
+      .feat-num { font-size: 3rem; top: -0.5rem; left: -0.5rem; }
+      .feat-row--rev .feat-num { right: -0.5rem; left: auto; }
+      .sk-row { grid-template-columns: 1fr; gap: 1.5rem; }
+      .sk-row--rev .sk-img { order: 0; }
+      .sk-row--rev .sk-body { order: 1; }
     }
+
     @media (max-width: 640px) {
       .cat-pill {
         padding: 0.55rem 1rem;
@@ -391,12 +700,10 @@ import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.co
         align-items: center;
       }
     }
-    @media (max-width: 580px) {
-      .recipe-grid { grid-template-columns: 1fr; }
-    }
+
     @media (prefers-reduced-motion: reduce) {
-      .polaroid, .hero-btn, .cat-pill, .all-link { transition: none; }
-      .recipe-sk { animation: none; }
+      .feat-img, .hero-btn, .cat-pill, .feat-cta, .all-link { transition: none; }
+      .sk-img, .sk-line { animation: none; }
     }
   `],
 })
