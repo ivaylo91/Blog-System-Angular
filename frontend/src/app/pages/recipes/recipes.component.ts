@@ -17,6 +17,10 @@ import { PerfService } from '../../services/perf.service';
       <div class="page-inner">
 
         <header class="page-header">
+          <svg class="hdr-blob" viewBox="0 0 380 340" aria-hidden="true">
+            <path fill="#b1502d" fill-opacity=".09"
+              d="M190,55 C272,32 352,96 368,178 C384,260 348,344 266,368 C184,392 96,358 56,278 C16,198 32,98 90,60 C118,42 148,74 190,55Z"/>
+          </svg>
           <span class="page-eyebrow">Готварски блог</span>
           <h1>Рецепти</h1>
           <p>Открий традиционни български рецепти за всеки повод.</p>
@@ -191,34 +195,46 @@ import { PerfService } from '../../services/perf.service';
     .page {
       padding: var(--space-9) clamp(var(--space-4), 4vw, var(--space-6)) var(--space-10);
       background-color: var(--clr-bg);
-      background-image: url('/backgrounds/cooking-pattern.svg');
-      background-size: 500px;
-      background-repeat: repeat;
       min-height: 100dvh;
     }
     .page-inner { max-width: 1280px; margin: 0 auto; }
 
     /* ── Header ──────────────────────────────────── */
-    .page-header { margin-bottom: var(--space-8); }
+    .page-header {
+      margin-bottom: var(--space-8);
+      position: relative;
+      overflow: visible;
+    }
+    .hdr-blob {
+      position: absolute;
+      width: clamp(200px, 30vw, 380px);
+      top: -2rem;
+      right: -2rem;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .page-header h1,
+    .page-header p,
+    .page-eyebrow { position: relative; z-index: 1; }
     .page-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      font-size: 0.7rem;
-      font-weight: 700;
+      display: inline-block;
+      font-family: var(--font-type);
+      font-size: 0.6rem;
+      font-weight: 400;
       text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: var(--clr-green-text);
-      background: var(--clr-green-bg);
-      padding: var(--space-1) var(--space-4);
-      border-radius: var(--radius-pill);
-      margin-bottom: var(--space-4);
+      letter-spacing: 0.22em;
+      color: var(--terracotta);
+      margin-bottom: 0.5rem;
+      background: none;
+      padding: 0;
+      border-radius: 0;
     }
     .page-header h1 {
       font-family: var(--font-display);
+      font-style: italic;
       font-size: clamp(2rem, 4vw, 3rem);
-      color: var(--clr-text);
+      color: var(--ink);
       margin: 0 0 var(--space-2);
-      letter-spacing: -0.02em;
     }
     .page-header p {
       color: var(--clr-text-muted);

@@ -14,6 +14,10 @@ import { Category } from '../../models/models';
     <section class="page">
       <div class="page-inner">
         <header class="page-header">
+          <svg class="hdr-blob" viewBox="0 0 360 320" aria-hidden="true">
+            <path fill="#6b7a3a" fill-opacity=".1"
+              d="M180,52 C258,30 336,92 352,170 C368,248 332,330 252,355 C172,380 88,346 50,268 C12,190 28,94 84,58 C112,40 140,70 180,52Z"/>
+          </svg>
           <span class="eyebrow">Открий</span>
           <h1>Категории</h1>
           <p class="lede">Разгледай рецептите подредени по вид — от предястия до десерти.</p>
@@ -62,23 +66,36 @@ import { Category } from '../../models/models';
     .page-header {
       max-width: 48rem;
       margin-bottom: clamp(2rem, 4vw, 3.25rem);
+      position: relative;
+      overflow: visible;
     }
+    .hdr-blob {
+      position: absolute;
+      width: clamp(180px, 28vw, 360px);
+      top: -2rem;
+      right: -1rem;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .eyebrow,
+    h1, .lede { position: relative; z-index: 1; }
     .eyebrow {
       display: inline-block;
-      font-size: 0.72rem;
-      font-weight: 700;
+      font-family: var(--font-type);
+      font-size: 0.6rem;
+      font-weight: 400;
       text-transform: uppercase;
       letter-spacing: 0.22em;
-      color: var(--clr-brand);
+      color: var(--terracotta);
       margin-bottom: 0.75rem;
     }
     h1 {
       font-family: var(--font-display);
+      font-style: italic;
       font-size: clamp(2.4rem, 6vw, 4.25rem);
       font-weight: 800;
-      color: var(--clr-text);
+      color: var(--ink);
       line-height: 1.02;
-      letter-spacing: -0.035em;
       margin: 0 0 1rem;
     }
     .lede {
@@ -108,24 +125,22 @@ import { Category } from '../../models/models';
       flex-direction: column;
       gap: 0.5rem;
       padding: 1.75rem 1.6rem 1.5rem;
-      min-height: 220px;
-      border-radius: var(--radius-lg);
+      min-height: 200px;
       text-decoration: none;
-      color: var(--clr-text);
+      color: var(--ink);
       overflow: hidden;
-      background:
-        radial-gradient(120% 80% at 0% 0%, var(--clr-surface-alt) 0%, var(--clr-surface) 70%);
-      border: 1px solid var(--clr-border-faint);
+      background: var(--paper-2);
+      border: 1px dashed var(--rule);
       box-shadow: var(--shadow-sm);
-      transition: transform 0.35s var(--ease-out-expo), box-shadow 0.35s var(--ease-out-expo), border-color 0.25s;
+      transition: transform 0.35s var(--ease-out-expo), box-shadow 0.35s var(--ease-out-expo);
       isolation: isolate;
     }
     .tile::after {
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(60% 50% at 85% 90%, rgba(177, 80, 45, 0.06) 0%, transparent 100%);
-      opacity: 0.7;
+      background: radial-gradient(60% 50% at 85% 90%, rgba(177, 80, 45, 0.08) 0%, transparent 100%);
+      opacity: 0;
       z-index: -1;
       transition: opacity 0.3s var(--ease-out-expo);
     }
@@ -133,7 +148,7 @@ import { Category } from '../../models/models';
       .tile:hover {
         transform: translateY(-4px);
         box-shadow: var(--shadow-lg);
-        border-color: var(--clr-border);
+        border-color: var(--terracotta);
       }
       .tile:hover::after { opacity: 1; }
       .tile:hover .arrow { transform: translateX(5px); }
@@ -141,36 +156,25 @@ import { Category } from '../../models/models';
     .tile:active { transform: translateY(-1px); transition-duration: 0.1s; }
 
     .tile-num {
-      font-family: var(--font-display);
-      font-size: 0.88rem;
-      font-weight: 800;
-      letter-spacing: 0.12em;
+      font-family: var(--font-type);
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
       color: var(--terracotta);
-    }
-    .tile-num::before {
-      content: '';
-      display: inline-block;
-      width: 1.4rem;
-      height: 1px;
-      background: currentColor;
-      vertical-align: middle;
-      margin-right: 0.45rem;
-      opacity: 0.6;
-      transform: translateY(-1px);
+      text-transform: uppercase;
     }
     .tile-title {
       font-family: var(--font-display);
+      font-style: italic;
       font-size: clamp(1.7rem, 2.4vw, 2.1rem);
       font-weight: 800;
       line-height: 1.05;
-      letter-spacing: -0.025em;
-      color: var(--clr-text);
+      color: var(--ink);
       margin: 0;
     }
     .tile-desc {
       font-size: 0.92rem;
       line-height: 1.55;
-      color: var(--clr-text-muted);
+      color: var(--ink-mute);
       margin: 0;
       display: -webkit-box;
       -webkit-line-clamp: 2;
@@ -193,7 +197,7 @@ import { Category } from '../../models/models';
     }
     .arrow {
       font-size: 1.1rem;
-      color: var(--clr-brand);
+      color: var(--terracotta);
       transition: transform 0.3s var(--ease-out-expo);
     }
 

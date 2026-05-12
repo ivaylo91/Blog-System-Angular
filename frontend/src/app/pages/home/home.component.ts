@@ -123,10 +123,20 @@ import { PerfService } from '../../services/perf.service';
           <p class="err-msg">Рецептите не могат да се заредят в момента.</p>
         } @else {
           <div class="ed-list">
+            <span class="scat scat-1" aria-hidden="true">×</span>
+            <span class="scat scat-2" aria-hidden="true">•</span>
             @for (r of featured().slice(0, 6); track r.id; let i = $index) {
               <article class="feat-row" [class.feat-row--rev]="i % 2 === 1">
 
                 <div class="feat-img-wrap">
+
+                  <div class="photo-blob" [class.photo-blob--olive]="i % 2 === 1" aria-hidden="true">
+                    <svg viewBox="0 0 420 390" xmlns="http://www.w3.org/2000/svg">
+                      <path class="blob-path"
+                            d="M210,62 C302,38 392,108 414,200 C436,292 396,386 306,415 C216,444 114,410 68,326 C22,242 44,132 104,82 C135,60 164,84 210,62Z"/>
+                    </svg>
+                  </div>
+
                   <a [routerLink]="['/recipes', r.slug]" class="feat-img-link"
                      tabindex="-1" aria-hidden="true">
                     @if (r.hero_image) {
@@ -463,6 +473,7 @@ import { PerfService } from '../../services/perf.service';
     .ed-list {
       display: flex;
       flex-direction: column;
+      position: relative;
     }
 
     /* Feature row */
@@ -484,8 +495,20 @@ import { PerfService } from '../../services/perf.service';
     .feat-row--rev .feat-body { order: 1; }
 
     /* Image side */
-    .feat-img-wrap { position: relative; }
-    .feat-img-link { display: block; overflow: hidden; }
+    .feat-img-wrap {
+      position: relative;
+      padding: 1.5rem 1.25rem 2rem;
+    }
+    .photo-blob {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .photo-blob svg { width: 100%; height: 100%; }
+    .photo-blob .blob-path { fill: #b1502d; fill-opacity: 0.55; }
+    .photo-blob.photo-blob--olive .blob-path { fill: #6b7a3a; fill-opacity: 0.46; }
+    .feat-img-link { display: block; overflow: hidden; position: relative; z-index: 1; }
     .feat-img {
       width: 100%;
       aspect-ratio: 4 / 3;
@@ -505,8 +528,9 @@ import { PerfService } from '../../services/perf.service';
     /* Ghost number */
     .feat-num {
       position: absolute;
-      top: -0.75rem;
-      left: -0.75rem;
+      z-index: 2;
+      top: 0.25rem;
+      left: 0.5rem;
       font-family: var(--font-display);
       font-style: italic;
       font-size: clamp(3.5rem, 6vw, 5.5rem);
@@ -520,7 +544,7 @@ import { PerfService } from '../../services/perf.service';
     }
     .feat-row--rev .feat-num {
       left: auto;
-      right: -0.75rem;
+      right: 0.5rem;
     }
 
     /* Body side */
@@ -598,6 +622,30 @@ import { PerfService } from '../../services/perf.service';
     }
     @media (hover: hover) and (pointer: fine) {
       .feat-cta:hover { color: var(--terracotta-2); gap: 0.75rem; }
+    }
+
+    /* Scatter marks */
+    .scat {
+      position: absolute;
+      pointer-events: none;
+      user-select: none;
+      z-index: 0;
+    }
+    .scat-1 {
+      font-family: var(--font-type);
+      font-size: 1.1rem;
+      color: var(--terracotta);
+      opacity: 0.3;
+      top: 15%;
+      left: -1.5rem;
+    }
+    .scat-2 {
+      font-size: 1.8rem;
+      color: var(--olive);
+      opacity: 0.35;
+      bottom: 25%;
+      right: -1rem;
+      line-height: 1;
     }
 
     /* ═══ SKELETON ══════════════════════════════════════════════════════ */
@@ -682,6 +730,7 @@ import { PerfService } from '../../services/perf.service';
         grid-template-columns: 1fr;
         gap: 1.5rem;
       }
+      .feat-img-wrap { padding: 1.25rem 0.75rem 1.5rem; }
       .feat-row--rev { grid-template-columns: 1fr; }
       .feat-row--rev .feat-img-wrap { order: 0; }
       .feat-row--rev .feat-body { order: 1; }

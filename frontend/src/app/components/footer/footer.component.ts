@@ -8,6 +8,11 @@ import { AuthService } from '../../services/auth.service';
   imports: [RouterLink],
   template: `
     <footer class="site-footer">
+      <div class="footer-wave" aria-hidden="true">
+        <svg viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0,55 C240,90 480,10 720,55 C960,100 1200,15 1440,55 L1440,90 L0,90 Z" fill="#364210"/>
+        </svg>
+      </div>
       <div class="footer-inner">
 
         <!-- Brand -->
@@ -67,12 +72,18 @@ import { AuthService } from '../../services/auth.service';
   `,
   styles: [`
     .site-footer {
-      background: var(--clr-footer-bg);
-      color: var(--clr-footer-text);
-      border-top: 3px solid var(--pencil-red);
+      background: #364210;
+      color: #8a9a6a;
       position: relative;
       overflow: hidden;
     }
+    .footer-wave {
+      line-height: 0;
+      display: block;
+      background: var(--paper);
+      margin-top: -1px;
+    }
+    .footer-wave svg { width: 100%; height: 90px; display: block; }
 
     /* paper grain on dark background */
     .site-footer::before {
@@ -108,17 +119,17 @@ import { AuthService } from '../../services/auth.service';
       font-style: italic;
       font-size: 1.35rem;
       font-weight: 700;
-      color: var(--clr-footer-text-bright);
+      color: #d8e8b0;
       text-decoration: none;
       line-height: 1.15;
       transition: color 0.18s;
     }
-    .brand-name:hover { color: var(--mustard); }
+    .brand-name:hover { color: #d4b460; }
 
     .brand-tagline {
       font-family: var(--font-hand);
       font-size: 1rem;
-      color: var(--clr-footer-quote);
+      color: #a8b888;
       margin: 0;
       line-height: 1.3;
     }
@@ -134,13 +145,13 @@ import { AuthService } from '../../services/auth.service';
       content: '';
       flex: 1;
       height: 1px;
-      background: var(--clr-footer-sep);
+      background: #4a5c1e;
       max-width: 2.5rem;
     }
     .brand-rule-dot {
       width: 4px;
       height: 4px;
-      background: var(--clr-footer-text-faint);
+      background: #5a6c2a;
       border-radius: 50%;
     }
 
@@ -162,21 +173,21 @@ import { AuthService } from '../../services/auth.service';
       font-size: 0.6rem;
       letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: var(--clr-footer-text-bright);
+      color: #d8e8b0;
       margin-bottom: 0.25rem;
       padding-bottom: 0.5rem;
-      border-bottom: 1px dashed var(--clr-footer-sep);
+      border-bottom: 1px dashed #4a5c1e;
     }
 
     .nav-col a {
       font-family: var(--font-body);
-      color: var(--clr-footer-text);
+      color: #8a9a6a;
       text-decoration: none;
       font-size: 0.88rem;
       line-height: 1.45;
       transition: color 0.18s;
     }
-    .nav-col a:hover { color: var(--clr-footer-text-bright); }
+    .nav-col a:hover { color: #d8e8b0; }
     .nav-col a:focus-visible {
       outline: 2px solid var(--mustard);
       outline-offset: 2px;
@@ -186,7 +197,7 @@ import { AuthService } from '../../services/auth.service';
       font-family: var(--font-type);
       font-size: 0.62rem;
       letter-spacing: 0.1em;
-      color: var(--clr-footer-text-faint);
+      color: #5a6c2a;
       margin-top: 0.5rem;
     }
 
@@ -209,8 +220,8 @@ import { AuthService } from '../../services/auth.service';
       justify-content: center;
       width: 2.25rem;
       height: 2.25rem;
-      border: 1px dashed var(--clr-footer-sep);
-      color: var(--clr-footer-text);
+      border: 1px dashed #4a5c1e;
+      color: #8a9a6a;
       text-decoration: none;
       transition: border-color 0.2s, color 0.2s;
     }
@@ -218,8 +229,8 @@ import { AuthService } from '../../services/auth.service';
 
     @media (hover: hover) and (pointer: fine) {
       .social-btn:hover {
-        border-color: var(--mustard);
-        color: var(--mustard);
+        border-color: #d4b460;
+        color: #d4b460;
       }
     }
     .social-btn:focus-visible {
