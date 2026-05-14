@@ -63,7 +63,6 @@ import { PerfService } from '../../services/perf.service';
             </svg>
             <span class="caption-text">{{ featured()[0]?.title || 'Домашна кухня' }}</span>
           </div>
-          <span class="hero-annotation" aria-hidden="true">~ рецепти с любов ~</span>
         </div>
 
       </div>
@@ -92,11 +91,6 @@ import { PerfService } from '../../services/perf.service';
 
     <!-- ════════════════════ EDITORIAL FEATURED ════════════════════════════ -->
     <section class="editorial-sec">
-      <svg class="blob blob-3" viewBox="0 0 460 460" aria-hidden="true">
-        <path fill="var(--olive)" fill-opacity=".08"
-          d="M230,58 C322,34 408,104 425,192 C442,280 396,374 308,405 C220,436 118,400 68,318 C18,236 40,122 104,72 C136,50 162,78 230,58Z"/>
-      </svg>
-
       <div class="sec-inner">
 
         <header class="sec-head">
@@ -123,20 +117,10 @@ import { PerfService } from '../../services/perf.service';
           <p class="err-msg">Рецептите не могат да се заредят в момента.</p>
         } @else {
           <div class="ed-list">
-            <span class="scat scat-1" aria-hidden="true">×</span>
-            <span class="scat scat-2" aria-hidden="true">•</span>
             @for (r of featured().slice(0, 6); track r.id; let i = $index) {
               <article class="feat-row" [class.feat-row--rev]="i % 2 === 1">
 
                 <div class="feat-img-wrap">
-
-                  <div class="photo-blob" [class.photo-blob--olive]="i % 2 === 1" aria-hidden="true">
-                    <svg viewBox="0 0 420 390" xmlns="http://www.w3.org/2000/svg">
-                      <path class="blob-path"
-                            d="M210,62 C302,38 392,108 414,200 C436,292 396,386 306,415 C216,444 114,410 68,326 C22,242 44,132 104,82 C135,60 164,84 210,62Z"/>
-                    </svg>
-                  </div>
-
                   <a [routerLink]="['/recipes', r.slug]" class="feat-img-link"
                      tabindex="-1" aria-hidden="true">
                     @if (r.hero_image) {
@@ -219,12 +203,6 @@ import { PerfService } from '../../services/perf.service';
       bottom: -4rem;
       left: -6rem;
     }
-    .blob-3 {
-      width: clamp(240px, 36vw, 500px);
-      top: 4rem;
-      right: -8rem;
-    }
-
     /* ═══ HERO ══════════════════════════════════════════════════════════ */
     .hero {
       position: relative;
@@ -354,18 +332,6 @@ import { PerfService } from '../../services/perf.service';
       text-overflow: ellipsis;
       white-space: nowrap;
     }
-    .hero-annotation {
-      position: absolute;
-      top: 1.5rem;
-      right: 0;
-      font-family: var(--font-hand);
-      font-size: 0.9rem;
-      color: var(--terracotta);
-      opacity: 0.6;
-      transform: rotate(3deg);
-      pointer-events: none;
-    }
-
     /* ═══ WAVE DIVIDER ══════════════════════════════════════════════════ */
     .wave-div {
       line-height: 0;
@@ -500,18 +466,8 @@ import { PerfService } from '../../services/perf.service';
     /* Image side */
     .feat-img-wrap {
       position: relative;
-      padding: 1.5rem 1.25rem 2rem;
     }
-    .photo-blob {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-    }
-    .photo-blob svg { width: 100%; height: 100%; }
-    .photo-blob .blob-path { fill: #b1502d; fill-opacity: 0.55; }
-    .photo-blob.photo-blob--olive .blob-path { fill: #6b7a3a; fill-opacity: 0.46; }
-    .feat-img-link { display: block; overflow: hidden; position: relative; z-index: 1; }
+    .feat-img-link { display: block; overflow: hidden; position: relative; }
     .feat-img {
       width: 100%;
       aspect-ratio: 4 / 3;
@@ -625,30 +581,6 @@ import { PerfService } from '../../services/perf.service';
     }
     @media (hover: hover) and (pointer: fine) {
       .feat-cta:hover { color: var(--terracotta-2); gap: 0.75rem; }
-    }
-
-    /* Scatter marks */
-    .scat {
-      position: absolute;
-      pointer-events: none;
-      user-select: none;
-      z-index: 0;
-    }
-    .scat-1 {
-      font-family: var(--font-type);
-      font-size: 1.1rem;
-      color: var(--terracotta);
-      opacity: 0.3;
-      top: 15%;
-      left: -1.5rem;
-    }
-    .scat-2 {
-      font-size: 1.8rem;
-      color: var(--olive);
-      opacity: 0.35;
-      bottom: 25%;
-      right: -1rem;
-      line-height: 1;
     }
 
     /* ═══ SKELETON ══════════════════════════════════════════════════════ */

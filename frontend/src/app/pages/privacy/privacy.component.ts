@@ -11,10 +11,6 @@ import { SeoService } from '../../services/seo.service';
 
       <!-- Editorial page header -->
       <header class="priv-header">
-        <svg class="hdr-blob" viewBox="0 0 360 280" aria-hidden="true">
-          <path fill="#6b7a3a" fill-opacity=".09"
-            d="M180,44 C258,24 334,80 348,158 C362,236 326,318 244,338 C162,358 78,322 44,248 C10,174 28,86 82,52 C110,36 138,60 180,44Z"/>
-        </svg>
         <span class="eyebrow">Документ</span>
         <h1>Политика за поверителност</h1>
         <p class="lede">Честни думи за това какво правим с твоите данни — нищо повече, нищо по-малко.</p>
@@ -81,23 +77,11 @@ import { SeoService } from '../../services/seo.service';
 
     /* ── Editorial header ─────────────────────────────────────────── */
     .priv-header {
-      position: relative;
-      overflow: visible;
       padding: clamp(2.5rem, 6vw, 4rem) clamp(1.5rem, 6vw, 3rem) clamp(2rem, 4vw, 3rem);
       max-width: 800px;
       margin: 0 auto;
     }
-    .hdr-blob {
-      position: absolute;
-      width: clamp(180px, 30vw, 340px);
-      top: -1rem;
-      right: -2rem;
-      z-index: 0;
-      pointer-events: none;
-    }
     .eyebrow {
-      position: relative;
-      z-index: 1;
       display: inline-block;
       font-family: var(--font-type);
       font-size: 0.6rem;
@@ -108,8 +92,6 @@ import { SeoService } from '../../services/seo.service';
       margin-bottom: 0.75rem;
     }
     h1 {
-      position: relative;
-      z-index: 1;
       font-family: var(--font-display);
       font-style: italic;
       font-size: clamp(2rem, 5vw, 3.25rem);
@@ -119,8 +101,6 @@ import { SeoService } from '../../services/seo.service';
       margin: 0 0 0.875rem;
     }
     .lede {
-      position: relative;
-      z-index: 1;
       font-size: clamp(0.95rem, 1.2vw, 1.05rem);
       color: var(--ink-mute);
       line-height: 1.65;
@@ -128,8 +108,6 @@ import { SeoService } from '../../services/seo.service';
       margin: 0 0 0.5rem;
     }
     .updated {
-      position: relative;
-      z-index: 1;
       font-family: var(--font-type);
       font-size: 0.65rem;
       letter-spacing: 0.15em;

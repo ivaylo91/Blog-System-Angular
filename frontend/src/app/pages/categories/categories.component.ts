@@ -14,10 +14,6 @@ import { Category } from '../../models/models';
     <section class="page">
       <div class="page-inner">
         <header class="page-header">
-          <svg class="hdr-blob" viewBox="0 0 360 320" aria-hidden="true">
-            <path fill="#6b7a3a" fill-opacity=".1"
-              d="M180,52 C258,30 336,92 352,170 C368,248 332,330 252,355 C172,380 88,346 50,268 C12,190 28,94 84,58 C112,40 140,70 180,52Z"/>
-          </svg>
           <span class="eyebrow">Открий</span>
           <h1>Категории</h1>
           <p class="lede">Разгледай рецептите подредени по вид — от предястия до десерти.</p>
@@ -66,19 +62,9 @@ import { Category } from '../../models/models';
     .page-header {
       max-width: 48rem;
       margin-bottom: clamp(2rem, 4vw, 3.25rem);
-      position: relative;
-      overflow: visible;
-    }
-    .hdr-blob {
-      position: absolute;
-      width: clamp(180px, 28vw, 360px);
-      top: -2rem;
-      right: -1rem;
-      z-index: 0;
-      pointer-events: none;
     }
     .eyebrow,
-    h1, .lede { position: relative; z-index: 1; }
+    h1, .lede { position: relative; }
     .eyebrow {
       display: inline-block;
       font-family: var(--font-type);

@@ -17,10 +17,6 @@ import { PerfService } from '../../services/perf.service';
       <div class="page-inner">
 
         <header class="page-header">
-          <svg class="hdr-blob" viewBox="0 0 380 340" aria-hidden="true">
-            <path fill="#b1502d" fill-opacity=".09"
-              d="M190,55 C272,32 352,96 368,178 C384,260 348,344 266,368 C184,392 96,358 56,278 C16,198 32,98 90,60 C118,42 148,74 190,55Z"/>
-          </svg>
           <span class="page-eyebrow">Готварски блог</span>
           <h1>Рецепти</h1>
           <p>Открий традиционни български рецепти за всеки повод.</p>
@@ -202,20 +198,10 @@ import { PerfService } from '../../services/perf.service';
     /* ── Header ──────────────────────────────────── */
     .page-header {
       margin-bottom: var(--space-8);
-      position: relative;
-      overflow: visible;
-    }
-    .hdr-blob {
-      position: absolute;
-      width: clamp(200px, 30vw, 380px);
-      top: -2rem;
-      right: -2rem;
-      z-index: 0;
-      pointer-events: none;
     }
     .page-header h1,
     .page-header p,
-    .page-eyebrow { position: relative; z-index: 1; }
+    .page-eyebrow { position: relative; }
     .page-eyebrow {
       display: inline-block;
       font-family: var(--font-type);
