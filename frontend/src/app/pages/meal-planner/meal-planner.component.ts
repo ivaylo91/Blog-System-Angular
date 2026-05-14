@@ -424,7 +424,7 @@ import { Recipe } from '../../models/models';
 
     .meal-chip {
       position: relative;
-      border-radius: 0.5rem;
+      border-radius: var(--radius-xl);
       overflow: hidden;
       background: var(--paper-2);
       border: 1px solid var(--clr-border-faint);
@@ -441,7 +441,7 @@ import { Recipe } from '../../models/models';
       flex-shrink: 0;
       width: 1.75rem;
       height: 1.75rem;
-      border-radius: 0.25rem;
+      border-radius: var(--radius-xs);
       object-fit: cover;
       display: block;
     }
@@ -549,7 +549,7 @@ import { Recipe } from '../../models/models';
       width: min(520px, calc(100vw - 2rem));
       max-height: min(560px, 80dvh);
       background: var(--paper);
-      border-radius: 1rem;
+      border-radius: var(--radius-xl);
       overflow: hidden;
       display: flex;
       flex-direction: column;
@@ -650,7 +650,7 @@ import { Recipe } from '../../models/models';
       flex-shrink: 0;
       width: 3rem;
       height: 3rem;
-      border-radius: 0.4rem;
+      border-radius: var(--radius-xl);
       overflow: hidden;
       background: var(--paper-2);
     }
@@ -703,12 +703,12 @@ import { Recipe } from '../../models/models';
       padding: 0.6rem 1.25rem;
     }
     .psk-thumb {
-      flex-shrink: 0; width: 3rem; height: 3rem; border-radius: 0.4rem;
+      flex-shrink: 0; width: 3rem; height: 3rem; border-radius: var(--radius-xl);
       background: var(--paper-2); animation: sk-pulse 1.4s ease-in-out infinite;
     }
     .psk-lines { flex: 1; display: flex; flex-direction: column; gap: 0.4rem; }
     .psk-line {
-      height: 0.65rem; border-radius: 4px;
+      height: 0.65rem; border-radius: var(--radius-xl);
       background: var(--paper-2); animation: sk-pulse 1.4s ease-in-out infinite;
     }
     .psk-sm { width: 25%; height: 0.5rem; }

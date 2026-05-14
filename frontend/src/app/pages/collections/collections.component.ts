@@ -196,7 +196,7 @@ import { Collection } from '../../models/models';
     .cl-loading { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem; }
     .cl-skeleton {
       height: 280px;
-      border-radius: 12px;
+      border-radius: var(--radius-xl);
       background: var(--paper-2);
       animation: cl-pulse 1.4s ease-in-out infinite;
     }
@@ -224,15 +224,15 @@ import { Collection } from '../../models/models';
 
     /* ── Card ───────────────────────────────────────────────── */
     .cl-card {
-      border-radius: 12px;
+      border-radius: var(--radius-xl);
       overflow: hidden;
       background: var(--paper-2);
-      box-shadow: 0 1px 3px oklch(0.2 0.02 50 / 0.07);
+      box-shadow: 0 1px 3px rgba(60,40,15,0.07);
       display: flex;
       flex-direction: column;
       transition: box-shadow 0.2s, transform 0.2s;
     }
-    .cl-card:hover { box-shadow: 0 4px 16px oklch(0.2 0.02 50 / 0.12); transform: translateY(-2px); }
+    .cl-card:hover { box-shadow: 0 4px 16px rgba(60,40,15,0.12); transform: translateY(-2px); }
 
     /* Cover */
     .cl-cover {
@@ -264,7 +264,7 @@ import { Collection } from '../../models/models';
       background: rgba(0,0,0,0.6);
       color: #fff;
       padding: 0.15rem 0.5rem;
-      border-radius: 20px;
+      border-radius: var(--radius-pill);
       letter-spacing: 0.04em;
     }
 
@@ -312,7 +312,7 @@ import { Collection } from '../../models/models';
       color: var(--terracotta);
       text-decoration: none;
       padding: 0.35rem 0.75rem;
-      border-radius: 20px;
+      border-radius: var(--radius-pill);
       background: color-mix(in srgb, var(--terracotta) 10%, transparent);
       transition: background 0.2s;
     }
@@ -333,7 +333,7 @@ import { Collection } from '../../models/models';
       touch-action: manipulation;
     }
     .cl-icon-btn:hover { background: var(--clr-surface-hover); color: var(--clr-text); }
-    .cl-del-btn:hover { background: oklch(0.9 0.05 25); color: oklch(0.4 0.15 25); }
+    .cl-del-btn:hover { background: var(--clr-error-bg); color: var(--clr-error-dark); }
 
     /* ── Modal backdrop ─────────────────────────────────────── */
     .col-backdrop {
@@ -351,7 +351,7 @@ import { Collection } from '../../models/models';
 
     .col-modal {
       background: var(--paper);
-      border-radius: 16px;
+      border-radius: var(--radius-xl);
       padding: 1.75rem 2rem;
       width: 100%;
       max-width: 440px;
@@ -384,7 +384,7 @@ import { Collection } from '../../models/models';
       padding: 0.6rem 0.85rem;
       background: var(--paper-2);
       border: 1px solid var(--clr-border);
-      border-radius: 8px;
+      border-radius: var(--radius-xl);
       font-family: var(--font-body);
       font-size: 0.9rem;
       color: var(--clr-text);
@@ -398,7 +398,7 @@ import { Collection } from '../../models/models';
     .col-cancel-btn {
       padding: 0.55rem 1.1rem;
       border: 1px solid var(--clr-border);
-      border-radius: 8px;
+      border-radius: var(--radius-xl);
       background: transparent;
       color: var(--clr-text);
       font-size: 0.875rem;
@@ -415,7 +415,7 @@ import { Collection } from '../../models/models';
       background: var(--terracotta);
       color: #fff;
       border: none;
-      border-radius: 8px;
+      border-radius: var(--radius-xl);
       font-size: 0.875rem;
       font-weight: 600;
       cursor: pointer;
@@ -428,17 +428,17 @@ import { Collection } from '../../models/models';
       align-items: center;
       gap: 0.4rem;
       padding: 0.55rem 1.25rem;
-      background: oklch(0.45 0.18 25);
+      background: var(--clr-error);
       color: #fff;
       border: none;
-      border-radius: 8px;
+      border-radius: var(--radius-xl);
       font-size: 0.875rem;
       font-weight: 600;
       cursor: pointer;
       transition: background 0.2s;
     }
     .col-delete-confirm-btn:disabled { opacity: 0.55; cursor: not-allowed; }
-    .col-delete-confirm-btn:not(:disabled):hover { background: oklch(0.38 0.18 25); }
+    .col-delete-confirm-btn:not(:disabled):hover { background: var(--clr-error-dark); }
 
     .spin { animation: spin 0.8s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }

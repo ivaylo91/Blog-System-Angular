@@ -123,14 +123,14 @@ import { Collection, Recipe } from '../../models/models';
     .cd-loading { display: flex; flex-direction: column; gap: 2rem; }
     .cd-skel-head {
       height: 80px;
-      border-radius: 12px;
+      border-radius: var(--radius-xl);
       background: var(--paper-2);
       animation: cd-pulse 1.4s ease-in-out infinite;
     }
     .cd-skel-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.5rem; }
     .cd-skel-card {
       height: 260px;
-      border-radius: 12px;
+      border-radius: var(--radius-xl);
       background: var(--paper-2);
       animation: cd-pulse 1.4s ease-in-out infinite;
     }
@@ -236,7 +236,7 @@ import { Collection, Recipe } from '../../models/models';
       transition: opacity 0.2s, background 0.2s;
     }
     .cd-recipe-wrap:hover .cd-remove-btn { opacity: 1; }
-    .cd-remove-btn:hover { background: oklch(0.45 0.18 25); color: #fff; }
+    .cd-remove-btn:hover { background: var(--clr-error); color: #fff; }
     @media (hover: none) {
       .cd-remove-btn { opacity: 1; }
     }
@@ -280,7 +280,7 @@ import { Collection, Recipe } from '../../models/models';
     .cd-page-btn {
       padding: 0.5rem 1rem;
       border: 1px solid var(--clr-border);
-      border-radius: 8px;
+      border-radius: var(--radius-xl);
       background: var(--paper-2);
       color: var(--clr-text);
       font-size: 0.875rem;
@@ -304,7 +304,7 @@ import { Collection, Recipe } from '../../models/models';
     @keyframes col-fade { from { opacity: 0; } to { opacity: 1; } }
     .col-modal {
       background: var(--paper);
-      border-radius: 16px;
+      border-radius: var(--radius-xl);
       padding: 1.75rem 2rem;
       width: 100%; max-width: 440px;
       animation: col-rise 240ms var(--ease-out-expo) both;
@@ -322,14 +322,14 @@ import { Collection, Recipe } from '../../models/models';
       width: 100%; box-sizing: border-box;
       padding: 0.6rem 0.85rem;
       background: var(--paper-2); border: 1px solid var(--clr-border);
-      border-radius: 8px; font-family: var(--font-body); font-size: 0.9rem;
+      border-radius: var(--radius-xl); font-family: var(--font-body); font-size: 0.9rem;
       color: var(--clr-text); margin-bottom: 1rem; resize: vertical;
       transition: border-color 0.2s;
     }
     .col-input:focus, .col-textarea:focus { outline: none; border-color: var(--terracotta); }
     .col-modal-actions { display: flex; gap: 0.75rem; justify-content: flex-end; }
     .col-cancel-btn {
-      padding: 0.55rem 1.1rem; border: 1px solid var(--clr-border); border-radius: 8px;
+      padding: 0.55rem 1.1rem; border: 1px solid var(--clr-border); border-radius: var(--radius-xl);
       background: transparent; color: var(--clr-text); font-size: 0.875rem; font-weight: 600;
       cursor: pointer; transition: background 0.2s;
     }
@@ -337,7 +337,7 @@ import { Collection, Recipe } from '../../models/models';
     .col-save-btn {
       display: inline-flex; align-items: center; gap: 0.4rem;
       padding: 0.55rem 1.25rem; background: var(--terracotta); color: #fff;
-      border: none; border-radius: 8px; font-size: 0.875rem; font-weight: 600;
+      border: none; border-radius: var(--radius-xl); font-size: 0.875rem; font-weight: 600;
       cursor: pointer; transition: background 0.2s;
     }
     .col-save-btn:disabled { opacity: 0.55; cursor: not-allowed; }

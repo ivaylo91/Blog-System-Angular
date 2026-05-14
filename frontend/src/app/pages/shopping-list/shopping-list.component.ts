@@ -215,7 +215,7 @@ interface RecipeGroup {
     .recipe-group {
       margin-bottom: 2rem;
       background: var(--clr-surface);
-      border-radius: 1rem;
+      border-radius: var(--radius-xl);
       overflow: hidden;
       box-shadow: var(--shadow-sm);
     }

@@ -908,8 +908,8 @@ import { SeoService } from '../../services/seo.service';
       width: 280px;
       background: var(--paper);
       border: 1px solid var(--clr-border);
-      border-radius: 12px;
-      box-shadow: 0 8px 32px oklch(0.2 0.02 50 / 0.15);
+      border-radius: var(--radius-xl);
+      box-shadow: 0 8px 32px rgba(60,40,15,0.15);
       overflow: hidden;
       animation: col-pop-in 200ms var(--ease-out-expo) both;
     }
@@ -931,7 +931,7 @@ import { SeoService } from '../../services/seo.service';
     }
     .col-pop-loading { padding: 0.75rem 1rem; display: flex; flex-direction: column; gap: 0.5rem; }
     .col-pop-skel {
-      height: 2.2rem; border-radius: 8px;
+      height: 2.2rem; border-radius: var(--radius-xl);
       background: var(--paper-2);
       animation: col-pulse 1.4s ease-in-out infinite;
     }
@@ -946,7 +946,7 @@ import { SeoService } from '../../services/seo.service';
       width: 100%;
       padding: 0.55rem 0.6rem;
       border: none;
-      border-radius: 8px;
+      border-radius: var(--radius-xl);
       background: transparent;
       cursor: pointer;
       text-align: left;
@@ -962,7 +962,7 @@ import { SeoService } from '../../services/seo.service';
       align-items: center;
       justify-content: center;
       width: 1.1rem; height: 1.1rem;
-      border-radius: 4px;
+      border-radius: var(--radius-xl);
       flex-shrink: 0;
       font-size: 0.7rem;
       border: 1.5px solid var(--clr-border);
@@ -1012,7 +1012,7 @@ import { SeoService } from '../../services/seo.service';
     .col-pop-create-actions { display: flex; gap: 0.5rem; justify-content: flex-end; }
     .col-pop-cancel {
       padding: 0.35rem 0.7rem;
-      border: 1px solid var(--clr-border); border-radius: 6px;
+      border: 1px solid var(--clr-border); border-radius: var(--radius-xl);
       background: transparent; color: var(--clr-text-muted);
       font-size: 0.8rem; font-weight: 600;
       cursor: pointer; font-family: inherit;
@@ -1023,7 +1023,7 @@ import { SeoService } from '../../services/seo.service';
       display: inline-flex; align-items: center; gap: 0.3rem;
       padding: 0.35rem 0.8rem;
       background: var(--terracotta); color: #fff;
-      border: none; border-radius: 6px;
+      border: none; border-radius: var(--radius-xl);
       font-size: 0.8rem; font-weight: 600;
       cursor: pointer; font-family: inherit;
       transition: background 0.15s;
@@ -1358,7 +1358,7 @@ import { SeoService } from '../../services/seo.service';
     .comment-body { color: var(--clr-text-muted); font-size: 0.875rem; line-height: 1.65; margin: 0; }
     .delete-comment-btn {
       background: none; border: none; cursor: pointer;
-      color: var(--clr-text-muted); padding: 0.25rem; border-radius: 0.4rem;
+      color: var(--clr-text-muted); padding: 0.25rem; border-radius: var(--radius-xl);
       display: flex; transition: color 0.18s, background 0.18s;
     }
     .delete-comment-btn svg { width: 0.9rem; height: 0.9rem; }
@@ -1419,7 +1419,7 @@ import { SeoService } from '../../services/seo.service';
       .recipe-meta-bar { max-width: 100% !important; }
       .recipe-card-grid { grid-template-columns: 1fr 1fr !important; gap: 1.5rem !important; }
       .body-wrap { padding: 0.75rem 1rem 1rem !important; }
-      .ingredients-col { background: #f0e8d5 !important; color: #2a1e14 !important; border-radius: 0.5rem !important; }
+      .ingredients-col { background: #f0e8d5 !important; color: #2a1e14 !important; border-radius: var(--radius-xl) !important; }
       .ingredients-col .col-heading { color: #2a1e14 !important; }
       .ing-amount { color: #2a1e14 !important; }
       .ing-name { color: #4b3322 !important; }

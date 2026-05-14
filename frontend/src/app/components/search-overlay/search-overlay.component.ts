@@ -129,7 +129,7 @@ import { Recipe } from '../../models/models';
       width: min(680px, calc(100vw - 2rem));
       background: var(--paper);
       z-index: var(--z-modal, 201);
-      border-radius: 1rem;
+      border-radius: var(--radius-xl);
       overflow: hidden;
       box-shadow: 0 24px 64px oklch(15% 0.02 40 / 0.28), 0 2px 8px oklch(15% 0.02 40 / 0.12);
       animation: so-slide-in 0.2s var(--ease-out-expo, cubic-bezier(0.16,1,0.3,1)) both;
@@ -219,7 +219,7 @@ import { Recipe } from '../../models/models';
       flex-shrink: 0;
       width: 3.5rem;
       height: 3.5rem;
-      border-radius: 0.5rem;
+      border-radius: var(--radius-xl);
       overflow: hidden;
       background: var(--paper-2);
     }
@@ -328,7 +328,7 @@ import { Recipe } from '../../models/models';
       flex-shrink: 0;
       width: 3.5rem;
       height: 3.5rem;
-      border-radius: 0.5rem;
+      border-radius: var(--radius-xl);
       background: var(--paper-2);
       animation: so-pulse 1.4s ease-in-out infinite;
     }
