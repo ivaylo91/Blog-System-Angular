@@ -211,6 +211,7 @@ import { Recipe } from '../../models/models';
       text-decoration: none;
       color: inherit;
       transition: background 0.12s;
+      touch-action: manipulation;
     }
     .so-result:hover { background: var(--clr-surface); }
     .so-result:focus-visible { outline: 2px solid var(--mustard); outline-offset: -2px; }
@@ -347,7 +348,18 @@ import { Recipe } from '../../models/models';
     }
 
     @media (max-width: 480px) {
-      .so-panel { top: 3rem; width: calc(100vw - 1rem); }
+      .so-panel {
+        top: 3rem;
+        width: calc(100vw - 1rem);
+        max-height: calc(100dvh - 4.5rem);
+        display: flex;
+        flex-direction: column;
+      }
+      .so-body {
+        flex: 1;
+        min-height: 0;
+        max-height: none;
+      }
       .so-result { padding: 0.625rem 1rem; }
       .so-input-row { padding: 0.75rem 0.875rem; }
     }
@@ -422,8 +434,8 @@ export class SearchOverlayComponent implements OnInit, OnDestroy {
 
   openRecipe(slug: string, event: Event): void {
     const me = event as MouseEvent;
-    // Let modifier clicks open in a new tab naturally via the href
-    if (me.ctrlKey || me.metaKey || me.shiftKey || me.button !== 0) return;
+    // Let Cmd/Ctrl/Shift+click open a new tab via the href
+    if (me.ctrlKey || me.metaKey || me.shiftKey) return;
     event.preventDefault();
     this.router.navigate(['/recipes', slug]);
     this.close.emit();
