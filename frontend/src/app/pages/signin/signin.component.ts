@@ -248,7 +248,7 @@ import { SeoService } from '../../services/seo.service';
       gap: 0.5rem;
       background: var(--clr-error-bg);
       color: var(--clr-error);
-      border-left: 3px solid var(--clr-error);
+      border: 1px solid rgba(168, 58, 44, 0.35);
       padding: 0.65rem 1rem;
       font-family: var(--font-hand);
       font-size: 0.95rem;

@@ -8,9 +8,20 @@ import { SeoService } from '../../services/seo.service';
   imports: [RouterLink],
   template: `
     <main class="privacy-page">
-      <div class="privacy-inner">
+
+      <!-- Editorial page header -->
+      <header class="priv-header">
+        <svg class="hdr-blob" viewBox="0 0 360 280" aria-hidden="true">
+          <path fill="#6b7a3a" fill-opacity=".09"
+            d="M180,44 C258,24 334,80 348,158 C362,236 326,318 244,338 C162,358 78,322 44,248 C10,174 28,86 82,52 C110,36 138,60 180,44Z"/>
+        </svg>
+        <span class="eyebrow">Документ</span>
         <h1>Политика за поверителност</h1>
+        <p class="lede">Честни думи за това какво правим с твоите данни — нищо повече, нищо по-малко.</p>
         <p class="updated">Последна актуализация: April 2026</p>
+      </header>
+
+      <div class="privacy-inner">
 
         <section>
           <h2>Какви данни събираме</h2>
@@ -65,60 +76,124 @@ import { SeoService } from '../../services/seo.service';
   styles: [`
     .privacy-page {
       min-height: 60vh;
-      padding: 4rem 1.5rem;
-      background: var(--clr-surface);
+      background: var(--clr-bg);
     }
-    .privacy-inner {
-      max-width: 720px;
+
+    /* ── Editorial header ─────────────────────────────────────────── */
+    .priv-header {
+      position: relative;
+      overflow: visible;
+      padding: clamp(2.5rem, 6vw, 4rem) clamp(1.5rem, 6vw, 3rem) clamp(2rem, 4vw, 3rem);
+      max-width: 800px;
       margin: 0 auto;
     }
+    .hdr-blob {
+      position: absolute;
+      width: clamp(180px, 30vw, 340px);
+      top: -1rem;
+      right: -2rem;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .eyebrow {
+      position: relative;
+      z-index: 1;
+      display: inline-block;
+      font-family: var(--font-type);
+      font-size: 0.6rem;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      color: var(--terracotta);
+      margin-bottom: 0.75rem;
+    }
     h1 {
+      position: relative;
+      z-index: 1;
       font-family: var(--font-display);
-      font-size: clamp(1.75rem, 4vw, 2.5rem);
-      font-weight: 700;
-      color: var(--clr-text);
-      margin-bottom: 0.25rem;
+      font-style: italic;
+      font-size: clamp(2rem, 5vw, 3.25rem);
+      font-weight: 800;
+      color: var(--ink);
+      line-height: 1.05;
+      margin: 0 0 0.875rem;
+    }
+    .lede {
+      position: relative;
+      z-index: 1;
+      font-size: clamp(0.95rem, 1.2vw, 1.05rem);
+      color: var(--ink-mute);
+      line-height: 1.65;
+      max-width: 52ch;
+      margin: 0 0 0.5rem;
     }
     .updated {
-      font-size: 0.85rem;
-      color: var(--clr-text-muted);
-      margin-bottom: 2.5rem;
+      position: relative;
+      z-index: 1;
+      font-family: var(--font-type);
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--clr-text-faint);
     }
+
+    /* ── Content ──────────────────────────────────────────────────── */
+    .privacy-inner {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 clamp(1.5rem, 6vw, 3rem) clamp(3rem, 6vw, 5rem);
+    }
+
     section {
-      margin-bottom: 2.25rem;
+      margin-bottom: 2.5rem;
+      padding-top: 2rem;
+      border-top: 1px dotted var(--rule);
     }
+    section:first-child { border-top: none; padding-top: 0; }
+
     h2 {
       font-family: var(--font-display);
+      font-style: italic;
       font-size: 1.2rem;
-      font-weight: 600;
-      color: var(--clr-text);
-      margin-bottom: 0.75rem;
-      padding-bottom: 0.4rem;
-      border-bottom: 2px solid var(--clr-brand);
-      display: inline-block;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 0 0 1rem;
     }
+    h2::before {
+      content: '§ ';
+      font-family: var(--font-display);
+      color: var(--terracotta);
+      font-size: 0.9em;
+    }
+
     p, li {
-      color: var(--clr-text-muted);
+      color: var(--ink-mute);
       line-height: 1.75;
       font-size: 0.95rem;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.6rem;
     }
     ul {
-      padding-left: 1.5rem;
-      margin-bottom: 0.5rem;
+      padding-left: 1.25rem;
+      margin-bottom: 0.6rem;
     }
-    li { margin-bottom: 0.35rem; }
-    strong { color: var(--clr-text); }
+    li { margin-bottom: 0.4rem; }
+    strong { color: var(--ink); }
+
     .back-link {
-      display: inline-block;
-      margin-top: 1.5rem;
-      color: var(--clr-brand);
+      display: inline-flex;
+      align-items: center;
+      margin-top: 2rem;
+      padding: 0.7rem 1.5rem;
+      color: var(--ink);
       text-decoration: none;
-      font-size: 0.9rem;
-      font-weight: 500;
-      transition: opacity 0.2s;
+      font-family: var(--font-type);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      border: 1px solid var(--rule-strong);
+      transition: background 0.18s, border-color 0.18s;
     }
-    .back-link:hover { opacity: 0.75; }
+    .back-link:hover { background: var(--paper-2); border-color: var(--terracotta); }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
