@@ -321,7 +321,7 @@ import { Collection } from '../../models/models';
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 2rem; height: 2rem;
+      width: 2.75rem; height: 2.75rem;
       border: none;
       border-radius: 50%;
       background: var(--paper);
@@ -330,6 +330,7 @@ import { Collection } from '../../models/models';
       font-size: 0.8rem;
       transition: background 0.2s, color 0.2s;
       margin-left: auto;
+      touch-action: manipulation;
     }
     .cl-icon-btn:hover { background: var(--clr-surface-hover); color: var(--clr-text); }
     .cl-del-btn:hover { background: oklch(0.9 0.05 25); color: oklch(0.4 0.15 25); }

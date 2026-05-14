@@ -181,7 +181,7 @@ import { Collection, Recipe } from '../../models/models';
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 2.1rem; height: 2.1rem;
+      width: 2.75rem; height: 2.75rem;
       border: none;
       border-radius: 50%;
       background: var(--paper-2);
@@ -189,6 +189,7 @@ import { Collection, Recipe } from '../../models/models';
       font-size: 0.85rem;
       cursor: pointer;
       transition: background 0.2s, color 0.2s;
+      touch-action: manipulation;
     }
     .cd-icon-btn:hover { background: var(--clr-surface-hover); color: var(--clr-text); }
     .cd-desc {
@@ -218,23 +219,27 @@ import { Collection, Recipe } from '../../models/models';
     }
     .cd-remove-btn {
       position: absolute;
-      top: 0.6rem; right: 0.6rem;
+      top: 0.5rem; right: 0.5rem;
       z-index: 2;
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 2rem; height: 2rem;
+      width: 2.75rem; height: 2.75rem;
       border: none;
       border-radius: 50%;
       background: rgba(0,0,0,0.55);
       color: rgba(255,255,255,0.85);
       font-size: 0.78rem;
       cursor: pointer;
+      touch-action: manipulation;
       opacity: 0;
       transition: opacity 0.2s, background 0.2s;
     }
     .cd-recipe-wrap:hover .cd-remove-btn { opacity: 1; }
     .cd-remove-btn:hover { background: oklch(0.45 0.18 25); color: #fff; }
+    @media (hover: none) {
+      .cd-remove-btn { opacity: 1; }
+    }
 
     /* ── Empty ─────────────────────────────────────────────── */
     .cd-empty {

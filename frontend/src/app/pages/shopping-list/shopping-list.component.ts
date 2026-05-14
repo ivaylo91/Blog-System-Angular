@@ -280,6 +280,7 @@ interface RecipeGroup {
 
     .check-btn {
       flex-shrink: 0;
+      position: relative;
       width: 1.5rem;
       height: 1.5rem;
       border-radius: 50%;
@@ -292,6 +293,12 @@ interface RecipeGroup {
       color: var(--olive);
       font-size: 0.65rem;
       transition: border-color 0.15s, background 0.15s;
+      touch-action: manipulation;
+    }
+    .check-btn::after {
+      content: '';
+      position: absolute;
+      inset: -0.625rem;
     }
     .ingredient-item.checked .check-btn {
       background: var(--olive);

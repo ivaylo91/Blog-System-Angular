@@ -62,13 +62,18 @@ import { ToastService } from '../../services/toast.service';
       background: none;
       border: none;
       cursor: pointer;
-      padding: 0.2rem;
+      padding: 0;
+      min-width: 2.75rem;
+      min-height: 2.75rem;
+      flex-shrink: 0;
       opacity: 0.6;
       display: flex;
       align-items: center;
+      justify-content: center;
       border-radius: 0.25rem;
       transition: opacity 0.15s var(--ease-out-expo);
       touch-action: manipulation;
+      margin: -0.5rem -0.5rem -0.5rem 0;
     }
     .toast-close:hover { opacity: 1; }
     .toast-close:active { transform: scale(0.9); }

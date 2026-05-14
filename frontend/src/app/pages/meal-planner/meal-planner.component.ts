@@ -465,19 +465,20 @@ import { Recipe } from '../../models/models';
     }
     .meal-remove {
       position: absolute;
-      top: 0.2rem;
-      right: 0.2rem;
-      width: 1.2rem;
-      height: 1.2rem;
+      top: 0;
+      right: 0;
+      width: 1.75rem;
+      height: 1.75rem;
       border: none;
       background: var(--paper-2);
-      border-radius: 50%;
+      border-radius: 0 0.5rem 0 0.35rem;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 0.55rem;
       color: var(--clr-text-muted);
       cursor: pointer;
+      touch-action: manipulation;
       opacity: 0;
       transition: opacity 0.15s, background 0.15s, color 0.15s;
     }
@@ -490,8 +491,8 @@ import { Recipe } from '../../models/models';
     /* Add / clear buttons */
     .day-add-btn {
       align-self: center;
-      width: 1.75rem;
-      height: 1.75rem;
+      width: 2.75rem;
+      height: 2.75rem;
       border-radius: 50%;
       border: 1.5px dashed var(--clr-border);
       background: none;
@@ -503,6 +504,7 @@ import { Recipe } from '../../models/models';
       cursor: pointer;
       transition: border-color 0.15s, color 0.15s, background 0.15s;
       margin-top: auto;
+      touch-action: manipulation;
     }
     .day-add-btn:hover { border-color: var(--terracotta); color: var(--terracotta); background: oklch(from var(--paper-2) l c h / 0.5); }
 
@@ -513,8 +515,12 @@ import { Recipe } from '../../models/models';
       font-size: 0.6rem;
       color: var(--clr-text-faint);
       cursor: pointer;
-      padding: 0.15rem 0.3rem;
+      padding: 0.65rem 0.5rem;
+      min-height: 2.75rem;
+      display: flex;
+      align-items: center;
       transition: color 0.15s;
+      touch-action: manipulation;
     }
     .day-clear-btn:hover { color: var(--clr-error); }
 

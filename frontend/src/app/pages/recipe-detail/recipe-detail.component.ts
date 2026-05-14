@@ -797,6 +797,7 @@ import { SeoService } from '../../services/seo.service';
       gap: 0.5rem;
     }
     .srv-btn {
+      position: relative;
       width: 1.5rem;
       height: 1.5rem;
       display: flex;
@@ -810,6 +811,12 @@ import { SeoService } from '../../services/seo.service';
       transition: background 0.15s, border-color 0.15s;
       padding: 0;
       flex-shrink: 0;
+      touch-action: manipulation;
+    }
+    .srv-btn::after {
+      content: '';
+      position: absolute;
+      inset: -0.625rem;
     }
     .srv-btn fa-icon { font-size: 0.55rem; }
     .srv-btn:hover:not(:disabled) { background: var(--tc-bg); border-color: var(--tc); }
