@@ -155,11 +155,6 @@ class CollectionController extends Controller
     {
         $recipe = Recipe::where('slug', $slug)->where('published', true)->firstOrFail();
 
-        $inCollections = $request->user()
-            ->collections()
-            ->pluck('collections.id')
-            ->toArray();
-
         // IDs of collections that contain this specific recipe
         $containsRecipe = Collection::where('user_id', $request->user()->id)
             ->whereHas('recipes', fn ($q) => $q->where('recipe_id', $recipe->id))
