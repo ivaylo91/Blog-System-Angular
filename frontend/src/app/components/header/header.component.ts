@@ -512,6 +512,7 @@ import { SearchOverlayComponent } from '../search-overlay/search-overlay.compone
       font-family: inherit;
       cursor: pointer;
       color: var(--ink-soft);
+      margin-bottom: 0.75rem;
     }
 
     /* ── Drawer overlay ── */

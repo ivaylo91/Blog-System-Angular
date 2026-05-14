@@ -2,7 +2,7 @@ import {
   ChangeDetectionStrategy, Component, ElementRef, EventEmitter,
   OnDestroy, OnInit, Output, inject, signal, viewChild,
 } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faMagnifyingGlass, faXmark, faArrowRight, faClock } from '@fortawesome/free-solid-svg-icons';
 import { RecipeService } from '../../services/recipe.service';
@@ -11,7 +11,7 @@ import { Recipe } from '../../models/models';
 @Component({
   selector: 'app-search-overlay',
   standalone: true,
-  imports: [RouterLink, FontAwesomeModule],
+  imports: [FontAwesomeModule],
   template: `
     <!-- Backdrop -->
     <div class="so-backdrop" (click)="close.emit()" aria-hidden="true"></div>
@@ -69,7 +69,7 @@ import { Recipe } from '../../models/models';
           <ul class="so-list" role="listbox" aria-label="Намерени рецепти">
             @for (r of results(); track r.id) {
               <li role="option">
-                <a [routerLink]="['/recipes', r.slug]" class="so-result" (click)="close.emit()">
+                <a [href]="'/recipes/' + r.slug" class="so-result" (click)="openRecipe(r.slug, $event)">
                   <div class="so-thumb">
                     @if (r.hero_image) {
                       <img [src]="r.hero_image" [alt]="r.title" loading="lazy" />
@@ -418,6 +418,15 @@ export class SearchOverlayComponent implements OnInit, OnDestroy {
         },
       });
     }, 300);
+  }
+
+  openRecipe(slug: string, event: Event): void {
+    const me = event as MouseEvent;
+    // Let modifier clicks open in a new tab naturally via the href
+    if (me.ctrlKey || me.metaKey || me.shiftKey || me.button !== 0) return;
+    event.preventDefault();
+    this.router.navigate(['/recipes', slug]);
+    this.close.emit();
   }
 
   goToAll(): void {
