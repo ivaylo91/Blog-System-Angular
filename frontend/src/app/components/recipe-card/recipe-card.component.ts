@@ -306,7 +306,7 @@ import { Recipe } from '../../models/models';
     }
     .card.compact .category { margin-bottom: 0; }
     .card.compact .title { font-size: 0.9rem; margin: 0; }
-    .card.compact .meta { margin-top: 0.375rem; padding-top: 0.375rem; font-size: 0.6rem; gap: 0.5rem; }
+    .card.compact .meta { margin-top: 0.375rem; padding-top: 0.375rem; font-size: 0.72rem; gap: 0.5rem; }
 
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(12px); }

@@ -150,7 +150,7 @@ import { Category } from '../../models/models';
     }
     @media (hover: hover) and (pointer: fine) {
       .tile:hover {
-        transform: translateY(-4px);
+        transform: translateY(-2px);
         box-shadow: var(--shadow-lg);
         border-color: var(--terracotta);
       }

@@ -294,7 +294,7 @@ import { ThemeService } from '../../services/theme.service';
     }
     .signin-link:hover { color: var(--terracotta); }
     .register-btn {
-      background: var(--ink);
+      background: var(--ink-soft);
       color: var(--paper);
       border: none;
       padding: 0.55rem 0.875rem;
