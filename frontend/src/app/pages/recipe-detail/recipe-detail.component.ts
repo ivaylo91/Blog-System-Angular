@@ -3,7 +3,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faChevronLeft, faUtensils, faListOl, faComments, faSpinner, faHeart, faCheck, faCopy } from '@fortawesome/free-solid-svg-icons';
+import { faChevronLeft, faUtensils, faListOl, faComments, faSpinner, faHeart, faCheck, faCopy, faMinus, faPlus, faPrint } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as faHeartOutline } from '@fortawesome/free-regular-svg-icons';
 import { faWhatsapp, faViber } from '@fortawesome/free-brands-svg-icons';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -99,7 +99,17 @@ import { SeoService } from '../../services/seo.service';
             <div class="meta-sep"></div>
             <div class="meta-item">
               <span class="meta-label">Порции</span>
-              <span class="meta-val">{{ recipe.servings }}</span>
+              <div class="servings-ctrl">
+                <button type="button" class="srv-btn" (click)="decrementServings()"
+                        [disabled]="currentServings() <= 1" aria-label="Намали порциите">
+                  <fa-icon [icon]="faMinus" aria-hidden="true"></fa-icon>
+                </button>
+                <span class="meta-val">{{ currentServings() }}</span>
+                <button type="button" class="srv-btn" (click)="incrementServings()"
+                        aria-label="Увеличи порциите">
+                  <fa-icon [icon]="faPlus" aria-hidden="true"></fa-icon>
+                </button>
+              </div>
             </div>
             @if (recipe.difficulty) {
               <div class="meta-sep"></div>
@@ -132,9 +142,9 @@ import { SeoService } from '../../services/seo.service';
         <!-- ══ BODY ═════════════════════════════════════════════════ -->
         <div class="body-wrap">
 
-          <!-- Favorite button -->
-          @if (auth.isAuthenticated()) {
-            <div class="fav-wrap">
+          <!-- Actions bar -->
+          <div class="fav-wrap">
+            @if (auth.isAuthenticated()) {
               <button class="favorite-btn"
                 [class.favorited]="favoriteStatus()?.isFavorite"
                 [class.pulse]="heartPulse()"
@@ -155,8 +165,12 @@ import { SeoService } from '../../services/seo.service';
                   Запази · {{ favoriteStatus()?.favoriteCount || 0 }}
                 }
               </button>
-            </div>
-          }
+            }
+            <button class="print-btn" type="button" (click)="printRecipe()">
+              <fa-icon [icon]="faPrint" aria-hidden="true"></fa-icon>
+              Принтирай
+            </button>
+          </div>
 
           <!-- ── RECIPE CARD GRID: ingredients | procedure ─────── -->
           <div class="recipe-card-grid">
@@ -183,7 +197,7 @@ import { SeoService } from '../../services/seo.service';
                         <fa-icon [icon]="faCheck"></fa-icon>
                       }
                     </span>
-                    <span class="ing-amount">{{ ing.amount }}</span>
+                    <span class="ing-amount">{{ scaleAmount(ing.amount) }}</span>
                     <span class="ing-name">{{ ing.name }}</span>
                   </li>
                 }
@@ -699,8 +713,33 @@ import { SeoService } from '../../services/seo.service';
       padding: 2rem clamp(1rem, 4vw, 1.5rem) 3rem;
     }
 
-    /* Favorite */
-    .fav-wrap { margin-bottom: 1.5rem; }
+    /* Servings stepper */
+    .servings-ctrl {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .srv-btn {
+      width: 1.5rem;
+      height: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: 1px solid var(--tc-soft);
+      border-radius: 50%;
+      cursor: pointer;
+      color: var(--tc);
+      transition: background 0.15s, border-color 0.15s;
+      padding: 0;
+      flex-shrink: 0;
+    }
+    .srv-btn fa-icon { font-size: 0.55rem; }
+    .srv-btn:hover:not(:disabled) { background: var(--tc-bg); border-color: var(--tc); }
+    .srv-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+    /* Favorite + print bar */
+    .fav-wrap { margin-bottom: 1.5rem; display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; }
     .favorite-btn {
       display: inline-flex;
       align-items: center;
@@ -721,6 +760,25 @@ import { SeoService } from '../../services/seo.service';
     .favorite-btn:hover:not(:disabled) { box-shadow: var(--shadow-md); }
     .favorite-btn:active:not(:disabled) { transform: scale(0.97); }
     .favorite-btn:disabled { opacity: 0.7; cursor: wait; }
+
+    .print-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.7rem 1.25rem;
+      border-radius: var(--radius-pill);
+      border: 1.5px solid var(--clr-border);
+      background: var(--clr-surface);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--clr-text-muted);
+      font-family: inherit;
+      transition: background 0.18s, border-color 0.18s, color 0.18s;
+      touch-action: manipulation;
+    }
+    .print-btn fa-icon { font-size: 0.85rem; }
+    .print-btn:hover { background: var(--clr-surface-hover); border-color: var(--clr-border-strong); color: var(--clr-text); }
     @keyframes heart-pop {
       0%   { transform: scale(0.8); }
       45%  { transform: scale(1.28); }
@@ -1066,11 +1124,23 @@ import { SeoService } from '../../services/seo.service';
 
     /* ── RESPONSIVE ───────────────────────────────────────────── */
     @media print {
-      app-header, app-footer, .share-bar, .related-section, .back-link, .hero-overlay, .read-progress, .fav-wrap { display: none !important; }
-      .hero-banner { min-height: auto !important; }
-      .hero-img { position: static !important; width: 100% !important; height: 260px !important; object-fit: cover; }
-      .recipe-card-grid { grid-template-columns: 1fr 1fr !important; }
-      .body-wrap { padding: 1rem !important; }
+      app-header, app-footer, .share-bar, .related-section, .back-link,
+      .hero-overlay, .read-progress, .fav-wrap, .jump-nav, .lower-panels { display: none !important; }
+      .hero-banner { min-height: auto !important; max-height: none !important; }
+      .hero-img { position: static !important; width: 100% !important; height: 200px !important; object-fit: cover; }
+      .hero-content { padding: 1rem 1.5rem 1.5rem !important; }
+      .hero-title-script { font-size: 1.8rem !important; }
+      .recipe-meta-wrap { padding: 0.75rem 1rem !important; }
+      .recipe-meta-bar { max-width: 100% !important; }
+      .recipe-card-grid { grid-template-columns: 1fr 1fr !important; gap: 1.5rem !important; }
+      .body-wrap { padding: 0.75rem 1rem 1rem !important; }
+      .ingredients-col { background: #f0e8d5 !important; color: #2a1e14 !important; border-radius: 0.5rem !important; }
+      .ingredients-col .col-heading { color: #2a1e14 !important; }
+      .ing-amount { color: #2a1e14 !important; }
+      .ing-name { color: #4b3322 !important; }
+      .ingredients-list li { opacity: 1 !important; }
+      .ingredients-list li.checked { opacity: 0.55 !important; }
+      .srv-btn { display: none !important; }
     }
     @media (max-width: 900px) {
       .recipe-card-grid { grid-template-columns: 1fr; gap: 1.5rem; }
@@ -1127,6 +1197,9 @@ export class RecipeDetailComponent {
   readonly faCopy = faCopy;
   readonly faWhatsapp = faWhatsapp;
   readonly faViber = faViber;
+  readonly faMinus = faMinus;
+  readonly faPlus = faPlus;
+  readonly faPrint = faPrint;
 
   private recipeService = inject(RecipeService);
   private favoriteService = inject(FavoriteService);
@@ -1141,6 +1214,7 @@ export class RecipeDetailComponent {
   private heartPulseTimer: ReturnType<typeof setTimeout> | null = null;
   private copiedTimer: ReturnType<typeof setTimeout> | null = null;
   readProgress = signal(0);
+  currentServings = signal(0);
   private rafPending = false;
   private onScroll = () => {
     if (this.rafPending) return;
@@ -1174,6 +1248,11 @@ export class RecipeDetailComponent {
   readonly currentUrl = typeof window !== 'undefined' ? window.location.href : '';
   encodedUrl = computed(() => encodeURIComponent(this.currentUrl));
   encodedTitle = computed(() => encodeURIComponent(this.recipe()?.title || ''));
+  scalingFactor = computed(() => {
+    const base = this.recipe()?.servings;
+    return base && base > 0 && this.currentServings() > 0 ? this.currentServings() / base : 1;
+  });
+
   heroGradient = computed(() => {
     const r = this.recipe();
     if (!r) return '#2a221a';
@@ -1184,6 +1263,7 @@ export class RecipeDetailComponent {
     this.route.params.pipe(takeUntilDestroyed()).subscribe(params => {
       window.scrollTo({ top: 0, behavior: 'instant' });
       this.checkedIngredients.set(new Set());
+      this.currentServings.set(0);
       this.loadRecipe(params['slug']);
     });
     if (typeof window !== 'undefined') {
@@ -1229,6 +1309,7 @@ export class RecipeDetailComponent {
     this.recipeService.getRecipe(slug).pipe(takeUntilDestroyed()).subscribe({
       next: (res) => {
         this.recipe.set(res.recipe);
+        this.currentServings.set(res.recipe.servings);
         this.averageRating.set(res.averageRating);
         this.ratingsCount.set(res.ratingsCount);
         this.comments.set(res.recipe.comments || []);
@@ -1294,6 +1375,51 @@ export class RecipeDetailComponent {
       };
     }
     return base;
+  }
+
+  incrementServings(): void { this.currentServings.update(n => n + 1); }
+  decrementServings(): void { this.currentServings.update(n => Math.max(1, n - 1)); }
+  printRecipe(): void { window.print(); }
+
+  scaleAmount(amount: string): string {
+    const factor = this.scalingFactor();
+    if (factor === 1) return amount;
+
+    const rangeM = amount.match(/^(\d+(?:\.\d+)?)\s*-\s*(\d+(?:\.\d+)?)(\D*)/);
+    if (rangeM) {
+      return `${this.fmtNum(+rangeM[1] * factor)}-${this.fmtNum(+rangeM[2] * factor)}${rangeM[3]}`;
+    }
+    const mixedM = amount.match(/^(\d+)\s+(\d+)\/(\d+)(.*)/);
+    if (mixedM) {
+      const val = (parseInt(mixedM[1]) + parseInt(mixedM[2]) / parseInt(mixedM[3])) * factor;
+      return `${this.fmtNum(val)}${mixedM[4]}`;
+    }
+    const fracM = amount.match(/^(\d+)\/(\d+)(.*)/);
+    if (fracM) {
+      const val = (parseInt(fracM[1]) / parseInt(fracM[2])) * factor;
+      return `${this.fmtNum(val)}${fracM[3]}`;
+    }
+    const numM = amount.match(/^(\d+(?:\.\d+)?)(.*)/);
+    if (numM) {
+      return `${this.fmtNum(+numM[1] * factor)}${numM[2]}`;
+    }
+    return amount;
+  }
+
+  private fmtNum(n: number): string {
+    if (n === 0) return '0';
+    const whole = Math.floor(n);
+    const frac = n - whole;
+    const knownFracs: Array<[number, string]> = [
+      [0.125, '⅛'], [0.25, '¼'], [1 / 3, '⅓'],
+      [0.5, '½'], [2 / 3, '⅔'], [0.75, '¾'],
+    ];
+    for (const [val, sym] of knownFracs) {
+      if (Math.abs(frac - val) < 0.07) return whole > 0 ? `${whole}${sym}` : sym;
+    }
+    if (n >= 10) return String(Math.round(n));
+    if (n >= 1) return String(Math.round(n * 2) / 2);
+    return String(Math.round(n * 4) / 4);
   }
 
   scrollTo(id: string): void {
