@@ -425,7 +425,7 @@ import { PerfService } from '../../services/perf.service';
       background: var(--clr-text);
       color: var(--clr-bg);
       border: none;
-      border-radius: var(--radius-pill);
+      border-radius: 4rem;
       font-size: 0.78rem;
       font-weight: 600;
       font-family: var(--font-body);
@@ -486,7 +486,7 @@ import { PerfService } from '../../services/perf.service';
     .sk-body { padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-2); }
     .sk-meta { display: flex; gap: var(--space-3); margin-top: var(--space-1); }
     .sk-line {
-      height: 0.8rem; border-radius: var(--radius-pill); background: var(--clr-skeleton);
+      height: 0.8rem; border-radius: 4rem; background: var(--clr-skeleton);
       position: relative; overflow: hidden;
     }
     .sk-line::after {
@@ -571,7 +571,7 @@ import { PerfService } from '../../services/perf.service';
       .filter-btn {
         width: auto;
         padding: var(--space-2) var(--space-4);
-        border-radius: var(--radius-pill);
+        border-radius: 4rem;
         border: 1.5px solid var(--clr-border);
         min-height: 2.5rem;
         font-size: 0.85rem;
@@ -583,7 +583,7 @@ import { PerfService } from '../../services/perf.service';
       .filter-hard.active   { background: var(--clr-rust-bg);  color: var(--clr-rust-text);  border-color: var(--clr-rust-border); }
 
       .filter-group-clear { margin-top: 0; border-top: none; padding-top: 0; }
-      .clear-all-btn { width: auto; padding: var(--space-2) var(--space-4); border-radius: var(--radius-pill); }
+      .clear-all-btn { width: auto; padding: var(--space-2) var(--space-4); border-radius: 4rem; }
 
       .recipe-grid { grid-template-columns: repeat(2, 1fr); }
       .recipe-grid > app-recipe-card:first-child { grid-column: 1 / -1; }

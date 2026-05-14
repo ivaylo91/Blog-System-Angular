@@ -114,6 +114,18 @@ import { Category } from '../../models/models';
     .tiles > .tile:first-child {
       grid-column: 1 / span 2;
       min-height: 260px;
+      background: var(--terracotta);
+      border-color: var(--terracotta-2, #8a3a1e);
+      color: var(--paper);
+    }
+    .tiles > .tile:first-child .tile-title { color: var(--paper); }
+    .tiles > .tile:first-child .tile-desc  { color: rgba(243, 234, 214, 0.78); }
+    .tiles > .tile:first-child .tile-num   { color: rgba(243, 234, 214, 0.55); }
+    .tiles > .tile:first-child .count      { color: rgba(243, 234, 214, 0.85); }
+    .tiles > .tile:first-child .arrow      { color: var(--paper); }
+    .tiles > .tile:first-child::after      { display: none; }
+    @media (hover: hover) and (pointer: fine) {
+      .tiles > .tile:first-child:hover { background: #9a3e24; border-color: var(--paper); }
     }
     @media (max-width: 640px) {
       .tiles { grid-template-columns: repeat(2, 1fr); gap: 0.875rem; }

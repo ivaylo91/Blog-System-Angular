@@ -209,18 +209,18 @@ import { Recipe } from '../../models/models';
       padding-top: 0.5rem;
       border-top: 1px dotted var(--rule);
       font-family: var(--font-type);
-      font-size: 0.65rem;
+      font-size: 0.72rem;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--ink-mute);
       align-items: center;
     }
     .meta-item { display: flex; align-items: center; gap: 0.2rem; }
-    .meta-item svg { width: 0.7rem; height: 0.7rem; flex-shrink: 0; }
+    .meta-item svg { width: 0.8rem; height: 0.8rem; flex-shrink: 0; }
     .difficulty {
       margin-left: auto;
-      font-size: 0.6rem;
-      padding: 1px 0.4rem;
+      font-size: 0.68rem;
+      padding: 2px 0.5rem;
       border: 1px dashed var(--rule-strong);
       color: var(--ink-mute);
       background: transparent;
