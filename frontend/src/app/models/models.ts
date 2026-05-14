@@ -109,3 +109,23 @@ export interface DashboardStats {
   totalFavorites: number;
   recentComments: Comment[];
 }
+
+export interface Collection {
+  id: number;
+  name: string;
+  description: string | null;
+  recipes_count: number;
+  cover_image: string | null;
+}
+
+export interface CollectionForRecipe {
+  id: number;
+  name: string;
+  has_recipe: boolean;
+  recipes_count: number;
+}
+
+export interface CollectionDetailResponse {
+  collection: Collection;
+  recipes: PaginatedResponse<Recipe>;
+}

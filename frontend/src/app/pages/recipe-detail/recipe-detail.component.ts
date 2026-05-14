@@ -3,7 +3,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faChevronLeft, faUtensils, faListOl, faComments, faSpinner, faHeart, faCheck, faCopy, faMinus, faPlus, faPrint, faCartShopping } from '@fortawesome/free-solid-svg-icons';
+import { faChevronLeft, faUtensils, faListOl, faComments, faSpinner, faHeart, faCheck, faCopy, faMinus, faPlus, faPrint, faCartShopping, faLayerGroup } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as faHeartOutline } from '@fortawesome/free-regular-svg-icons';
 import { faWhatsapp, faViber } from '@fortawesome/free-brands-svg-icons';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -15,10 +15,11 @@ import { ToastService } from '../../services/toast.service';
 import { PerfService } from '../../services/perf.service';
 import { RecentlyViewedService } from '../../services/recently-viewed.service';
 import { ShoppingListService } from '../../services/shopping-list.service';
+import { CollectionService } from '../../services/collection.service';
 import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.component';
 import { StarRatingComponent } from '../../components/star-rating/star-rating.component';
 import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-modal.component';
-import { Recipe, Comment, FavoriteStatusResponse } from '../../models/models';
+import { Recipe, Comment, FavoriteStatusResponse, CollectionForRecipe } from '../../models/models';
 import { SeoService } from '../../services/seo.service';
 
 @Component({
@@ -167,6 +168,74 @@ import { SeoService } from '../../services/seo.service';
                   Запази · {{ favoriteStatus()?.favoriteCount || 0 }}
                 }
               </button>
+
+              <!-- Collections popover trigger -->
+              <div class="col-popover-wrap">
+                <button class="col-trigger-btn"
+                        type="button"
+                        [class.col-trigger-active]="colPopoverOpen()"
+                        (click)="toggleColPopover()"
+                        aria-label="Запази в колекция"
+                        [attr.aria-expanded]="colPopoverOpen()">
+                  <fa-icon [icon]="faLayerGroup" aria-hidden="true"></fa-icon>
+                  Колекции
+                  @if (recipeInCollectionCount() > 0) {
+                    <span class="col-trigger-badge">{{ recipeInCollectionCount() }}</span>
+                  }
+                </button>
+
+                @if (colPopoverOpen()) {
+                  <div class="col-popover" role="dialog" aria-label="Избери колекция">
+                    <div class="col-pop-head">Запази в колекция</div>
+
+                    @if (loadingCollections()) {
+                      <div class="col-pop-loading" aria-label="Зарежда се...">
+                        @for (_ of [1,2]; track $index) { <div class="col-pop-skel"></div> }
+                      </div>
+                    } @else if (recipeCollections().length === 0) {
+                      <p class="col-pop-empty">Нямаш колекции все още.</p>
+                    } @else {
+                      <ul class="col-pop-list">
+                        @for (col of recipeCollections(); track col.id) {
+                          <li>
+                            <button class="col-pop-item" type="button"
+                                    [class.col-pop-checked]="col.has_recipe"
+                                    (click)="toggleInCollection(col)">
+                              <span class="col-pop-check" aria-hidden="true">
+                                @if (col.has_recipe) { <fa-icon [icon]="faCheck" aria-hidden="true"></fa-icon> }
+                              </span>
+                              <span class="col-pop-name">{{ col.name }}</span>
+                              <span class="col-pop-cnt">{{ col.recipes_count }}</span>
+                            </button>
+                          </li>
+                        }
+                      </ul>
+                    }
+
+                    <!-- Quick-create form -->
+                    @if (!colCreateOpen()) {
+                      <button class="col-pop-new-trigger" type="button" (click)="colCreateOpen.set(true)">
+                        + Нова колекция
+                      </button>
+                    } @else {
+                      <div class="col-pop-create">
+                        <input class="col-pop-input" type="text" placeholder="Название..." maxlength="100"
+                               [value]="colNewName()" (input)="colNewName.set($any($event.target).value)"
+                               (keydown.enter)="quickCreateCollection()" />
+                        <div class="col-pop-create-actions">
+                          <button class="col-pop-cancel" type="button" (click)="colCreateOpen.set(false); colNewName.set('')">Отказ</button>
+                          <button class="col-pop-create-btn" type="button"
+                                  (click)="quickCreateCollection()"
+                                  [disabled]="!colNewName().trim() || colCreating()">
+                            @if (colCreating()) { <fa-icon [icon]="faSpinner" class="spin" aria-hidden="true"></fa-icon> }
+                            Създай
+                          </button>
+                        </div>
+                      </div>
+                    }
+                  </div>
+                }
+              </div>
             }
             <button class="print-btn" type="button" (click)="printRecipe()">
               <fa-icon [icon]="faPrint" aria-hidden="true"></fa-icon>
@@ -788,6 +857,173 @@ import { SeoService } from '../../services/seo.service';
     .print-btn fa-icon { font-size: 0.85rem; }
     .print-btn:hover { background: var(--clr-surface-hover); border-color: var(--clr-border-strong); color: var(--clr-text); }
 
+    /* ── COLLECTIONS POPOVER ─────────────────────────────── */
+    .col-popover-wrap { position: relative; }
+    .col-trigger-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.55rem 1rem;
+      border: 1px solid var(--clr-border);
+      border-radius: var(--radius-pill);
+      background: var(--clr-surface);
+      color: var(--clr-text);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.18s, border-color 0.18s, color 0.18s;
+    }
+    .col-trigger-btn:hover, .col-trigger-btn.col-trigger-active {
+      background: var(--clr-surface-hover);
+      border-color: var(--clr-border-strong);
+    }
+    .col-trigger-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 1.25rem;
+      height: 1.25rem;
+      padding: 0 0.3rem;
+      background: var(--terracotta);
+      color: #fff;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .col-popover {
+      position: absolute;
+      top: calc(100% + 0.5rem);
+      left: 0;
+      z-index: 100;
+      width: 280px;
+      background: var(--paper);
+      border: 1px solid var(--clr-border);
+      border-radius: 12px;
+      box-shadow: 0 8px 32px oklch(0.2 0.02 50 / 0.15);
+      overflow: hidden;
+      animation: col-pop-in 200ms var(--ease-out-expo) both;
+    }
+    @media (max-width: 600px) {
+      .col-popover { left: auto; right: 0; width: 260px; }
+    }
+    @keyframes col-pop-in {
+      from { opacity: 0; transform: translateY(-6px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .col-pop-head {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--clr-text-muted);
+      padding: 0.75rem 1rem 0.5rem;
+    }
+    .col-pop-loading { padding: 0.75rem 1rem; display: flex; flex-direction: column; gap: 0.5rem; }
+    .col-pop-skel {
+      height: 2.2rem; border-radius: 8px;
+      background: var(--paper-2);
+      animation: col-pulse 1.4s ease-in-out infinite;
+    }
+    @keyframes col-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.55; } }
+    .col-pop-empty { font-size: 0.83rem; color: var(--clr-text-muted); padding: 0.5rem 1rem 0.75rem; margin: 0; }
+
+    .col-pop-list { list-style: none; margin: 0; padding: 0 0.5rem; }
+    .col-pop-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      width: 100%;
+      padding: 0.55rem 0.6rem;
+      border: none;
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      text-align: left;
+      font-family: inherit;
+      font-size: 0.875rem;
+      color: var(--clr-text);
+      transition: background 0.15s;
+    }
+    .col-pop-item:hover { background: var(--clr-surface-hover); }
+    .col-pop-item.col-pop-checked { color: var(--terracotta); }
+    .col-pop-check {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.1rem; height: 1.1rem;
+      border-radius: 4px;
+      flex-shrink: 0;
+      font-size: 0.7rem;
+      border: 1.5px solid var(--clr-border);
+    }
+    .col-pop-checked .col-pop-check {
+      background: var(--terracotta);
+      border-color: var(--terracotta);
+      color: #fff;
+    }
+    .col-pop-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .col-pop-cnt { font-size: 0.72rem; color: var(--clr-text-muted); flex-shrink: 0; }
+
+    .col-pop-new-trigger {
+      display: block;
+      width: 100%;
+      padding: 0.6rem 1rem;
+      border: none;
+      background: transparent;
+      color: var(--terracotta);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: left;
+      font-family: inherit;
+      transition: background 0.15s;
+    }
+    .col-pop-new-trigger:hover { background: var(--clr-surface-hover); }
+
+    .col-pop-create {
+      padding: 0.5rem 0.75rem 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .col-pop-input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 0.45rem 0.65rem;
+      border: 1px solid var(--clr-border);
+      border-radius: 7px;
+      background: var(--paper-2);
+      font-size: 0.85rem;
+      font-family: inherit;
+      color: var(--clr-text);
+    }
+    .col-pop-input:focus { outline: none; border-color: var(--terracotta); }
+    .col-pop-create-actions { display: flex; gap: 0.5rem; justify-content: flex-end; }
+    .col-pop-cancel {
+      padding: 0.35rem 0.7rem;
+      border: 1px solid var(--clr-border); border-radius: 6px;
+      background: transparent; color: var(--clr-text-muted);
+      font-size: 0.8rem; font-weight: 600;
+      cursor: pointer; font-family: inherit;
+      transition: background 0.15s;
+    }
+    .col-pop-cancel:hover { background: var(--clr-surface-hover); }
+    .col-pop-create-btn {
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      padding: 0.35rem 0.8rem;
+      background: var(--terracotta); color: #fff;
+      border: none; border-radius: 6px;
+      font-size: 0.8rem; font-weight: 600;
+      cursor: pointer; font-family: inherit;
+      transition: background 0.15s;
+    }
+    .col-pop-create-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+    .col-pop-create-btn:not(:disabled):hover { background: oklch(from var(--terracotta) calc(l - 0.08) c h); }
+
     /* ── ADD TO SHOPPING LIST (inside ingredients card) ─── */
     .add-to-list-btn {
       display: inline-flex;
@@ -1243,6 +1479,7 @@ export class RecipeDetailComponent {
   readonly faPlus = faPlus;
   readonly faPrint = faPrint;
   readonly faCartShopping = faCartShopping;
+  readonly faLayerGroup = faLayerGroup;
 
   private recipeService = inject(RecipeService);
   private favoriteService = inject(FavoriteService);
@@ -1254,10 +1491,23 @@ export class RecipeDetailComponent {
   auth = inject(AuthService);
   private recentlyViewed = inject(RecentlyViewedService);
   shoppingList = inject(ShoppingListService);
+  private collectionSvc = inject(CollectionService);
+
+  colPopoverOpen = signal(false);
+  loadingCollections = signal(false);
+  recipeCollections = signal<CollectionForRecipe[]>([]);
+  colCreateOpen = signal(false);
+  colNewName = signal('');
+  colCreating = signal(false);
+  recipeInCollectionCount = computed(() => this.recipeCollections().filter(c => c.has_recipe).length);
 
   Math = Math;
   private heartPulseTimer: ReturnType<typeof setTimeout> | null = null;
   private copiedTimer: ReturnType<typeof setTimeout> | null = null;
+  private onDocClick = (e: MouseEvent) => {
+    const wrap = (e.target as HTMLElement).closest('.col-popover-wrap');
+    if (!wrap && this.colPopoverOpen()) this.colPopoverOpen.set(false);
+  };
   readProgress = signal(0);
   currentServings = signal(0);
   private rafPending = false;
@@ -1313,6 +1563,7 @@ export class RecipeDetailComponent {
     });
     if (typeof window !== 'undefined') {
       window.addEventListener('scroll', this.onScroll, { passive: true });
+      document.addEventListener('click', this.onDocClick);
       this.onScroll();
     }
   }
@@ -1321,6 +1572,7 @@ export class RecipeDetailComponent {
     this.seo.removeJsonLd();
     if (typeof window !== 'undefined') {
       window.removeEventListener('scroll', this.onScroll);
+      document.removeEventListener('click', this.onDocClick);
     }
     if (this.heartPulseTimer !== null) clearTimeout(this.heartPulseTimer);
     if (this.copiedTimer !== null) clearTimeout(this.copiedTimer);
@@ -1446,6 +1698,72 @@ export class RecipeDetailComponent {
       this.shoppingList.addFromRecipe(r);
       this.toast.success('Съставките са добавени в списъка за пазаруване.');
     }
+  }
+
+  toggleColPopover(): void {
+    const next = !this.colPopoverOpen();
+    this.colPopoverOpen.set(next);
+    if (next) {
+      const slug = this.recipe()?.slug;
+      if (!slug) return;
+      this.loadingCollections.set(true);
+      this.colCreateOpen.set(false);
+      this.colNewName.set('');
+      this.collectionSvc.getCollectionsForRecipe(slug).subscribe({
+        next: (cols) => { this.recipeCollections.set(cols); this.loadingCollections.set(false); },
+        error: () => this.loadingCollections.set(false),
+      });
+    }
+  }
+
+  toggleInCollection(col: CollectionForRecipe): void {
+    const slug = this.recipe()?.slug;
+    if (!slug) return;
+    this.collectionSvc.toggleRecipe(col.id, slug).subscribe({
+      next: (res) => {
+        this.recipeCollections.update(cols =>
+          cols.map(c => c.id === col.id ? { ...c, has_recipe: res.added, recipes_count: res.recipes_count } : c),
+        );
+        this.toast.success(res.added ? `Добавено в "${col.name}".` : `Премахнато от "${col.name}".`);
+      },
+      error: (err) => {
+        const msg = err?.error?.message || 'Грешка при промяна на колекцията.';
+        this.toast.error(msg);
+      },
+    });
+  }
+
+  quickCreateCollection(): void {
+    const name = this.colNewName().trim();
+    const slug = this.recipe()?.slug;
+    if (!name || !slug || this.colCreating()) return;
+    this.colCreating.set(true);
+    this.collectionSvc.createCollection({ name }).subscribe({
+      next: (newCol) => {
+        // Immediately add the recipe to the new collection
+        this.collectionSvc.toggleRecipe(newCol.id, slug).subscribe({
+          next: (res) => {
+            const entry: CollectionForRecipe = { id: newCol.id, name: newCol.name, has_recipe: true, recipes_count: res.recipes_count };
+            this.recipeCollections.update(cols => [entry, ...cols]);
+            this.colCreating.set(false);
+            this.colCreateOpen.set(false);
+            this.colNewName.set('');
+            this.toast.success(`Колекцията "${name}" е създадена и рецептата е добавена.`);
+          },
+          error: () => {
+            const entry: CollectionForRecipe = { id: newCol.id, name: newCol.name, has_recipe: false, recipes_count: 0 };
+            this.recipeCollections.update(cols => [entry, ...cols]);
+            this.colCreating.set(false);
+            this.colCreateOpen.set(false);
+            this.colNewName.set('');
+          },
+        });
+      },
+      error: (err) => {
+        this.colCreating.set(false);
+        this.toast.error(err?.error?.message || 'Грешка при създаване на колекция.');
+      },
+    });
   }
 
   scaleAmount(amount: string): string {

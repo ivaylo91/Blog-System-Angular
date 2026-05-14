@@ -69,6 +69,16 @@ export const routes: Routes = [
     ],
   },
   {
+    path: 'collections',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/collections/collections.component').then(m => m.CollectionsComponent),
+  },
+  {
+    path: 'collections/:id',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/collection-detail/collection-detail.component').then(m => m.CollectionDetailComponent),
+  },
+  {
     path: 'shopping-list',
     loadComponent: () => import('./pages/shopping-list/shopping-list.component').then(m => m.ShoppingListComponent),
   },

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CollectionController;
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\FavoriteController;
@@ -33,6 +34,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/recipes/{slug}/comment', [CommentController::class, 'storeOrUpdate']);
     Route::post('/recipes/{slug}/rate', [CommentController::class, 'rate']);
     Route::delete('/comments/{id}', [CommentController::class, 'destroy']);
+
+    // Collections
+    Route::get('/collections', [CollectionController::class, 'index']);
+    Route::post('/collections', [CollectionController::class, 'store']);
+    Route::get('/collections/{id}', [CollectionController::class, 'show']);
+    Route::put('/collections/{id}', [CollectionController::class, 'update']);
+    Route::delete('/collections/{id}', [CollectionController::class, 'destroy']);
+    Route::post('/collections/{id}/toggle', [CollectionController::class, 'toggleRecipe']);
+    Route::get('/recipe-collections/{slug}', [CollectionController::class, 'forRecipe']);
 
     // Dashboard
     Route::get('/dashboard/stats', [DashboardController::class, 'stats']);
