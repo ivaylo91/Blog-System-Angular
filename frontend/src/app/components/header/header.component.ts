@@ -600,7 +600,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   auth = inject(AuthService);
   theme = inject(ThemeService);
   drawerOpen = signal(false);
-  scrolled = signal(false);
 
   private drawerEl = viewChild<ElementRef<HTMLElement>>('drawer');
   private triggerEl: HTMLElement | null = null;
@@ -633,7 +632,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
       .filter(el => el.offsetParent !== null);
   }
 
-  private scrollHandler = () => this.scrolled.set(window.scrollY > 30);
   private keydownHandler = (e: KeyboardEvent) => {
     if (!this.drawerOpen()) return;
     if (e.key === 'Escape') { e.preventDefault(); this.close(); return; }
@@ -652,11 +650,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   };
 
   ngOnInit(): void {
-    window.addEventListener('scroll', this.scrollHandler, { passive: true });
     document.addEventListener('keydown', this.keydownHandler);
   }
   ngOnDestroy(): void {
-    window.removeEventListener('scroll', this.scrollHandler);
     document.removeEventListener('keydown', this.keydownHandler);
     document.body.style.overflow = '';
   }

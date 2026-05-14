@@ -59,7 +59,7 @@ import { Recipe } from '../../models/models';
     .card {
       display: block;
       position: relative;
-      background: #f8efd8;
+      background: var(--clr-surface);
       padding: 1rem 1rem 1.125rem;
       box-shadow: var(--shadow-md);
       text-decoration: none;
@@ -86,7 +86,7 @@ import { Recipe } from '../../models/models';
       aspect-ratio: 4 / 3;
       position: relative;
       overflow: hidden;
-      background: linear-gradient(135deg, #d9c9a3, #c8b482);
+      background: linear-gradient(135deg, var(--paper-2), var(--paper-edge));
     }
     .card.featured .card-image { aspect-ratio: 16 / 9; }
     .card-image img {
@@ -174,7 +174,7 @@ import { Recipe } from '../../models/models';
     .category {
       display: inline-block;
       font-family: var(--font-type);
-      font-size: 0.58rem;
+      font-size: 0.65rem;
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--terracotta-2);
@@ -226,7 +226,7 @@ import { Recipe } from '../../models/models';
       background: transparent;
     }
     .diff-easy   { border-color: var(--olive);       color: var(--olive-2); }
-    .diff-medium { border-color: var(--mustard);      color: #7a5210; }
+    .diff-medium { border-color: var(--mustard);      color: var(--clr-amber-text); }
     .diff-hard   { border-color: var(--terracotta);   color: var(--terracotta-2); }
 
     /* --- Numbered badge --- */
@@ -253,7 +253,7 @@ import { Recipe } from '../../models/models';
       display: block;
       isolation: isolate;
       padding: 0;
-      background: #f8efd8;
+      background: var(--clr-surface);
       overflow: hidden;
     }
     .card.overlay .card-image {

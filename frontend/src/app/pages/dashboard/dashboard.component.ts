@@ -490,7 +490,7 @@ import { Recipe } from '../../models/models';
       letter-spacing: -0.04em;
     }
     .stat-l {
-      font-size: 0.62rem;
+      font-size: 0.72rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.07em;

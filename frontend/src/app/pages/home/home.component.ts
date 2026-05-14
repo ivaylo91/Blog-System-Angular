@@ -364,7 +364,6 @@ import { PerfService } from '../../services/perf.service';
       color: var(--ink-mute);
       padding: 0.3rem 0.875rem;
       border: 1px dashed var(--rule-strong);
-      border-radius: 6rem;
       text-decoration: none;
       flex-shrink: 0;
       transition: border-color 0.15s, color 0.15s, background 0.15s;
@@ -513,7 +512,7 @@ import { PerfService } from '../../services/perf.service';
     }
     .feat-cat {
       font-family: var(--font-type);
-      font-size: 0.58rem;
+      font-size: 0.65rem;
       letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--terracotta);
