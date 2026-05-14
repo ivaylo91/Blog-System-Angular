@@ -369,7 +369,7 @@ import { Recipe } from '../../models/models';
     }
     .day-col.day-today {
       border-color: var(--terracotta);
-      background: oklch(from var(--paper-2) l c h / 0.6);
+      background: color-mix(in srgb, var(--paper-2) 60%, transparent);
     }
 
     /* Day header */
@@ -506,7 +506,7 @@ import { Recipe } from '../../models/models';
       margin-top: auto;
       touch-action: manipulation;
     }
-    .day-add-btn:hover { border-color: var(--terracotta); color: var(--terracotta); background: oklch(from var(--paper-2) l c h / 0.5); }
+    .day-add-btn:hover { border-color: var(--terracotta); color: var(--terracotta); background: color-mix(in srgb, var(--paper-2) 50%, transparent); }
 
     .day-clear-btn {
       align-self: center;

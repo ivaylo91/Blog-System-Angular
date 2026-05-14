@@ -1029,7 +1029,7 @@ import { SeoService } from '../../services/seo.service';
       transition: background 0.15s;
     }
     .col-pop-create-btn:disabled { opacity: 0.55; cursor: not-allowed; }
-    .col-pop-create-btn:not(:disabled):hover { background: oklch(from var(--terracotta) calc(l - 0.08) c h); }
+    .col-pop-create-btn:not(:disabled):hover { background: var(--terracotta-2); }
 
     /* ── ADD TO SHOPPING LIST (inside ingredients card) ─── */
     .add-to-list-btn {

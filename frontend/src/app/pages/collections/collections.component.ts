@@ -189,7 +189,7 @@ import { Collection } from '../../models/models';
       cursor: pointer;
       transition: background 0.2s, transform 0.15s;
     }
-    .cl-new-btn:hover { background: oklch(from var(--terracotta) calc(l - 0.08) c h); transform: translateY(-1px); }
+    .cl-new-btn:hover { background: var(--terracotta-2); transform: translateY(-1px); }
     .cl-new-btn:active { transform: translateY(0); }
 
     /* ── Skeleton ───────────────────────────────────────────── */
@@ -313,10 +313,10 @@ import { Collection } from '../../models/models';
       text-decoration: none;
       padding: 0.35rem 0.75rem;
       border-radius: 20px;
-      background: oklch(from var(--terracotta) l c h / 0.1);
+      background: color-mix(in srgb, var(--terracotta) 10%, transparent);
       transition: background 0.2s;
     }
-    .cl-open-btn:hover { background: oklch(from var(--terracotta) l c h / 0.18); }
+    .cl-open-btn:hover { background: color-mix(in srgb, var(--terracotta) 18%, transparent); }
     .cl-icon-btn {
       display: inline-flex;
       align-items: center;
@@ -422,7 +422,7 @@ import { Collection } from '../../models/models';
       transition: background 0.2s;
     }
     .col-save-btn:disabled { opacity: 0.55; cursor: not-allowed; }
-    .col-save-btn:not(:disabled):hover { background: oklch(from var(--terracotta) calc(l - 0.08) c h); }
+    .col-save-btn:not(:disabled):hover { background: var(--terracotta-2); }
     .col-delete-confirm-btn {
       display: inline-flex;
       align-items: center;

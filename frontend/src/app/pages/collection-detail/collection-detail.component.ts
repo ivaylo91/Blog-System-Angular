@@ -267,7 +267,7 @@ import { Collection, Recipe } from '../../models/models';
       font-weight: 600;
       transition: background 0.2s;
     }
-    .cd-browse-btn:hover { background: oklch(from var(--terracotta) calc(l - 0.08) c h); }
+    .cd-browse-btn:hover { background: var(--terracotta-2); }
 
     /* ── Pagination ─────────────────────────────────────────── */
     .cd-pagination {
@@ -341,7 +341,7 @@ import { Collection, Recipe } from '../../models/models';
       cursor: pointer; transition: background 0.2s;
     }
     .col-save-btn:disabled { opacity: 0.55; cursor: not-allowed; }
-    .col-save-btn:not(:disabled):hover { background: oklch(from var(--terracotta) calc(l - 0.08) c h); }
+    .col-save-btn:not(:disabled):hover { background: var(--terracotta-2); }
 
     .spin { animation: spin 0.8s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
