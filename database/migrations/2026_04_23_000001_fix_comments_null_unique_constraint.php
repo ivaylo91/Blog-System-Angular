@@ -6,25 +6,24 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 /**
- * The original UNIQUE(user_id, recipe_id, parent_id) constraint does not prevent
- * duplicate top-level comments because NULL != NULL in SQL — two rows with
- * parent_id = NULL are treated as distinct by the index engine.
+ * The original UNIQUE(user_id, recipe_id, parent_id) constraint allows
+ * duplicate top-level comments because NULL != NULL in SQL — multiple rows
+ * with parent_id = NULL are treated as distinct by the index engine.
  *
- * MySQL 8.0.13+ supports functional key parts, so we replace the constraint with
- * UNIQUE(user_id, recipe_id, COALESCE(parent_id, 0)), which maps NULL → 0 and
- * correctly blocks duplicate top-level entries while still allowing multiple
- * replies to different parents.
+ * MySQL 8.0.13+ supports functional key parts to work around this, but shared
+ * hosting servers often run older MySQL versions that reject that syntax.
  *
- * On older MySQL (< 8.0.13) the functional index is not supported; we restore the
- * plain 3-column constraint and rely on the application layer for top-level
- * uniqueness enforcement.
+ * This migration therefore:
+ *   1. Removes any existing duplicates (keeping the newest per user+recipe).
+ *   2. Drops the old plain constraint.
+ *   3. Does NOT add a new constraint — CommentController::storeOrUpdate
+ *      enforces the "one comment per user per recipe" rule at the app layer.
  */
 return new class extends Migration
 {
     public function up(): void
     {
-        // ── 1. Remove duplicate top-level comments produced by the NULL bug.
-        //    Keep the newest comment per (user_id, recipe_id) where parent_id IS NULL.
+        // ── 1. Delete duplicate top-level comments; keep the newest row.
         DB::statement("
             DELETE c1 FROM comments c1
             INNER JOIN comments c2
@@ -35,40 +34,29 @@ return new class extends Migration
                 AND c1.id < c2.id
         ");
 
-        // ── 2. Drop the existing plain 3-column constraint if it is still there.
-        $existing = collect(Schema::getIndexes('comments'))->pluck('name');
+        // ── 2. Drop the old 3-column unique constraint if it still exists.
+        $indexes = collect(Schema::getIndexes('comments'))->pluck('name');
 
-        if ($existing->contains('top_level_comment_unique')) {
+        if ($indexes->contains('top_level_comment_unique')) {
             Schema::table('comments', function (Blueprint $table): void {
                 $table->dropUnique('top_level_comment_unique');
             });
         }
 
-        // ── 3. Add the functional unique index (MySQL 8.0.13+).
-        //    Fall back to the plain constraint on older versions — the application
-        //    layer (CommentController::storeOrUpdate) guards against duplicates.
-        try {
-            DB::statement(
-                'ALTER TABLE comments ADD UNIQUE `top_level_comment_unique`'
-                . ' (user_id, recipe_id, (COALESCE(parent_id, 0)))'
-            );
-        } catch (\Illuminate\Database\QueryException) {
-            Schema::table('comments', function (Blueprint $table): void {
-                $table->unique(['user_id', 'recipe_id', 'parent_id'], 'top_level_comment_unique');
-            });
-        }
+        // ── 3. No replacement DB constraint is added.
+        //    CommentController::storeOrUpdate already does updateOrCreate(),
+        //    so the uniqueness rule is enforced at the application layer.
     }
 
     public function down(): void
     {
-        try {
-            DB::statement('ALTER TABLE comments DROP INDEX `top_level_comment_unique`');
-        } catch (\Illuminate\Database\QueryException) {
-            // Index may have been restored as plain constraint — drop via Blueprint.
-        }
+        // Restore the original plain constraint on rollback.
+        $indexes = collect(Schema::getIndexes('comments'))->pluck('name');
 
-        Schema::table('comments', function (Blueprint $table): void {
-            $table->unique(['user_id', 'recipe_id', 'parent_id'], 'top_level_comment_unique');
-        });
+        if (! $indexes->contains('top_level_comment_unique')) {
+            Schema::table('comments', function (Blueprint $table): void {
+                $table->unique(['user_id', 'recipe_id', 'parent_id'], 'top_level_comment_unique');
+            });
+        }
     }
 };
