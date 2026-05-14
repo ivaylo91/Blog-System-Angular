@@ -1,15 +1,16 @@
 import { ChangeDetectionStrategy, Component, ElementRef, inject, OnInit, OnDestroy, signal, viewChild } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faRightFromBracket, faSun, faMoon, faXmark, faHouse, faUtensils, faTableCells, faGauge, faUser, faCartShopping } from '@fortawesome/free-solid-svg-icons';
+import { faRightFromBracket, faSun, faMoon, faXmark, faHouse, faUtensils, faTableCells, faGauge, faUser, faCartShopping, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from '../../services/auth.service';
 import { ThemeService } from '../../services/theme.service';
 import { ShoppingListService } from '../../services/shopping-list.service';
+import { SearchOverlayComponent } from '../search-overlay/search-overlay.component';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, FontAwesomeModule],
+  imports: [RouterLink, RouterLinkActive, FontAwesomeModule, SearchOverlayComponent],
   template: `
     <header class="site-header">
 
@@ -17,6 +18,12 @@ import { ShoppingListService } from '../../services/shopping-list.service';
       <button class="mobile-toggle" (click)="openDrawer()"
               aria-label="Отвори менюто" [attr.aria-expanded]="drawerOpen()">
         <span class="hamburger"></span>
+      </button>
+
+      <!-- Mobile search trigger -->
+      <button class="mobile-search-btn" type="button"
+              (click)="searchOpen.set(true)" aria-label="Търсене">
+        <fa-icon [icon]="faMagnifyingGlass" aria-hidden="true"></fa-icon>
       </button>
 
       <!-- ── Masthead: three-column newspaper layout ── -->
@@ -73,8 +80,18 @@ import { ShoppingListService } from '../../services/shopping-list.service';
             <li><a routerLink="/profile" routerLinkActive="active">Профил</a></li>
           }
         </ul>
+        <button class="rail-search-btn" type="button"
+                (click)="searchOpen.set(true)"
+                aria-label="Търсене">
+          <fa-icon [icon]="faMagnifyingGlass" aria-hidden="true"></fa-icon>
+          <span>Търси</span>
+        </button>
       </nav>
     </header>
+
+    @if (searchOpen()) {
+      <app-search-overlay (close)="searchOpen.set(false)" />
+    }
 
     <div class="drawer-overlay" [class.visible]="drawerOpen()" (click)="close()" aria-hidden="true"></div>
 
@@ -114,6 +131,11 @@ import { ShoppingListService } from '../../services/shopping-list.service';
       }
 
       <nav class="drawer-nav">
+        <button type="button" class="drawer-item drawer-search-btn"
+                (click)="close(); searchOpen.set(true)">
+          <fa-icon [icon]="faMagnifyingGlass" aria-hidden="true"></fa-icon>
+          Търсене
+        </button>
         <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
            class="drawer-item" (click)="close()">
           <fa-icon [icon]="faHouse" aria-hidden="true"></fa-icon>
@@ -420,6 +442,68 @@ import { ShoppingListService } from '../../services/shopping-list.service';
     .nav-rail a.active { color: var(--terracotta-2); }
     .nav-rail a.active::after { transform: scaleX(1); }
 
+    /* nav-rail layout: links left, search button right */
+    .nav-rail {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .nav-rail ul { flex: 1; }
+    .rail-search-btn {
+      position: absolute;
+      right: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.35rem 0.75rem;
+      border: 1px solid var(--rule-strong);
+      border-radius: var(--radius-pill);
+      background: rgba(255, 245, 215, .55);
+      font-family: var(--font-type);
+      font-size: 0.62rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+    }
+    .rail-search-btn fa-icon { font-size: 0.7rem; }
+    .rail-search-btn:hover { background: var(--paper-2); border-color: var(--rule); color: var(--terracotta); }
+    .rail-search-btn:focus-visible { outline: 2px solid var(--mustard); outline-offset: 2px; }
+
+    /* Mobile search icon (right side, beside wordmark) */
+    .mobile-search-btn {
+      display: none;
+      position: absolute;
+      top: 0.75rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      padding: 0.5rem;
+      cursor: pointer;
+      min-width: 2.75rem;
+      min-height: 2.75rem;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-soft);
+      font-size: 1rem;
+      touch-action: manipulation;
+      z-index: 2;
+      transition: color 0.15s;
+    }
+    .mobile-search-btn:hover { color: var(--terracotta); }
+
+    /* drawer-search-btn: looks like a drawer-item but is a button */
+    .drawer-search-btn {
+      width: 100%;
+      text-align: left;
+      background: none;
+      font-family: inherit;
+      cursor: pointer;
+      color: var(--ink-soft);
+    }
+
     /* ── Drawer overlay ── */
     .drawer-overlay {
       position: fixed;
@@ -653,15 +737,17 @@ import { ShoppingListService } from '../../services/shopping-list.service';
       .masthead {
         grid-template-columns: 1fr;
         justify-items: center;
-        padding: 0.75rem 1.5rem 0.625rem;
+        padding: 0.75rem 3.5rem 0.625rem;
         gap: 0.1rem;
       }
-      .stamp         { display: none; }
+      .stamp          { display: none; }
       .masthead-right { display: none; }   /* drawer handles auth */
       .nav-rail       { display: none; }   /* drawer handles nav */
+      .rail-search-btn { display: none; }
       .wordmark-by   { font-size: 0.7rem; margin-bottom: 0; }
       .wordmark-name { font-size: 1.85rem; }
       .wordmark-rule { display: none; }
+      .mobile-search-btn { display: flex; }
     }
     @media (max-width: 480px) {
       .wordmark-name { font-size: 1.65rem; }
@@ -678,6 +764,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   theme = inject(ThemeService);
   shoppingList = inject(ShoppingListService);
   drawerOpen = signal(false);
+  searchOpen = signal(false);
 
   readonly faRightFromBracket = faRightFromBracket;
   readonly faSun = faSun;
@@ -689,6 +776,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   readonly faGauge = faGauge;
   readonly faUser = faUser;
   readonly faCartShopping = faCartShopping;
+  readonly faMagnifyingGlass = faMagnifyingGlass;
 
   private drawerEl = viewChild<ElementRef<HTMLElement>>('drawer');
   private triggerEl: HTMLElement | null = null;
