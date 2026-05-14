@@ -35,6 +35,8 @@ import { AuthService } from '../../services/auth.service';
             <a routerLink="/">Начало</a>
             <a routerLink="/recipes">Рецепти</a>
             <a routerLink="/categories">Категории</a>
+            <a routerLink="/meal-planner">Седмично меню</a>
+            <a routerLink="/shopping-list">Списък за пазаруване</a>
             @if (auth.isAuthenticated()) {
               <a routerLink="/dashboard">Табло</a>
               <a routerLink="/profile">Профил</a>

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, ElementRef, inject, OnInit, OnDestroy, signal, viewChild } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faRightFromBracket, faSun, faMoon, faXmark, faHouse, faUtensils, faTableCells, faGauge, faUser, faCartShopping, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faRightFromBracket, faSun, faMoon, faXmark, faHouse, faUtensils, faTableCells, faGauge, faUser, faCartShopping, faMagnifyingGlass, faCalendarDays } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from '../../services/auth.service';
 import { ThemeService } from '../../services/theme.service';
 import { ShoppingListService } from '../../services/shopping-list.service';
@@ -150,6 +150,11 @@ import { SearchOverlayComponent } from '../search-overlay/search-overlay.compone
            class="drawer-item" (click)="close()">
           <fa-icon [icon]="faTableCells" aria-hidden="true"></fa-icon>
           Категории
+        </a>
+        <a routerLink="/meal-planner" routerLinkActive="active"
+           class="drawer-item" (click)="close()">
+          <fa-icon [icon]="faCalendarDays" aria-hidden="true"></fa-icon>
+          Седмично меню
         </a>
         <a routerLink="/shopping-list" routerLinkActive="active"
            class="drawer-item" (click)="close()">
@@ -777,6 +782,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   readonly faUser = faUser;
   readonly faCartShopping = faCartShopping;
   readonly faMagnifyingGlass = faMagnifyingGlass;
+  readonly faCalendarDays = faCalendarDays;
 
   private drawerEl = viewChild<ElementRef<HTMLElement>>('drawer');
   private triggerEl: HTMLElement | null = null;
