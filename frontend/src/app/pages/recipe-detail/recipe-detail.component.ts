@@ -2,6 +2,10 @@ import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@a
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faChevronLeft, faUtensils, faListOl, faComments, faSpinner, faHeart, faCheck, faCopy } from '@fortawesome/free-solid-svg-icons';
+import { faHeart as faHeartOutline } from '@fortawesome/free-regular-svg-icons';
+import { faWhatsapp, faViber } from '@fortawesome/free-brands-svg-icons';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RecipeService } from '../../services/recipe.service';
 import { FavoriteService } from '../../services/favorite.service';
@@ -18,7 +22,7 @@ import { SeoService } from '../../services/seo.service';
 @Component({
   selector: 'app-recipe-detail',
   standalone: true,
-  imports: [RouterLink, DatePipe, FormsModule, RecipeCardComponent, StarRatingComponent, ConfirmModalComponent],
+  imports: [RouterLink, DatePipe, FormsModule, RecipeCardComponent, StarRatingComponent, ConfirmModalComponent, FontAwesomeModule],
   template: `
     <app-confirm-modal
       [open]="confirmDeleteId() !== null"
@@ -45,7 +49,7 @@ import { SeoService } from '../../services/seo.service';
           <div class="hero-overlay" aria-hidden="true"></div>
           <div class="hero-content">
             <a routerLink="/recipes" class="back-link">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+              <fa-icon [icon]="faChevronLeft" aria-hidden="true"></fa-icon>
               Обратно към рецептите
             </a>
             @if (recipe.category) {
@@ -57,16 +61,16 @@ import { SeoService } from '../../services/seo.service';
             <div class="share-bar">
               <span class="share-label">Сподели:</span>
               <a class="share-btn share-wa" [href]="'https://wa.me/?text=' + encodedTitle() + '%20' + encodedUrl()" target="_blank" rel="noopener" title="WhatsApp">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.121 1.531 5.855L.057 23.885l6.196-1.452A11.942 11.942 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.882a9.88 9.88 0 0 1-5.031-1.37l-.361-.214-3.735.875.892-3.653-.235-.374A9.867 9.867 0 0 1 2.118 12C2.118 6.52 6.52 2.118 12 2.118S21.882 6.52 21.882 12 17.48 21.882 12 21.882z"/></svg>
+                <fa-icon [icon]="faWhatsapp" aria-hidden="true"></fa-icon>
               </a>
               <a class="share-btn share-vb" [href]="'viber://forward?text=' + encodedTitle() + '%20' + encodedUrl()" target="_blank" rel="noopener" title="Viber">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.4 0C8.48.03 2.64.5 1.04 8.16.28 11.85.13 15.6 1.95 19.1c.84 1.6 2.16 2.74 3.67 3.6.7.39 1.05 1.06 1 1.84l-.14 2.38 2.7-1.47c.54-.3 1.06-.5 1.68-.5.35 0 .7.05 1.05.15 1.07.3 2.16.49 3.27.49 3.2 0 7.74-.77 10.06-5.41.5-1 .76-2.06.76-3.17V14.9c.01-3.09-.1-6.19-.8-8.93C23.32.42 16.7-.06 11.4 0zm5.1 16.5c-.5.55-1.13 1-1.82 1.29-.27.11-.54.07-.8-.05-.7-.32-1.37-.7-2.02-1.1-1.9-1.22-3.56-2.76-4.73-4.7-.52-.86-.93-1.77-1.1-2.77-.12-.7.12-1.33.62-1.85.37-.38.8-.58 1.27-.58.18 0 .36.04.53.12.4.18.72.48.99.82.48.6.9 1.24 1.23 1.93.18.38.1.8-.18 1.1l-.6.6c-.1.1-.12.22-.07.34.43 1 1.12 1.82 1.94 2.49.36.3.76.55 1.17.77.14.07.27.05.38-.05l.55-.57c.3-.31.7-.43 1.1-.3.65.2 1.27.5 1.86.85.3.18.6.37.84.62.3.3.35.75.11 1.1l-.17.28z"/></svg>
+                <fa-icon [icon]="faViber" aria-hidden="true"></fa-icon>
               </a>
               <button class="share-btn share-copy" (click)="copyLink()" [title]="copied() ? 'Копирано!' : 'Копирай връзка'">
                 @if (copied()) {
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  <fa-icon [icon]="faCheck" aria-hidden="true"></fa-icon>
                 } @else {
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                  <fa-icon [icon]="faCopy" aria-hidden="true"></fa-icon>
                 }
               </button>
             </div>
@@ -110,17 +114,17 @@ import { SeoService } from '../../services/seo.service';
         <!-- ══ JUMP NAV ══════════════════════════════════════════════ -->
         <nav class="jump-nav" aria-label="Навигация в рецептата">
           <button type="button" class="jump-link" (click)="scrollTo('ingredients')">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg>
+            <fa-icon [icon]="faUtensils" aria-hidden="true"></fa-icon>
             Съставки
           </button>
           <span class="jump-sep" aria-hidden="true"></span>
           <button type="button" class="jump-link" (click)="scrollTo('steps')">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            <fa-icon [icon]="faListOl" aria-hidden="true"></fa-icon>
             Приготвяне
           </button>
           <span class="jump-sep" aria-hidden="true"></span>
           <button type="button" class="jump-link" (click)="scrollTo('comments')">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <fa-icon [icon]="faComments" aria-hidden="true"></fa-icon>
             Коментари
           </button>
         </nav>
@@ -139,11 +143,11 @@ import { SeoService } from '../../services/seo.service';
                 [attr.aria-label]="favoriteStatus()?.isFavorite ? 'Премахни от любими' : 'Добави в любими'"
                 (click)="toggleFavorite()">
                 @if (favoriting()) {
-                  <svg class="spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-dasharray="32" stroke-dashoffset="24"/></svg>
+                  <fa-icon class="spin" [icon]="faSpinner" aria-hidden="true"></fa-icon>
                 } @else if (favoriteStatus()?.isFavorite) {
-                  <svg viewBox="0 0 24 24" fill="var(--clr-error)" stroke="var(--clr-error)" stroke-width="2" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                  <fa-icon [icon]="faHeart" aria-hidden="true"></fa-icon>
                 } @else {
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                  <fa-icon [icon]="faHeartOutline" aria-hidden="true"></fa-icon>
                 }
                 @if (favoriteStatus()?.isFavorite) {
                   Запазено · {{ favoriteStatus()?.favoriteCount }}
@@ -176,7 +180,7 @@ import { SeoService } from '../../services/seo.service';
                       (keydown.enter)="toggleIngredient(ing.id)">
                     <span class="ing-check" aria-hidden="true">
                       @if (checkedIngredients().has(ing.id)) {
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        <fa-icon [icon]="faCheck"></fa-icon>
                       }
                     </span>
                     <span class="ing-amount">{{ ing.amount }}</span>
@@ -514,7 +518,7 @@ import { SeoService } from '../../services/seo.service';
       margin-bottom: 0.75rem;
       transition: color 0.2s;
     }
-    .back-link svg { width: 1rem; height: 1rem; }
+    .back-link fa-icon { font-size: 1rem; }
     .back-link:hover { color: #fff; }
 
     .hero-badge {
@@ -574,11 +578,11 @@ import { SeoService } from '../../services/seo.service';
       transition: background 0.2s, transform 0.2s;
       touch-action: manipulation;
     }
-    .share-btn svg { width: 0.85rem; height: 0.85rem; }
+    .share-btn fa-icon { font-size: 0.85rem; }
     .share-btn:hover { transform: translateY(-2px); }
     @media (pointer: coarse) {
       .share-btn { width: 2.75rem; height: 2.75rem; }
-      .share-btn svg { width: 1rem; height: 1rem; }
+      .share-btn fa-icon { font-size: 1rem; }
     }
     .share-wa:hover   { background: #25d366; border-color: #25d366; }
     .share-vb:hover   { background: #7360f2; border-color: #7360f2; }
@@ -673,7 +677,7 @@ import { SeoService } from '../../services/seo.service';
       position: relative;
       white-space: nowrap;
     }
-    .jump-link svg { width: 0.85rem; height: 0.85rem; flex-shrink: 0; }
+    .jump-link fa-icon { font-size: 0.85rem; flex-shrink: 0; }
     .jump-link::after {
       content: '';
       position: absolute;
@@ -711,9 +715,9 @@ import { SeoService } from '../../services/seo.service';
       color: var(--clr-text-muted);
       transition: box-shadow 0.2s, background 0.18s, color 0.18s, border-color 0.18s, transform 0.12s;
     }
-    .favorite-btn svg { width: 1rem; height: 1rem; transform-origin: center; }
+    .favorite-btn fa-icon { font-size: 1rem; transform-origin: center; }
     .favorite-btn.favorited { background: var(--clr-error-bg); border-color: var(--clr-error); color: var(--clr-error); }
-    .favorite-btn.pulse svg { animation: heart-pop 360ms var(--ease-out-expo) both; }
+    .favorite-btn.pulse fa-icon { animation: heart-pop 360ms var(--ease-out-expo) both; }
     .favorite-btn:hover:not(:disabled) { box-shadow: var(--shadow-md); }
     .favorite-btn:active:not(:disabled) { transform: scale(0.97); }
     .favorite-btn:disabled { opacity: 0.7; cursor: wait; }
@@ -813,9 +817,9 @@ import { SeoService } from '../../services/seo.service';
       flex-shrink: 0;
       transition: background 0.2s, border-color 0.2s;
     }
-    .ing-check svg { width: 0.6rem; height: 0.6rem; display: none; }
+    .ing-check fa-icon { font-size: 0.6rem; }
     li.checked .ing-check { background: var(--tc-mid); border-color: var(--tc-mid); }
-    li.checked .ing-check svg { display: block; stroke: #fff; }
+    li.checked .ing-check fa-icon { color: #fff; }
 
     .ing-amount { font-weight: 700; color: var(--paper); min-width: 68px; }
     .ing-name   { color: rgba(243, 234, 214, 0.85); }
@@ -1106,12 +1110,24 @@ import { SeoService } from '../../services/seo.service';
     }
     @media (prefers-reduced-motion: reduce) {
       .favorite-btn, .share-btn, .submit-btn { transition: none; }
-      .favorite-btn.pulse svg, .spin { animation: none; }
+      .favorite-btn.pulse fa-icon, .spin { animation: none; }
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RecipeDetailComponent {
+  readonly faChevronLeft = faChevronLeft;
+  readonly faUtensils = faUtensils;
+  readonly faListOl = faListOl;
+  readonly faComments = faComments;
+  readonly faSpinner = faSpinner;
+  readonly faHeart = faHeart;
+  readonly faHeartOutline = faHeartOutline;
+  readonly faCheck = faCheck;
+  readonly faCopy = faCopy;
+  readonly faWhatsapp = faWhatsapp;
+  readonly faViber = faViber;
+
   private recipeService = inject(RecipeService);
   private favoriteService = inject(FavoriteService);
   private commentService = inject(CommentService);

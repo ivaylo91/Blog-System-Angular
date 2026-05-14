@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faMagnifyingGlass, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RecipeService } from '../../services/recipe.service';
 import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.component';
@@ -11,7 +13,7 @@ import { PerfService } from '../../services/perf.service';
 @Component({
   selector: 'app-recipes',
   standalone: true,
-  imports: [RecipeCardComponent, FormsModule],
+  imports: [RecipeCardComponent, FormsModule, FontAwesomeModule],
   template: `
     <div class="page">
       <div class="page-inner">
@@ -29,14 +31,14 @@ import { PerfService } from '../../services/perf.service';
 
             <form class="search-wrap" (submit)="search($event)">
               <span class="search-ico" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <fa-icon [icon]="faMagnifyingGlass"></fa-icon>
               </span>
               <input type="text" [ngModel]="q()" (ngModelChange)="q.set($event)" name="q"
                      placeholder="Търси рецепти..." aria-label="Търси рецепти"
                      class="search-input" (input)="onSearchInput()" />
               @if (q()) {
                 <button type="button" class="search-clear" (click)="clearSearch()" aria-label="Изчисти">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                  <fa-icon [icon]="faXmark" aria-hidden="true"></fa-icon>
                 </button>
               }
             </form>
@@ -89,7 +91,7 @@ import { PerfService } from '../../services/perf.service';
             @if (category() || difficulty() || (sort() && sort() !== 'newest') || q()) {
               <div class="filter-group filter-group-clear">
                 <button class="clear-all-btn" (click)="clearAll()">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                  <fa-icon [icon]="faXmark" aria-hidden="true"></fa-icon>
                   Изчисти всички филтри
                 </button>
               </div>
@@ -104,27 +106,27 @@ import { PerfService } from '../../services/perf.service';
               <div class="active-bar" aria-label="Активни филтри">
                 @if (q()) {
                   <button class="a-chip" (click)="clearSearch()" aria-label="Премахни търсенето">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <fa-icon [icon]="faMagnifyingGlass" aria-hidden="true"></fa-icon>
                     "{{ q() }}"
-                    <svg class="chip-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    <fa-icon class="chip-x" [icon]="faXmark" aria-hidden="true"></fa-icon>
                   </button>
                 }
                 @if (category()) {
                   <button class="a-chip" (click)="selectCategory('')" aria-label="Премахни категория">
                     {{ getCategoryName(category()) }}
-                    <svg class="chip-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    <fa-icon class="chip-x" [icon]="faXmark" aria-hidden="true"></fa-icon>
                   </button>
                 }
                 @if (difficulty()) {
                   <button class="a-chip" (click)="selectDifficulty('')" aria-label="Премахни трудност">
                     {{ difficulty() }}
-                    <svg class="chip-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    <fa-icon class="chip-x" [icon]="faXmark" aria-hidden="true"></fa-icon>
                   </button>
                 }
                 @if (sort() && sort() !== 'newest') {
                   <button class="a-chip" (click)="selectSort('newest')" aria-label="Премахни сортиране">
                     {{ sort() === 'fastest' ? 'Най-бързи' : 'Най-лесни' }}
-                    <svg class="chip-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    <fa-icon class="chip-x" [icon]="faXmark" aria-hidden="true"></fa-icon>
                   </button>
                 }
               </div>
@@ -269,7 +271,7 @@ import { PerfService } from '../../services/perf.service';
       display: flex;
       pointer-events: none;
     }
-    .search-ico svg { width: 0.88rem; height: 0.88rem; }
+    .search-ico fa-icon { font-size: 0.88rem; }
     .search-input {
       width: 100%;
       box-sizing: border-box;
@@ -300,7 +302,7 @@ import { PerfService } from '../../services/perf.service';
       transition: color 0.14s;
       touch-action: manipulation;
     }
-    .search-clear svg { width: 0.82rem; height: 0.82rem; }
+    .search-clear fa-icon { font-size: 0.82rem; }
     .search-clear:hover { color: var(--clr-text); }
 
     /* filters-row: transparent on desktop so groups flow directly in sidebar flex */
@@ -390,7 +392,7 @@ import { PerfService } from '../../services/perf.service';
       transition: border-color 0.15s, color 0.15s;
       touch-action: manipulation;
     }
-    .clear-all-btn svg { width: 0.78rem; height: 0.78rem; flex-shrink: 0; }
+    .clear-all-btn fa-icon { font-size: 0.78rem; flex-shrink: 0; }
     .clear-all-btn:hover { color: var(--clr-text); border-color: var(--clr-text-muted); }
 
     /* ── Main ────────────────────────────────────── */
@@ -419,8 +421,8 @@ import { PerfService } from '../../services/perf.service';
       transition: background 0.15s, transform 0.15s;
       touch-action: manipulation;
     }
-    .a-chip > svg:first-child { width: 0.7rem; height: 0.7rem; opacity: 0.65; }
-    .chip-x { width: 0.65rem; height: 0.65rem; opacity: 0.6; flex-shrink: 0; }
+    .a-chip > fa-icon:first-child { font-size: 0.7rem; opacity: 0.65; }
+    .chip-x { font-size: 0.65rem; opacity: 0.6; flex-shrink: 0; }
     .a-chip:hover { background: var(--clr-text-muted); }
     .a-chip:active { transform: scale(0.97); }
 
@@ -631,6 +633,9 @@ import { PerfService } from '../../services/perf.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RecipesComponent {
+  readonly faMagnifyingGlass = faMagnifyingGlass;
+  readonly faXmark = faXmark;
+
   private recipeService = inject(RecipeService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);

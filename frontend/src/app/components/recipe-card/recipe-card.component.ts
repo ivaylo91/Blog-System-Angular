@@ -1,11 +1,13 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faClock, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { Recipe } from '../../models/models';
 
 @Component({
   selector: 'app-recipe-card',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, FontAwesomeModule],
   template: `
     <a [routerLink]="['/recipes', recipe.slug]" class="card"
        [class.featured]="featured" [class.compact]="compact" [class.overlay]="overlay"
@@ -37,12 +39,12 @@ import { Recipe } from '../../models/models';
         }
         <div class="meta">
           <span class="meta-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <fa-icon [icon]="faClock" aria-hidden="true"></fa-icon>
             {{ recipe.prep_minutes + recipe.cook_minutes }} мин
           </span>
           @if (!compact && !overlay) {
             <span class="meta-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              <fa-icon [icon]="faUsers" aria-hidden="true"></fa-icon>
               {{ recipe.servings }} порции
             </span>
           }
@@ -216,7 +218,7 @@ import { Recipe } from '../../models/models';
       align-items: center;
     }
     .meta-item { display: flex; align-items: center; gap: 0.2rem; }
-    .meta-item svg { width: 0.8rem; height: 0.8rem; flex-shrink: 0; }
+    .meta-item fa-icon { font-size: 0.8rem; flex-shrink: 0; }
     .difficulty {
       margin-left: auto;
       font-size: 0.68rem;
@@ -322,7 +324,7 @@ import { Recipe } from '../../models/models';
 
     @media (max-width: 640px) {
       .meta { font-size: 0.72rem; gap: 0.6rem; }
-      .meta-item svg { width: 0.75rem; height: 0.75rem; }
+      .meta-item fa-icon { font-size: 0.75rem; }
     }
     @media (max-width: 500px) {
       .card.compact .card-image { width: 80px; }
@@ -333,6 +335,9 @@ import { Recipe } from '../../models/models';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RecipeCardComponent {
+  readonly faClock = faClock;
+  readonly faUsers = faUsers;
+
   @Input({ required: true }) recipe!: Recipe;
   @Input() priority = false;
   @Input() index = 0;

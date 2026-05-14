@@ -1,12 +1,14 @@
 import { ChangeDetectionStrategy, Component, ElementRef, inject, OnInit, OnDestroy, signal, viewChild } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faRightFromBracket, faSun, faMoon, faXmark, faHouse, faUtensils, faTableCells, faGauge, faUser } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from '../../services/auth.service';
 import { ThemeService } from '../../services/theme.service';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, FontAwesomeModule],
   template: `
     <header class="site-header">
 
@@ -43,7 +45,7 @@ import { ThemeService } from '../../services/theme.service';
               {{ userInitial() }}
             </button>
             <button class="logout-btn" (click)="auth.logout()">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              <fa-icon [icon]="faRightFromBracket" aria-hidden="true"></fa-icon>
               Изход
             </button>
           } @else {
@@ -82,13 +84,13 @@ import { ThemeService } from '../../services/theme.service';
           <button class="theme-toggle" (click)="theme.toggle()"
                   [attr.aria-label]="theme.isDark() ? 'Включи светъл режим' : 'Включи тъмен режим'">
             @if (theme.isDark()) {
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+              <fa-icon [icon]="faSun" aria-hidden="true"></fa-icon>
             } @else {
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+              <fa-icon [icon]="faMoon" aria-hidden="true"></fa-icon>
             }
           </button>
           <button class="drawer-close" (click)="close()" aria-label="Затвори менюто">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            <fa-icon [icon]="faXmark" aria-hidden="true"></fa-icon>
           </button>
         </div>
       </div>
@@ -107,28 +109,28 @@ import { ThemeService } from '../../services/theme.service';
       <nav class="drawer-nav">
         <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
            class="drawer-item" (click)="close()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <fa-icon [icon]="faHouse" aria-hidden="true"></fa-icon>
           Начало
         </a>
         <a routerLink="/recipes" routerLinkActive="active"
            class="drawer-item" (click)="close()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          <fa-icon [icon]="faUtensils" aria-hidden="true"></fa-icon>
           Рецепти
         </a>
         <a routerLink="/categories" routerLinkActive="active"
            class="drawer-item" (click)="close()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg>
+          <fa-icon [icon]="faTableCells" aria-hidden="true"></fa-icon>
           Категории
         </a>
         @if (auth.isAuthenticated()) {
           <a routerLink="/dashboard" routerLinkActive="active"
              class="drawer-item" (click)="close()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+            <fa-icon [icon]="faGauge" aria-hidden="true"></fa-icon>
             Табло
           </a>
           <a routerLink="/profile" routerLinkActive="active"
              class="drawer-item" (click)="close()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <fa-icon [icon]="faUser" aria-hidden="true"></fa-icon>
             Профил
           </a>
         }
@@ -137,7 +139,7 @@ import { ThemeService } from '../../services/theme.service';
       <div class="drawer-footer">
         @if (auth.isAuthenticated()) {
           <button class="drawer-logout" (click)="auth.logout(); close()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            <fa-icon [icon]="faRightFromBracket" aria-hidden="true"></fa-icon>
             Изход
           </button>
         } @else {
@@ -322,7 +324,7 @@ import { ThemeService } from '../../services/theme.service';
       cursor: pointer;
       padding: 0.5rem 0.25rem;
     }
-    .logout-btn svg { width: 0.8rem; height: 0.8rem; }
+    .logout-btn fa-icon { font-size: 0.8rem; }
     .logout-btn:hover { color: var(--terracotta-2); }
 
     /* ── Navigation rail ── */
@@ -434,7 +436,7 @@ import { ThemeService } from '../../services/theme.service';
       justify-content: center;
       touch-action: manipulation;
     }
-    .drawer-close svg { width: 1rem; height: 1rem; }
+    .drawer-close fa-icon { font-size: 1rem; }
     .drawer-close:hover { color: var(--ink); }
 
     .drawer-user {
@@ -503,10 +505,10 @@ import { ThemeService } from '../../services/theme.service';
       min-height: 2.75rem;
       border-bottom: 1px dashed transparent;
     }
-    .drawer-item svg { width: 1rem; height: 1rem; flex-shrink: 0; color: var(--ink-mute); }
+    .drawer-item fa-icon { font-size: 1rem; flex-shrink: 0; color: var(--ink-mute); }
     .drawer-item:hover { background: var(--clr-surface-hover); color: var(--ink); }
     .drawer-item.active { color: var(--terracotta-2); border-bottom-color: var(--rule); }
-    .drawer-item.active svg { color: var(--terracotta); }
+    .drawer-item.active fa-icon { color: var(--terracotta); }
 
     .drawer-footer {
       padding: 0.875rem;
@@ -534,7 +536,7 @@ import { ThemeService } from '../../services/theme.service';
       min-height: 2.75rem;
       transition: background 0.16s;
     }
-    .drawer-logout svg { width: 1rem; height: 1rem; flex-shrink: 0; }
+    .drawer-logout fa-icon { font-size: 1rem; flex-shrink: 0; }
     .drawer-logout:hover { background: var(--clr-error-bg); }
 
     .drawer-signin {
@@ -600,6 +602,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
   auth = inject(AuthService);
   theme = inject(ThemeService);
   drawerOpen = signal(false);
+
+  readonly faRightFromBracket = faRightFromBracket;
+  readonly faSun = faSun;
+  readonly faMoon = faMoon;
+  readonly faXmark = faXmark;
+  readonly faHouse = faHouse;
+  readonly faUtensils = faUtensils;
+  readonly faTableCells = faTableCells;
+  readonly faGauge = faGauge;
+  readonly faUser = faUser;
 
   private drawerEl = viewChild<ElementRef<HTMLElement>>('drawer');
   private triggerEl: HTMLElement | null = null;
