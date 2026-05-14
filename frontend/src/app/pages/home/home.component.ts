@@ -5,6 +5,7 @@ import { catchError, map, of, tap } from 'rxjs';
 import { RecipeService } from '../../services/recipe.service';
 import { SeoService } from '../../services/seo.service';
 import { PerfService } from '../../services/perf.service';
+import { RecentlyViewedService } from '../../services/recently-viewed.service';
 
 @Component({
   selector: 'app-home',
@@ -182,6 +183,38 @@ import { PerfService } from '../../services/perf.service';
 
       </div>
     </section>
+
+    <!-- ════════════════════ RECENTLY VIEWED ═══════════════════════════════ -->
+    @if (recentlyViewed().length > 0) {
+      <section class="rv-section" aria-label="Наскоро разглеждани">
+        <div class="rv-inner">
+          <div class="rv-head">
+            <span class="rv-label">Наскоро разглеждани</span>
+            <a routerLink="/recipes" class="rv-more">Всички рецепти →</a>
+          </div>
+          <div class="rv-strip">
+            @for (r of recentlyViewed(); track r.slug) {
+              <a [routerLink]="['/recipes', r.slug]" class="rv-card">
+                <div class="rv-img-wrap">
+                  @if (r.hero_image) {
+                    <img [src]="r.hero_image" [alt]="r.title" class="rv-img" loading="lazy" />
+                  } @else {
+                    <div class="rv-img-ph"></div>
+                  }
+                </div>
+                <div class="rv-info">
+                  @if (r.category?.name) {
+                    <span class="rv-cat">{{ r.category!.name }}</span>
+                  }
+                  <span class="rv-title">{{ r.title }}</span>
+                  <span class="rv-time">{{ (r.prep_minutes || 0) + (r.cook_minutes || 0) }} мин.</span>
+                </div>
+              </a>
+            }
+          </div>
+        </div>
+      </section>
+    }
 
   `,
   styles: [`
@@ -646,6 +679,117 @@ import { PerfService } from '../../services/perf.service';
       .all-link:hover { color: var(--terracotta-2); border-color: var(--terracotta-2); }
     }
 
+    /* ═══ RECENTLY VIEWED ══════════════════════════════════════════════ */
+    .rv-section {
+      background: var(--paper-2);
+      padding: clamp(2rem, 5vw, 3rem) 0;
+    }
+    .rv-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 clamp(1.5rem, 5vw, 3rem);
+    }
+    .rv-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+    }
+    .rv-label {
+      font-family: var(--font-type);
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+    }
+    .rv-more {
+      font-family: var(--font-type);
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--terracotta);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .rv-more:hover { color: var(--terracotta-2); }
+
+    .rv-strip {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding-bottom: 0.25rem;
+    }
+    .rv-strip::-webkit-scrollbar { display: none; }
+
+    .rv-card {
+      flex: 0 0 auto;
+      width: clamp(140px, 22vw, 180px);
+      scroll-snap-align: start;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      transition: transform 0.18s;
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .rv-card:hover { transform: translateY(-2px); }
+      .rv-card:hover .rv-img { transform: scale(1.04); }
+    }
+
+    .rv-img-wrap {
+      border-radius: 0.625rem;
+      overflow: hidden;
+      aspect-ratio: 3 / 2;
+      background: var(--paper);
+    }
+    .rv-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s var(--ease-out-expo);
+    }
+    .rv-img-ph {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, var(--paper), var(--paper-2));
+    }
+
+    .rv-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+    .rv-cat {
+      font-family: var(--font-type);
+      font-size: 0.55rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--terracotta);
+    }
+    .rv-title {
+      font-family: var(--font-display);
+      font-size: 0.82rem;
+      font-style: italic;
+      color: var(--clr-text);
+      line-height: 1.3;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .rv-time {
+      font-family: var(--font-type);
+      font-size: 0.58rem;
+      letter-spacing: 0.1em;
+      color: var(--ink-mute);
+      margin-top: 0.1rem;
+    }
+
     /* ═══ RESPONSIVE ════════════════════════════════════════════════════ */
     @media (min-width: 1100px) {
       .hero-inner { grid-template-columns: 1fr 1.15fr; }
@@ -693,6 +837,9 @@ export class HomeComponent {
   private recipeService = inject(RecipeService);
   private seo           = inject(SeoService);
   private perf          = inject(PerfService);
+  private recentlyViewedSvc = inject(RecentlyViewedService);
+
+  recentlyViewed = computed(() => this.recentlyViewedSvc.items());
 
   private featuredResult = toSignal(
     this.recipeService.getFeaturedRecipes().pipe(

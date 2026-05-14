@@ -3,7 +3,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faChevronLeft, faUtensils, faListOl, faComments, faSpinner, faHeart, faCheck, faCopy, faMinus, faPlus, faPrint } from '@fortawesome/free-solid-svg-icons';
+import { faChevronLeft, faUtensils, faListOl, faComments, faSpinner, faHeart, faCheck, faCopy, faMinus, faPlus, faPrint, faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as faHeartOutline } from '@fortawesome/free-regular-svg-icons';
 import { faWhatsapp, faViber } from '@fortawesome/free-brands-svg-icons';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -13,6 +13,8 @@ import { CommentService } from '../../services/comment.service';
 import { AuthService } from '../../services/auth.service';
 import { ToastService } from '../../services/toast.service';
 import { PerfService } from '../../services/perf.service';
+import { RecentlyViewedService } from '../../services/recently-viewed.service';
+import { ShoppingListService } from '../../services/shopping-list.service';
 import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.component';
 import { StarRatingComponent } from '../../components/star-rating/star-rating.component';
 import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-modal.component';
@@ -205,6 +207,12 @@ import { SeoService } from '../../services/seo.service';
               @if (checkedIngredients().size > 0) {
                 <button class="ing-reset" (click)="clearIngredients()">Изчисти всички</button>
               }
+              <button class="add-to-list-btn" type="button" (click)="addToShoppingList()"
+                      [class.in-list]="shoppingList.hasRecipe(recipe.slug)"
+                      [attr.aria-pressed]="shoppingList.hasRecipe(recipe.slug)">
+                <fa-icon [icon]="faCartShopping" aria-hidden="true"></fa-icon>
+                {{ shoppingList.hasRecipe(recipe.slug) ? 'Добавено в списъка' : 'Добави в списъка' }}
+              </button>
             </div>
 
             <!-- PROCEDURE -->
@@ -779,6 +787,40 @@ import { SeoService } from '../../services/seo.service';
     }
     .print-btn fa-icon { font-size: 0.85rem; }
     .print-btn:hover { background: var(--clr-surface-hover); border-color: var(--clr-border-strong); color: var(--clr-text); }
+
+    /* ── ADD TO SHOPPING LIST (inside ingredients card) ─── */
+    .add-to-list-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      margin-top: 1rem;
+      padding: 0.6rem 1rem;
+      border-radius: var(--radius-pill);
+      border: 1.5px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.08);
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      color: var(--paper);
+      font-family: inherit;
+      width: 100%;
+      justify-content: center;
+      transition: background 0.18s, border-color 0.18s;
+      touch-action: manipulation;
+    }
+    .add-to-list-btn fa-icon { font-size: 0.8rem; }
+    .add-to-list-btn:hover {
+      background: rgba(255,255,255,0.14);
+      border-color: rgba(255,255,255,0.3);
+    }
+    .add-to-list-btn.in-list {
+      border-color: var(--olive);
+      color: #9ec86a;
+    }
+    .add-to-list-btn.in-list:hover {
+      background: rgba(107, 122, 58, 0.15);
+    }
+
     @keyframes heart-pop {
       0%   { transform: scale(0.8); }
       45%  { transform: scale(1.28); }
@@ -1200,6 +1242,7 @@ export class RecipeDetailComponent {
   readonly faMinus = faMinus;
   readonly faPlus = faPlus;
   readonly faPrint = faPrint;
+  readonly faCartShopping = faCartShopping;
 
   private recipeService = inject(RecipeService);
   private favoriteService = inject(FavoriteService);
@@ -1209,6 +1252,8 @@ export class RecipeDetailComponent {
   private toast = inject(ToastService);
   private perf = inject(PerfService);
   auth = inject(AuthService);
+  private recentlyViewed = inject(RecentlyViewedService);
+  shoppingList = inject(ShoppingListService);
 
   Math = Math;
   private heartPulseTimer: ReturnType<typeof setTimeout> | null = null;
@@ -1326,6 +1371,16 @@ export class RecipeDetailComponent {
           if (userComment?.rating) this.userRating.set(userComment.rating);
           if (userComment?.body)   this.commentBody.set(userComment.body);
         }
+        this.recentlyViewed.add({
+          id: res.recipe.id,
+          slug: res.recipe.slug,
+          title: res.recipe.title,
+          hero_image: res.recipe.hero_image,
+          category: res.recipe.category,
+          prep_minutes: res.recipe.prep_minutes,
+          cook_minutes: res.recipe.cook_minutes,
+          viewedAt: Date.now(),
+        });
         this.perf.mark('recipe_detail_ready');
         this.perf.measure('recipe_detail_load', 'recipe_detail_fetch_start', 'recipe_detail_ready');
       },
@@ -1380,6 +1435,18 @@ export class RecipeDetailComponent {
   incrementServings(): void { this.currentServings.update(n => n + 1); }
   decrementServings(): void { this.currentServings.update(n => Math.max(1, n - 1)); }
   printRecipe(): void { window.print(); }
+
+  addToShoppingList(): void {
+    const r = this.recipe();
+    if (!r) return;
+    if (this.shoppingList.hasRecipe(r.slug)) {
+      this.shoppingList.removeRecipe(r.slug);
+      this.toast.success('Рецептата е премахната от списъка.');
+    } else {
+      this.shoppingList.addFromRecipe(r);
+      this.toast.success('Съставките са добавени в списъка за пазаруване.');
+    }
+  }
 
   scaleAmount(amount: string): string {
     const factor = this.scalingFactor();

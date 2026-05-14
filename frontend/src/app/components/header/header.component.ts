@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, ElementRef, inject, OnInit, OnDestroy, signal, viewChild } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faRightFromBracket, faSun, faMoon, faXmark, faHouse, faUtensils, faTableCells, faGauge, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faRightFromBracket, faSun, faMoon, faXmark, faHouse, faUtensils, faTableCells, faGauge, faUser, faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from '../../services/auth.service';
 import { ThemeService } from '../../services/theme.service';
+import { ShoppingListService } from '../../services/shopping-list.service';
 
 @Component({
   selector: 'app-header',
@@ -38,8 +39,14 @@ import { ThemeService } from '../../services/theme.service';
           </span>
         </a>
 
-        <!-- Right: auth -->
+        <!-- Right: auth + cart -->
         <div class="masthead-right">
+          <a routerLink="/shopping-list" class="cart-btn" aria-label="Списък за пазаруване">
+            <fa-icon [icon]="faCartShopping" aria-hidden="true"></fa-icon>
+            @if (shoppingList.count() > 0) {
+              <span class="cart-badge" aria-label="{{ shoppingList.count() }} продукта">{{ shoppingList.count() }}</span>
+            }
+          </a>
           @if (auth.isAuthenticated()) {
             <button class="avatar-btn" routerLink="/dashboard" [title]="auth.user()?.email || ''">
               {{ userInitial() }}
@@ -121,6 +128,16 @@ import { ThemeService } from '../../services/theme.service';
            class="drawer-item" (click)="close()">
           <fa-icon [icon]="faTableCells" aria-hidden="true"></fa-icon>
           Категории
+        </a>
+        <a routerLink="/shopping-list" routerLinkActive="active"
+           class="drawer-item" (click)="close()">
+          <span class="drawer-cart-wrap">
+            <fa-icon [icon]="faCartShopping" aria-hidden="true"></fa-icon>
+            @if (shoppingList.count() > 0) {
+              <span class="drawer-cart-badge" aria-hidden="true">{{ shoppingList.count() }}</span>
+            }
+          </span>
+          Списък за пазаруване
         </a>
         @if (auth.isAuthenticated()) {
           <a routerLink="/dashboard" routerLinkActive="active"
@@ -327,6 +344,39 @@ import { ThemeService } from '../../services/theme.service';
     .logout-btn fa-icon { font-size: 0.8rem; }
     .logout-btn:hover { color: var(--terracotta-2); }
 
+    /* ── Cart button (masthead-right) ── */
+    .cart-btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2rem;
+      height: 2rem;
+      color: var(--ink-soft);
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: color 0.15s;
+    }
+    .cart-btn:hover { color: var(--terracotta); }
+    .cart-badge {
+      position: absolute;
+      top: -0.2rem;
+      right: -0.3rem;
+      min-width: 1rem;
+      height: 1rem;
+      padding: 0 0.2rem;
+      border-radius: 999px;
+      background: var(--terracotta);
+      color: #fff;
+      font-family: var(--font-type);
+      font-size: 0.58rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+
     /* ── Navigation rail ── */
     .nav-rail {
       border-top: 1px solid var(--rule-strong);
@@ -510,6 +560,31 @@ import { ThemeService } from '../../services/theme.service';
     .drawer-item.active { color: var(--terracotta-2); border-bottom-color: var(--rule); }
     .drawer-item.active fa-icon { color: var(--terracotta); }
 
+    .drawer-cart-wrap {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .drawer-cart-badge {
+      position: absolute;
+      top: -0.35rem;
+      right: -0.55rem;
+      min-width: 1rem;
+      height: 1rem;
+      padding: 0 0.2rem;
+      border-radius: 999px;
+      background: var(--terracotta);
+      color: #fff;
+      font-family: var(--font-type);
+      font-size: 0.56rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+
     .drawer-footer {
       padding: 0.875rem;
       border-top: 1px solid var(--rule-strong);
@@ -601,6 +676,7 @@ import { ThemeService } from '../../services/theme.service';
 export class HeaderComponent implements OnInit, OnDestroy {
   auth = inject(AuthService);
   theme = inject(ThemeService);
+  shoppingList = inject(ShoppingListService);
   drawerOpen = signal(false);
 
   readonly faRightFromBracket = faRightFromBracket;
@@ -612,6 +688,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   readonly faTableCells = faTableCells;
   readonly faGauge = faGauge;
   readonly faUser = faUser;
+  readonly faCartShopping = faCartShopping;
 
   private drawerEl = viewChild<ElementRef<HTMLElement>>('drawer');
   private triggerEl: HTMLElement | null = null;

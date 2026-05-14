@@ -69,6 +69,10 @@ export const routes: Routes = [
     ],
   },
   {
+    path: 'shopping-list',
+    loadComponent: () => import('./pages/shopping-list/shopping-list.component').then(m => m.ShoppingListComponent),
+  },
+  {
     path: 'privacy',
     loadComponent: () => import('./pages/privacy/privacy.component').then(m => m.PrivacyComponent),
   },
