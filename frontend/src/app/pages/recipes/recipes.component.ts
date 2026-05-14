@@ -332,7 +332,7 @@ import { PerfService } from '../../services/perf.service';
       border-top: 1px solid var(--clr-border-faint);
     }
     .filter-label {
-      font-size: 0.62rem;
+      font-size: 0.72rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.14em;

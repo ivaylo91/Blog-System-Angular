@@ -154,7 +154,7 @@ import { ThemeService } from '../../services/theme.service';
       top: 0;
       z-index: var(--z-sticky);
       background: var(--paper);
-      border-left: 3px solid var(--pencil-red);
+      box-shadow: inset 3px 0 0 0 var(--pencil-red);
     }
 
     /* ── Mobile hamburger ── */
@@ -246,7 +246,7 @@ import { ThemeService } from '../../services/theme.service';
       gap: 0.625rem;
       margin-top: 0.375rem;
       font-family: var(--font-type);
-      font-size: 0.62rem;
+      font-size: 0.72rem;
       letter-spacing: 0.3em;
       color: var(--ink-mute);
       text-transform: uppercase;
@@ -391,7 +391,6 @@ import { ThemeService } from '../../services/theme.service';
       height: 100vh;
       height: 100dvh;
       background: var(--paper);
-      border-right: 3px solid var(--pencil-red);
       z-index: var(--z-drawer);
       flex-direction: column;
       transform: translateX(-100%);
@@ -473,7 +472,7 @@ import { ThemeService } from '../../services/theme.service';
     }
     .drawer-user-role {
       font-family: var(--font-type);
-      font-size: 0.6rem;
+      font-size: 0.72rem;
       color: var(--ink-mute);
       text-transform: uppercase;
       letter-spacing: 0.15em;
