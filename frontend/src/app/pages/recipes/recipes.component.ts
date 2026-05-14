@@ -155,7 +155,7 @@ import { PerfService } from '../../services/perf.service';
             } @else {
               <div class="recipe-grid">
                 @for (recipe of recipes(); track recipe.id; let i = $index) {
-                  <app-recipe-card [recipe]="recipe" [priority]="i === 0" [index]="i" />
+                  <app-recipe-card [recipe]="recipe" [priority]="i === 0" [index]="i" [featured]="i === 0" />
                 } @empty {
                   <div class="no-results">
                     <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="28" cy="28" r="18"/><line x1="41" y1="41" x2="56" y2="56"/><line x1="20" y1="28" x2="36" y2="28"/></svg>
@@ -442,9 +442,10 @@ import { PerfService } from '../../services/perf.service';
     .recipe-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: var(--space-5);
+      gap: clamp(1.5rem, 3vw, 2.25rem);
     }
     .recipe-grid > app-recipe-card { min-width: 0; }
+    .recipe-grid > app-recipe-card:first-child { grid-column: 1 / span 2; }
 
     /* Stagger animation */
     .recipe-grid > app-recipe-card { animation-delay: calc(var(--card-i, 0) * 45ms) !important; }
@@ -527,6 +528,7 @@ import { PerfService } from '../../services/perf.service';
     @media (min-width: 1440px) {
       .recipes-layout { grid-template-columns: 272px 1fr; gap: 3rem; }
       .recipe-grid { grid-template-columns: repeat(4, 1fr); }
+      .recipe-grid > app-recipe-card:first-child { grid-column: 1 / span 2; }
     }
 
     /* ── Tablet: sidebar → stacked pill rows ────────── */
@@ -584,6 +586,7 @@ import { PerfService } from '../../services/perf.service';
       .clear-all-btn { width: auto; padding: var(--space-2) var(--space-4); border-radius: var(--radius-pill); }
 
       .recipe-grid { grid-template-columns: repeat(2, 1fr); }
+      .recipe-grid > app-recipe-card:first-child { grid-column: 1 / -1; }
     }
 
     /* ── Mobile ─────────────────────────────────────── */
@@ -619,6 +622,7 @@ import { PerfService } from '../../services/perf.service';
       .filter-btn { min-height: 2.5rem; }
 
       .recipe-grid { grid-template-columns: 1fr; }
+      .recipe-grid > app-recipe-card:first-child { grid-column: 1; }
     }
 
     @media (max-width: 420px) {

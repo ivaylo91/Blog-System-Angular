@@ -109,15 +109,21 @@ import { Category } from '../../models/models';
     .tiles {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 1.25rem;
+      gap: clamp(1rem, 2vw, 1.5rem);
+    }
+    .tiles > .tile:first-child {
+      grid-column: 1 / span 2;
+      min-height: 260px;
     }
     @media (max-width: 640px) {
       .tiles { grid-template-columns: repeat(2, 1fr); gap: 0.875rem; }
       .tile { min-height: 170px; padding: 1.25rem 1.1rem 1rem; }
       .tile-title { font-size: clamp(1.1rem, 5vw, 1.5rem); }
+      .tiles > .tile:first-child { grid-column: 1; min-height: 180px; }
     }
     @media (max-width: 360px) {
       .tiles { grid-template-columns: 1fr; }
+      .tiles > .tile:first-child { grid-column: 1; }
     }
     .tile {
       position: relative;

@@ -244,7 +244,10 @@ import { PerfService } from '../../services/perf.service';
     }
 
     /* Copy */
-    .hero-copy { display: flex; flex-direction: column; gap: 1.375rem; }
+    .hero-copy { display: flex; flex-direction: column; gap: 0; }
+    .eyebrow { margin-bottom: 0.375rem; }
+    .hero-title { margin-bottom: 1.25rem; }
+    .hero-lead { margin-bottom: 2rem; }
     .eyebrow {
       font-family: var(--font-type);
       font-size: 0.68rem;
