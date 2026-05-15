@@ -15,8 +15,11 @@ import { Recipe } from '../../models/models';
       <div class="card-image" [class.img-loaded]="imgLoaded" [style.background]="gradient">
         @if (recipe.hero_image) {
           <img [src]="recipe.hero_image" [alt]="recipe.title"
+               [srcset]="recipe.hero_image_sm ? recipe.hero_image_sm + ' 600w, ' + recipe.hero_image + ' 1200w' : ''"
+               sizes="(max-width: 500px) 90vw, (max-width: 900px) 45vw, 380px"
                [loading]="priority ? 'eager' : 'lazy'"
                [attr.fetchpriority]="priority ? 'high' : null"
+               [attr.decoding]="priority ? null : 'async'"
                (load)="onImgLoad()" />
         }
         @if (numbered) {

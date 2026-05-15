@@ -20,7 +20,7 @@ use Illuminate\Support\Str;
 
 class RecipeController extends Controller
 {
-    public function index(Request $request): AnonymousResourceCollection
+    public function index(Request $request): \Symfony\Component\HttpFoundation\Response
     {
         $query = Recipe::with(['category', 'tags'])
             ->where('published', true);
@@ -51,7 +51,8 @@ class RecipeController extends Controller
         $perPage = min((int) $request->input('per_page', 6), 50);
 
         return RecipeResource::collection($query->paginate($perPage))
-            ->additional(['headers' => ['Cache-Control' => 'public, max-age=60, stale-while-revalidate=300']]);
+            ->response()
+            ->header('Cache-Control', 'public, max-age=60, stale-while-revalidate=300');
     }
 
     public function show(string $slug): JsonResponse

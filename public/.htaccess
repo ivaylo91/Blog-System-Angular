@@ -59,8 +59,11 @@
         Header set Cache-Control "no-store"
     </FilesMatch>
 
-    # robots.txt and favicon — short cache, no need to hit server on every visit
+    # robots.txt, favicon, manifest — short cache
     <FilesMatch "\.(txt|ico)$">
+        Header set Cache-Control "public, max-age=86400"
+    </FilesMatch>
+    <FilesMatch "^manifest\.webmanifest$">
         Header set Cache-Control "public, max-age=86400"
     </FilesMatch>
 
@@ -128,4 +131,5 @@
     AddType font/woff                     .woff
     AddType image/svg+xml                 .svg
     AddType image/webp                    .webp
+    AddType application/manifest+json    .webmanifest
 </IfModule>
