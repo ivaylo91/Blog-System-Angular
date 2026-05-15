@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Full bleed background required for maskable icons (no border-radius) -->
+  <rect width="512" height="512" fill="#1b3c72"/>
+  <!-- Content kept within the centre 80% safe zone (64px inset each side) -->
+  <text x="256" y="318" font-family="Georgia, 'Times New Roman', serif"
+        font-size="180" font-weight="700" fill="#f3f7fc"
+        text-anchor="middle" dominant-baseline="auto" letter-spacing="-4">ИВО</text>
+</svg>
