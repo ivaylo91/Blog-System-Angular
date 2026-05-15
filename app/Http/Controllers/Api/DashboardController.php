@@ -16,24 +16,28 @@ class DashboardController extends Controller
 {
     public function stats(Request $request): JsonResponse
     {
-        $user = $request->user();
+        $user    = $request->user();
+        $isAdmin = $user->isAdmin();
 
-        $recipeCounts = Recipe::where('user_id', $user->id)
+        $recipeCounts = Recipe::when(! $isAdmin, fn ($q) => $q->where('user_id', $user->id))
             ->selectRaw('COUNT(*) as total, SUM(published = 1) as published, SUM(published = 0) as draft')
             ->first();
 
         $totalComments = DB::table('comments')
             ->join('recipes', 'comments.recipe_id', '=', 'recipes.id')
-            ->where('recipes.user_id', $user->id)
+            ->when(! $isAdmin, fn ($q) => $q->where('recipes.user_id', $user->id))
             ->count();
 
         $totalFavorites = DB::table('favorites')
             ->join('recipes', 'favorites.recipe_id', '=', 'recipes.id')
-            ->where('recipes.user_id', $user->id)
+            ->when(! $isAdmin, fn ($q) => $q->where('recipes.user_id', $user->id))
             ->count();
 
         $recentComments = Comment::with(['author', 'recipe'])
-            ->whereHas('recipe', fn ($q) => $q->where('user_id', $user->id))
+            ->when(
+                ! $isAdmin,
+                fn ($q) => $q->whereHas('recipe', fn ($r) => $r->where('user_id', $user->id))
+            )
             ->orderByDesc('created_at')
             ->limit(5)
             ->get();
