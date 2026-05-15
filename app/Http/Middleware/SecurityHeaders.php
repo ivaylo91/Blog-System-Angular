@@ -10,6 +10,9 @@ class SecurityHeaders
 {
     public function handle(Request $request, Closure $next): Response
     {
+        // Remove PHP version disclosure before response is sent
+        header_remove('X-Powered-By');
+
         $response = $next($request);
 
         $isHtml = str_contains($response->headers->get('Content-Type', 'text/html'), 'text/html');
