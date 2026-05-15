@@ -144,6 +144,15 @@ import { RecentlyViewedService } from '../../services/recently-viewed.service';
       </div>
     </nav>
 
+    <!-- ══════════════════ TAGLINE ═════════════════════════════════════════ -->
+    <div class="tagline-strip">
+      <div class="tagline-inner">
+        <span class="tagline-rule" aria-hidden="true"></span>
+        <p class="tagline-text">рецепти направени с любов</p>
+        <span class="tagline-rule tagline-rule--right" aria-hidden="true"></span>
+      </div>
+    </div>
+
     <!-- ══════════════════ EDITORIAL FEATURED ═══════════════════════════════ -->
     <section class="editorial-sec">
       <div class="sec-inner">
@@ -589,6 +598,45 @@ import { RecentlyViewedService } from '../../services/recently-viewed.service';
       color: var(--terracotta);
       font-weight: 600;
       border-bottom-color: var(--terracotta);
+    }
+
+    /* ══ TAGLINE STRIP ════════════════════════════════════════════════════ */
+    .tagline-strip {
+      background: var(--paper);
+      padding: clamp(2rem, 5vw, 3rem) 0;
+      border-bottom: 1px solid var(--clr-border-faint);
+    }
+    .tagline-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 clamp(1.5rem, 5vw, 3rem);
+      display: flex;
+      align-items: center;
+      gap: clamp(1.25rem, 3vw, 2.25rem);
+    }
+    .tagline-rule {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--clr-border-strong));
+      display: block;
+    }
+    .tagline-rule--right {
+      background: linear-gradient(to left, transparent, var(--clr-border-strong));
+    }
+    .tagline-text {
+      font-family: var(--font-hand);
+      font-size: clamp(1.5rem, 3.5vw, 2.125rem);
+      font-weight: 500;
+      color: var(--warm);
+      white-space: nowrap;
+      flex-shrink: 0;
+      margin: 0;
+      letter-spacing: 0.01em;
+      line-height: 1.2;
+    }
+    @media (max-width: 480px) {
+      .tagline-rule { display: none; }
+      .tagline-text { white-space: normal; font-size: 1.375rem; }
     }
 
     /* ══ EDITORIAL SECTION ════════════════════════════════════════════════ */
