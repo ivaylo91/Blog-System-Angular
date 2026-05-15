@@ -54,11 +54,11 @@ class SecurityHeaders
                 // Use strict-dynamic with nonce for maximum security in production
                 "script-src 'self'",
 
-                // Styles: self + Angular inline styles (fonts are self-hosted via @fontsource)
-                "style-src 'self' 'unsafe-inline'",
+                // Styles: self + Angular inline styles + Google Fonts stylesheet
+                "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
 
-                // Fonts: self only (served from /assets, bundled by Angular CLI)
-                "font-src 'self'",
+                // Fonts: self + Google Fonts static files
+                "font-src 'self' https://fonts.gstatic.com",
 
                 // Images: self + data URIs (for inline SVG/base64) + storage uploads
                 "img-src 'self' data: blob: https:",
