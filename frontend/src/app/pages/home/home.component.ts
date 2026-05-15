@@ -17,6 +17,9 @@ import { RecentlyViewedService } from '../../services/recently-viewed.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
 
+    <!-- Page H1 — single, descriptive, visually hidden (carousel titles are h2) -->
+    <h1 class="sr-only">Кулинарният блог на Иво — Традиционни български рецепти</h1>
+
     <!-- ══════════════════ HERO CAROUSEL ════════════════════════════════════ -->
     @if (loading() && featured().length === 0) {
       <div class="hero-skeleton" aria-hidden="true">
@@ -57,7 +60,7 @@ import { RecentlyViewedService } from '../../services/recently-viewed.service';
                 <span class="badge badge--cat">{{ r.category!.name }}</span>
               }
             </div>
-            <h1 class="slide-title">{{ r.title }}</h1>
+            <h2 class="slide-title">{{ r.title }}</h2>
             @if (r.excerpt) {
               <p class="slide-sub">{{ r.excerpt }}</p>
             }
@@ -1062,8 +1065,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor() {
     this.perf.mark('home_start');
     this.seo.set({
-      title: 'Начало',
+      title: 'Кулинарният блог на Иво — Традиционни български рецепти',
       description: 'Традиционни български рецепти, споделени с любов. Открий лесни и вкусни ястия за всеки повод в кулинарния блог на Иво.',
+      standalone: true,
     });
   }
 

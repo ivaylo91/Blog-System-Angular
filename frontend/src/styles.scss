@@ -169,6 +169,17 @@ a { color: inherit; text-decoration: none; }
 img { max-width: 100%; height: auto; }
 button, input, select, textarea { font-family: inherit; }
 
+/* Screen-reader only — visually hidden but announced by assistive tech */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* ── Typographic defaults ───────────────────────────────────────────────── */
 h1, h2, h3, h4 { text-wrap: balance; }
 p, li { text-wrap: pretty; }

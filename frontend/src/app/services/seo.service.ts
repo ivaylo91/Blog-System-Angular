@@ -8,8 +8,10 @@ export class SeoService {
   private title = inject(Title);
   private doc = inject(DOCUMENT);
 
-  set(options: { title: string; description: string; image?: string; type?: string }): void {
-    const fullTitle = `${options.title} | Кулинарният блог на Иво`;
+  set(options: { title: string; description: string; image?: string; type?: string; standalone?: boolean }): void {
+    const fullTitle = options.standalone
+      ? options.title
+      : `${options.title} | Кулинарният блог на Иво`;
     const url = this.doc.location.origin + this.doc.location.pathname;
     const image = options.image ?? 'https://cookingblogofivo.eu/og-image.jpg';
 
