@@ -131,17 +131,21 @@ import { RecentlyViewedService } from '../../services/recently-viewed.service';
     }
 
     <!-- ══════════════════ CATEGORY STRIP ═══════════════════════════════════ -->
-    @if (categories().length) {
-      <nav class="cats" aria-label="Категории рецепти">
-        <div class="cats-inner">
+    <nav class="cats" aria-label="Категории рецепти">
+      <div class="cats-inner">
+        @if (categoriesLoading()) {
+          @for (s of [0,1,2,3,4,5,6,7]; track s) {
+            <span class="cat-tab cat-tab-sk" aria-hidden="true"></span>
+          }
+        } @else {
           <a routerLink="/recipes" class="cat-tab cat-tab--all">Всички</a>
           @for (cat of categories().slice(0, 7); track cat.id) {
             <a [routerLink]="['/recipes']" [queryParams]="{category: cat.slug}"
                class="cat-tab">{{ cat.name }}</a>
           }
-        </div>
-      </nav>
-    }
+        }
+      </div>
+    </nav>
 
     <!-- ══════════════════ EDITORIAL FEATURED ═══════════════════════════════ -->
     <section class="editorial-sec">
@@ -291,7 +295,7 @@ import { RecentlyViewedService } from '../../services/recently-viewed.service';
     /* ══ HERO CAROUSEL ════════════════════════════════════════════════════ */
     .hero-skeleton {
       position: relative;
-      height: 540px;
+      height: 560px;
       background: linear-gradient(135deg, var(--terracotta) 0%, var(--clr-brand-hover) 100%);
       overflow: hidden;
     }
@@ -533,6 +537,23 @@ import { RecentlyViewedService } from '../../services/recently-viewed.service';
     }
 
     /* ══ CATEGORY STRIP ═══════════════════════════════════════════════════ */
+    .cat-tab-sk {
+      /* Same padding as .cat-tab so flex height matches when real tabs load */
+      padding: 0.9rem 0.625rem;
+      flex-shrink: 0;
+      border-bottom: 2px solid transparent;
+      display: inline-block;
+      pointer-events: none;
+    }
+    .cat-tab-sk::after {
+      content: '';
+      display: block;
+      width: 72px;
+      height: 13px;
+      border-radius: var(--radius-sm);
+      background: var(--paper-2);
+      animation: sk-pulse 1.6s ease-in-out infinite;
+    }
     .cats {
       background: var(--clr-surface);
       border-bottom: 1px solid var(--clr-border-faint);
@@ -988,7 +1009,7 @@ import { RecentlyViewedService } from '../../services/recently-viewed.service';
 
     /* ══ RESPONSIVE ═══════════════════════════════════════════════════════ */
     @media (max-width: 900px) {
-      .hero-carousel { height: 500px; }
+      .hero-carousel, .hero-skeleton { height: 500px; }
       .slide-content { width: 90%; }
       .slide-title { font-size: clamp(1.75rem, 6vw, 2.5rem); }
       .carousel-arrow { display: none; }
@@ -1009,7 +1030,7 @@ import { RecentlyViewedService } from '../../services/recently-viewed.service';
     }
 
     @media (max-width: 600px) {
-      .hero-carousel { height: 460px; }
+      .hero-carousel, .hero-skeleton { height: 460px; }
       .slide-content { padding: 1.5rem 1.25rem; }
       .slide-sub { display: none; }
       .carousel-controls { right: 1.25rem; }
@@ -1061,9 +1082,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     const r = this.featuredResult();
     return r?.kind === 'success' ? r.recipes : [];
   });
-  loading    = computed(() => this.featuredResult() === undefined);
-  errored    = computed(() => this.featuredResult()?.kind === 'error');
-  categories = computed(() => this.categoriesResult() ?? []);
+  loading           = computed(() => this.featuredResult() === undefined);
+  errored           = computed(() => this.featuredResult()?.kind === 'error');
+  categories        = computed(() => this.categoriesResult() ?? []);
+  categoriesLoading = computed(() => this.categoriesResult() === undefined);
 
   constructor() {
     this.perf.mark('home_start');
