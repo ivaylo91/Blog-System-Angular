@@ -5,81 +5,84 @@
   --ease-in-out-expo: cubic-bezier(0.87, 0, 0.13, 1);
 }
 
-/* ── Design Tokens — Кулинарният блог на Иво (notebook aesthetic) ────────
-   Warm cream paper + ink palette inspired by an old recipe notebook.
-   Light/warm mode is permanent for this design — dark mode is intentionally
-   disabled to preserve the paper-and-ink character. */
+/* ── Design Tokens — Кулинарният блог на Иво (ocean editorial) ──────────
+   Clean modern editorial palette inspired by the new design direction.
+   Navy primary accent + warm red secondary, light blue-gray surfaces. */
 
 :root {
-  /* Fonts — notebook character stack */
-  --font-display: 'Playfair Display', 'Lora', Georgia, serif;
-  --font-body:    'Lora', Georgia, serif;
+  /* Fonts — Geologica primary + specialty stacks */
+  --font-display: 'Geologica', 'Segoe UI', system-ui, sans-serif;
+  --font-body:    'Geologica', 'Segoe UI', system-ui, sans-serif;
   --font-hand:    'Caveat', 'Comic Sans MS', cursive;
   --font-type:    'Special Elite', 'Courier New', monospace;
 
-  /* Paper palette */
-  --paper:        #f3ead6;   /* warm cream */
-  --paper-2:      #ece1c6;   /* aged paper */
-  --paper-edge:   #d8c89c;   /* page edge */
+  /* Surface palette — ocean light */
+  --paper:        #f3f7fc;   /* light blue-gray */
+  --paper-2:      #eaf2fa;   /* softer surface */
+  --paper-edge:   #b8d0e8;   /* border / rule */
 
-  /* Ink palette */
-  --ink:          #2a221a;   /* near-black brown */
-  --ink-soft:     #4b3d2e;
-  --ink-mute:     #7a6a55;
+  /* Text palette — navy */
+  --ink:          #181e30;   /* near-black navy */
+  --ink-soft:     #2e3a56;
+  --ink-mute:     #526080;
 
   /* Rule lines */
-  --rule:         #c9b88a;
-  --rule-strong:  #a8966a;
+  --rule:         #c2d6ea;
+  --rule-strong:  #96b4d4;
 
-  /* Accent colours */
-  --terracotta:   #b1502d;   /* tomato sauce */
-  --terracotta-2: #8b3d22;
-  --olive:        #6b7a3a;
-  --olive-2:      #4d5827;
-  --mustard:      #c98c2a;
-  --pencil-red:   #a83a2c;   /* margin annotations */
+  /* Primary accent — navy */
+  --terracotta:   #1b3c72;   /* navy — primary accent (name kept for compat) */
+  --terracotta-2: #143060;   /* darker navy */
 
-  /* ── Semantic aliases (keep existing components working) ── */
-  --clr-brand:        var(--terracotta);
+  /* Secondary accents */
+  --warm:         #bc3f34;   /* warm red — badges, highlights */
+  --warm-2:       #9c2e25;
+  --olive:        #386628;   /* green — easy difficulty */
+  --olive-2:      #2a4d1f;
+  --mustard:      #c98c2a;   /* amber — medium difficulty */
+  --pencil-red:   #bc3f34;   /* errors / annotations */
+
+  /* ── Semantic aliases ── */
+  --clr-brand:        var(--terracotta);   /* #1b3c72 navy */
   --clr-brand-dark:   var(--terracotta-2);
-  --clr-brand-hover:  #c5622e;
+  --clr-brand-hover:  #2455a8;
 
   --clr-bg:             var(--paper);
-  --clr-surface:        #f8efd8;   /* slightly aged paper */
+  --clr-surface:        #ffffff;
   --clr-surface-alt:    var(--paper-2);
-  --clr-surface-hover:  #ede0c2;
-  --clr-surface-active: #e4d4ae;
+  --clr-surface-hover:  #ddeaf6;
+  --clr-surface-active: #cfe0f0;
 
   --clr-text:       var(--ink);
   --clr-text-muted: var(--ink-mute);
-  --clr-text-faint: #a89880;
+  --clr-text-faint: #7a90b0;
 
   /* Difficulty / semantic */
   --clr-green:        var(--olive);
   --clr-green-dark:   var(--olive-2);
-  --clr-green-bg:     #eaedda;
+  --clr-green-bg:     #d4eedd;
   --clr-green-text:   var(--olive-2);
 
   --clr-amber:        var(--mustard);
   --clr-amber-dark:   #a5711a;
-  --clr-amber-bg:     #f5e8cc;
+  --clr-amber-bg:     #fef0c8;
   --clr-amber-text:   #7a5210;
   --clr-amber-border: #d4aa60;
 
-  --clr-rust-bg:     #f4ddd4;
-  --clr-rust-text:   var(--terracotta-2);
-  --clr-rust-border: #d4906a;
+  --clr-rust-bg:     #fde8e5;
+  --clr-rust-text:   var(--warm-2);
+  --clr-rust-border: #e08a80;
 
   --clr-error:      var(--pencil-red);
-  --clr-error-bg:   #f5dbd8;
+  --clr-error-bg:   #fde8e5;
   --clr-error-dark: #7a2a1e;
 
   /* Borders */
-  --clr-border:        rgba(120, 90, 40, 0.30);
-  --clr-border-faint:  rgba(120, 90, 40, 0.18);
-  --clr-border-strong: rgba(120, 90, 40, 0.55);
+  --clr-border:        rgba(27, 60, 114, 0.18);
+  --clr-border-faint:  rgba(27, 60, 114, 0.10);
+  --clr-border-strong: rgba(27, 60, 114, 0.35);
 
-  /* Spacing scale — 4pt base (unchanged) */
+  /* Spacing scale — 4pt base */
   --space-1:  0.25rem;
   --space-2:  0.5rem;
   --space-3:  0.75rem;
@@ -92,38 +95,38 @@
   --space-10: 4rem;
   --space-11: 6rem;
 
-  /* Shadows — paper lift effect */
-  --shadow-sm: 0 1px 0 rgba(255,255,255,0.6) inset, 0 4px 12px rgba(60,40,15,0.12);
-  --shadow-md: 0 1px 0 rgba(255,255,255,0.6) inset, 0 8px 22px rgba(60,40,15,0.18);
-  --shadow-lg: 0 1px 0 rgba(255,255,255,0.6) inset, 0 14px 28px rgba(60,40,15,0.25), 0 4px 8px rgba(60,40,15,0.12);
-  --shadow-xl: 0 1px 0 rgba(255,255,255,0.6) inset, 0 18px 38px rgba(60,40,15,0.35), 0 6px 12px rgba(60,40,15,0.15);
+  /* Shadows — clean, tinted navy */
+  --shadow-sm: 0 2px 8px rgba(10, 30, 70, 0.08);
+  --shadow-md: 0 4px 16px rgba(10, 30, 70, 0.12);
+  --shadow-lg: 0 8px 28px rgba(10, 30, 70, 0.16), 0 2px 6px rgba(10, 30, 70, 0.08);
+  --shadow-xl: 0 16px 48px rgba(10, 30, 70, 0.20), 0 4px 12px rgba(10, 30, 70, 0.10);
 
   /* Skeleton */
   --clr-skeleton:       var(--paper-2);
-  --clr-skeleton-shine: rgba(255, 255, 255, 0.55);
+  --clr-skeleton-shine: rgba(255, 255, 255, 0.70);
 
   /* Focus */
   --clr-focus: var(--terracotta);
 
-  /* Border radius scale — kept flat/small for paper feel */
-  --radius-xs:     2px;
-  --radius-sm:     2px;
-  --radius-md:     2px;
-  --radius-lg:     2px;
-  --radius-xl:     4px;
-  --radius-pill:   2px;
+  /* Border radius scale — modern rounded */
+  --radius-xs:     3px;
+  --radius-sm:     6px;
+  --radius-md:     8px;
+  --radius-lg:     12px;
+  --radius-xl:     16px;
+  --radius-pill:   100px;
   --radius-circle: 50%;
 
-  /* Footer — warm dark ink */
-  --clr-footer-bg:          #1e1710;
-  --clr-footer-text:        #8a7a65;
-  --clr-footer-text-bright: #f3ead6;
-  --clr-footer-text-muted:  #6a5c4a;
-  --clr-footer-text-faint:  #524535;
-  --clr-footer-quote:       #a89270;
-  --clr-footer-sep:         #2e261c;
+  /* Footer */
+  --clr-footer-bg:          #181e30;
+  --clr-footer-text:        #6a80a8;
+  --clr-footer-text-bright: #f0f5fc;
+  --clr-footer-text-muted:  #4a5878;
+  --clr-footer-text-faint:  #384060;
+  --clr-footer-quote:       #7a95c0;
+  --clr-footer-sep:         #232c44;
 
-  /* z-index scale (unchanged) */
+  /* z-index scale */
   --z-sticky:   50;
   --z-overlay:  59;
   --z-drawer:   60;
@@ -139,7 +142,7 @@
 
 html {
   font-family: var(--font-body);
-  font-size: 17px;
+  font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color-scheme: light;
@@ -158,7 +161,7 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* Warm paper grain — radial washes + fractal noise */
+/* Subtle ocean ambient gradient — soft navy washes */
 body::before {
   content: '';
   position: fixed;
@@ -166,10 +169,9 @@ body::before {
   pointer-events: none;
   z-index: 0;
   background:
-    radial-gradient(120% 80% at 12% 0%, rgba(255,236,196,.55), transparent 60%),
-    radial-gradient(100% 70% at 88% 100%, rgba(180,140,80,.18), transparent 60%),
-    radial-gradient(60% 60% at 30% 80%, rgba(120,80,30,.06), transparent 60%);
-  mix-blend-mode: multiply;
+    radial-gradient(120% 80% at 5% 0%,   rgba(180, 210, 245, 0.35), transparent 55%),
+    radial-gradient(100% 70% at 95% 100%, rgba(27,  60,  114, 0.06), transparent 60%);
+  mix-blend-mode: normal;
 }
 
 a { color: inherit; text-decoration: none; }
@@ -208,25 +210,14 @@ p, li { text-wrap: pretty; }
   ::view-transition-new(root) { animation: none; }
 }
 
-/* ── Paper grain overlay ─────────────────────────────────────────────────── */
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.5;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.16  0 0 0 0 0.12  0 0 0 0 0.08  0 0 0 0.18 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
-  mix-blend-mode: multiply;
-}
 
 /* Selection colour */
-::selection { background: var(--mustard); color: var(--ink); }
+::selection { background: var(--terracotta); color: #fff; }
 
 /* Scrollbar */
-::-webkit-scrollbar { width: 12px; height: 12px; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--paper-edge); border-radius: 8px; border: 3px solid var(--paper); }
+::-webkit-scrollbar-thumb { background: var(--paper-edge); border-radius: 6px; border: 2px solid var(--paper); }
 ::-webkit-scrollbar-thumb:hover { background: var(--rule-strong); }
 
 /* App root sits above the two body overlays */

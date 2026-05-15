@@ -57,13 +57,15 @@ import { Recipe } from '../../models/models';
     </a>
   `,
   styles: [`
-    /* ── Polaroid / notebook recipe card ── */
+    /* ── Modern editorial recipe card ── */
     .card {
       display: block;
       position: relative;
       background: var(--clr-surface);
-      padding: 1rem 1rem 1.125rem;
-      box-shadow: var(--shadow-md);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--clr-border-faint);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
       text-decoration: none;
       color: inherit;
       transition: transform 0.35s var(--ease-out-expo), box-shadow 0.35s var(--ease-out-expo);
@@ -73,7 +75,7 @@ import { Recipe } from '../../models/models';
     }
     @media (hover: hover) and (pointer: fine) {
       .card:hover {
-        transform: translateY(-3px) rotate(-0.3deg);
+        transform: translateY(-5px);
         box-shadow: var(--shadow-lg);
       }
     }
@@ -83,7 +85,7 @@ import { Recipe } from '../../models/models';
       transition-duration: 0.1s;
     }
 
-    /* --- Image area (polaroid photo frame) --- */
+    /* --- Image area --- */
     .card-image {
       aspect-ratio: 4 / 3;
       position: relative;
@@ -100,7 +102,7 @@ import { Recipe } from '../../models/models';
     }
     .card-image.img-loaded img { opacity: 1; }
     @media (hover: hover) and (pointer: fine) {
-      .card:hover .card-image img { transform: scale(1.04); }
+      .card:hover .card-image img { transform: scale(1.06); }
     }
 
     /* skeleton shimmer */
@@ -118,27 +120,31 @@ import { Recipe } from '../../models/models';
       to   { transform: translateX(100%); }
     }
 
-    /* hover "view" label on image */
+    /* hover "view" overlay on image */
     .card-overlay {
       position: absolute;
       inset: 0;
-      background: rgba(42, 34, 26, 0);
+      background: rgba(10, 22, 50, 0);
       display: flex;
       align-items: center;
       justify-content: center;
       transition: background 0.32s var(--ease-out-expo);
     }
     @media (hover: hover) and (pointer: fine) {
-      .card:hover .card-overlay { background: rgba(42, 34, 26, 0.4); }
+      .card:hover .card-overlay { background: rgba(10, 22, 50, 0.38); }
     }
     .overlay-btn {
-      color: var(--paper);
-      font-family: var(--font-type);
-      font-size: 0.72rem;
-      letter-spacing: 0.18em;
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      padding: 0.4rem 1rem;
-      border: 1px solid rgba(243, 234, 214, 0.7);
+      padding: 0.5rem 1.25rem;
+      border: 1px solid rgba(255,255,255,0.6);
+      border-radius: var(--radius-pill);
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(4px);
       opacity: 0;
       transform: translateY(6px);
       transition: opacity 0.25s var(--ease-out-expo), transform 0.25s var(--ease-out-expo);
@@ -154,49 +160,49 @@ import { Recipe } from '../../models/models';
         display: block;
         position: absolute;
         bottom: 0.5rem;
-        right: 0.75rem;
-        font-family: var(--font-type);
+        right: 0.625rem;
+        font-family: var(--font-body);
         font-size: 0.6rem;
-        letter-spacing: 0.1em;
+        font-weight: 500;
+        letter-spacing: 0.08em;
         text-transform: uppercase;
-        color: var(--paper);
-        background: rgba(42,34,26,0.52);
-        padding: 2px 0.4rem;
+        color: #fff;
+        background: rgba(10,22,50,0.52);
+        padding: 2px 0.5rem;
+        border-radius: var(--radius-sm);
         z-index: 2;
         pointer-events: none;
       }
     }
 
-    /* --- Body (polaroid caption area) --- */
+    /* --- Card body --- */
     .card-body {
-      padding: 0.875rem 0.25rem 0.25rem;
-      border-top: 1px dashed rgba(120,90,40,0.4);
-      margin-top: 0.875rem;
+      padding: 1rem 1.125rem 1.25rem;
     }
     .category {
       display: inline-block;
-      font-family: var(--font-type);
-      font-size: 0.65rem;
-      letter-spacing: 0.18em;
+      font-family: var(--font-body);
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--terracotta-2);
-      margin-bottom: 0.375rem;
+      color: var(--terracotta);
+      margin-bottom: 0.4rem;
     }
     .title {
       font-family: var(--font-display);
-      font-style: italic;
-      font-size: 1.2rem;
-      font-weight: 600;
+      font-size: 1.125rem;
+      font-weight: 700;
       color: var(--ink);
-      margin: 0 0 0.25rem;
-      line-height: 1.15;
+      margin: 0 0 0.3rem;
+      line-height: 1.2;
     }
-    .card.featured .title { font-size: 1.5rem; font-weight: 700; }
+    .card.featured .title { font-size: 1.4rem; }
     .excerpt {
-      font-family: var(--font-hand);
-      font-size: 1.1rem;
+      font-family: var(--font-body);
+      font-size: 0.875rem;
       color: var(--ink-mute);
-      line-height: 1.3;
+      line-height: 1.45;
       margin: 0;
       display: -webkit-box;
       -webkit-line-clamp: 2;
@@ -206,42 +212,48 @@ import { Recipe } from '../../models/models';
     .card.featured .excerpt { -webkit-line-clamp: 3; }
     .meta {
       display: flex;
-      gap: 0.75rem;
-      margin-top: 0.625rem;
-      padding-top: 0.5rem;
-      border-top: 1px dotted var(--rule);
-      font-family: var(--font-type);
-      font-size: 0.72rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--ink-mute);
+      flex-wrap: wrap;
+      gap: 0.375rem;
+      margin-top: 0.75rem;
       align-items: center;
     }
-    .meta-item { display: flex; align-items: center; gap: 0.2rem; }
-    .meta-item fa-icon { font-size: 0.8rem; flex-shrink: 0; }
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--ink-mute);
+      background: var(--paper-2);
+      border-radius: var(--radius-sm);
+      padding: 3px 10px;
+    }
+    .meta-item fa-icon { font-size: 0.7rem; flex-shrink: 0; }
     .difficulty {
       margin-left: auto;
-      font-size: 0.68rem;
-      padding: 2px 0.5rem;
-      border: 1px dashed var(--rule-strong);
+      font-family: var(--font-body);
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: var(--radius-sm);
+      background: var(--paper-2);
       color: var(--ink-mute);
-      background: transparent;
     }
-    .diff-easy   { border-color: var(--olive);       color: var(--olive-2); }
-    .diff-medium { border-color: var(--mustard);      color: var(--clr-amber-text); }
-    .diff-hard   { border-color: var(--terracotta);   color: var(--terracotta-2); }
+    .diff-easy   { background: var(--clr-green-bg);  color: var(--clr-green-text); }
+    .diff-medium { background: var(--clr-amber-bg);  color: var(--clr-amber-text); }
+    .diff-hard   { background: var(--clr-rust-bg);   color: var(--clr-rust-text); }
 
     /* --- Numbered badge --- */
     .card-num {
       position: absolute;
-      top: 0.75rem;
-      left: 1rem;
+      top: 0.625rem;
+      left: 0.875rem;
       font-family: var(--font-display);
-      font-style: italic;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       font-weight: 700;
-      letter-spacing: 0.06em;
-      color: rgba(243, 234, 214, 0.92);
+      letter-spacing: 0.04em;
+      color: rgba(255,255,255,0.92);
       z-index: 3;
       text-shadow: 0 1px 8px rgba(0,0,0,0.45);
       pointer-events: none;
@@ -254,9 +266,7 @@ import { Recipe } from '../../models/models';
       height: 100%;
       display: block;
       isolation: isolate;
-      padding: 0;
       background: var(--clr-surface);
-      overflow: hidden;
     }
     .card.overlay .card-image {
       position: absolute;
@@ -267,40 +277,32 @@ import { Recipe } from '../../models/models';
     .card.overlay .card-body {
       position: absolute;
       inset: auto 0 0 0;
-      padding: 1rem 1.25rem;
-      margin-top: 0;
-      border-top: none;
-      background: linear-gradient(180deg, transparent 0%, rgba(26,18,10,0.3) 35%, rgba(26,18,10,0.86) 100%);
+      padding: 1rem 1.25rem 1.125rem;
+      background: linear-gradient(180deg, transparent 0%, rgba(10,20,50,0.3) 35%, rgba(10,20,50,0.88) 100%);
       color: var(--paper);
       z-index: 2;
     }
-    .card.overlay .category { color: rgba(243,234,214,0.75); }
-    .card.overlay .title { color: var(--paper); font-size: 1.1rem; }
+    .card.overlay .category { color: rgba(200,220,255,0.8); }
+    .card.overlay .title { color: #fff; font-size: 1.05rem; }
     .card.overlay.featured .title { font-size: clamp(1.5rem, 2.5vw, 2.1rem); line-height: 1.08; }
-    .card.overlay .excerpt { color: rgba(243,234,214,0.85); }
-    .card.overlay .meta {
-      border-top-color: rgba(243,234,214,0.2);
-      color: rgba(243,234,214,0.85);
-    }
-    .card.overlay .difficulty { border-color: rgba(243,234,214,0.3); color: var(--paper); }
+    .card.overlay .excerpt { color: rgba(200,220,255,0.85); }
+    .card.overlay .meta-item { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.85); }
+    .card.overlay .difficulty { background: rgba(255,255,255,0.15); color: #fff; }
 
     /* --- Compact (horizontal) variant --- */
     .card.compact {
       display: flex;
       flex-direction: row;
-      padding: 0.75rem;
     }
     .card.compact .card-image {
       aspect-ratio: unset;
-      width: 100px;
+      width: 96px;
       min-height: 100%;
       flex-shrink: 0;
+      border-radius: 0;
     }
     .card.compact .card-body {
-      padding: 0.25rem 0.25rem 0.25rem 0.875rem;
-      margin-top: 0;
-      border-top: none;
-      border-left: 1px dashed var(--rule);
+      padding: 0.75rem 0.875rem;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -308,7 +310,7 @@ import { Recipe } from '../../models/models';
     }
     .card.compact .category { margin-bottom: 0; }
     .card.compact .title { font-size: 0.9rem; margin: 0; }
-    .card.compact .meta { margin-top: 0.375rem; padding-top: 0.375rem; font-size: 0.72rem; gap: 0.5rem; }
+    .card.compact .meta { margin-top: 0.375rem; gap: 0.3rem; }
 
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(12px); }
@@ -322,13 +324,9 @@ import { Recipe } from '../../models/models';
       .overlay-btn { transition: opacity 0.15s; transform: none !important; }
     }
 
-    @media (max-width: 640px) {
-      .meta { font-size: 0.72rem; gap: 0.6rem; }
-      .meta-item fa-icon { font-size: 0.75rem; }
-    }
     @media (max-width: 500px) {
       .card.compact .card-image { width: 80px; }
-      .card.compact .card-body { padding-left: 0.75rem; }
+      .card.compact .card-body { padding: 0.625rem 0.75rem; }
       .card.compact .title { font-size: 0.85rem; }
     }
   `],
