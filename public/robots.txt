@@ -1,2 +1,8 @@
 User-agent: *
-Disallow:
+Disallow: /api/
+Disallow: /dashboard
+Disallow: /profile
+Disallow: /signin
+Disallow: /register
+
+Sitemap: https://cookingblogofivo.eu/sitemap.xml

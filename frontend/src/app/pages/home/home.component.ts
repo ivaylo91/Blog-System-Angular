@@ -38,7 +38,8 @@ import { RecentlyViewedService } from '../../services/recently-viewed.service';
           <div class="slide-bg" [class.slide-bg--active]="i === heroIndex()">
             @if (r.hero_image) {
               <img [src]="r.hero_image" [alt]="r.title" class="slide-bg-img"
-                   [loading]="i === 0 ? 'eager' : 'lazy'" />
+                   [loading]="i === 0 ? 'eager' : 'lazy'"
+                   [attr.fetchpriority]="i === 0 ? 'high' : null" />
             } @else {
               <div class="slide-bg-ph"
                    [style.background]="'linear-gradient(135deg,' + (r.hero_palette_from || '#1b3c72') + ',' + (r.hero_palette_to || '#2455a8') + ')'"></div>
