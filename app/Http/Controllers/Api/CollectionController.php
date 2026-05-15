@@ -153,22 +153,17 @@ class CollectionController extends Controller
     /** GET /recipe-collections/{slug} — user's collections flagged by whether they contain this recipe */
     public function forRecipe(Request $request, string $slug): JsonResponse
     {
-        $recipe = Recipe::where('slug', $slug)->where('published', true)->firstOrFail();
-
-        // IDs of collections that contain this specific recipe
-        $containsRecipe = Collection::where('user_id', $request->user()->id)
-            ->whereHas('recipes', fn ($q) => $q->where('recipe_id', $recipe->id))
-            ->pluck('id')
-            ->toArray();
+        $recipe = Recipe::select('id')->where('slug', $slug)->where('published', true)->firstOrFail();
 
         $collections = Collection::where('user_id', $request->user()->id)
             ->withCount('recipes')
+            ->withExists(['recipes as has_recipe' => fn ($q) => $q->where('recipe_id', $recipe->id)])
             ->latest()
             ->get()
             ->map(fn ($c) => [
                 'id'            => $c->id,
                 'name'          => $c->name,
-                'has_recipe'    => in_array($c->id, $containsRecipe, true),
+                'has_recipe'    => (bool) $c->has_recipe,
                 'recipes_count' => $c->recipes_count,
             ]);
 

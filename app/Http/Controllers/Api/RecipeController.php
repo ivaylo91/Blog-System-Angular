@@ -86,44 +86,53 @@ class RecipeController extends Controller
 
     public function featured(): JsonResponse
     {
-        $recipes = Cache::remember('featured_recipes', 300, function () {
-            return Recipe::with(['category'])
+        $data = Cache::remember('featured_recipes', 300, function () {
+            $recipes = Recipe::with(['category'])
                 ->where('published', true)
                 ->inRandomOrder()
                 ->limit(7)
                 ->get();
+
+            return json_decode(json_encode(RecipeResource::collection($recipes)), true);
         });
 
-        return response()->json(RecipeResource::collection($recipes))
+        return response()->json($data)
             ->header('Cache-Control', 'public, max-age=300, stale-while-revalidate=600');
     }
 
     public function related(string $slug): JsonResponse
     {
-        $recipe = Recipe::where('slug', $slug)->first();
+        $data = Cache::remember("related:{$slug}", 300, function () use ($slug) {
+            $recipe = Recipe::select('id', 'category_id')->where('slug', $slug)->first();
+            if (! $recipe) {
+                return [];
+            }
 
-        if (! $recipe) {
-            return response()->json([]);
-        }
+            $related = Recipe::with(['category'])
+                ->where('published', true)
+                ->where('id', '!=', $recipe->id)
+                ->where('category_id', $recipe->category_id)
+                ->limit(3)
+                ->get();
 
-        $related = Recipe::with(['category'])
-            ->where('published', true)
-            ->where('id', '!=', $recipe->id)
-            ->where('category_id', $recipe->category_id)
-            ->limit(3)
-            ->get();
+            return json_decode(json_encode(RecipeResource::collection($related)), true);
+        });
 
-        return response()->json(RecipeResource::collection($related))
+        return response()->json($data)
             ->header('Cache-Control', 'public, max-age=300, stale-while-revalidate=600');
     }
 
     public function categories(): JsonResponse
     {
-        $categories = Category::withCount(['recipes' => fn ($q) => $q->where('published', true)])
-            ->orderBy('name')
-            ->get();
+        $data = Cache::remember('categories_list', 3600, function () {
+            $categories = Category::withCount(['recipes' => fn ($q) => $q->where('published', true)])
+                ->orderBy('name')
+                ->get();
 
-        return response()->json(CategoryResource::collection($categories))
+            return json_decode(json_encode(CategoryResource::collection($categories)), true);
+        });
+
+        return response()->json($data)
             ->header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
     }
 
@@ -212,6 +221,8 @@ class RecipeController extends Controller
 
     public function update(Request $request, string $slug): JsonResponse
     {
+        Cache::forget("related:{$slug}");
+
         $recipe = Recipe::where('slug', $slug)->firstOrFail();
 
         if (! $request->user()->isAdmin() && $recipe->user_id !== $request->user()->id) {
@@ -285,6 +296,9 @@ class RecipeController extends Controller
 
         $recipe->delete();
 
+        Cache::forget("related:{$slug}");
+        Cache::forget('featured_recipes');
+
         return response()->json(['message' => 'Рецептата е изтрита.']);
     }
 
@@ -292,30 +306,52 @@ class RecipeController extends Controller
 
     private function uniqueSlug(string $base): string
     {
-        $slug    = $base;
-        $counter = 1;
-        while (Recipe::where('slug', $slug)->exists()) {
-            $slug = $base . '-' . $counter++;
+        $existing = Recipe::where('slug', 'like', $base . '%')
+            ->pluck('slug')
+            ->all();
+
+        if (! in_array($base, $existing, true)) {
+            return $base;
         }
-        return $slug;
+
+        $counter = 1;
+        while (in_array($base . '-' . $counter, $existing, true)) {
+            $counter++;
+        }
+
+        return $base . '-' . $counter;
     }
 
     private function syncIngredients(Recipe $recipe, array $ingredients): void
     {
-        foreach ($ingredients as $i => $ing) {
-            $recipe->ingredients()->create([
-                'name'     => $ing['name'],
-                'amount'   => $ing['amount'] ?? '',
-                'position' => $i,
-            ]);
+        if (empty($ingredients)) {
+            return;
         }
+
+        $recipe->ingredients()->insert(
+            array_map(fn ($ing, $i) => [
+                'recipe_id' => $recipe->id,
+                'name'      => $ing['name'],
+                'amount'    => $ing['amount'] ?? '',
+                'position'  => $i,
+            ], $ingredients, array_keys($ingredients))
+        );
     }
 
     private function syncSteps(Recipe $recipe, array $steps): void
     {
-        foreach ($steps as $i => $step) {
-            $recipe->steps()->create([...$step, 'position' => $i]);
+        if (empty($steps)) {
+            return;
         }
+
+        $recipe->steps()->insert(
+            array_map(fn ($step, $i) => [
+                'recipe_id'   => $recipe->id,
+                'title'       => $step['title'],
+                'description' => $step['description'],
+                'position'    => $i,
+            ], $steps, array_keys($steps))
+        );
     }
 
     private function syncTags(Recipe $recipe, array $tags): void

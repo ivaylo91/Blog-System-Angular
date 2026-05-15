@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
@@ -101,6 +102,10 @@ class AuthController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
+            if ($user->image) {
+                $old = ltrim(str_replace('/storage/', '', $user->image), '/');
+                Storage::disk('public')->delete($old);
+            }
             $path = $request->file('image')->store('avatars', 'public');
             $validated['image'] = '/storage/' . $path;
         }
