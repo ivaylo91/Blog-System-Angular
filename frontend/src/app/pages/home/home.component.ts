@@ -148,7 +148,7 @@ import { RecentlyViewedService } from '../../services/recently-viewed.service';
     <div class="tagline-strip">
       <div class="tagline-inner">
         <span class="tagline-rule" aria-hidden="true"></span>
-        <p class="tagline-text">рецепти направени с любов <span class="tagline-heart" aria-hidden="true">♥</span></p>
+        <h2 class="tagline-text">рецепти направени с любов <span class="tagline-heart" aria-hidden="true">♥</span></h2>
         <span class="tagline-rule tagline-rule--right" aria-hidden="true"></span>
       </div>
     </div>
