@@ -101,7 +101,13 @@ import { SearchOverlayComponent } from '../search-overlay/search-overlay.compone
 
       <div class="drawer-header">
         <a routerLink="/" class="drawer-brand" (click)="close()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l1.5-7.5A2 2 0 0 1 6.46 2h11.08a2 2 0 0 1 1.96 1.5L21 11"/><path d="M3 11h18v2a7 7 0 0 1-14 0H3z"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="17" x2="12" y2="20"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M6 14c0-3.31 2.69-6 6-6s6 2.69 6 6"/>
+            <path d="M4 14h16"/>
+            <path d="M9 14v4"/>
+            <path d="M15 14v4"/>
+            <path d="M8 18h8"/>
+          </svg>
           Кулинарен блог
         </a>
         <div class="drawer-header-actions">
