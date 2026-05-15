@@ -97,14 +97,20 @@
         Header append Vary Accept-Encoding
     </FilesMatch>
 
-    # ── Security headers ────────────────────────────────────────────────────
-    # "always" fires on every response (static files, redirects, errors) not just 2xx
+    # ── Security headers — applied to every response ────────────────────────
+    # "always" fires on static files, redirects, and errors, not just PHP 2xx
     Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
     Header always set X-Content-Type-Options "nosniff"
     Header always set X-Frame-Options "DENY"
     Header always set X-Permitted-Cross-Domain-Policies "none"
     Header always set Referrer-Policy "strict-origin-when-cross-origin"
     Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+
+    # CSP — HTML only (index.html served directly by Apache; PHP-routed requests
+    # also get this via SecurityHeaders middleware, but always set ensures parity)
+    <FilesMatch "\.html$">
+        Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self'; media-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; require-trusted-types-for 'script'; trusted-types angular angular#unsafe-bypass; upgrade-insecure-requests"
+    </FilesMatch>
 </IfModule>
 
 # ── Mime types ───────────────────────────────────────────────────────────────
