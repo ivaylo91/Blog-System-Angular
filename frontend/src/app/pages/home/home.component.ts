@@ -95,7 +95,23 @@ import { RecentlyViewedService } from '../../services/recently-viewed.service';
           <button class="carousel-arrow carousel-arrow--next"
                   (click)="nextSlide()" aria-label="Следваща рецепта">›</button>
 
-          <div class="carousel-dots" role="tablist" aria-label="Слайдове">
+          <div class="carousel-controls" role="tablist" aria-label="Слайдове">
+            <!-- WCAG 2.2.2 pause/play button -->
+            <button class="carousel-pause" type="button"
+                    (click)="togglePause()"
+                    [attr.aria-label]="isPaused() ? 'Пусни слайдшоу' : 'Спри слайдшоу'"
+                    [attr.aria-pressed]="isPaused()">
+              @if (isPaused()) {
+                <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" width="10" height="10">
+                  <path d="M3 3l10 5-10 5V3z"/>
+                </svg>
+              } @else {
+                <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" width="10" height="10">
+                  <rect x="3" y="2" width="4" height="12" rx="1"/>
+                  <rect x="9" y="2" width="4" height="12" rx="1"/>
+                </svg>
+              }
+            </button>
             @for (r of featured(); track r.id; let i = $index) {
               <button class="carousel-dot" [class.carousel-dot--active]="i === heroIndex()"
                       role="tab" [attr.aria-selected]="i === heroIndex()"
@@ -270,7 +286,7 @@ import { RecentlyViewedService } from '../../services/recently-viewed.service';
     .hero-skeleton {
       position: relative;
       height: 540px;
-      background: linear-gradient(135deg, #1b3c72 0%, #2455a8 100%);
+      background: linear-gradient(135deg, var(--terracotta) 0%, var(--clr-brand-hover) 100%);
       overflow: hidden;
     }
     .hero-sk-grad {
@@ -365,11 +381,9 @@ import { RecentlyViewedService } from '../../services/recently-viewed.service';
       color: #fff;
     }
     .badge--cat {
-      background: rgba(255,255,255,0.16);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      background: rgba(255,255,255,0.18);
       color: #fff;
-      border: 1px solid rgba(255,255,255,0.24);
+      border: 1px solid rgba(255,255,255,0.28);
     }
 
     /* Slide title */
@@ -451,10 +465,8 @@ import { RecentlyViewedService } from '../../services/recently-viewed.service';
       top: 50%;
       transform: translateY(-50%);
       z-index: 3;
-      background: rgba(255,255,255,0.14);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255,255,255,0.26);
+      background: rgba(10, 20, 50, 0.42);
+      border: 1px solid rgba(255,255,255,0.20);
       color: #fff;
       width: 48px;
       height: 48px;
@@ -468,12 +480,12 @@ import { RecentlyViewedService } from '../../services/recently-viewed.service';
       line-height: 1;
       padding: 0;
     }
-    .carousel-arrow:hover { background: rgba(255,255,255,0.26); }
+    .carousel-arrow:hover { background: rgba(10, 20, 50, 0.65); }
     .carousel-arrow--prev { left: 1.25rem; }
     .carousel-arrow--next { right: 1.25rem; }
 
-    /* Dots */
-    .carousel-dots {
+    /* Dots + pause button row */
+    .carousel-controls {
       position: absolute;
       bottom: 1.5rem;
       right: 3rem;
@@ -482,6 +494,23 @@ import { RecentlyViewedService } from '../../services/recently-viewed.service';
       gap: 0.5rem;
       align-items: center;
     }
+    .carousel-pause {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,0.45);
+      background: rgba(10, 20, 50, 0.35);
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      margin-right: 0.25rem;
+      transition: background 0.18s, border-color 0.18s;
+      flex-shrink: 0;
+    }
+    .carousel-pause:hover { background: rgba(10, 20, 50, 0.65); border-color: rgba(255,255,255,0.7); }
     .carousel-dot {
       border: none;
       padding: 0;
@@ -788,6 +817,8 @@ import { RecentlyViewedService } from '../../services/recently-viewed.service';
       background: var(--paper-2);
       border-top: 1px solid var(--clr-border-faint);
       padding: clamp(2.5rem, 5vw, 3.75rem) 0;
+      content-visibility: auto;
+      contain-intrinsic-size: 0 240px;
     }
     .author-inner {
       max-width: 760px;
@@ -846,6 +877,8 @@ import { RecentlyViewedService } from '../../services/recently-viewed.service';
       background: var(--clr-surface);
       border-top: 1px solid var(--clr-border-faint);
       padding: clamp(2rem, 5vw, 3rem) 0;
+      content-visibility: auto;
+      contain-intrinsic-size: 0 220px;
     }
     .rv-inner {
       max-width: 1200px;
@@ -973,7 +1006,7 @@ import { RecentlyViewedService } from '../../services/recently-viewed.service';
       .hero-carousel { height: 460px; }
       .slide-content { padding: 1.5rem 1.25rem; }
       .slide-sub { display: none; }
-      .carousel-dots { right: 1.25rem; }
+      .carousel-controls { right: 1.25rem; }
       .author-inner { flex-direction: column; align-items: flex-start; gap: 1.25rem; }
     }
 
@@ -982,7 +1015,7 @@ import { RecentlyViewedService } from '../../services/recently-viewed.service';
       .slide-content { transition: none; }
       .feat-img, .feat-cta, .all-link { transition: none; }
       .sk-img, .sk-line, .sk-badge, .sk-title, .sk-sub { animation: none; }
-      .carousel-dot { transition: none; }
+      .carousel-dot, .carousel-pause { transition: none; }
     }
   `],
 })
@@ -995,8 +1028,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   recentlyViewed = computed(() => this.recentlyViewedSvc.items());
 
   /* ── Carousel state ── */
-  heroIndex = signal(0);
-  private heroTimer: ReturnType<typeof setInterval> | null = null;
+  heroIndex  = signal(0);
+  isPaused   = signal(false);
+  private heroTimer:   ReturnType<typeof setInterval>  | null = null;
+  private resumeTimer: ReturnType<typeof setTimeout>   | null = null;
 
   /* ── Data ── */
   private featuredResult = toSignal(
@@ -1032,28 +1067,58 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void { this.startAutoPlay(); }
+
+  ngOnDestroy(): void {
+    if (this.heroTimer  !== null) clearInterval(this.heroTimer);
+    if (this.resumeTimer !== null) clearTimeout(this.resumeTimer);
+  }
+
+  togglePause(): void {
+    if (this.isPaused()) {
+      this.isPaused.set(false);
+      this.startAutoPlay();
+    } else {
+      this.isPaused.set(true);
+      this.stopAutoPlay();
+    }
+  }
+
+  nextSlide(): void {
+    const len = this.featured().length;
+    if (len > 1) this.heroIndex.update(i => (i + 1) % len);
+    this.deferAutoPlay();
+  }
+
+  prevSlide(): void {
+    const len = this.featured().length;
+    if (len > 1) this.heroIndex.update(i => (i - 1 + len) % len);
+    this.deferAutoPlay();
+  }
+
+  goToSlide(i: number): void {
+    this.heroIndex.set(i);
+    this.deferAutoPlay();
+  }
+
+  private startAutoPlay(): void {
+    this.stopAutoPlay();
     this.heroTimer = setInterval(() => {
       const len = this.featured().length;
       if (len > 1) this.heroIndex.update(i => (i + 1) % len);
     }, 5400);
   }
 
-  ngOnDestroy(): void {
-    if (this.heroTimer !== null) clearInterval(this.heroTimer);
+  private stopAutoPlay(): void {
+    if (this.heroTimer !== null) { clearInterval(this.heroTimer); this.heroTimer = null; }
   }
 
-  nextSlide(): void {
-    const len = this.featured().length;
-    if (len > 1) this.heroIndex.update(i => (i + 1) % len);
-  }
-
-  prevSlide(): void {
-    const len = this.featured().length;
-    if (len > 1) this.heroIndex.update(i => (i - 1 + len) % len);
-  }
-
-  goToSlide(i: number): void {
-    this.heroIndex.set(i);
+  /** After user interaction: pause auto-play for 10s, then resume unless manually paused. */
+  private deferAutoPlay(): void {
+    this.stopAutoPlay();
+    if (this.resumeTimer !== null) clearTimeout(this.resumeTimer);
+    this.resumeTimer = setTimeout(() => {
+      if (!this.isPaused()) this.startAutoPlay();
+    }, 10_000);
   }
 }

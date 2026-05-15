@@ -326,7 +326,7 @@ import { SearchOverlayComponent } from '../search-overlay/search-overlay.compone
       width: 2.375rem;
       height: 2.375rem;
       border-radius: 50%;
-      background: linear-gradient(135deg, #c8703f, #6b7a3a);
+      background: linear-gradient(135deg, var(--warm), var(--olive));
       color: var(--paper);
       border: 2px solid var(--paper);
       box-shadow: 0 0 0 1px var(--rule-strong);
@@ -601,7 +601,7 @@ import { SearchOverlayComponent } from '../search-overlay/search-overlay.compone
       width: 2.5rem;
       height: 2.5rem;
       border-radius: 50%;
-      background: linear-gradient(135deg, #c8703f, #6b7a3a);
+      background: linear-gradient(135deg, var(--warm), var(--olive));
       color: var(--paper);
       font-family: var(--font-display);
       font-style: italic;

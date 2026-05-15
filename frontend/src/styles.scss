@@ -161,18 +161,6 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* Subtle ocean ambient gradient — soft navy washes */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background:
-    radial-gradient(120% 80% at 5% 0%,   rgba(180, 210, 245, 0.35), transparent 55%),
-    radial-gradient(100% 70% at 95% 100%, rgba(27,  60,  114, 0.06), transparent 60%);
-  mix-blend-mode: normal;
-}
 
 a { color: inherit; text-decoration: none; }
 img { max-width: 100%; height: auto; }
