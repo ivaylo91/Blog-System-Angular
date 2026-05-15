@@ -12,7 +12,7 @@ import { AuthService } from '../../services/auth.service';
     <footer class="site-footer">
       <div class="footer-wave" aria-hidden="true">
         <svg viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0,55 C240,90 480,10 720,55 C960,100 1200,15 1440,55 L1440,90 L0,90 Z" fill="#364210"/>
+          <path d="M0,55 C240,90 480,10 720,55 C960,100 1200,15 1440,55 L1440,90 L0,90 Z" fill="#181e30"/>
         </svg>
       </div>
       <div class="footer-inner">
@@ -77,8 +77,8 @@ import { AuthService } from '../../services/auth.service';
   `,
   styles: [`
     .site-footer {
-      background: #364210;
-      color: #8a9a6a;
+      background: var(--clr-footer-bg);
+      color: var(--clr-footer-text);
       position: relative;
       overflow: hidden;
     }
@@ -89,16 +89,6 @@ import { AuthService } from '../../services/auth.service';
       margin-top: -1px;
     }
     .footer-wave svg { width: 100%; height: 90px; display: block; }
-
-    /* paper grain on dark background */
-    .site-footer::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 0;
-    }
 
     .footer-inner {
       position: relative;
@@ -124,17 +114,17 @@ import { AuthService } from '../../services/auth.service';
       font-style: italic;
       font-size: 1.35rem;
       font-weight: 700;
-      color: #d8e8b0;
+      color: var(--clr-footer-text-bright);
       text-decoration: none;
       line-height: 1.15;
       transition: color 0.18s;
     }
-    .brand-name:hover { color: #d4b460; }
+    .brand-name:hover { color: var(--clr-brand-hover); }
 
     .brand-tagline {
       font-family: var(--font-hand);
       font-size: 1rem;
-      color: #a8b888;
+      color: var(--clr-footer-quote);
       margin: 0;
       line-height: 1.3;
     }
@@ -150,13 +140,13 @@ import { AuthService } from '../../services/auth.service';
       content: '';
       flex: 1;
       height: 1px;
-      background: #4a5c1e;
+      background: var(--clr-footer-sep);
       max-width: 2.5rem;
     }
     .brand-rule-dot {
       width: 4px;
       height: 4px;
-      background: #5a6c2a;
+      background: var(--clr-footer-text-muted);
       border-radius: 50%;
     }
 
@@ -178,23 +168,23 @@ import { AuthService } from '../../services/auth.service';
       font-size: 0.6rem;
       letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: #d8e8b0;
+      color: var(--clr-footer-text-bright);
       margin-bottom: 0.25rem;
       padding-bottom: 0.5rem;
-      border-bottom: 1px dashed #4a5c1e;
+      border-bottom: 1px solid var(--clr-footer-sep);
     }
 
     .nav-col a {
       font-family: var(--font-body);
-      color: #8a9a6a;
+      color: var(--clr-footer-text);
       text-decoration: none;
       font-size: 0.88rem;
       line-height: 1.45;
       transition: color 0.18s;
     }
-    .nav-col a:hover { color: #d8e8b0; }
+    .nav-col a:hover { color: var(--clr-footer-text-bright); }
     .nav-col a:focus-visible {
-      outline: 2px solid var(--mustard);
+      outline: 2px solid var(--clr-brand-hover);
       outline-offset: 2px;
     }
 
@@ -202,7 +192,7 @@ import { AuthService } from '../../services/auth.service';
       font-family: var(--font-type);
       font-size: 0.62rem;
       letter-spacing: 0.1em;
-      color: #5a6c2a;
+      color: var(--clr-footer-text-faint);
       margin-top: 0.5rem;
     }
 
@@ -225,21 +215,23 @@ import { AuthService } from '../../services/auth.service';
       justify-content: center;
       width: 2.25rem;
       height: 2.25rem;
-      border: 1px dashed #4a5c1e;
-      color: #8a9a6a;
+      border: 1px solid var(--clr-footer-sep);
+      border-radius: var(--radius-sm);
+      color: var(--clr-footer-text);
       text-decoration: none;
-      transition: border-color 0.2s, color 0.2s;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
     }
     .social-btn fa-icon { font-size: 1rem; }
 
     @media (hover: hover) and (pointer: fine) {
       .social-btn:hover {
-        border-color: #d4b460;
-        color: #d4b460;
+        border-color: var(--clr-brand-hover);
+        color: var(--clr-footer-text-bright);
+        background: rgba(36, 85, 168, 0.18);
       }
     }
     .social-btn:focus-visible {
-      outline: 2px solid var(--mustard);
+      outline: 2px solid var(--clr-brand-hover);
       outline-offset: 2px;
     }
 
