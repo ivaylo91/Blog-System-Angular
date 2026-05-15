@@ -148,7 +148,7 @@ import { RecentlyViewedService } from '../../services/recently-viewed.service';
     <div class="tagline-strip">
       <div class="tagline-inner">
         <span class="tagline-rule" aria-hidden="true"></span>
-        <p class="tagline-text">рецепти направени с любов</p>
+        <p class="tagline-text">рецепти направени с любов <span class="tagline-heart" aria-hidden="true">♥</span></p>
         <span class="tagline-rule tagline-rule--right" aria-hidden="true"></span>
       </div>
     </div>
@@ -612,6 +612,7 @@ import { RecentlyViewedService } from '../../services/recently-viewed.service';
       padding: 0 clamp(1.5rem, 5vw, 3rem);
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: clamp(1.25rem, 3vw, 2.25rem);
     }
     .tagline-rule {
@@ -633,6 +634,12 @@ import { RecentlyViewedService } from '../../services/recently-viewed.service';
       margin: 0;
       letter-spacing: 0.01em;
       line-height: 1.2;
+      text-transform: capitalize;
+      text-align: center;
+    }
+    .tagline-heart {
+      display: inline-block;
+      margin-left: 0.1em;
     }
     @media (max-width: 480px) {
       .tagline-rule { display: none; }
