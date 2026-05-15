@@ -116,7 +116,7 @@ import { Recipe } from '../../models/models';
       position: fixed;
       inset: 0;
       background: oklch(20% 0.02 40 / 0.55);
-      z-index: var(--z-modal-backdrop, 200);
+      z-index: calc(var(--z-modal) - 1);
       animation: so-fade-in 0.18s ease-out both;
     }
 
@@ -128,7 +128,7 @@ import { Recipe } from '../../models/models';
       transform: translateX(-50%);
       width: min(680px, calc(100vw - 2rem));
       background: var(--paper);
-      z-index: var(--z-modal, 201);
+      z-index: var(--z-modal);
       border-radius: var(--radius-xl);
       overflow: hidden;
       box-shadow: 0 24px 64px oklch(15% 0.02 40 / 0.28), 0 2px 8px oklch(15% 0.02 40 / 0.12);
