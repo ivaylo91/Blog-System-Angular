@@ -5,8 +5,9 @@
 
     RewriteEngine On
 
-    # Force HTTPS — cPanel Apache sets %{HTTPS} directly, no proxy needed
+    # Force HTTPS — works for direct Apache and CDN/proxy (Cloudflare) setups
     RewriteCond %{HTTPS} off
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
     RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
     # www → non-www
