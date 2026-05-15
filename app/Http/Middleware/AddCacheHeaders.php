@@ -25,9 +25,8 @@ class AddCacheHeaders
             return $response;
         }
 
-        // HTML shell and API responses — must revalidate so Angular updates are picked up
-        $response->headers->set('Cache-Control', 'no-cache, must-revalidate');
-        $response->headers->set('Vary', 'Accept-Encoding');
+        // Angular SPA shell — never store so browsers always fetch fresh chunk references
+        $response->headers->set('Cache-Control', 'no-store');
 
         return $response;
     }

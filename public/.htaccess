@@ -54,8 +54,14 @@
 # ── Cache headers for static assets served directly by Apache ────────────────
 <IfModule mod_headers.c>
     # Angular app shell — never cache so browsers always get the latest hashed script references
-    <FilesMatch "^index\.php$">
+    # Covers both index.html (served directly by Apache) and index.php (Laravel entry point)
+    <FilesMatch "^index\.(html|php)$">
         Header set Cache-Control "no-store"
+    </FilesMatch>
+
+    # robots.txt and favicon — short cache, no need to hit server on every visit
+    <FilesMatch "\.(txt|ico)$">
+        Header set Cache-Control "public, max-age=86400"
     </FilesMatch>
 
     # Unhashed font files (@fontsource copies — no hash in filename) — 7 days
