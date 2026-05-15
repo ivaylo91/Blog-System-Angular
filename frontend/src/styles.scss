@@ -133,6 +133,9 @@
   --z-modal:    100;
   --z-toast:    9999;
   --z-progress: 10000;
+
+  /* Nav rail tint — overridden per theme */
+  --clr-nav-tint: rgba(255, 245, 215, 0.35);
 }
 
 /* ── Base reset ─────────────────────────────────────────────────────────── */
@@ -210,3 +213,120 @@ p, li { text-wrap: pretty; }
 
 /* App root sits above the two body overlays */
 app-root { position: relative; z-index: 1; display: flex; flex-direction: column; min-height: 100vh; min-height: 100dvh; }
+
+/* ── Dark theme — candlelit kitchen ────────────────────────────────────────
+   Applied when ThemeService adds .dark to <html>.
+   Philosophy: warm, honest darkness — like a kitchen at candlelight.
+   NOT the generic blue-gray dark mode. */
+html.dark {
+  color-scheme: dark;
+
+  /* Surfaces — warm dark wood */
+  --paper:      #1a1510;
+  --paper-2:    #231d17;
+  --paper-edge: #3e3428;
+
+  /* Text — warm parchment */
+  --ink:      #f2e8d0;
+  --ink-soft: #c8bc9a;
+  --ink-mute: #8a7a62;
+
+  /* Rules */
+  --rule:        #3a3028;
+  --rule-strong: #524840;
+
+  /* Primary accent — warm amber (candlelight) instead of navy */
+  --terracotta:   #d4a050;
+  --terracotta-2: #b88838;
+
+  /* Secondary accents */
+  --warm:       #d06858;
+  --warm-2:     #b45848;
+  --olive:      #88c078;
+  --olive-2:    #6aa862;
+  --mustard:    #d4a840;
+  --pencil-red: #d06858;
+
+  /* ── Semantic aliases ── */
+  --clr-brand:        var(--terracotta);
+  --clr-brand-dark:   var(--terracotta-2);
+  --clr-brand-hover:  #e8bc68;
+
+  --clr-bg:             var(--paper);
+  --clr-surface:        #221c16;
+  --clr-surface-alt:    var(--paper-2);
+  --clr-surface-hover:  #302818;
+  --clr-surface-active: #3e3428;
+
+  --clr-text:       var(--ink);
+  --clr-text-muted: var(--ink-mute);
+  --clr-text-faint: #6a5a44;
+
+  /* Difficulty / semantic */
+  --clr-green:        var(--olive);
+  --clr-green-dark:   var(--olive-2);
+  --clr-green-bg:     #182a18;
+  --clr-green-text:   #88c078;
+
+  --clr-amber:        var(--mustard);
+  --clr-amber-dark:   #b88838;
+  --clr-amber-bg:     #2a2010;
+  --clr-amber-text:   #d4a840;
+  --clr-amber-border: #7a6030;
+
+  --clr-rust-bg:     #2a1818;
+  --clr-rust-text:   #d06858;
+  --clr-rust-border: #8a4838;
+
+  --clr-error:      var(--pencil-red);
+  --clr-error-bg:   #2a1818;
+  --clr-error-dark: #f09080;
+
+  /* Borders */
+  --clr-border:        rgba(242, 232, 208, 0.12);
+  --clr-border-faint:  rgba(242, 232, 208, 0.07);
+  --clr-border-strong: rgba(242, 232, 208, 0.22);
+
+  /* Shadows — deeper on dark */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.40);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.50);
+  --shadow-lg: 0 8px 28px rgba(0, 0, 0, 0.60), 0 2px 6px rgba(0, 0, 0, 0.30);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.70), 0 4px 12px rgba(0, 0, 0, 0.40);
+
+  /* Skeleton */
+  --clr-skeleton:       var(--paper-2);
+  --clr-skeleton-shine: rgba(255, 255, 255, 0.05);
+
+  /* Focus */
+  --clr-focus: var(--terracotta);
+
+  /* Footer — warmer dark */
+  --clr-footer-bg:          #0e0b08;
+  --clr-footer-text:        #8a7a62;
+  --clr-footer-text-bright: #f2e8d0;
+  --clr-footer-text-muted:  #6a5a44;
+  --clr-footer-text-faint:  #524840;
+  --clr-footer-quote:       #c8bc9a;
+  --clr-footer-sep:         #231d17;
+
+  /* Nav rail — subtle warm dark tint */
+  --clr-nav-tint: rgba(42, 34, 24, 0.55);
+}
+
+html.dark body {
+  background-color: var(--paper);
+  color: var(--ink);
+}
+
+html.dark ::selection {
+  background: var(--terracotta);
+  color: var(--paper);
+}
+
+html.dark ::-webkit-scrollbar-thumb {
+  background: var(--paper-edge);
+  border-color: var(--paper);
+}
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: var(--rule-strong);
+}

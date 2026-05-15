@@ -48,6 +48,14 @@ import { SearchOverlayComponent } from '../search-overlay/search-overlay.compone
 
         <!-- Right: auth + cart -->
         <div class="masthead-right">
+          <button class="theme-toggle" (click)="theme.toggle()"
+                  [attr.aria-label]="theme.isDark() ? 'Включи светъл режим' : 'Включи тъмен режим'">
+            @if (theme.isDark()) {
+              <fa-icon [icon]="faSun" aria-hidden="true"></fa-icon>
+            } @else {
+              <fa-icon [icon]="faMoon" aria-hidden="true"></fa-icon>
+            }
+          </button>
           <a routerLink="/shopping-list" class="cart-btn" aria-label="Списък за пазаруване">
             <fa-icon [icon]="faCartShopping" aria-hidden="true"></fa-icon>
             @if (shoppingList.count() > 0) {
@@ -322,6 +330,24 @@ import { SearchOverlayComponent } from '../search-overlay/search-overlay.compone
       align-items: center;
       gap: 0.625rem;
     }
+
+    /* ── Theme toggle — shared between masthead + drawer ── */
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2rem;
+      height: 2rem;
+      border: none;
+      background: none;
+      color: var(--ink-mute);
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: var(--radius-sm);
+      transition: color 0.18s, background 0.18s;
+    }
+    .theme-toggle:hover { color: var(--terracotta); background: var(--clr-surface-hover); }
+    .theme-toggle:focus-visible { outline: 2px solid var(--clr-focus); outline-offset: 2px; }
     .avatar-btn {
       width: 2.375rem;
       height: 2.375rem;
@@ -419,7 +445,7 @@ import { SearchOverlayComponent } from '../search-overlay/search-overlay.compone
     .nav-rail {
       border-top: 1px solid var(--rule-strong);
       border-bottom: 2px double var(--rule-strong);
-      background: rgba(255, 245, 215, .35);
+      background: var(--clr-nav-tint);
     }
     .nav-rail ul {
       max-width: 1180px;
