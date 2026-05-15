@@ -37,7 +37,10 @@ import { RecentlyViewedService } from '../../services/recently-viewed.service';
         @for (r of featured(); track r.id; let i = $index) {
           <div class="slide-bg" [class.slide-bg--active]="i === heroIndex()">
             @if (r.hero_image) {
-              <img [src]="r.hero_image" [alt]="r.title" class="slide-bg-img"
+              <img [src]="r.hero_image"
+                   [srcset]="r.hero_image_sm ? r.hero_image_sm + ' 600w, ' + r.hero_image + ' 1200w' : ''"
+                   sizes="100vw"
+                   [alt]="r.title" class="slide-bg-img"
                    [loading]="i === 0 ? 'eager' : 'lazy'"
                    [attr.fetchpriority]="i === 0 ? 'high' : null" />
             } @else {

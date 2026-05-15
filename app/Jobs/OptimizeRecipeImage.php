@@ -36,10 +36,15 @@ final class OptimizeRecipeImage implements ShouldQueue
             return;
         }
 
-        $webpPath = $this->convertToWebp($fullPath);
+        $lg = $this->convertToWebp($fullPath, 1200, 900);
+        $sm = $this->convertToWebp($fullPath, 600, 450);
 
-        if ($webpPath !== null) {
-            $this->recipe->update(['hero_image' => '/storage/' . $webpPath]);
+        $updates = [];
+        if ($lg !== null) $updates['hero_image']    = '/storage/' . $lg;
+        if ($sm !== null) $updates['hero_image_sm'] = '/storage/' . $sm;
+
+        if (! empty($updates)) {
+            $this->recipe->update($updates);
             Storage::disk('public')->delete($this->rawPath);
         }
     }
@@ -53,8 +58,7 @@ final class OptimizeRecipeImage implements ShouldQueue
         ]);
     }
 
-    /** Returns the new storage-relative webp path, or null if GD is unavailable/fails. */
-    private function convertToWebp(string $fullPath): ?string
+    private function convertToWebp(string $fullPath, int $maxW, int $maxH): ?string
     {
         if (! function_exists('imagewebp') || ! function_exists('imagecreatefromjpeg')) {
             return null;
@@ -75,7 +79,7 @@ final class OptimizeRecipeImage implements ShouldQueue
 
         $origW = imagesx($source);
         $origH = imagesy($source);
-        $ratio = min(1200 / $origW, 900 / $origH, 1.0);
+        $ratio = min($maxW / $origW, $maxH / $origH, 1.0);
         $newW  = (int) round($origW * $ratio);
         $newH  = (int) round($origH * $ratio);
 

@@ -5,6 +5,7 @@ export interface Recipe {
   excerpt: string | null;
   description: string | null;
   hero_image: string | null;
+  hero_image_sm: string | null;
   prep_minutes: number;
   cook_minutes: number;
   servings: number;

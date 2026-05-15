@@ -18,6 +18,7 @@ final class RecipeResource extends JsonResource
             'excerpt'           => $this->excerpt,
             'description'       => $this->description,
             'hero_image'        => $this->hero_image,
+            'hero_image_sm'     => $this->hero_image_sm,
             'hero_palette_from' => $this->hero_palette_from,
             'hero_palette_via'  => $this->hero_palette_via,
             'hero_palette_to'   => $this->hero_palette_to,

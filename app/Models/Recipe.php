@@ -16,6 +16,7 @@ class Recipe extends Model
         'excerpt',
         'description',
         'hero_image',
+        'hero_image_sm',
         'prep_minutes',
         'cook_minutes',
         'servings',
