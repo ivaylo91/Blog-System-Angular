@@ -115,7 +115,7 @@ import { Recipe } from '../../models/models';
     .so-backdrop {
       position: fixed;
       inset: 0;
-      background: oklch(20% 0.02 40 / 0.55);
+      background: rgba(10, 15, 30, 0.55);
       z-index: calc(var(--z-modal) - 1);
       animation: so-fade-in 0.18s ease-out both;
     }
@@ -131,7 +131,7 @@ import { Recipe } from '../../models/models';
       z-index: var(--z-modal);
       border-radius: var(--radius-xl);
       overflow: hidden;
-      box-shadow: 0 24px 64px oklch(15% 0.02 40 / 0.28), 0 2px 8px oklch(15% 0.02 40 / 0.12);
+      box-shadow: 0 24px 64px rgba(10, 15, 30, 0.28), 0 2px 8px rgba(10, 15, 30, 0.12);
       animation: so-slide-in 0.2s var(--ease-out-expo, cubic-bezier(0.16,1,0.3,1)) both;
     }
 
@@ -191,6 +191,7 @@ import { Recipe } from '../../models/models';
 
     /* ── Body ───────────────────────────────────── */
     .so-body {
+      max-height: min(480px, 70vh);
       max-height: min(480px, 70dvh);
       overflow-y: auto;
       overscroll-behavior: contain;
@@ -351,6 +352,7 @@ import { Recipe } from '../../models/models';
       .so-panel {
         top: 3rem;
         width: calc(100vw - 1rem);
+        max-height: calc(100vh - 4.5rem);
         max-height: calc(100dvh - 4.5rem);
         display: flex;
         flex-direction: column;

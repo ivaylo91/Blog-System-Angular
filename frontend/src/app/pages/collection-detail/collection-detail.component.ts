@@ -112,6 +112,7 @@ import { Collection, Recipe } from '../../models/models';
   `,
   styles: [`
     .cd-page {
+      min-height: 100vh;
       min-height: 100dvh;
       background: var(--paper);
       padding: clamp(2rem, 5vw, 4rem) clamp(1rem, 4vw, 2rem);

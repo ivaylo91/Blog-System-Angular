@@ -536,6 +536,7 @@ import { SearchOverlayComponent } from '../search-overlay/search-overlay.compone
       width: 300px;
       max-width: 85vw;
       height: 100vh;
+      height: 100vh;
       height: 100dvh;
       background: var(--paper);
       z-index: var(--z-drawer);

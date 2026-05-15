@@ -163,6 +163,7 @@ import { SeoService } from '../../services/seo.service';
     :host { display: block; }
 
     .page {
+      min-height: 100vh;
       min-height: 100dvh;
       display: flex;
       align-items: center;
@@ -441,7 +442,7 @@ import { SeoService } from '../../services/seo.service';
 
     @media (max-width: 640px) {
       .page { padding: 0; align-items: stretch; }
-      .card { grid-template-columns: 1fr; border-radius: 0; box-shadow: none; min-height: 100dvh; }
+      .card { grid-template-columns: 1fr; border-radius: 0; box-shadow: none; min-height: 100vh; min-height: 100dvh; }
       .art-panel { display: none; }
       .form-panel { padding: 3rem 1.5rem; align-items: stretch; }
       .form-inner { max-width: 100%; }

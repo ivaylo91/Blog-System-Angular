@@ -221,4 +221,4 @@ p, li { text-wrap: pretty; }
 ::-webkit-scrollbar-thumb:hover { background: var(--rule-strong); }
 
 /* App root sits above the two body overlays */
-app-root { position: relative; z-index: 1; display: flex; flex-direction: column; min-height: 100dvh; }
+app-root { position: relative; z-index: 1; display: flex; flex-direction: column; min-height: 100vh; min-height: 100dvh; }

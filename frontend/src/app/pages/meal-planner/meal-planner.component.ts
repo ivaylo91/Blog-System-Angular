@@ -235,6 +235,7 @@ import { Recipe } from '../../models/models';
   styles: [`
     /* ── Page ──────────────────────────────────────────── */
     .mp-page {
+      min-height: 100vh;
       min-height: 100dvh;
       background: var(--paper);
       padding: clamp(1.25rem, 4vw, 2.5rem) clamp(1rem, 4vw, 2rem) 4rem;
@@ -537,7 +538,7 @@ import { Recipe } from '../../models/models';
     .picker-backdrop {
       position: fixed;
       inset: 0;
-      background: oklch(20% 0.02 40 / 0.5);
+      background: rgba(10, 15, 30, 0.5);
       z-index: 200;
       animation: fade-in 0.18s ease-out both;
     }
@@ -547,6 +548,7 @@ import { Recipe } from '../../models/models';
       left: 50%;
       transform: translate(-50%, -50%);
       width: min(520px, calc(100vw - 2rem));
+      max-height: min(560px, 80vh);
       max-height: min(560px, 80dvh);
       background: var(--paper);
       border-radius: var(--radius-xl);
@@ -554,7 +556,7 @@ import { Recipe } from '../../models/models';
       display: flex;
       flex-direction: column;
       z-index: 201;
-      box-shadow: 0 24px 64px oklch(15% 0.02 40 / 0.28);
+      box-shadow: 0 24px 64px rgba(10, 15, 30, 0.28);
       animation: slide-in 0.2s cubic-bezier(0.16,1,0.3,1) both;
     }
     @keyframes fade-in  { from { opacity:0 } to { opacity:1 } }

@@ -193,6 +193,7 @@ import { PerfService } from '../../services/perf.service';
     .page {
       padding: var(--space-9) clamp(var(--space-4), 4vw, var(--space-6)) var(--space-10);
       background-color: var(--clr-bg);
+      min-height: 100vh;
       min-height: 100dvh;
     }
     .page-inner { max-width: 1280px; margin: 0 auto; }
@@ -244,6 +245,7 @@ import { PerfService } from '../../services/perf.service';
     .sidebar {
       position: sticky;
       top: 5.5rem;
+      max-height: calc(100vh - 7rem);
       max-height: calc(100dvh - 7rem);
       overflow-y: auto;
       scrollbar-width: none;

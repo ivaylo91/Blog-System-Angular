@@ -40,6 +40,7 @@ import { Meta } from '@angular/platform-browser';
       display: flex;
       align-items: center;
       justify-content: center;
+      min-height: calc(100vh - 8rem);
       min-height: calc(100dvh - 8rem);
       padding: 3rem 1.5rem;
       overflow: hidden;

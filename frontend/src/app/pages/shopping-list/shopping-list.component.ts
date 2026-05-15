@@ -92,6 +92,7 @@ interface RecipeGroup {
   `,
   styles: [`
     .sl-page {
+      min-height: 100vh;
       min-height: 100dvh;
       background: var(--paper);
       max-width: 680px;

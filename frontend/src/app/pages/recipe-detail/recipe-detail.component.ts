@@ -498,10 +498,11 @@ import { SeoService } from '../../services/seo.service';
       --tc-ring:  var(--rule-strong);
     }
 
-    .detail-page { min-height: 100dvh; background-color: var(--clr-bg); }
+    .detail-page { min-height: 100vh; min-height: 100dvh; background-color: var(--clr-bg); }
 
     /* ── LOAD ERROR ───────────────────────────────────────────── */
     .detail-load-error {
+      min-height: 60vh;
       min-height: 60dvh;
       display: flex;
       flex-direction: column;
@@ -554,6 +555,7 @@ import { SeoService } from '../../services/seo.service';
     .hero-banner {
       position: relative;
       min-height: 380px;
+      max-height: 60vh;
       max-height: 60dvh;
       display: flex;
       align-items: flex-end;
