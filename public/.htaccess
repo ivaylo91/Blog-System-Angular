@@ -110,6 +110,8 @@
     Header always set X-Permitted-Cross-Domain-Policies "none"
     Header always set Referrer-Policy "strict-origin-when-cross-origin"
     Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+    Header always set Cross-Origin-Opener-Policy "same-origin"
+    Header always set Cross-Origin-Resource-Policy "same-origin"
 
     # CSP — HTML only (index.html served directly by Apache; PHP-routed requests
     # also get this via SecurityHeaders middleware, but always set ensures parity)
