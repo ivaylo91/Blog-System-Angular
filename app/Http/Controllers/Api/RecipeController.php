@@ -210,7 +210,11 @@ class RecipeController extends Controller
         $this->syncTags($recipe, $validated['tags'] ?? []);
 
         if ($rawPath) {
-            OptimizeRecipeImage::dispatch($recipe, $rawPath);
+            try {
+                OptimizeRecipeImage::dispatch($recipe, $rawPath);
+            } catch (\Throwable $e) {
+                logger()->error('Failed to dispatch image job', ['recipe_id' => $recipe->id, 'error' => $e->getMessage()]);
+            }
         }
 
         return response()->json(
