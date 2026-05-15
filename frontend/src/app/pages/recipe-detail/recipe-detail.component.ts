@@ -1667,6 +1667,7 @@ export class RecipeDetailComponent {
       '@type': 'Recipe',
       name: recipe.title,
       description: recipe.excerpt || recipe.description || '',
+      author: { '@type': 'Person', name: 'Иво' },
       prepTime: `PT${recipe.prep_minutes}M`,
       cookTime: `PT${recipe.cook_minutes}M`,
       totalTime: `PT${recipe.prep_minutes + recipe.cook_minutes}M`,
@@ -1679,7 +1680,9 @@ export class RecipeDetailComponent {
         text: s.description,
       })) || [],
     };
+    if (recipe.published_at) base['datePublished'] = recipe.published_at;
     if (recipe.hero_image) base['image'] = recipe.hero_image;
+    if (recipe.tags?.length) base['keywords'] = recipe.tags.map(t => t.name).join(', ');
     if (avgRating && ratingsCount > 0) {
       base['aggregateRating'] = {
         '@type': 'AggregateRating',
