@@ -3,15 +3,13 @@ import {
   OnDestroy, OnInit, Output, inject, signal, viewChild,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faMagnifyingGlass, faXmark, faArrowRight, faClock } from '@fortawesome/free-solid-svg-icons';
 import { RecipeService } from '../../services/recipe.service';
 import { Recipe } from '../../models/models';
 
 @Component({
   selector: 'app-search-overlay',
   standalone: true,
-  imports: [FontAwesomeModule],
+  imports: [],
   template: `
     <!-- Backdrop -->
     <div class="so-backdrop" (click)="close.emit()" aria-hidden="true"></div>
@@ -23,7 +21,7 @@ import { Recipe } from '../../models/models';
       <!-- Search input -->
       <div class="so-input-row">
         <span class="so-ico" aria-hidden="true">
-          <fa-icon [icon]="faMagnifyingGlass"></fa-icon>
+          <svg viewBox="0 0 512 512" aria-hidden="true" focusable="false"><path fill="currentColor" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376C296.3 401.1 253.9 416 208 416 93.1 416 0 322.9 0 208S93.1 0 208 0 416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
         </span>
         <input #searchInput
                type="search"
@@ -36,7 +34,7 @@ import { Recipe } from '../../models/models';
                [value]="query()"
                (input)="onInput($event)" />
         <button class="so-close" type="button" (click)="close.emit()" aria-label="Затвори търсенето">
-          <fa-icon [icon]="faXmark"></fa-icon>
+          <svg viewBox="0 0 384 512" aria-hidden="true" focusable="false"><path fill="currentColor" d="M55.1 73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L147.2 256 9.9 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192.5 301.3 329.9 438.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.8 256 375.1 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192.5 210.7 55.1 73.4z"/></svg>
         </button>
       </div>
 
@@ -84,12 +82,12 @@ import { Recipe } from '../../models/models';
                     <span class="so-title">{{ r.title }}</span>
                     @if (r.prep_minutes || r.cook_minutes) {
                       <span class="so-time">
-                        <fa-icon [icon]="faClock" aria-hidden="true"></fa-icon>
+                        <svg viewBox="0 0 512 512" aria-hidden="true" focusable="false"><path fill="currentColor" d="M256 0a256 256 0 1 1 0 512 256 256 0 1 1 0-512zM232 120l0 136c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2 280 120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"/></svg>
                         {{ (r.prep_minutes || 0) + (r.cook_minutes || 0) }} мин.
                       </span>
                     }
                   </div>
-                  <fa-icon [icon]="faArrowRight" class="so-arrow" aria-hidden="true"></fa-icon>
+                  <svg viewBox="0 0 512 512" class="so-arrow" aria-hidden="true" focusable="false"><path fill="currentColor" d="M502.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l370.7 0-105.4 105.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"/></svg>
                 </a>
               </li>
             }
@@ -98,7 +96,7 @@ import { Recipe } from '../../models/models';
           @if (query().trim()) {
             <button type="button" class="so-all-btn" (click)="goToAll()">
               Виж всички резултати за „{{ query() }}"
-              <fa-icon [icon]="faArrowRight" aria-hidden="true"></fa-icon>
+              <svg viewBox="0 0 512 512" aria-hidden="true" focusable="false" style="width:.7rem;height:.7rem;flex-shrink:0"><path fill="currentColor" d="M502.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l370.7 0-105.4 105.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"/></svg>
             </button>
           }
         } @else if (!query()) {
@@ -269,11 +267,12 @@ import { Recipe } from '../../models/models';
       align-items: center;
       gap: 0.25rem;
     }
-    .so-time fa-icon { font-size: 0.6rem; }
+    .so-time svg { width: 0.6rem; height: 0.6rem; }
 
     .so-arrow {
       flex-shrink: 0;
-      font-size: 0.7rem;
+      width: 0.7rem;
+      height: 0.7rem;
       color: var(--clr-text-faint);
       opacity: 0;
       transform: translateX(-4px);
@@ -302,7 +301,7 @@ import { Recipe } from '../../models/models';
       transition: background 0.15s;
     }
     .so-all-btn:hover { background: var(--clr-surface-hover); }
-    .so-all-btn fa-icon { font-size: 0.7rem; }
+    .so-all-btn svg { width: 0.7rem; height: 0.7rem; flex-shrink: 0; }
 
     /* ── Empty / hint states ────────────────────── */
     .so-empty, .so-hint {
@@ -381,10 +380,6 @@ export class SearchOverlayComponent implements OnInit, OnDestroy {
 
   private searchInput = viewChild<ElementRef<HTMLInputElement>>('searchInput');
 
-  readonly faMagnifyingGlass = faMagnifyingGlass;
-  readonly faXmark = faXmark;
-  readonly faArrowRight = faArrowRight;
-  readonly faClock = faClock;
   readonly skeletons = [0, 1, 2, 3];
 
   query = signal('');
