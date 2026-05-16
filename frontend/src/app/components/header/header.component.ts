@@ -604,6 +604,7 @@ import { SearchOverlayComponent } from '../search-overlay/search-overlay.compone
       font-weight: 700;
       color: var(--ink);
     }
+    .drawer-brand svg { width: 1.5rem; height: 1.5rem; flex-shrink: 0; }
     .drawer-close {
       background: none;
       border: none;
