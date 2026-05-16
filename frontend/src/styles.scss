@@ -1,3 +1,32 @@
+/* ── Web-font fallbacks with size-adjusted metrics ───────────────────────────
+   Inserts a named fallback font whose metrics are tuned to match the web font.
+   Browsers use this automatically while the real font is still loading, which
+   eliminates the character-width reflow that normally causes CLS on swap. */
+
+/* Geologica ≈ 1.06× Arial (slightly wider glyphs, higher ascent cap) */
+@font-face {
+  font-family: 'Geologica Fallback';
+  src: local('Arial'), local('Helvetica Neue');
+  size-adjust: 106%;
+  ascent-override: 88%;
+  descent-override: 25%;
+  line-gap-override: 0%;
+  font-weight: 100 900;
+  font-style: normal;
+}
+
+/* Caveat script is taller than Comic Sans; pull it back slightly */
+@font-face {
+  font-family: 'Caveat Fallback';
+  src: local('Comic Sans MS'), local('Comic Sans');
+  size-adjust: 95%;
+  ascent-override: 105%;
+  descent-override: 30%;
+  line-gap-override: 0%;
+  font-weight: 400 700;
+  font-style: normal;
+}
+
 /* ── Easing tokens ──────────────────────────────────────────────────────────
    Named after physics feel, not direction. Use these everywhere. */
 :root {
@@ -10,10 +39,10 @@
    Navy primary accent + warm red secondary, light blue-gray surfaces. */
 
 :root {
-  /* Fonts — Geologica primary + specialty stacks */
-  --font-display: 'Geologica', 'Segoe UI', system-ui, sans-serif;
-  --font-body:    'Geologica', 'Segoe UI', system-ui, sans-serif;
-  --font-hand:    'Caveat', 'Comic Sans MS', cursive;
+  /* Fonts — Geologica primary + size-adjusted fallbacks to minimise CLS */
+  --font-display: 'Geologica', 'Geologica Fallback', 'Segoe UI', system-ui, sans-serif;
+  --font-body:    'Geologica', 'Geologica Fallback', 'Segoe UI', system-ui, sans-serif;
+  --font-hand:    'Caveat', 'Caveat Fallback', 'Comic Sans MS', cursive;
   --font-type:    'Special Elite', 'Courier New', monospace;
 
   /* Surface palette — ocean light */
