@@ -153,9 +153,11 @@ import { Recipe } from '../../models/models';
 
     .so-ico {
       color: var(--clr-text-muted);
-      font-size: 0.95rem;
       flex-shrink: 0;
+      display: flex;
+      align-items: center;
     }
+    .so-ico svg { width: 0.95rem; height: 0.95rem; }
 
     .so-input {
       flex: 1;
@@ -181,10 +183,10 @@ import { Recipe } from '../../models/models';
       align-items: center;
       justify-content: center;
       color: var(--clr-text-muted);
-      font-size: 0.85rem;
       cursor: pointer;
       transition: background 0.15s, color 0.15s;
     }
+    .so-close svg { width: 0.85rem; height: 0.85rem; }
     .so-close:hover { background: var(--clr-surface-hover); color: var(--clr-text); }
 
     /* ── Body ───────────────────────────────────── */
